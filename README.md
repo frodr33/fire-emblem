@@ -8,4 +8,4 @@ Username:
 git config --global user.name "awt46"
 
 Email:
-git config --global user.email "awt46@cornell.edu
+git config --global user.email "awt46@cornell.edu"

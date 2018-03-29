@@ -14,7 +14,7 @@ module type character = sig
 *   a character *)
   type character
 
-(** Getter functions to *)
+(** Getter functions for character stats*)
   val move : character -> int
 
   val name : character -> string
@@ -37,8 +37,18 @@ module type character = sig
 
   val ai : character -> 'ai * (character list)
 
+(** level_up returns the character with its level increased and stats
+ *  incremented.*)
+
   val level_up : character -> character
+
+(** update_health will return a character with its health incremented*)
 
   val update_health : character -> int -> character
 
-end 
+(** promote returns a character after a promotion.*)
+
+  val promote : character -> character
+
+
+end

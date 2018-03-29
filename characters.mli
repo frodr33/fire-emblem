@@ -4,15 +4,14 @@ open Types
  *  character values*)
 
 
-(** level_up returns the character with its level increased and stats
+(** [level_up ch] returns the character [ch] with its level increased and stats
  *  incremented.*)
 
   val level_up : character -> character
 
-(** update_health will return a character with its health incremented*)
+(**[update_health ch] will return the character [ch] with its health incremented*)
 
   val update_health : character -> int -> character
 
-(** promote returns a character after a promotion.*)
-
+(** [promote ch] returns the character [ch] after a promotion.*)
   val promote : character -> character

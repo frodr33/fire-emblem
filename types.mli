@@ -7,9 +7,13 @@ type wtype
 (** Represents the names of possible AI types*)
 type ai
 
+(*Represents keyboard input *)
+type input
 (** Represents each stat*)
 type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
 
+
+type action
 (** Represents an item with stats and shop values*)
 type item = {
   name : string;

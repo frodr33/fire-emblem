@@ -1,12 +1,5 @@
-
-  (** a variant that represents a weapon type*)
-  type wtype
+open Types
 
 
-  (** data type that holds an item*)
-  type item
-
-
-  (** decrements the items use by 1*)
-
+(**[use i] decrements the item [i]'s' use by 1*)
   val use : item -> item

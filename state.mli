@@ -1,14 +1,14 @@
-
- 
-
-(**The current map*)
-type map
-
+open Types
 (**The current state of the game*)
-type state
+type state = {
+  player: character;
+  items : item list;
+  enemies: enemy list;
+  maps : map list;
+}
 
-(**Initiates the the game board from the save file*)
+(**[init_state json] initializes the game board from the save file [json]*)
 val init_state : 'json -> state
 
-(**Updates the state after a given command*)
-val do' : 'action -> state -> state
+(**[do' act st] returns the state after an input action [act]*)
+val do' : action -> state -> state

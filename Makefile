@@ -1,5 +1,6 @@
 compile:
+	ocamlc -c command.mli
 	ocamlc -c types.mli
-	ocamlopt -c types.ml
 	ocamlc -c state.mli
+	ocamlopt -c types.ml
 	ocamlopt -c state.ml

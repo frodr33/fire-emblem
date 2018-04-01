@@ -7,6 +7,10 @@ type wtype = Sword
 (** Represents the names of possible AI types*)
 type ai
 
+type input
+
+type action
+
 (** Represents each stat*)
 type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
 
@@ -62,7 +66,7 @@ type enemy = {
   name : string;
   class' : class' ;
   level : int;
-  health : int;
+  health : int * int;
   str : int;
   mag : int;
   def : int;

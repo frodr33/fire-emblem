@@ -68,6 +68,9 @@ let rec level_up c g =
     then level_up (stat_up c (fst h) 1) t
     else level_up c t
 
-let update_health = failwith "Unimplemented"
+let update_health (c:character) i =
+  if i > fst c.health then {c with health = 0, snd c.health}
+  else if fst c.health + i > snd c.health then {c with health = c.health}
+  else {c with health = (fst c.health - i), snd c.health}
 
 let promote = failwith "Unimplemented"

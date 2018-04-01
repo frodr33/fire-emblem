@@ -1,8 +1,8 @@
 (** This module handles all of the types that we need for this project*)
-type class'
+type class' = Paladin
 
 (** Represents a weapon type*)
-type wtype
+type wtype = Sword
 
 (** Represents the names of possible AI types*)
 type ai
@@ -21,7 +21,7 @@ type item = {
   uses : int * int;
   cost : int;
   sell : int;
-  level : int;
+  level : char;
   users : string list;
   effective : class' list;
   penalty : (stat * int * int) list;
@@ -35,7 +35,7 @@ type character = {
   growths : (stat * int) list;
   level : int;
   exp : int;
-  health : int;
+  health : int * int;
   str : int;
   mag : int;
   def : int;
@@ -51,10 +51,10 @@ type character = {
   crit : int;
   avoid : int;
   inv : item list;
-  eqp : item;
+  eqp : item option;
   ability : string list;
   supports : (string * char) list;
-  wlevels : (wtype * char) list
+  wlevels : (wtype * char * int) list
 }
 
 (** Represents an enemy unit and its stats*)

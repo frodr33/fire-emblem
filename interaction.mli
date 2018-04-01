@@ -1,5 +1,5 @@
-module type interaction = sig
-
+open Types
+open State
   (** ability is a data type that details how abilities work. My idea for
    *  implementation is to just have a ton of functions and pass them through
    *  each relevant function *)
@@ -11,29 +11,27 @@ module type interaction = sig
    *  This is its own function because of how abilities can alter combat so much.
   *)
 
-  val combat : 'character -> 'character -> 'state -> int * int
+  val combat : character -> character -> state -> int * int
 
 (** heal takes a healer and a target and a state and returns an int double
   * that details how much each player heals. Generally the healer doesnt heal
   * but with some skills maybe both targets will heal. Its just there in case.*)
 
-  val heal : 'character -> 'character -> 'state -> int * int
+  val heal : character -> character -> state -> int * int
 
 (** consumable takes a character and returns that character with its stats
  *  accordingly.*)
 
-  val consumable : 'character -> 'character
+  val consumable : character -> character
 
   (** loot a chest.*)
 
-  val chest : 'character -> 'chest -> 'character
+  val chest : character -> terrain -> character
 
   (** open a door.*)
 
-  val door : 'character -> 'door -> 'character
+  val door : character -> terrain -> character
 
   (** visits a village*)
 
-  val village : 'character -> 'character
-
-end
+  val village : character -> character

@@ -11,7 +11,7 @@ type state = {
   enemies: enemy list;
   maps : map list;
   map_act: map;
-  location: tile;
+  active_tile: tile;
   active_unit: character option;
   menus:(string*menu) list;
   active_menu:menu option;

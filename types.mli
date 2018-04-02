@@ -13,10 +13,10 @@ type action = Move|Attack|Idle|Invalid
 
 (** Represents each stat*)
 type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
-
+type status = Ready|Moving|Attacking|Done
 (** Represents an item with stats and shop values*)
 type item = {
-  name : string;
+  name : string;location
   wtype : wtype;
   mgt : int;
   acc : int;
@@ -65,6 +65,7 @@ type character = {
   ability : string list;
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;
+  location: tile;
   movement: tile list
 }
 

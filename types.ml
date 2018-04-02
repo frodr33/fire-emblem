@@ -37,12 +37,13 @@ type terrain = Plain | Wall | Throne | Door | Chest | Defence | Forest |
 type tile = {location:int*int;terrain:terrain}
 
 type key = A|B|Start|Select|LT|RT|Up|Down|Left|Right|Nothing
-
+type status = Ready|Moving|Attacking|Done
 type action = Move of tile|Attack|Idle|Invalid
 (** Represents a map as a whole*)
 (** Represents a character, its stats and other details*)
 type character = {
   name : string;
+  stage: status;
   class' : class';
   growths : (stat * int) list;
   level : int;

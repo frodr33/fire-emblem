@@ -7,9 +7,7 @@ type wtype = Sword
 (** Represents the names of possible AI types*)
 type ai
 
-type key = A|B|Start|Select|LT|RT|Up|Down|Left|Right|Nothing
-
-type action = Move|Attack|Idle|Invalid
+type menu = string list
 
 (** Represents each stat*)
 type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
@@ -37,6 +35,10 @@ type terrain = Plain | Wall | Throne | Door | Chest | Defence | Forest |
                Damaged_wall of int | Mountain | Ocean | Desert | Despawn
 (** Represents one tile on a map*)
 type tile = {location:int*int;terrain:terrain}
+
+type key = A|B|Start|Select|LT|RT|Up|Down|Left|Right|Nothing
+
+type action = Move of tile|Attack|Idle|Invalid
 (** Represents a map as a whole*)
 (** Represents a character, its stats and other details*)
 type character = {

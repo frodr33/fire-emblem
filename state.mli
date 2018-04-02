@@ -6,14 +6,17 @@ type map
 
 (**The current state of the game*)
 type state = {
-    player: character list;
-    items : item list;
-    enemies: enemy list;
-    maps : map list;
-    map_act: map;
-    current: tile;
-    selected: Some character
-  }
+  player: character list;
+  items : item list;
+  enemies: enemy list;
+  maps : map list;
+  map_act: map;
+  location: tile;
+  active_unit: character option;
+  menus:(string*menu) list;
+  active_menu:menu option;
+  menu_cursor: string option
+}
 
 val get_rng : unit -> int
 

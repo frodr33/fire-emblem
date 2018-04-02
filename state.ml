@@ -9,11 +9,16 @@ type state = {
   enemies: enemy list;
   maps : map list;
   map_act: map;
-  current: tile;
-  selected: Some character
+  location: tile;
+  active_unit: character option;
+  menus:(string*menu) list;
+  active_menu:menu option;
+  menu_cursor: string option
 }
 
-let translate_input in = raise Unimplemented
+let translate_input st =
+    match !input with
+|A ->
 let seed = 10
 
 let get_rng () = Random.int 100

@@ -10,6 +10,9 @@ type state = {
     items : item list;
     enemies: enemy list;
     maps : map list;
+    map_act: map;
+    current: tile;
+    selected: Some character
   }
 
 val get_rng : unit -> int

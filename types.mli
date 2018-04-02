@@ -66,7 +66,7 @@ type enemy = {
   name : string;
   class' : class' ;
   level : int;
-  health : int;
+  health : int * int;
   str : int;
   mag : int;
   def : int;

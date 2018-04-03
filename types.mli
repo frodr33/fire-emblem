@@ -20,7 +20,6 @@ type item = {
   wtype : wtype;
   mgt : int;
   acc : int;
-  weight : int;
   range : int * int;
   uses : int * int;
   cost : int;
@@ -36,7 +35,8 @@ type terrain = Plain | Wall | Throne | Door | Chest | Defence | Forest |
                Village | Armory of item list | Shop of item list |
                Damaged_wall of int | Mountain | Ocean | Desert | Despawn
 (** Represents one tile on a map*)
-type tile = {location:int*int;ground:terrain}
+type tile = {location : int*int;
+             ground : terrain}
 
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|Moving|Attacking|Done
@@ -73,16 +73,17 @@ type character = {
   ability : string list;
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;
-  movement: tile list;
-ai : ai;
-location: tile;
-movement: tile list
+  ai : ai;
+  location: tile;
+  movement: tile list
 }
 
 (** Represents an enemy unit and its stats*)
 
 
-type map = (tile * character option) list
+type map = {width: int;
+            length: int;
+            grid: (tile * character option) list}
 (** Represents a list of all player unit locations*)
 type player_locations = (character * tile) list
 (** Representns a list of all enemy unit locations*)

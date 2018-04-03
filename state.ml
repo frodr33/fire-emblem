@@ -11,11 +11,12 @@ type state = {
   map_act: map;
   active_tile: tile;
   active_unit: character option;
-  menus:(string*menu) list;
-  current_menu:menu;
+  menus:(string * menu) list;
+  current_menu : menu;
   menu_active: bool;
   menu_cursor: int;
 }
+
 let check_player_loc st =
   List.exists (fun x ->x.location = st.active_tile) st.player
 
@@ -25,7 +26,7 @@ let check_enemy_loc st =
 
 let translate_key st =
   match input with
-  |A ->if st.menu_active=true then SelectMOption else
+  |A ->if st.menu_active = true then SelectMOption else
       match st.active_unit with begin
         |Some c -> SelectTile
         |None ->

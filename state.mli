@@ -9,13 +9,13 @@ type map
 type state = {
   player: character list;
   items : item list;
-  enemies: enemy list;
+  enemies: character list;
   maps : map list;
   map_act: map;
   active_tile: tile;
   active_unit: character option;
-  menus:(string*menu) list;
-  current_menu:menu;
+  menus: (string * menu) list;
+  current_menu : menu;
   menu_active: bool;
   menu_cursor: int;
 }

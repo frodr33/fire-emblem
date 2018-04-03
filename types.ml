@@ -2,10 +2,12 @@
 type class' = Paladin
 
 (** Represents a weapon type*)
-type wtype = Sword
+type wtype = Sword | Tome
 
 (** Represents the names of possible AI types*)
 type ai
+
+type allegiance = Player | Enemy | Allied
 
 type key = A|B|Start|Select|LT|RT|Up|Down|Left|Right|Nothing
 
@@ -36,7 +38,10 @@ type terrain = Plain | Wall | Throne | Door | Chest | Defence | Forest |
                Village | Armory of item list | Shop of item list |
                Damaged_wall of int | Mountain | Ocean | Desert | Despawn
 (** Represents one tile on a map*)
-type tile = {location:int*int;terrain:terrain}
+type tile = {
+  location : int*int;
+  terrain : terrain
+}
 (** Represents a map as a whole*)
 (** Represents a character, its stats and other details*)
 type character = {
@@ -46,6 +51,7 @@ type character = {
   level : int;
   exp : int;
   health : int * int;
+  allegiance : allegiance;
   str : int;
   mag : int;
   def : int;
@@ -65,28 +71,7 @@ type character = {
   ability : string list;
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;
-  movement: tile list
-}
-
-(** Represents an enemy unit and its stats*)
-type enemy = {
-  name : string;
-  class' : class' ;
-  level : int;
-  health : int * int;
-  str : int;
-  mag : int;
-  def : int;
-  spd : int;
-  res : int;
-  skl : int;
-  lck : int;
-  mov : int;
-  con : int;
-  hit : int;
-  atk : int;
-  crit : int;
-  avoid : int;
+  movement: tile list;
   ai : ai
 }
 
@@ -95,4 +80,4 @@ type map = (tile * character option) list
 (** Represents a list of all player unit locations*)
 type player_locations = (character * tile) list
 (** Representns a list of all enemy unit locations*)
-type enemy_locations = (enemy * tile) list
+type enemy_locations = (character * tile) list

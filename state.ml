@@ -53,6 +53,6 @@ let init_state d = Random.init seed; {
   }
 
 
-let do' s =
+let do' act s =
   {
 }

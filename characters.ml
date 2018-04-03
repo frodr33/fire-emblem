@@ -1,7 +1,7 @@
 open Types
 open State
 
-let make_fresh_item s = {
+(*let make_fresh_item s = {
   name = s;
   wtype = Sword;
   mgt = 16;
@@ -17,8 +17,8 @@ let make_fresh_item s = {
   penalty = [];
 
 }
-
-let make_fresh s = {
+*)
+(*let make_fresh s = {
   name = s;
   class' = Paladin;
   growths = [(Health, 50); (Str , 50);(Mag, 50);(Def, 50);
@@ -45,7 +45,7 @@ let make_fresh s = {
   ability = [];
   supports = [];
   wlevels = []
-  }
+  }*)
 
 let stat_up (c:character) s i =
   match s with
@@ -70,9 +70,9 @@ let rec level_up c g =
 
 let update_health (c:character) i =
   if i > fst c.health then {c with health = 0, snd c.health}
-  else if fst c.health + i > snd c.health then {c with health = c.health}
+  else if fst c.health + i > snd c.health then {c with health = (snd c.health, snd c.health)}
   else {c with health = (fst c.health - i), snd c.health}
 
 let promote = failwith "Unimplemented"
 
-let update_character c =
+let update_character c = failwith "Unimplemented"

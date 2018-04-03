@@ -1,5 +1,5 @@
 open Types
-open State
+
 
 (** [character] handles all the functions that involve reading and editing
  *  character values*)

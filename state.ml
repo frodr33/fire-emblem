@@ -62,7 +62,7 @@ let get_rng () = Random.int 100
 
 let new_tile = {location = (0, 0); terrain = Plain}
 
-let new_map:map = [(new_tile, None)]
+let new_map = [(new_tile, None)]
 
 let init_state d = Random.init seed;
   {

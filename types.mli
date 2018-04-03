@@ -21,13 +21,13 @@ type item = {
   mgt : int;
   acc : int;
   range : int * int;
-  uses : int * int;
+  uses : int;
   cost : int;
   sell : int;
   level : char;
   users : string list;
   effective : class' list;
-  penalty : (stat * int * int) list;
+  penalty : (stat * (int * int)) list;
 }
 
 (** Represents different types of terrain*)

@@ -15,13 +15,13 @@ open State
 (**Calculates how much damamge one character does to another*)
   val damage : character -> character -> int
 
-  val combat : character -> character -> state -> int * int * int * int
+  val combat : character -> character -> character * character
 
 (** heal takes a healer and a target and a state and returns an int double
   * that details how much each player heals. Generally the healer doesnt heal
   * but with some skills maybe both targets will heal. Its just there in case.*)
 
-  val heal : character -> character -> state -> int * int
+  val heal : character -> character -> character * character
 
 (** consumable takes a character and returns that character with its stats
  *  accordingly.*)

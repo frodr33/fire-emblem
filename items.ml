@@ -1,3 +1,3 @@
 open Types
 
-let use i = {i with uses = fst i.uses - 1, snd i.uses}
+let use_item i = {i with uses = i.uses - 1}

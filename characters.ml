@@ -58,15 +58,19 @@ let stat_up (c:character) s i =
   |Skl -> {c with skl = c.skl + i}
   |Lck -> {c with lck = c.lck + i}
 
-let rec level_up c g =
+let rec level_up_h c g =
   match g with
   |[]   -> c
   |h::t ->
     if let rng = Random.int 100 in
       print_int rng;
       snd h > rng
-    then level_up (stat_up c (fst h) 1) t
-    else level_up c t
+    then level_up_h (stat_up c (fst h) 1) t
+    else level_up_h c t
+
+let level_up c =
+  if c.exp > 100 then {(level_up_h c c.growths) with exp = c.exp - 100}
+  else c
 
 let update_health (c:character) i =
   if i > fst c.health then {c with health = 0, snd c.health}

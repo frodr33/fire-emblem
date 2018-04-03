@@ -11,7 +11,7 @@ val stat_up : character -> stat -> int -> character
 (** level_up returns the character with its level increased and stats
  *  incremented.*)
 
-val level_up : character -> (stat * int) list -> character
+val level_up : character -> character
 
 (**[update_health ch] will return the character [ch] with its health incremented*)
 

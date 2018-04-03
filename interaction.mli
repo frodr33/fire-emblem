@@ -1,5 +1,6 @@
 open Types
 open State
+
   (** ability is a data type that details how abilities work. My idea for
    *  implementation is to just have a ton of functions and pass them through
    *  each relevant function *)
@@ -10,6 +11,9 @@ open State
    *  int pair which represents how much damage each target took respectively.
    *  This is its own function because of how abilities can alter combat so much.
   *)
+
+(**Calculates how much damamge one character does to another*)
+  val damage : character -> character -> int
 
   val combat : character -> character -> state -> int * int
 

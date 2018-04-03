@@ -18,4 +18,6 @@ val level_up : character -> (stat * int) list -> character
 val update_health : character -> int -> character
 
 (** [promote ch] returns the character [ch] after a promotion.*)
-  val promote : character -> character
+val promote : character -> character
+
+val update_character : 'a -> 'a

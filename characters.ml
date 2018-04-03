@@ -74,3 +74,5 @@ let update_health (c:character) i =
   else {c with health = (fst c.health - i), snd c.health}
 
 let promote = failwith "Unimplemented"
+
+let update_character c =

@@ -5,16 +5,20 @@ open Types
 type map
 
 (**The current state of the game*)
-type state = {
-    player: character list;
-    items : item list;
-    enemies: character list;
-    maps : map list;
-    map_act: map;
-    current: tile;
-    selected: character option
-  }
 
+type state = {
+  player: character list;
+  items : item list;
+  enemies: enemy list;
+  maps : map list;
+  map_act: map;
+  active_tile: tile;
+  active_unit: character option;
+  menus:(string*menu) list;
+  current_menu:menu;
+  menu_active: bool;
+  menu_cursor: int;
+}
 val get_rng : unit -> int
 
 (**[init_state json] initializes the game board from the save file [json]*)

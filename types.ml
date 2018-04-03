@@ -7,11 +7,9 @@ type wtype = Sword | Tome
 (** Represents the names of possible AI types*)
 type ai
 
+type menu = string array
+
 type allegiance = Player | Enemy | Allied
-
-type key = A|B|Start|Select|LT|RT|Up|Down|Left|Right|Nothing
-
-type action = Move|Attack|Idle|Invalid
 
 (** Represents each stat*)
 type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
@@ -38,14 +36,20 @@ type terrain = Plain | Wall | Throne | Door | Chest | Defence | Forest |
                Village | Armory of item list | Shop of item list |
                Damaged_wall of int | Mountain | Ocean | Desert | Despawn
 (** Represents one tile on a map*)
-type tile = {
-  location : int*int;
-  terrain : terrain
-}
+type tile = {location:int*int;ground:terrain}
+
+type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
+type status = Ready|Moving|Attacking|Done
+type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
+              SelectMOption|Undo|SelectTile|SelectPlayer|SelectEnemy|FindReady|
+              Invalid
+
+
 (** Represents a map as a whole*)
 (** Represents a character, its stats and other details*)
 type character = {
   name : string;
+  stage: status;
   class' : class';
   growths : (stat * int) list;
   level : int;
@@ -71,12 +75,14 @@ type character = {
   ability : string list;
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;
+location: tile;
   movement: tile list;
   ai : ai
 }
 
-
-type map = (tile * character option) list
+type map = {width: int;length:int;
+            grid:
+  (tile * character option) list}
 (** Represents a list of all player unit locations*)
 type player_locations = (character * tile) list
 (** Representns a list of all enemy unit locations*)

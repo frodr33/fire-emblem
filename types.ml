@@ -18,8 +18,8 @@ type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
 type item = {
   name : string;
   wtype : wtype;
-  mgt : int;allegiance
-    acc : int;
+  mgt : int;
+  acc : int;
   range : int * int;
   uses : int;
   cost : int;

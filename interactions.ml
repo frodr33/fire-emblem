@@ -48,14 +48,42 @@ let in_range a d =
   |None   -> false
   |Some x -> let l = distance a d in l >= fst x.range && l <= snd x.range
 
+let kill_xp a d =
+  if d.ai = BossStay || d.ai = BossHunt then
+    match a.level - d.level with
+    | 2 -> {a with exp = a.exp + 90}
+    | 3 -> {a with exp = a.exp + 80}
+    | 4 -> {a with exp = a.exp + 70}
+    | x -> if x > 4 then {a with exp = a.exp + 60}
+      else {a with exp = a.exp + 100}
+  else
+  match a.level - d.level with
+  | -4 -> {a with exp = a.exp + 60}
+  | -3 -> {a with exp = a.exp + 51}
+  | -2 -> {a with exp = a.exp + 43}
+  | -1 -> {a with exp = a.exp + 36}
+  |  0 -> {a with exp = a.exp + 30}
+  |  1 -> {a with exp = a.exp + 25}
+  |  2 -> {a with exp = a.exp + 19}
+  |  3 -> {a with exp = a.exp + 12}
+  |  4 -> {a with exp = a.exp + 4}
+  |  x -> if x > 4 then {a with exp = a.exp + 1}
+    else {a with exp = a.exp + 70}
+
+
 let resolveE a d =
-  if not (item_eqp a) then (a, d) else
-  let new_d = update_health d (damage a d) in
-  if fst new_d.health = 0 then
-    Queue.clear combatQ;
+  if not (item_eqp a) then (a, d)
+  else if (get_rng () + get_rng())/2 > a.hit - d.avoid then
+    ({a with eqp = use a.eqp}, d)
+  else let new_d = if get_rng () > crit then update_health d 3 * (damage a d)
+         else update_health d (damage a d)
+    in
+    if fst new_d.health = 0 then (
+      Queue.clear combatQ;
   ({a with eqp = match a.eqp with
        | Some x -> if x.uses = 1 then None else Some (use x)
-       |_ -> failwith "no uses"}, new_d)
+       |_ -> failwith "no uses"}, new_d))
+  else failwith "not done"
 
 let rec resolveQ acc =
   if Queue.is_empty combatQ then acc else
@@ -74,13 +102,4 @@ let combat a d =
   else if counter && redouble then Queue.add (d, a) combatQ;
   resolveQ (a, d)
 
-
-
-
-    (*
-  if not (survive d (damage a d)) then (damage a d, 0, 1, 0)
-  else if double then
-    (if survive a (damage d a)  then (2* (damage a d), (damage d a))
-     else (damage a d, damage d a))
-  else if redouble then (damage a d, 2*(damage d a))
-  else (damage a d, damage d a)*)
+let heal a t =

@@ -2,10 +2,10 @@
 type class' = Paladin
 
 (** Represents a weapon type*)
-type wtype = Sword | Tome
+type wtype = Sword | Tome | Staff
 
 (** Represents the names of possible AI types*)
-type ai
+type ai = BossStay | BossHunt
 
 type menu = string list
 

@@ -23,6 +23,14 @@ let check_player_loc st =
 let check_enemy_loc st =
   List.exists (fun x ->x.location = st.active_tile) st.enemies
 
+let distance_tile a (t:tile) =
+  abs (fst a.location.location - fst t.location) +
+  abs (snd a.location.location - snd t.location)
+
+let in_range_tile a t =
+  match a.eqp with
+  |None   -> false
+  |Some x -> let l = distance_tile a t in l >= fst x.range && l <= snd x.range
 
 let translate_key st =
   match input with

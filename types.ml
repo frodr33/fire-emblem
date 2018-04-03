@@ -7,7 +7,7 @@ type wtype = Sword | Tome
 (** Represents the names of possible AI types*)
 type ai
 
-type menu = string array
+type menu = {size:int;options:string list}
 
 type allegiance = Player | Enemy | Allied
 
@@ -18,8 +18,8 @@ type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
 type item = {
   name : string;
   wtype : wtype;
-  mgt : int;
-  acc : int;
+  mgt : int;allegiance
+    acc : int;
   range : int * int;
   uses : int;
   cost : int;
@@ -41,7 +41,7 @@ type tile = {location : int*int;
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|Moving|Attacking|Done
 type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
-              SelectMOption|Undo|SelectTile|SelectPlayer|SelectEnemy|FindReady|
+              SelectMOption|Undo|SelectMoveTile|SelectAttackaTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
               Invalid
 
 
@@ -82,7 +82,7 @@ type character = {
 
 type map = {width: int;
             length: int;
-            grid: (tile * character option) list}
+            grid: tile list}
 (** Represents a list of all player unit locations*)
 type player_locations = (character * tile) list
 (** Representns a list of all enemy unit locations*)

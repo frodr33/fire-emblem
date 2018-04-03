@@ -40,8 +40,8 @@ let eqp_use a =
   |Some x -> x.uses
 
 let distance a b =
-  abs (fst a.location.location - fst b.location.location) +
-  abs (snd a.location.location - snd b.location.location)
+  abs (fst a.location.coordinate - fst b.location.coordinate) +
+  abs (snd a.location.coordinate - snd b.location.coordinate)
 
 let in_range a d =
   match a.eqp with

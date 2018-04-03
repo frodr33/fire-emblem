@@ -15,7 +15,7 @@ type state = {
   active_unit: character option;
   menus:(string*menu) list;
   active_menu:menu option;
-  menu_cursor: string option
+  menu_cursor: string option;
 }
 
 val get_rng : unit -> int

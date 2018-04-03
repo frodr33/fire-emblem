@@ -36,9 +36,13 @@ type terrain = Plain | Wall | Throne | Door | Chest | Defence | Forest |
 (** Represents one tile on a map*)
 type tile = {location:int*int;terrain:terrain}
 
-type key = A|B|Start|Select|LT|RT|Up|Down|Left|Right|Nothing
+type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|Moving|Attacking|Done
-type action = Move of tile|Attack|Idle|Invalid
+type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
+              SelectMOption|Undo|SelectTile|SelectPlayer|SelectEnemy|FindReady|
+              Invalid 
+
+
 (** Represents a map as a whole*)
 (** Represents a character, its stats and other details*)
 type character = {
@@ -68,6 +72,7 @@ type character = {
   ability : string list;
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;
+  location: tile;
   movement: tile list
 }
 
@@ -90,9 +95,10 @@ type enemy = {
   atk : int;
   crit : int;
   avoid : int;
-  ai : ai
+  ai : ai;
+  location: tile;
+  movement:tile list;
 }
-
 
 type map = (tile * character option) list
 (** Represents a list of all player unit locations*)

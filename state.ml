@@ -13,12 +13,34 @@ type state = {
   active_unit: character option;
   menus:(string*menu) list;
   active_menu:menu option;
-  menu_cursor: string
+  menu_cursor: string;
 }
-let attacking st =
-  {
+let check_player_loc st =
+  List.exists (fun x ->x.location = st.active_tile) st.player
 
-  }
+let check_enemy_loc st =
+  List.exists (fun x ->x.location = st.active_tile) st.enemies
+
+
+let translate_key st =
+  match input with
+  |A ->if st.active_menu <>None then SelectMOption else
+      match st.active_unit with begin
+        |Some c -> SelectTile
+        |None ->
+    if check_player_loc st then SelectPlayer else
+    if check_enemy_loc st then SelectEnemy else
+      OpenMenu
+      end
+  |B -> if st.active_menu <>None then CloseMenu else Undo
+  |LT ->FindReady
+  |Up -> if st.active_menu <> None then Mup else Tup
+  |Down ->if st.active_menu <>None then Mdown else Tdown
+  |Right ->if st.active_menu <>None then Invalid else Tright
+  |Left ->if st.active_menu <>None then Invalid else Tleft
+  |_ ->Invalid
+
+
 let seed = 10
 
 let get_rng () = Random.int 100
@@ -31,9 +53,6 @@ let init_state d = Random.init seed; {
   }
 
 
-let do' a s = {
-  player = [];
-  items = [];
-  enemies = [];
-  maps = [];
+let do' s =
+  {
 }

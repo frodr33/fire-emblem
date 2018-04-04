@@ -1,10 +1,6 @@
 open Types
 
 
-
-
-
-
 let map1 =
   {
     width = 15;

@@ -33,10 +33,18 @@ type item = {
 (** Represents different types of terrain*)
 type terrain = Plain | Wall | Throne | Door | Chest | Defence | Forest |
                Village | Armory of item list | Shop of item list |
-               Damaged_wall of int | Mountain | Ocean | Desert | Despawn
+               Damaged_wall of int | Mountain | Ocean | Desert | Despawn |
+               Peaks | Mounts
+
+type tile_type =
+  | Grass | Tree | Crack | Bridge | Bush | Darkbus | Water1 | Water2 | Water3
+  | Water4 | Water5 | Water6 | Water7 | Water8 | Water9 | Wall1 | Wall2
+  | Wall3 | Wall4 | Wall5 | Wall6
+
 (** Represents one tile on a map*)
 type tile = {coordinate : int*int;
-             ground : terrain}
+             ground : terrain;
+             tile_type: tile_type}
 
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|Moving|Attacking|Done

@@ -3,7 +3,7 @@ open Types
 
 
 
-(* NOTE: check types terrains for tile types of Bridge and Crack *)
+
 
 let map1 =
   {
@@ -35,7 +35,7 @@ let map1 =
     {coordinate = (26 * 1, 26 * 1); ground = Plain; tile_type = Grass};
     {coordinate = (26 * 2, 26 * 1); ground = Wall; tile_type = Wall6};
     {coordinate = (26 * 3, 26 * 1); ground = Wall; tile_type = Wall6};
-    {coordinate = (26 * 4, 26 * 1); ground = Wall; tile_type = Wall6};
+    {coordinate = (26 * 4, 26 * 1); ground = Wall; tile_type = Wall5};
     {coordinate = (26 * 5, 26 * 1); ground = Plain; tile_type = Grass};
     {coordinate = (26 * 6, 26 * 1); ground = Plain; tile_type = Grass};
     {coordinate = (26 * 7, 26 * 1); ground = Plain; tile_type = Grass};
@@ -56,7 +56,7 @@ let map1 =
     {coordinate = (26 * 4, 26 * 2); ground = Plain; tile_type = Grass};
     {coordinate = (26 * 5, 26 * 2); ground = Plain; tile_type = Grass};
     {coordinate = (26 * 6, 26 * 2); ground = Forest; tile_type = Tree};
-    {coordinate = (26 * 7, 26 * 2); ground = Plain; tile_type = Crack};
+    {coordinate = (26 * 7, 26 * 2); ground = Wall; tile_type = Crack};
     {coordinate = (26 * 8, 26 * 2); ground = Plain; tile_type = Grass};
     {coordinate = (26 * 9, 26 * 2); ground = Plain; tile_type = Grass};
     {coordinate = (26 * 10, 26 * 2); ground = Forest; tile_type = Tree};
@@ -74,7 +74,7 @@ let map1 =
     {coordinate = (26 * 5, 26 * 3); ground = Plain; tile_type = Grass};
     {coordinate = (26 * 6, 26 * 3); ground = Plain; tile_type = Grass};
     {coordinate = (26 * 7, 26 * 3); ground = Plain; tile_type = Grass};
-    {coordinate = (26 * 8, 26 * 3); ground = Plain; tile_type = Crack};
+    {coordinate = (26 * 8, 26 * 3); ground = Wall; tile_type = Crack};
     {coordinate = (26 * 9, 26 * 3); ground = Plain; tile_type = Grass};
     {coordinate = (26 * 10, 26 * 3); ground = Plain; tile_type = Grass};
     {coordinate = (26 * 11, 26 * 3); ground = Ocean; tile_type = Water2};

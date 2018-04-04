@@ -125,7 +125,7 @@ let resolveE a d =
   if not (item_eqp a) then (a, d)
   else if (get_rng () + get_rng())/2 > a.hit - d.avoid then begin
     Queue.add Miss expQ;
-    ({a with eqp = use a.eqp}, d)
+    ({a with eqp = use_eqp a.eqp}, d)
   end
   else
     let new_d =
@@ -137,7 +137,7 @@ let resolveE a d =
       Queue.add Kill expQ;
     if a.allegiance = Player then
       Queue.add Hit expQ;
-    ({a with eqp = use a.eqp}, new_d)
+    ({a with eqp = use_eqp a.eqp}, new_d)
 
 let rec resolveQ acc =
   if Queue.is_empty combatQ then acc else
@@ -156,4 +156,14 @@ let combat a d =
   else if counter && redouble then Queue.add (d, a) combatQ;
   (a, d) |> resolveQ |> award_xp |> award_levels
 
-let heal a t = failwith "Unimplemented"
+let rec use_not_eqp ilst s =
+  List.map (fun a -> if a = s then use a else a) ilst
+
+let heal a t s =
+  (level_up {a with inv = use_not_eqp a.inv s;
+                    exp = a.exp + 12}, (update_health t (- (a.mag + s.mgt))))
+
+let consumable a i =
+  update_health {a with inv = use_not_eqp a.inv i} (- i.mgt)
+
+let chest

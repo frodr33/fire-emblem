@@ -1,8 +1,8 @@
 (** This module handles all of the types that we need for this project*)
-type class' = Paladin
+type class' = Paladin | Thief
 
 (** Represents a weapon type*)
-type wtype = Sword | Tome | Staff
+type wtype = Sword | Tome | Staff | Potion | Key
 
 (** Represents the names of possible AI types*)
 type ai = BossStay | BossHunt
@@ -31,8 +31,8 @@ type item = {
 }
 
 (** Represents different types of terrain*)
-type terrain = Plain | Wall | Throne | Door | Chest | Defence | Forest |
-               Village | Armory of item list | Shop of item list |
+type terrain = Plain | Wall | Throne | Door | Chest of item * bool | Defence | Forest |
+               Village of item * bool | Armory of item list | Shop of item list |
                Damaged_wall of int | Mountain | Ocean | Desert | Despawn
 (** Represents one tile on a map*)
 type tile = {coordinate : int*int;

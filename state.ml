@@ -1,8 +1,6 @@
 open Types
 
 
-
-
 type state = {
   player: character list;
   items : item list;
@@ -29,7 +27,7 @@ let check_ally_loc st =
 
 let distance_tile a (t:tile) =
   abs (fst a.location.coordinate - fst t.coordinate) +
-  abs (snd a.location.coodinate - snd t.coordinate)
+  abs (snd a.location.coordinate - snd t.coordinate)
 
 let in_range_tile a t =
   match a.eqp with

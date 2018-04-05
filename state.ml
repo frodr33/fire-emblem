@@ -72,12 +72,12 @@ let new_active_tile act st =
   let y = snd (st.active_tile.coordinate) in
   match act with
   |Tup -> if y =0  then st.active_tile else
-      get_tile (x,y-1) st
+      st.map_act.grid.(x).(y-1)
   |Tdown ->if y=(st.act_map.length -1) then st.active_tile else
-      get_tile (x,y+1) st
-  |Tleft ->if x = 0 then st.active_tile else get_tile (x-1,y) st
+      st.map_act.grid.(x).(y+1)
+  |Tleft ->if x = 0 then st.active_tile else   st.map_act.grid.(x-1).(y)
   |Tright ->if x = (St.act_map.width-1) then st.active_tile else
-      get_tile (x+1,y)
+      st.map_act.grid.(x+1).(y)
 
 let new_menu_cursor act st = match act with
   |Mup -> if st.menu_cursor =0 then st.current_menu.size -1 else

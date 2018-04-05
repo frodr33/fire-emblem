@@ -81,19 +81,7 @@ let new_menu_cursor act st = match act with
   |Mdown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
       st.menu_cursor +1
 
-let new_active_tile act st =
-  let x = fst(st.active_tile.coordinate) in
-  let y = snd (st.active_tile.coordinate) in
-  match act with
-  |Tup -> if y =0  then st.active_tile else
-      {st.active_tile with coordinate = (x,y-1)}
 
-let new_menu_cursor act st = match act with
-  |Mup -> if st.menu_cursor =0 then Array.length st.current_menu -1 else
-      st.menu_cursor -1
-  |Mdown ->if st.menu_cursor = (Array.length st.current_menu)-1 then 0 else
-      st.menu_cursor +1
-  |_ ->st.menu_cursor
 
 
 let seed = 10

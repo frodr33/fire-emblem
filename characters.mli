@@ -20,4 +20,6 @@ val update_health : character -> int -> character
 (** [promote ch] returns the character [ch] after a promotion.*)
 val promote : character -> character
 
-val update_character : 'a -> 'a
+val update_character : character -> character
+
+val add_item : character -> item -> character

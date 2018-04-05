@@ -1,7 +1,8 @@
 compile:
-	ocamlc -c command.mli
 	ocamlc -c types.mli
 	ocamlc -c room.mli
 	ocamlc -c state.mli
-	ocamlc -c character.mli
+	ocamlc -c characters.mli
+	ocamlc -c items.mli
 	ocamlc -c sprites.mli
+	ocamlc -c command.mli

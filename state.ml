@@ -14,6 +14,7 @@ type state = {
   current_menu : menu;
   menu_active: bool;
   menu_cursor: int;
+  funds : int;
 }
 
 let check_player_loc st =

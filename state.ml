@@ -118,4 +118,5 @@ let init_state d = Random.init seed;
 
 let do' act s =
   match act with
-  |Tup ->let a = s.active_tile in {s with active_tile = {coordinate=(a.x+1,a.y);ground=a.ground}}
+  |Tup ->let a = s.active_tile in {s with active_tile = {coordinate=(a.x+1,a.y);
+                                                         ground=a.ground}}

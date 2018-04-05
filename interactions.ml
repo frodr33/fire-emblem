@@ -156,8 +156,12 @@ let combat a d =
   else if counter && redouble then Queue.add (d, a) combatQ;
   (a, d) |> resolveQ |> award_xp |> award_levels
 
+let remove_item ilst s =
+  List.fold_left (fun a v -> if v = s then a else v::a) [] ilst
+
 let rec use_not_eqp ilst s =
-  List.map (fun a -> if a = s then use a else a) ilst
+  if s.uses = 1 then remove_item ilst s
+  else List.map (fun a -> if a = s then use a else a) ilst
 
 let heal a t s =
   (level_up {a with inv = use_not_eqp a.inv s;
@@ -177,4 +181,3 @@ let village c t =
   |Village (Some x) -> add_item c x
   |Village (None) -> failwith "visited village"
   |_ -> failwith "visiting nonvillage"
-  

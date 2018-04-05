@@ -64,7 +64,7 @@ let draw_sprites sprite_list =
 (*********************************************************)
 (* [draw_menu_movement_back context] draws the background to the
  * movement menu *)
-let draw_menu_movement_back context =
+let draw_menu_unit_back context =
   let x = 286. in
   let y = 26. in
   let rec ys x y =
@@ -76,8 +76,8 @@ let draw_menu_movement_back context =
       if y = 156. then ys (x+.26.) 26. else ys x (y+.26.) in
   ys x y
 
-(* [menu_movement context] draws text onto the movement menu *)
-let menu_movement context =
+(* [unit_movement context] draws text onto the movement menu *)
+let menu_unit context =
   context##strokeStyle <- js "white";
   context##font <- js "Arial";
   context##strokeRect (286., 26. ,83.,160.);
@@ -88,21 +88,30 @@ let menu_movement context =
   context##strokeText (js "Trade", 300., 150.);
   context##strokeText (js "Open", 300., 175.)
 
-(* [draw_movement_menu context] draws a movement menu
+(* [draw_unit_menu context] draws a unit menu
  * on the canvas.*)
-let draw_movement_menu context =
-  draw_menu_movement_back context;
-  menu_movement context
+let draw_unit_menu context =
+  draw_menu_unit_back context;
+  menu_unit context
 
-
-let draw_menu =
+(* [draw_item_menu context] draws an item menu
+ * on the canvas.*)
+let draw_item_menu context =
   failwith "Unimplemented"
+
+(* [draw_tile_menu context] draws a tile menu
+ * on the canvas.*)
+let draw_tile_menu context =
+  failwith "Unimplemented"
+
+(*********************************************************)
+(****************** Draw State Functions *****************)
+(*********************************************************)
 
 (* [draw_color_tile color context coordinate] draws the color
  * on the specified coordinate *)
 let draw_color_tile color context coordinate =
-  let img = Html.crateImg document in
-
+  failwith "Unimplemented"
 
 (* [draw_selection_board] draws the red and blue
  * tiles around the player which signifies valid
@@ -110,6 +119,19 @@ let draw_color_tile color context coordinate =
 let draw_selection_board =
   failwith "Unimplemented"
 
+
+(* [menu_manager context state] draws a menu
+ * if is active, otherwise does nothing *)
+let menu_manager context state =
+  if state.menu_active then
+    match state.current_menu with
+    | unit_menu -> draw_unit_menu context;
+    | tile_menu -> draw_tile_menu context;
+    | item_menu -> draw_item_menu context;
+  else ()
+
+
 (* Drawing *)
-let draw_state =
-  failwith "Unimplemented"
+let draw_state context state =
+  draw_map context state;
+  menu_manager context state

@@ -83,7 +83,7 @@ type character = {
 
 type map = {width: int;
             length: int;
-            grid: (tile * character option) list}
+            grid: tile array array}
 (** Represents a list of all player unit locations*)
 type player_locations = (character * tile) list
 (** Representns a list of all enemy unit locations*)

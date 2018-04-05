@@ -2,7 +2,7 @@
 type class' = Paladin
 
 (** Represents a weapon type*)
-type wtype = Sword | Tome
+type wtype = Sword | Tome | Staff | Potion | Key
 
 (** Represents the names of possible AI types*)
 type ai
@@ -90,7 +90,7 @@ type character = {
 
 type map = {width: int;
             length: int;
-            grid: tile list}
+            grid: tile array array}
 (** Represents a list of all player unit locations*)
 type player_locations = (character * tile) list
 (** Representns a list of all enemy unit locations*)

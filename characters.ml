@@ -77,6 +77,9 @@ let update_health (c:character) i =
   else if fst c.health + i > snd c.health then {c with health = (snd c.health, snd c.health)}
   else {c with health = (fst c.health - i), snd c.health}
 
+let add_item c i =
+  {c with inv = i :: c.inv}
+
 let promote = failwith "Unimplemented"
 
 let update_character c = failwith "Unimplemented"

@@ -166,4 +166,15 @@ let heal a t s =
 let consumable a i =
   update_health {a with inv = use_not_eqp a.inv i} (- i.mgt)
 
-let chest
+let chest c t i =
+  match t with
+  |Chest (Some x) -> {(add_item c x) with inv = use_not_eqp c.inv i}
+  |Chest (None) -> failwith "empty chest"
+  |_ -> failwith "Opening nonchest"
+
+let village c t =
+  match t with
+  |Village (Some x) -> add_item c x
+  |Village (None) -> failwith "visited village"
+  |_ -> failwith "visiting nonvillage"
+  

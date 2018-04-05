@@ -38,4 +38,4 @@ open State
 
   (** visits a village*)
 
-  val village : character -> character
+  val village : character -> terrain -> character

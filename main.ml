@@ -22,3 +22,5 @@ let append_text e s = Dom.appendChild e (document##createTextNode (js s))
  * GUI and then calling the REPL function *)
 let main () =
   let gui = get_element_by_id "gui" in
+  let h1 = Html.createH1 document in
+  append_text h1 "Fire Emblem"

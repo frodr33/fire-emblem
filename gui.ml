@@ -120,26 +120,32 @@ let draw_item_menu context =
   draw_item_back context;
   menu_item context
 
+let draw_tile_back context =
+  let x = 286. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 364. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 104. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y
+
+let menu_tile context =
+  context##strokeStyle <- js "white";
+  context##font <- js "Arial";
+  context##strokeRect (286., 26. ,83.,108.);
+  context##strokeText (js "Unit", 300., 50.);
+  context##strokeText (js "Status", 300., 75.);
+  context##strokeText (js "Suspend", 300., 100.);
+  context##strokeText (js "End", 300., 125.)
 
 (* [draw_tile_menu context] draws a tile menu
  * on the canvas.*)
 let draw_tile_menu context =
-  failwith "Unimplemented"
-
-(*********************************************************)
-(****************** Draw State Functions *****************)
-(*********************************************************)
-
-(* [draw_color_tile color context coordinate] draws the color
- * on the specified coordinate *)
-let draw_color_tile color context coordinate =
-  failwith "Unimplemented"
-
-(* [draw_selection_board] draws the red and blue
- * tiles around the player which signifies valid
- * moves *)
-let draw_selection_board =
-  failwith "Unimplemented"
+  draw_tile_back context;
+  menu_tile context
 
 
 (* [menu_manager context state] draws a menu
@@ -152,6 +158,15 @@ let menu_manager context state =
     | item_menu -> draw_item_menu context;
   else ()
 
+(*********************************************************)
+(****************** Draw State Functions *****************)
+(*********************************************************)
+
+(* [draw_selection_board] draws the red and blue
+ * tiles around the player which signifies valid
+ * moves *)
+let draw_selection_board =
+  failwith "Unimplemented"
 
 (* Drawing *)
 let draw_state context state =

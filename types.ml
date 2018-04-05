@@ -51,12 +51,13 @@ type status = Ready|Moving|Attacking|Done
 type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenTileMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackaTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
               Invalid
-
+type direction = North|South|East|West
 
 (** Represents a map as a whole*)
 (** Represents a character, its stats and other details*)
 type character = {
   name : string;
+  direction: direction;
   stage: status;
   class' : class';
   growths : (stat * int) list;

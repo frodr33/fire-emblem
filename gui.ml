@@ -64,7 +64,7 @@ let draw_sprites sprite_list =
 (*********************************************************)
 (* [draw_menu_movement_back context] draws the background to the
  * movement menu *)
-let draw_menu_unit_back context =
+let draw_unit_back context =
   let x = 286. in
   let y = 26. in
   let rec ys x y =
@@ -91,13 +91,35 @@ let menu_unit context =
 (* [draw_unit_menu context] draws a unit menu
  * on the canvas.*)
 let draw_unit_menu context =
-  draw_menu_unit_back context;
+  draw_unit_back context;
   menu_unit context
+
+
+let draw_item_back context =
+  let x = 286. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 364. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 52. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y
+
+let menu_item context =
+  context##strokeStyle <- js "white";
+  context##font <- js "Arial";
+  context##strokeRect (286., 26. ,83.,56.);
+  context##strokeText (js "Equip/Use", 290., 48.);
+  context##strokeText (js "Discard", 300., 73.)
 
 (* [draw_item_menu context] draws an item menu
  * on the canvas.*)
 let draw_item_menu context =
-  failwith "Unimplemented"
+  draw_item_back context;
+  menu_item context
+
 
 (* [draw_tile_menu context] draws a tile menu
  * on the canvas.*)

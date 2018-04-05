@@ -40,21 +40,20 @@ let in_range_tile a t =
 let translate_key st =
   match input with
   |A ->if st.menu_active = true then SelectMOption else
-      match st.active_unit with begin
-        |Some c ->
+      match st.active_unit with
+        |Some c ->(
             match c.stage with
-            |Moving ->if List.exists (fun t -> t.coordinate = c.location.coordinate) st.map_act.grid
+            |Moving ->if List.exists (fun t -> t.coordinate=st.active_tile) c.movement
               then SelectMoveTile else Invalid
             |Attacking -> if in_range_tile c st.active_tile &&check_enemy_loc then
                 SelectAttackTile else Invalid
-            |Invalid
-
-        |None ->
+            |_ ->Invalid)
+        |None ->(
           if check_player_loc st then SelectPlayer else
           if check_enemy_loc st then SelectEnemy else
           if check_ally_loc st then SelectAlly else
-              OpenTileMenu 
-      end
+            OpenTileMenu)
+
   |B -> if st.menu_active=true then CloseMenu else Undo
   |LT ->FindReady
   |Up -> if st.menu_active=true  then Mup else Tup
@@ -62,6 +61,8 @@ let translate_key st =
   |Right ->if st.menu_active=true then Invalid else Tright
   |Left ->if st.menu_active=true then Invalid else Tleft
   |_ ->Invalid
+
+let get_new_map act st =
 
 let get_tile coord st =
   List.find (fun x -> x.coordinate = coord ) st.map_act.grid

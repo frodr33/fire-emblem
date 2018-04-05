@@ -53,12 +53,10 @@ let main () =
   (* Add event listeners to the HTML for key press and key
    * lift events. *)
   let _ = Html.addEventListener
-      document Html.Event.keydown (Html.handler Game.keydown)
+      document Html.Event.keydown (Html.handler Command.keydown)
       Js._true in
-  let _ = Html.addEventListener
-      document Html.Event.keydown (Html.handler Game.keyup)
-      Js._true in
+  (*
   Game.game_loop context false
-
+*)
 (* Begin the game *)
 let _ = main ()

@@ -59,9 +59,11 @@ let draw_map my_map context =
 let draw_sprites sprite_list =
   failwith "Unimplemented"
 
-(**************************)
-(* Menu Drawing Functions *)
-(**************************)
+(*********************************************************)
+(***************** Menu Drawing Functions ****************)
+(*********************************************************)
+(* [draw_menu_movement_back context] draws the background to the
+ * movement menu *)
 let draw_menu_movement_back context =
   let x = 286. in
   let y = 26. in
@@ -74,6 +76,7 @@ let draw_menu_movement_back context =
       if y = 156. then ys (x+.26.) 26. else ys x (y+.26.) in
   ys x y
 
+(* [menu_movement context] draws text onto the movement menu *)
 let menu_movement context =
   context##strokeStyle <- js "white";
   context##font <- js "Arial";
@@ -85,14 +88,11 @@ let menu_movement context =
   context##strokeText (js "Trade", 300., 150.);
   context##strokeText (js "Open", 300., 175.)
 
-
+(* [draw_movement_menu context] draws a movement menu
+ * on the canvas.*)
 let draw_movement_menu context =
   draw_menu_movement_back context;
   menu_movement context
-
-
-
-
 
 
 let draw_menu =

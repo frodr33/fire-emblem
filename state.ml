@@ -39,26 +39,27 @@ let translate_key st =
   match input with
   |A ->if st.menu_active = true then SelectMOption else
       match st.active_unit with begin
-        |Some c -> begin
+        |Some c ->
             match c.stage with
             |Moving ->if List.exists (fun t -> t.coordinate = c.location.coordinate) st.map_act.grid
               then SelectMoveTile else Invalid
             |Attacking -> if in_range_tile c st.active_tile &&check_enemy_loc then
                 SelectAttackTile else Invalid
             |Invalid
+
         |None ->
           if check_player_loc st then SelectPlayer else
           if check_enemy_loc st then SelectEnemy else
           if check_ally_loc st then SelectAlly
-              OpenMenu
+              OpenMenu else Invalid
       end
-                              |B -> if st.menu_active=true then CloseMenu else Undo
-                              |LT ->FindReady
-                              |Up -> if st.menu_active=true  then Mup else Tup
-                              |Down ->if st.menu_active=true  then Mdown else Tdown
-                              |Right ->if st.menu_active=true then Invalid else Tright
-                              |Left ->if st.menu_active=true then Invalid else Tleft
-                              |_ ->Invalid
+  |B -> if st.menu_active=true then CloseMenu else Undo
+  |LT ->FindReady
+  |Up -> if st.menu_active=true  then Mup else Tup
+  |Down ->if st.menu_active=true  then Mdown else Tdown
+  |Right ->if st.menu_active=true then Invalid else Tright
+  |Left ->if st.menu_active=true then Invalid else Tleft
+  |_ ->Invalid
 
 let get_tile coord st =
   List.find (fun x -> x.coordinate = coord ) st.map_act.grid
@@ -81,19 +82,7 @@ let new_menu_cursor act st = match act with
   |Mdown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
       st.menu_cursor +1
 
-let new_active_tile act st =
-  let x = fst(st.active_tile.coordinate) in
-  let y = snd (st.active_tile.coordinate) in
-  match act with
-  |Tup -> if y =0  then st.active_tile else
-      {st.active_tile with coordinate = (x,y-1)}
 
-let new_menu_cursor act st = match act with
-  |Mup -> if st.menu_cursor =0 then Array.length st.current_menu -1 else
-      st.menu_cursor -1
-  |Mdown ->if st.menu_cursor = (Array.length st.current_menu)-1 then 0 else
-      st.menu_cursor +1
-  |_ ->st.menu_cursor
 
 
 let seed = 10

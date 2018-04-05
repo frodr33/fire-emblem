@@ -63,6 +63,23 @@ let draw_map my_map context =
       end in
   draw_tiles my_map.grid
 
+let draw_sprites sprite_list =
+  failwith "Unimplemented"
+
+let draw_menu =
+  failwith "Unimplemented"
+
+(* [draw_color_tile color context coordinate] draws the color
+ * on the specified coordinate *)
+let draw_color_tile color context coordinate =
+  let img = Html.crateImg document in
+
+
+(* [draw_selection_board] draws the red and blue
+ * tiles around the player which signifies valid
+ * moves *)
+let draw_selection_board =
+  failwith "Unimplemented"
 
 (* Drawing *)
 let draw_state =

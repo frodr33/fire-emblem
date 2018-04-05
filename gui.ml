@@ -37,13 +37,6 @@ let tile_to_img_mapping (tile : tile) =
   | Wall5  -> js "sprites/Wall5.png"
   | Wall6  -> js "sprites/Wall6.png"
 
-(* [fst (x,y)] returns x *)
-let fst = function
-  | (x,_) -> x
-
-(* [snd (_,y)] returns y *)
-let snd = function
-  | (_,y) -> y
 
 (* [draw_tiles map] draws each of the tiles in map's
  * tile list by finding the associated image *)
@@ -65,6 +58,42 @@ let draw_map my_map context =
 
 let draw_sprites sprite_list =
   failwith "Unimplemented"
+
+(**************************)
+(* Menu Drawing Functions *)
+(**************************)
+let draw_menu_movement_back context =
+  let x = 286. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 364. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 156. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y
+
+let menu_movement context =
+  context##strokeStyle <- js "white";
+  context##font <- js "Arial";
+  context##strokeRect (286., 26. ,83.,160.);
+  context##strokeText (js "Visit", 300., 50.);
+  context##strokeText (js "Attack", 300., 75.);
+  context##strokeText (js "Item", 300., 100.);
+  context##strokeText (js "Wait", 300., 125.);
+  context##strokeText (js "Trade", 300., 150.);
+  context##strokeText (js "Open", 300., 175.)
+
+
+let draw_movement_menu context =
+  draw_menu_movement_back context;
+  menu_movement context
+
+
+
+
+
 
 let draw_menu =
   failwith "Unimplemented"

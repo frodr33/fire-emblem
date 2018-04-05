@@ -48,7 +48,7 @@ type tile = {coordinate : int*int;
 
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|Moving|Attacking|Done
-type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
+type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenTileMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackaTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
               Invalid
 

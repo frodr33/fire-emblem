@@ -1,6 +1,8 @@
 open Types
 
-
+let unit_menu = {size=6;options = ["Attack";"Item";"Visit";"Open";"Trade";"Wait"]}
+let tile_menu = {size = 4;options = ["Unit";"Status";"Suspend";"End"]}
+let item_menu = {size = 2;options=["Equip/Use";"Discard"]}
 type state = {
   player: character list;
   items : item list;
@@ -50,8 +52,8 @@ let translate_key st =
         |None ->
           if check_player_loc st then SelectPlayer else
           if check_enemy_loc st then SelectEnemy else
-          if check_ally_loc st then SelectAlly
-              OpenMenu else Invalid
+          if check_ally_loc st then SelectAlly else
+              OpenTileMenu 
       end
   |B -> if st.menu_active=true then CloseMenu else Undo
   |LT ->FindReady

@@ -62,7 +62,7 @@ let translate_key st =
   |Left ->if st.menu_active=true then Invalid else Tleft
   |_ ->Invalid
 
-let get_new_map act st =
+
 
 let get_tile coord st =
   List.find (fun x -> x.coordinate = coord ) st.map_act.grid

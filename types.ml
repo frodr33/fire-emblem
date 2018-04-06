@@ -34,7 +34,7 @@ type item = {
 type terrain = Plain | Wall | Throne | Door | Chest | Defence | Forest |
                Village | Armory of item list | Shop of item list |
                Damaged_wall of int | Mountain | Ocean | Desert | Despawn |
-               Peaks | Mounts
+               Peaks
 
 type tile_type =
   | Grass | Tree | Crack | Bridge | Bush | Darkbus | Water1 | Water2 | Water3

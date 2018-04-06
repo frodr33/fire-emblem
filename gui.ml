@@ -37,13 +37,6 @@ let tile_to_img_mapping (tile : tile) =
   | Wall5  -> js "sprites/Wall5.png"
   | Wall6  -> js "sprites/Wall6.png"
 
-(* [fst (x,y)] returns x *)
-let fst = function
-  | (x,_) -> x
-
-(* [snd (_,y)] returns y *)
-let snd = function
-  | (_,y) -> y
 
 (* [draw_tiles map] draws each of the tiles in map's
  * tile list by finding the associated image *)
@@ -66,14 +59,108 @@ let draw_map my_map context =
 let draw_sprites sprite_list =
   failwith "Unimplemented"
 
-let draw_menu =
-  failwith "Unimplemented"
+(*********************************************************)
+(***************** Menu Drawing Functions ****************)
+(*********************************************************)
+(* [draw_menu_movement_back context] draws the background to the
+ * movement menu *)
+let draw_unit_back context =
+  let x = 286. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 364. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 156. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y
 
-(* [draw_color_tile color context coordinate] draws the color
- * on the specified coordinate *)
-let draw_color_tile color context coordinate =
-  let img = Html.crateImg document in
+(* [unit_movement context] draws text onto the movement menu *)
+let menu_unit context =
+  context##strokeStyle <- js "white";
+  context##font <- js "Arial";
+  context##strokeRect (286., 26. ,83.,160.);
+  context##strokeText (js "Visit", 300., 50.);
+  context##strokeText (js "Attack", 300., 75.);
+  context##strokeText (js "Item", 300., 100.);
+  context##strokeText (js "Wait", 300., 125.);
+  context##strokeText (js "Trade", 300., 150.);
+  context##strokeText (js "Open", 300., 175.)
 
+(* [draw_unit_menu context] draws a unit menu
+ * on the canvas.*)
+let draw_unit_menu context =
+  draw_unit_back context;
+  menu_unit context
+
+
+let draw_item_back context =
+  let x = 286. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 364. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 52. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y
+
+let menu_item context =
+  context##strokeStyle <- js "white";
+  context##font <- js "Arial";
+  context##strokeRect (286., 26. ,83.,56.);
+  context##strokeText (js "Equip/Use", 290., 48.);
+  context##strokeText (js "Discard", 300., 73.)
+
+(* [draw_item_menu context] draws an item menu
+ * on the canvas.*)
+let draw_item_menu context =
+  draw_item_back context;
+  menu_item context
+
+let draw_tile_back context =
+  let x = 286. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 364. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 104. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y
+
+let menu_tile context =
+  context##strokeStyle <- js "white";
+  context##font <- js "Arial";
+  context##strokeRect (286., 26. ,83.,108.);
+  context##strokeText (js "Unit", 300., 50.);
+  context##strokeText (js "Status", 300., 75.);
+  context##strokeText (js "Suspend", 300., 100.);
+  context##strokeText (js "End", 300., 125.)
+
+(* [draw_tile_menu context] draws a tile menu
+ * on the canvas.*)
+let draw_tile_menu context =
+  draw_tile_back context;
+  menu_tile context
+
+
+(* [menu_manager context state] draws a menu
+ * if is active, otherwise does nothing *)
+let menu_manager context state =
+  if state.menu_active then
+    match state.current_menu with
+    | unit_menu -> draw_unit_menu context;
+    | tile_menu -> draw_tile_menu context;
+    | item_menu -> draw_item_menu context;
+  else ()
+
+(*********************************************************)
+(****************** Draw State Functions *****************)
+(*********************************************************)
 
 (* [draw_selection_board] draws the red and blue
  * tiles around the player which signifies valid
@@ -82,5 +169,6 @@ let draw_selection_board =
   failwith "Unimplemented"
 
 (* Drawing *)
-let draw_state =
-  failwith "Unimplemented"
+let draw_state context state =
+  draw_map context state;
+  menu_manager context state

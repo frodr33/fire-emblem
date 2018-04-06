@@ -140,11 +140,20 @@ and check_dir (mov :int) (d:direction) (t:tile) (dimensions: int * int) (lst:til
   else lst
 
 
+(*-----------------------------SPAGHETT DIJKSTRA'S----------------------------*)
+
+(**Name keeping:
+ * f = frontier set, tile * int (move) list
+ * e = explored set, tile list
+ * t = current tile
+ * m = moves left 
+ * d = dimensions
+*)
+let rec dijkstra's_helper f e t m d =
+
+
+
 (*-------------------------------END SPAGHETT---------------------------------*)
-
-
-
-
 
 
 

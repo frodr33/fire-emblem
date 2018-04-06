@@ -25,7 +25,7 @@ let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 let main () =
   let gui = get_element_by_id "gui" in
   let body = get_element_by_id "body" in
-  let logo = Html.crateImg document in
+  let logo = Html.createImg document in
   let p1 = Html.createP document in
   let p2 = Html.createP document in
   let p3 = Html.createP document in
@@ -53,12 +53,10 @@ let main () =
   (* Add event listeners to the HTML for key press and key
    * lift events. *)
   let _ = Html.addEventListener
-      document Html.Event.keydown (Html.handler Game.keydown)
+      document Html.Event.keydown (Html.handler Command.keydown)
       Js._true in
-  let _ = Html.addEventListener
-      document Html.Event.keydown (Html.handler Game.keyup)
-      Js._true in
+  (*
   Game.game_loop context false
-
+*)
 (* Begin the game *)
 let _ = main ()

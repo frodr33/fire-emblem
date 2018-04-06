@@ -10,8 +10,7 @@ type state = {
   player: character list;
   items : item list;
   enemies: character list;
-  maps : map list;
-  map_act: map;
+  won : bool;
   active_tile: tile;
   active_unit: character option;
   menus: (string * menu) list;

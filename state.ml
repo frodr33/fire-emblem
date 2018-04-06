@@ -2,7 +2,7 @@ open Types
 
 let unit_menu = {size = 6;options = ["Attack";"Item";"Visit";"Open";"Trade";"Wait"]}
 let tile_menu = {size = 4;options = ["Unit";"Status";"Suspend";"End"]}
-let item_menu = {size = 2;options=["Equip/Use";"Discard"]}
+let item_menu = {size = 2;options = ["Equip/Use";"Discard"]}
 type state = {
   player: character list;
   items : item list;
@@ -124,14 +124,14 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
     |_ -> if mov < 1 then (false, -1) else (true, mov - 1)
 
 
-let rec flood_fill_helper (mov:int) (dimensions: int * int) (t:tile) (lst:tile list) : tile list=
+(*let rec flood_fill_helper (mov:int) (dimensions: int * int) (t:tile) (lst:tile list) : tile list=
   if List.exists (fun a -> a = t) then lst
   else if mov = 0 then t::lst
   else (t::lst)
        |> check_dir mov South t dimensions
        |> check_dir mov West t dimensions
        |> check_dir mov East t dimensions
-       |> check_dir mov North t dimensions
+       |> check_dir mov North t dimensions*)
 
 let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
   match f with
@@ -183,7 +183,7 @@ let rec dijkstra's_helper f s t m map =
   |[]   -> s
   |h::t -> dijkstra's_helper t (fst h::s) (fst h) (snd h) map
 
-
+(*-------------------------------END SPAGHETT---------------------------------*)
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)

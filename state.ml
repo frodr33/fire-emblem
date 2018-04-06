@@ -11,6 +11,7 @@ type state = {
   won : bool;
   active_tile: tile;
   active_unit: character option;
+  act_map: map;
   menus:(string * menu) list;
   current_menu : menu;
   menu_active: bool;
@@ -35,47 +36,49 @@ let in_range_tile a t =
   match a.eqp with
   |None   -> false
   |Some x -> let l = distance_tile a t in l >= fst x.range && l <= snd x.range
-
 let translate_key st =
   match input with
   |A ->if st.menu_active = true then SelectMOption else
-      match st.active_unit with begin
-        |Some c ->
-            match c.stage with
-            |Moving ->if List.exists (fun t -> t.coordinate = c.location.coordinate) st.map_act.grid
-              then SelectMoveTile else Invalid
-            |Attacking -> if in_range_tile c st.active_tile &&check_enemy_loc then
-                SelectAttackTile else Invalid
-            |Invalid
-
-        |None ->
+      match st.active_unit with
+      |Some c ->(
+          match c.stage with
+          |Moving ->if List.exists (fun t -> t.coordinate=st.active_tile) c.movement
+            then SelectMoveTile else Invalid
+          |Attacking -> if in_range_tile c st.active_tile &&check_enemy_loc then
+              SelectAttackTile else Invalid
+          |_ ->Invalid)
+      |None ->(
           if check_player_loc st then SelectPlayer else
           if check_enemy_loc st then SelectEnemy else
           if check_ally_loc st then SelectAlly else
-              OpenTileMenu
-      end
-  |B -> if st.menu_active=true then CloseMenu else Undo
-  |LT ->FindReady
-  |Up -> if st.menu_active=true  then Mup else Tup
-  |Down ->if st.menu_active=true  then Mdown else Tdown
-  |Right ->if st.menu_active=true then Invalid else Tright
-  |Left ->if st.menu_active=true then Invalid else Tleft
-  |_ ->Invalid
+            OpenTileMenu)
+      |B -> if st.menu_active=true then CloseMenu else Undo
+      |LT ->FindReady
+      |Up -> if st.menu_active=true  then Mup else Tup
+      |Down ->if st.menu_active=true  then Mdown else Tdown
+      |Right ->if st.menu_active=true then Invalid else Tright
+      |Left ->if st.menu_active=true then Invalid else Tleft
+      |_ ->Invalid
 
-let get_tile coord st =
-  List.find (fun x -> x.coordinate = coord ) st.map_act.grid
 
-let new_active_tile act st =
-  let x = fst(st.active_tile.coordinate) in
-  let y = snd (st.active_tile.coordinate) in
-  match act with
-  |Tup -> if y =0  then st.active_tile else
-      get_tile (x,y-1) st
-  |Tdown ->if y=(st.act_map.length -1) then st.active_tile else
-      get_tile (x,y+1) st
-  |Tleft ->if x = 0 then st.active_tile else get_tile (x-1,y) st
-  |Tright ->if x = (St.act_map.width-1) then st.active_tile else
-      get_tile (x+1,y)
+
+  let new_active_tile act st =
+    let x = fst(st.active_tile.coordinate) in
+    let y = snd (st.active_tile.coordinate) in
+    match act with
+    |Tup -> if y =0  then st.active_tile else
+        st.map_act.grid.(x).(y-1)
+    |Tdown ->if y=(st.act_map.length -1) then st.active_tile else
+        st.map_act.grid.(x).(y+1)
+    |Tleft ->if x = 0 then st.active_tile else   st.map_act.grid.(x-1).(y)
+    |Tright ->if x = (St.act_map.width-1) then st.active_tile else
+        st.map_act.grid.(x+1).(y)
+
+  let new_menu_cursor act st = match act with
+    |Mup -> if st.menu_cursor =0 then st.current_menu.size -1 else
+        st.menu_cursor -1
+    |Mdown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
+        st.menu_cursor +1
 
 let new_menu_cursor act st = match act with
   |Mup -> if st.menu_cursor =0 then st.current_menu.size -1 else
@@ -100,7 +103,7 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
   let x = fst t.coordinate in
   let y = snd t.coordinate in
   let dimensions = (map.width, map.length) in
-  let mapg = map.grid
+  let mapg = map.grid in
   if not_in_bounds x y d dimensions then (false, -1)
   else let next_tile =
     match d with
@@ -109,7 +112,7 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
     |South -> mapg.(x).(y + 1)
     |West  -> mapg.(x - 1).(y)
     in
-    match next_tile.terrain with
+    match next_tile.ground with
     |Wall -> (false, -1)
     |Door -> (false, -1)
     |Damaged_wall (x) -> (false, -1)
@@ -130,16 +133,15 @@ let rec flood_fill_helper (mov:int) (dimensions: int * int) (t:tile) (lst:tile l
        |> check_dir mov East t dimensions
        |> check_dir mov North t dimensions
 
-let rec add_f tile i f =
+let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
   match f with
-  |[]   -> t::f
+  |[]   -> [(tile,i)]
   |h::t -> if fst h = tile then (if i > snd h then (tile, i) :: t
                               else h :: t) else h :: (add_f tile i t)
 
-let check_dir (mov :int) (d:direction) (t:tile) (map:map) s f =
-  let dimensions = (map,width, map.length) in
+let check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:tile list) (f:(tile * int) list): (tile * int) list =
   let mapg = map.grid in
-  let mov_dir = movable t d mov dimensions in
+  let mov_dir = movable t d mov map in
   let x = fst t.coordinate in
   let y = snd t.coordinate in
   if fst mov_dir && not (List.mem t s) then match d with
@@ -151,7 +153,7 @@ let check_dir (mov :int) (d:direction) (t:tile) (map:map) s f =
       add_f new_tile (snd mov_dir) f
     |West  -> let new_tile = (mapg.(x-1).(y)) in
       add_f new_tile (snd mov_dir) f
-  else lst
+  else f
 
 
 (*-----------------------------SPAGHETT DIJKSTRA'S----------------------------*)
@@ -159,7 +161,7 @@ let check_dir (mov :int) (d:direction) (t:tile) (map:map) s f =
 let comp a b =
   snd b - snd a
 
-let rec check_surround s t m map f =
+let rec check_surround s t m map f:(tile * int) list =
   f
   |> check_dir m South t map s
   |> check_dir m East t map s
@@ -176,10 +178,10 @@ let rec check_surround s t m map f =
  * map = map
 *)
 let rec dijkstra's_helper f s t m map =
-  let new_f = check_surround (s t m map f) in
+  let new_f = check_surround s t m map f in
   match new_f with
   |[]   -> s
-  |h::t -> dijkstra's_helper t (h::s) (fst h) (snd h) map 
+  |h::t -> dijkstra's_helper t (fst h::s) (fst h) (snd h) map
 
 
 
@@ -192,7 +194,7 @@ let seed = 10
 
 let get_rng () = Random.int 100
 
-let new_tile = {coordinate= (0, 0); terrain = Plain}
+let new_tile = {coordinate= (0, 0); ground = Plain}
 
 let new_map = [(new_tile, None)]
 
@@ -208,7 +210,9 @@ let init_state d = Random.init seed;
   }
 
 
+
+
 let do' act s =
   match act with
-  |Tup -> let a = s.active_tile in if {s with active_tile = {coordinate=(a.x-1,a.y);
-                                                         ground=a.ground}}
+  |OpenTileMenu ->{s with current_menu=tile_menu;menu_active=true;menu_cursor=0}
+  |

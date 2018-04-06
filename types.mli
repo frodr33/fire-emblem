@@ -33,7 +33,7 @@ type item = {
 (** Represents different types of terrain*)
 type terrain = Plain | Wall | Throne | Door | Chest of item option | Defence | Forest |
                Village of item option | Armory of item list * int | Shop of item list * int |
-               Damaged_wall of int | Mountain | Ocean | Desert | Despawn
+               Damaged_wall of int | Mountain | Ocean | Desert | Despawn | Peaks
 (** Represents one tile on a map*)
 type tile = {coordinate : int*int;
              ground : terrain}

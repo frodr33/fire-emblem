@@ -60,20 +60,25 @@ let translate_key st =
       |Left ->if st.menu_active=true then Invalid else Tleft
       |_ ->Invalid
 
-let get_tile coord st =
-  List.find (fun x -> x.coordinate = coord ) st.map_act.grid
 
-let new_active_tile act st =
-  let x = fst(st.active_tile.coordinate) in
-  let y = snd (st.active_tile.coordinate) in
-  match act with
-  |Tup -> if y =0  then st.active_tile else
-      get_tile (x,y-1) st
-  |Tdown ->if y=(st.act_map.length -1) then st.active_tile else
-      get_tile (x,y+1) st
-  |Tleft ->if x = 0 then st.active_tile else get_tile (x-1,y) st
-  |Tright ->if x = (St.act_map.width-1) then st.active_tile else
-      get_tile (x+1,y)
+
+  let new_active_tile act st =
+    let x = fst(st.active_tile.coordinate) in
+    let y = snd (st.active_tile.coordinate) in
+    match act with
+    |Tup -> if y =0  then st.active_tile else
+        st.map_act.grid.(x).(y-1)
+    |Tdown ->if y=(st.act_map.length -1) then st.active_tile else
+        st.map_act.grid.(x).(y+1)
+    |Tleft ->if x = 0 then st.active_tile else   st.map_act.grid.(x-1).(y)
+    |Tright ->if x = (St.act_map.width-1) then st.active_tile else
+        st.map_act.grid.(x+1).(y)
+
+  let new_menu_cursor act st = match act with
+    |Mup -> if st.menu_cursor =0 then st.current_menu.size -1 else
+        st.menu_cursor -1
+    |Mdown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
+        st.menu_cursor +1
 
 let new_menu_cursor act st = match act with
   |Mup -> if st.menu_cursor =0 then st.current_menu.size -1 else

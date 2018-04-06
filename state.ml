@@ -11,6 +11,7 @@ type state = {
   won : bool;
   active_tile: tile;
   active_unit: character option;
+  act_map: map;
   menus:(string * menu) list;
   current_menu : menu;
   menu_active: bool;
@@ -35,32 +36,29 @@ let in_range_tile a t =
   match a.eqp with
   |None   -> false
   |Some x -> let l = distance_tile a t in l >= fst x.range && l <= snd x.range
-
 let translate_key st =
   match input with
   |A ->if st.menu_active = true then SelectMOption else
-      match st.active_unit with begin
-        |Some c ->
-            match c.stage with
-            |Moving ->if List.exists (fun t -> t.coordinate = c.location.coordinate) st.map_act.grid
-              then SelectMoveTile else Invalid
-            |Attacking -> if in_range_tile c st.active_tile &&check_enemy_loc then
-                SelectAttackTile else Invalid
-            |Invalid
-
-        |None ->
+      match st.active_unit with
+      |Some c ->(
+          match c.stage with
+          |Moving ->if List.exists (fun t -> t.coordinate=st.active_tile) c.movement
+            then SelectMoveTile else Invalid
+          |Attacking -> if in_range_tile c st.active_tile &&check_enemy_loc then
+              SelectAttackTile else Invalid
+          |_ ->Invalid)
+      |None ->(
           if check_player_loc st then SelectPlayer else
           if check_enemy_loc st then SelectEnemy else
           if check_ally_loc st then SelectAlly else
-              OpenTileMenu
-      end
-  |B -> if st.menu_active=true then CloseMenu else Undo
-  |LT ->FindReady
-  |Up -> if st.menu_active=true  then Mup else Tup
-  |Down ->if st.menu_active=true  then Mdown else Tdown
-  |Right ->if st.menu_active=true then Invalid else Tright
-  |Left ->if st.menu_active=true then Invalid else Tleft
-  |_ ->Invalid
+            OpenTileMenu)
+      |B -> if st.menu_active=true then CloseMenu else Undo
+      |LT ->FindReady
+      |Up -> if st.menu_active=true  then Mup else Tup
+      |Down ->if st.menu_active=true  then Mdown else Tdown
+      |Right ->if st.menu_active=true then Invalid else Tright
+      |Left ->if st.menu_active=true then Invalid else Tleft
+      |_ ->Invalid
 
 let get_tile coord st =
   List.find (fun x -> x.coordinate = coord ) st.map_act.grid
@@ -146,7 +144,7 @@ and check_dir (mov :int) (d:direction) (t:tile) (dimensions: int * int) (lst:til
  * f = frontier set, tile * int (move) list
  * e = explored set, tile list
  * t = current tile
- * m = moves left 
+ * m = moves left
  * d = dimensions
 *)
 let rec dijkstra's_helper f e t m d =
@@ -177,7 +175,9 @@ let init_state d = Random.init seed;
   }
 
 
+
+
 let do' act s =
   match act with
-  |Tup -> let a = s.active_tile in if {s with active_tile = {coordinate=(a.x-1,a.y);
-                                                         ground=a.ground}}
+  |OpenTileMenu ->{s with current_menu=tile_menu;menu_active=true;menu_cursor=0}
+  |

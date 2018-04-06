@@ -96,16 +96,18 @@ let not_in_bounds (x:int) (y:int) (d:direction) (dimensions:int * int) =
   |South -> y = height - 1
   |West  -> x = 0
 
-let movable (t:tile) (d:direction) (mov:int) (dimensions:int * int)=
+let movable (t:tile) (d:direction) (mov:int) (map:map)=
   let x = fst t.coordinate in
   let y = snd t.coordinate in
+  let dimensions = (map.width, map.length) in
+  let mapg = map.grid
   if not_in_bounds x y d dimensions then (false, -1)
   else let next_tile =
     match d with
-    |North -> map.(x).(y - 1)
-    |East  -> map.(x + 1).(y)
-    |South -> map.(x).(y + 1)
-    |West  -> map.(x - 1).(y)
+    |North -> mapg.(x).(y - 1)
+    |East  -> mapg.(x + 1).(y)
+    |South -> mapg.(x).(y + 1)
+    |West  -> mapg.(x - 1).(y)
     in
     match next_tile.terrain with
     |Wall -> (false, -1)
@@ -128,28 +130,57 @@ let rec flood_fill_helper (mov:int) (dimensions: int * int) (t:tile) (lst:tile l
        |> check_dir mov East t dimensions
        |> check_dir mov North t dimensions
 
-and check_dir (mov :int) (d:direction) (t:tile) (dimensions: int * int) (lst:tile list) =
+let rec add_f tile i f =
+  match f with
+  |[]   -> t::f
+  |h::t -> if fst h = tile then (if i > snd h then (tile, i) :: t
+                              else h :: t) else h :: (add_f tile i t)
+
+let check_dir (mov :int) (d:direction) (t:tile) (map:map) s f =
+  let dimensions = (map,width, map.length) in
+  let mapg = map.grid in
   let mov_dir = movable t d mov dimensions in
   let x = fst t.coordinate in
   let y = snd t.coordinate in
-  if fst mov_dir then match d with
-    |North -> flood_fill_helper (snd mov_dir) dimensions (map.(x).(y-1)) lst
-    |East  -> flood_fill_helper (snd mov_dir) dimensions (map.(x+1).(y)) lst
-    |South -> flood_fill_helper (snd mov_dir) dimensions (map.(x).(y+1)) lst
-    |West  -> flood_fill_helper (snd mov_dir) dimensions (map.(x-1).(y)) lst
+  if fst mov_dir && not (List.mem t s) then match d with
+    |North -> let new_tile = (mapg.(x).(y-1)) in
+      add_f new_tile (snd mov_dir) f
+    |East  -> let new_tile = (mapg.(x+1).(y)) in
+      add_f new_tile (snd mov_dir) f
+    |South -> let new_tile = (mapg.(x).(y+1)) in
+      add_f new_tile (snd mov_dir) f
+    |West  -> let new_tile = (mapg.(x-1).(y)) in
+      add_f new_tile (snd mov_dir) f
   else lst
 
 
 (*-----------------------------SPAGHETT DIJKSTRA'S----------------------------*)
 
+let comp a b =
+  snd b - snd a
+
+let rec check_surround s t m map f =
+  f
+  |> check_dir m South t map s
+  |> check_dir m East t map s
+  |> check_dir m North t map s
+  |> check_dir m West t map s
+  |> List.sort comp
+
+
 (**Name keeping:
  * f = frontier set, tile * int (move) list
- * e = explored set, tile list
+ * s = settled set, tile list
  * t = current tile
- * m = moves left 
- * d = dimensions
+ * m = moves left
+ * map = map
 *)
-let rec dijkstra's_helper f e t m d =
+let rec dijkstra's_helper f s t m map =
+  let new_f = check_surround (s t m map f) in
+  match new_f with
+  |[]   -> s
+  |h::t -> dijkstra's_helper t (h::s) (fst h) (snd h) map 
+
 
 
 

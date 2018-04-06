@@ -1,6 +1,6 @@
 open Types
 
-let unit_menu = {size=6;options = ["Attack";"Item";"Visit";"Open";"Trade";"Wait"]}
+let unit_menu = {size = 6;options = ["Attack";"Item";"Visit";"Open";"Trade";"Wait"]}
 let tile_menu = {size = 4;options = ["Unit";"Status";"Suspend";"End"]}
 let item_menu = {size = 2;options=["Equip/Use";"Discard"]}
 type state = {
@@ -8,8 +8,7 @@ type state = {
   items : item list;
   enemies: character list;
   allies: character list;
-  maps : map list;
-  map_act: map;
+  won : bool;
   active_tile: tile;
   active_unit: character option;
   menus:(string * menu) list;
@@ -53,7 +52,7 @@ let translate_key st =
           if check_player_loc st then SelectPlayer else
           if check_enemy_loc st then SelectEnemy else
           if check_ally_loc st then SelectAlly else
-              OpenTileMenu 
+              OpenTileMenu
       end
   |B -> if st.menu_active=true then CloseMenu else Undo
   |LT ->FindReady
@@ -84,6 +83,68 @@ let new_menu_cursor act st = match act with
   |Mdown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
       st.menu_cursor +1
 
+(*-----------------------------SPAGHETT FLOOD FILL----------------------------*)
+(*For the curious*)
+type direction = North | East | South | West
+
+let not_in_bounds (x:int) (y:int) (d:direction) (dimensions:int * int) =
+  let width = fst dimensions in
+  let height = snd dimensions in
+  match d with
+  |North -> y = 0
+  |East  -> x = width - 1
+  |South -> y = height - 1
+  |West  -> x = 0
+
+let movable (t:tile) (d:direction) (mov:int) (dimensions:int * int)=
+  let x = fst t.coordinate in
+  let y = snd t.coordinate in
+  if not_in_bounds x y d dimensions then (false, -1)
+  else let next_tile =
+    match d with
+    |North -> map.(x).(y - 1)
+    |East  -> map.(x + 1).(y)
+    |South -> map.(x).(y + 1)
+    |West  -> map.(x - 1).(y)
+    in
+    match next_tile.terrain with
+    |Wall -> (false, -1)
+    |Door -> (false, -1)
+    |Damaged_wall (x) -> (false, -1)
+    |Mountain -> (false, -1)
+    |Ocean -> (false, -1)
+    |Peaks -> if mov < 3 then (false, -1) else (true, mov - 3)
+    |Forest -> if mov < 2 then (false, -1) else (true, mov - 3)
+    |Desert -> if mov < 2 then (false, -1) else (true, mov - 3)
+    |_ -> if mov < 1 then (false, -1) else (true, mov - 1)
+
+
+let rec flood_fill_helper (mov:int) (dimensions: int * int) (t:tile) (lst:tile list) : tile list=
+  if List.exists (fun a -> a = t) then lst
+  else if mov = 0 then t::lst
+  else (t::lst)
+       |> check_dir mov South t dimensions
+       |> check_dir mov West t dimensions
+       |> check_dir mov East t dimensions
+       |> check_dir mov North t dimensions
+
+and check_dir (mov :int) (d:direction) (t:tile) (dimensions: int * int) (lst:tile list) =
+  let mov_dir = movable t d mov dimensions in
+  let x = fst t.coordinate in
+  let y = snd t.coordinate in
+  if fst mov_dir then match d with
+    |North -> flood_fill_helper (snd mov_dir) dimensions (map.(x).(y-1)) lst
+    |East  -> flood_fill_helper (snd mov_dir) dimensions (map.(x+1).(y)) lst
+    |South -> flood_fill_helper (snd mov_dir) dimensions (map.(x).(y+1)) lst
+    |West  -> flood_fill_helper (snd mov_dir) dimensions (map.(x-1).(y)) lst
+  else lst
+
+
+(*-------------------------------END SPAGHETT---------------------------------*)
+
+
+
+
 
 
 
@@ -109,5 +170,5 @@ let init_state d = Random.init seed;
 
 let do' act s =
   match act with
-  |Tup -> let a = s.active_tile in {s with active_tile = {coordinate=(a.x+1,a.y);
+  |Tup -> let a = s.active_tile in if {s with active_tile = {coordinate=(a.x-1,a.y);
                                                          ground=a.ground}}

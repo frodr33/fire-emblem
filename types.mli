@@ -1,5 +1,5 @@
 (** This module handles all of the types that we need for this project*)
-type class' = Paladin | Thief
+type class' = Paladin | Thief | Mage
 
 (** Represents a weapon type*)
 type wtype = Sword | Tome | Staff | Potion | Key
@@ -20,6 +20,7 @@ type item = {
   wtype : wtype;
   mgt : int;
   acc : int;
+  crit : int;
   range : int * int;
   uses : int;
   cost : int;
@@ -50,6 +51,7 @@ type character = {
   stage: status;
   class' : class';
   growths : (stat * int) list;
+  caps : (stat * int) list;
   level : int;
   exp : int;
   health : int * int;

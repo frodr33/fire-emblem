@@ -184,7 +184,8 @@ let rec dijkstra's_helper f s tile m map =
   |[]   -> tile :: s
   |h::t -> dijkstra's_helper t (tile::s) (fst h) (snd h) map
 
-
+let dijkstr's c map =
+  dijkstra's_helper [] [] c.location c.mov map 
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)

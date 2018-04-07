@@ -119,8 +119,8 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
     |Mountain -> (false, -1)
     |Ocean -> (false, -1)
     |Peaks -> if mov < 3 then (false, -1) else (true, mov - 3)
-    |Forest -> if mov < 2 then (false, -1) else (true, mov - 3)
-    |Desert -> if mov < 2 then (false, -1) else (true, mov - 3)
+    |Forest -> if mov < 2 then (false, -1) else (true, mov - 2)
+    |Desert -> if mov < 2 then (false, -1) else (true, mov - 2)
     |_ -> if mov < 1 then (false, -1) else (true, mov - 1)
 
 
@@ -139,22 +139,22 @@ let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
   |h::t -> if fst h = tile then (if i > snd h then (tile, i) :: t
                               else h :: t) else h :: (add_f tile i t)
 
-let check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:tile list) (f:(tile * int) list): (tile * int) list =
+let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:tile list) (f:(tile * int) list): (tile * int) list =
   let mapg = map.grid in
   let mov_dir = movable t d mov map in
   let x = fst t.coordinate in
   let y = snd t.coordinate in
-  if fst mov_dir && not (List.mem t s) then match d with
+  if fst mov_dir then
+    match d with
     |North -> let new_tile = (mapg.(x).(y-1)) in
-      add_f new_tile (snd mov_dir) f
+      if not (List.mem new_tile s) then add_f new_tile (snd mov_dir) f else f
     |East  -> let new_tile = (mapg.(x+1).(y)) in
-      add_f new_tile (snd mov_dir) f
+      if not (List.mem new_tile s) then add_f new_tile (snd mov_dir) f else f
     |South -> let new_tile = (mapg.(x).(y+1)) in
-      add_f new_tile (snd mov_dir) f
+      if not (List.mem new_tile s) then add_f new_tile (snd mov_dir) f else f
     |West  -> let new_tile = (mapg.(x-1).(y)) in
-      add_f new_tile (snd mov_dir) f
-  else f
-
+      if not (List.mem new_tile s) then add_f new_tile (snd mov_dir) f else f
+    else f
 
 (*-----------------------------SPAGHETT DIJKSTRA'S----------------------------*)
 
@@ -177,13 +177,14 @@ let rec check_surround s t m map f:(tile * int) list =
  * m = moves left
  * map = map
 *)
-let rec dijkstra's_helper f s t m map =
-  let new_f = check_surround s t m map f in
-  match new_f with
-  |[]   -> s
-  |h::t -> dijkstra's_helper t (fst h::s) (fst h) (snd h) map
 
-(*-------------------------------END SPAGHETT---------------------------------*)
+let rec dijkstra's_helper f s tile m map =
+  let new_f = check_surround s tile m map f in
+  match new_f with
+  |[]   -> tile :: s
+  |h::t -> dijkstra's_helper t (tile::s) (fst h) (snd h) map
+
+
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)

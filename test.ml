@@ -113,11 +113,12 @@ let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
 *)
 
 let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:tile list) (f:(tile * int) list): (tile * int) list =
-let mapg = map.grid in
-  let mov_dir = movable t d mov map in
-  let x = fst t.coordinate in
-  let y = snd t.coordinate in
-  if fst mov_dir then match d with
+  let mapg = map.grid in
+    let mov_dir = movable t d mov map in
+    let x = fst t.coordinate in
+    let y = snd t.coordinate in
+  if fst mov_dir then
+    match d with
     |North -> let new_tile = (mapg.(x).(y-1)) in
       if not (List.mem new_tile s) then add_f new_tile (snd mov_dir) f else f
     |East  -> let new_tile = (mapg.(x+1).(y)) in
@@ -126,7 +127,7 @@ let mapg = map.grid in
       if not (List.mem new_tile s) then add_f new_tile (snd mov_dir) f else f
     |West  -> let new_tile = (mapg.(x-1).(y)) in
       if not (List.mem new_tile s) then add_f new_tile (snd mov_dir) f else f
-  else f
+    else f
 (*-----------------------------SPAGHETT DIJKSTRA'S----------------------------*)
 
 let comp a b =

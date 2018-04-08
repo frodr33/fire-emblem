@@ -141,7 +141,7 @@ let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
   |h::t -> if fst h = tile then (if i > snd h then (tile, i) :: t
                               else h :: t) else h :: (add_f tile i t)
 
-let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:tile list) (f:(tile * int) list): (tile * int) list =
+let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
   let mapg = map.grid in
   let mov_dir = movable t d mov map in
   let x = fst t.coordinate in
@@ -149,13 +149,13 @@ let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:tile list) (f:(
   if fst mov_dir then
     match d with
     |North -> let new_tile = (mapg.(x).(y-1)) in
-      if not (List.mem new_tile s) then add_f new_tile (snd mov_dir) f else f
+      if not (List.mem (x, y-1) s) then add_f new_tile (snd mov_dir) f else f
     |East  -> let new_tile = (mapg.(x+1).(y)) in
-      if not (List.mem new_tile s) then add_f new_tile (snd mov_dir) f else f
+      if not (List.mem (x+1, y) s) then add_f new_tile (snd mov_dir) f else f
     |South -> let new_tile = (mapg.(x).(y+1)) in
-      if not (List.mem new_tile s) then add_f new_tile (snd mov_dir) f else f
+      if not (List.mem (x, y+1) s) then add_f new_tile (snd mov_dir) f else f
     |West  -> let new_tile = (mapg.(x-1).(y)) in
-      if not (List.mem new_tile s) then add_f new_tile (snd mov_dir) f else f
+      if not (List.mem (x-1, y) s) then add_f new_tile (snd mov_dir) f else f
     else f
 
 (*-----------------------------SPAGHETT DIJKSTRA'S----------------------------*)
@@ -183,11 +183,11 @@ let rec check_surround s t m map f:(tile * int) list =
 let rec dijkstra's_helper f s tile m map =
   let new_f = check_surround s tile m map f in
   match new_f with
-  |[]   -> tile :: s
-  |h::t -> dijkstra's_helper t (tile::s) (fst h) (snd h) map
+  |[]   -> tile.coordinate :: s
+  |h::t -> dijkstra's_helper t (tile.coordinate ::s) (fst h) (snd h) map
 
 let dijkstra's c map =
-  dijkstra's_helper [] [] (ctile c) c.mov map
+  dijkstra's_helper [] [] (ctile c map) c.mov map
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)

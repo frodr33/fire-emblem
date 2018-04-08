@@ -18,19 +18,21 @@ type state = {
   menu_cursor: int;
   funds : int;
 }
+let ctile c map =
+  map.grid.(fst c.location).(snd c.location)
 
 let check_player_loc st =
-  List.exists (fun x ->x.location = st.active_tile) st.player
+  List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.player
 
 let check_enemy_loc st =
-  List.exists (fun x ->x.location = st.active_tile) st.enemies
+  List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
 
 let check_ally_loc st =
-  List.exists (fun x ->x.location = st.active_tile) st.enemies
+  List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
 
 let distance_tile a (t:tile) =
-  abs (fst a.location.coordinate - fst t.coordinate) +
-  abs (snd a.location.coordinate - snd t.coordinate)
+  abs (fst a.location - fst t.coordinate) +
+  abs (snd a.location - snd t.coordinate)
 
 let in_range_tile a t =
   match a.eqp with
@@ -184,8 +186,8 @@ let rec dijkstra's_helper f s tile m map =
   |[]   -> tile :: s
   |h::t -> dijkstra's_helper t (tile::s) (fst h) (snd h) map
 
-let dijkstr's c map =
-  dijkstra's_helper [] [] c.location c.mov map 
+let dijkstra's c map =
+  dijkstra's_helper [] [] (ctile c) c.mov map
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)
@@ -196,7 +198,7 @@ let seed = 10
 
 let get_rng () = Random.int 100
 
-let new_tile = {coordinate= (0, 0); ground = Plain}
+let new_tile = {coordinate= (0, 0); ground = Plain; character = None}
 
 let new_map = [(new_tile, None)]
 

@@ -1,5 +1,5 @@
 (** This module handles all of the types that we need for this project*)
-type class' = Paladin
+type class' = Paladin | Theif | Mage
 
 (** Represents a weapon type*)
 type wtype = Sword | Tome | Staff | Potion | Key

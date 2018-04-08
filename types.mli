@@ -74,11 +74,11 @@ type character = {
   wlevels : (wtype * char * int) list;
   ai : ai;
   location: int * int;
-  movement: tile list
+  movement: (int * int) list
 }
-and
+
 (** Represents one tile on a map*)
-tile = {
+type tile = {
   coordinate : int*int;
   ground : terrain;
   character : character option

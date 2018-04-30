@@ -48,14 +48,14 @@ let main () =
   let p1 = Html.createP document in
   let p2 = Html.createP document in
   let p3 = Html.createP document in
-  (* let audio = Html.createAudio document in *)
+  let audio = Html.createAudio document in
   let canvas = Html.createCanvas document in
   gui##style##textAlign <- js "center";
   body##style##backgroundImage <-js "url('Sprites/background.png')";
   body##style##backgroundRepeat <- js "no-repeat";
   logo##src <- js "Sprites/Logo.png";
-  (* audio##src <- js "FireEmblem.mp3";
-  audio##play (); *)
+  audio##src <- js "Sprites/Music/MainTheme.mp3";
+  audio##play ();
   gui##style##cssText <- js "font-size:16px";
   gui##style##textAlign <- js "center";
   canvas##width <- int_of_float Gui.canvas_width;

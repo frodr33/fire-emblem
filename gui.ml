@@ -79,7 +79,8 @@ let draw_unit_back context =
 (* [unit_movement context] draws text onto the movement menu *)
 let menu_unit context =
   context##strokeStyle <- js "white";
-  context##font <- js "Arial";
+  context##font <- js "16px sans-serif";
+  context##lineWidth <- Js.float 1.0;
   context##strokeRect (286., 26. ,83.,160.);
   context##strokeText (js "Visit", 300., 50.);
   context##strokeText (js "Attack", 300., 75.);
@@ -172,4 +173,5 @@ let menu_manager context state =
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
   draw_map context state;
+  draw_unit_menu context;
   (* menu_manager context state *)

@@ -14,27 +14,27 @@ let document = Html.document
  * location of the associated object *)
 let tile_to_img_mapping (tile : tile) =
   match tile.tile_type with
-  | Grass  -> js "sprites/grass.png"
-  | Tree  -> js "sprites/tree.png"
-  | Crack  -> js "sprites/Crack.png"
-  | Bridge  -> js "sprites/Bridge.png"
-  | Bush  -> js "sprites/Bush.png"
-  | Darkbush  -> js "sprites/Darkbush.png"
-  | Water1  -> js "sprites/Water1.png"
-  | Water2  -> js "sprites/Water2.png"
-  | Water3  -> js "sprites/Water3.png"
-  | Water4  -> js "sprites/Water4.png"
-  | Water5  -> js "sprites/Water5.png"
-  | Water6  -> js "sprites/Water6.png"
-  | Water7  -> js "sprites/Water7.png"
-  | Water8  -> js "sprites/Water8.png"
-  | Water9  -> js "sprites/Water9.png"
-  | Wall1  -> js "sprites/Wall1.png"
-  | Wall2  -> js "sprites/Wall2.png"
-  | Wall3  -> js "sprites/Wall3.png"
-  | Wall4  -> js "sprites/Wall4.png"
-  | Wall5  -> js "sprites/Wall5.png"
-  | Wall6  -> js "sprites/Wall6.png"
+  | Grass  -> js "Sprites/grass.png"
+  | Tree  -> js "Sprites/tree.png"
+  | Crack  -> js "Sprites/Crack.png"
+  | Bridge  -> js "Sprites/Bridge.png"
+  | Bush  -> js "Sprites/Bush.png"
+  | Darkbush  -> js "Sprites/Darkbush.png"
+  | Water1  -> js "Sprites/Water1.png"
+  | Water2  -> js "Sprites/Water2.png"
+  | Water3  -> js "Sprites/Water3.png"
+  | Water4  -> js "Sprites/Water4.png"
+  | Water5  -> js "Sprites/Water5.png"
+  | Water6  -> js "Sprites/Water6.png"
+  | Water7  -> js "Sprites/Water7.png"
+  | Water8  -> js "Sprites/Water8.png"
+  | Water9  -> js "Sprites/Water9.png"
+  | Wall1  -> js "Sprites/Wall1.png"
+  | Wall2  -> js "Sprites/Wall2.png"
+  | Wall3  -> js "Sprites/Wall3.png"
+  | Wall4  -> js "Sprites/Wall4.png"
+  | Wall5  -> js "Sprites/Wall5.png"
+  | Wall6  -> js "Sprites/Wall6.png"
 
 
 (* [draw_tiles map] draws each of the tiles in map's
@@ -42,9 +42,14 @@ let tile_to_img_mapping (tile : tile) =
 let draw_map (context: Html.canvasRenderingContext2D Js.t) state =
   context##fillStyle <- js "black";
   context##fillRect (0.,0.,canvas_width,canvas_height);
-  let draw_tiles (grid : tile array array) =
-    for i = 0 to 10 do
-      for j = 0 to 15 do
+  (* TEST *)
+  let img_src = js "Sprites/grass.png" in
+  let img = Html.createImg document in
+  img##src <- img_src;
+  context##drawImage ((img), (0.), (0.))
+  (* let draw_tiles (grid : tile array array) =
+    for i = 0 to 9 do
+      for j = 0 to 14 do
         let tile = grid.(i).(j) in
         let x = fst tile.coordinate in
         let y = snd tile.coordinate in
@@ -55,10 +60,13 @@ let draw_map (context: Html.canvasRenderingContext2D Js.t) state =
       done
     done
   in
-  draw_tiles state.act_map.grid
+     () *)
 
-let draw_sprites sprite_list =
-  failwith "Unimplemented"
+
+  (* draw_tiles state.act_map.grid *)
+
+(* let draw_Sprites sprite_list =
+  failwith "bbbbbbbbbbb" *)
 
 (*********************************************************)
 (***************** Menu Drawing Functions ****************)
@@ -72,7 +80,7 @@ let draw_unit_back context =
     if x = 364. then ()
     else
       let img = Html.createImg document in
-      img##src <- js "sprites/databackground.png";
+      img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 156. then ys (x+.26.) 26. else ys x (y+.26.) in
   ys x y
@@ -103,7 +111,7 @@ let draw_item_back context =
     if x = 364. then ()
     else
       let img = Html.createImg document in
-      img##src <- js "sprites/databackground.png";
+      img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 52. then ys (x+.26.) 26. else ys x (y+.26.) in
   ys x y
@@ -128,7 +136,7 @@ let draw_tile_back context =
     if x = 364. then ()
     else
       let img = Html.createImg document in
-      img##src <- js "sprites/databackground.png";
+      img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 104. then ys (x+.26.) 26. else ys x (y+.26.) in
   ys x y
@@ -166,11 +174,11 @@ let menu_manager context state =
 (* [draw_selection_board] draws the red and blue
  * tiles around the player which signifies valid
  * moves *)
-let draw_selection_board =
-  failwith "Unimplemented"
+(* let draw_selection_board =
+  failwith "aaaaaaaa" *)
 
 (* Drawing *)
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
-  draw_map context state
+  draw_map context state;
   (* menu_manager context state *)

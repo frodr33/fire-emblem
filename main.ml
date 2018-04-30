@@ -1,6 +1,8 @@
 open Gui
 open State
 open Types
+open Room
+open Command
 
 module Html = Dom_html
 let js = Js.string (* partial function, takes in string *)
@@ -19,7 +21,22 @@ let get_element_by_id id =
 (* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
-
+let init_state =
+  {
+    player = [];
+    items = [];
+    enemies = [];
+    allies = [];
+    won = false;
+    active_tile = {coordinate = (0,0); ground = Plain; tile_type = Grass};
+    active_unit = None;
+    act_map = {width = 0; length = 0; grid = Room.map1.grid};
+    menus = [];
+    current_menu = {size = 0; options = []};
+    menu_active = false;
+    menu_cursor = 0;
+    funds = 0;
+  }
 
 (* [main ()] is begins game execution by first building and designing
  * the html page and designing and subsequently calling the REPL to
@@ -31,13 +48,12 @@ let main () =
   let p1 = Html.createP document in
   let p2 = Html.createP document in
   let p3 = Html.createP document in
-  let audio = Html.createAudio document in
+  (* let audio = Html.createAudio document in *)
   let canvas = Html.createCanvas document in
-  let context = canvas##getContext (Html._2d_) in
   gui##style##textAlign <- js "center";
-  body##style##backgroundImage <-js "url('sprites/background.png')";
+  body##style##backgroundImage <-js "url('Sprites/background.png')";
   body##style##backgroundRepeat <- js "no-repeat";
-  logo##src <- js "sprites/Logo.png";
+  logo##src <- js "Sprites/Logo.png";
   (* audio##src <- js "FireEmblem.mp3";
   audio##play (); *)
   gui##style##cssText <- js "font-size:16px";
@@ -52,33 +68,23 @@ let main () =
   Dom.appendChild gui canvas;
   Dom.appendChild gui p2;
   Dom.appendChild gui p3;
+  let context = canvas##getContext (Html._2d_) in
+
   (* Add event listeners to the HTML for key press and key
    * lift events. *)
   let _ = Html.addEventListener
       document Html.Event.keydown (Html.handler Command.keydown)
       Js._true in
 
-  (* Temp until we implement game loop somewhere *)
-  let init_state =
-    {
-      player = [];
-      items = [];
-      enemies = [];
-      allies = [];
-      won = false;
-      active_tile = {coordinate = (0,0); ground = Plain; tile_type = Grass};
-      active_unit = None;
-      act_map = {width = 0; length = 0; grid = [|[||]|]};
-      menus = [];
-      current_menu = {size = 0; options = []};
-      menu_active = false;
-      menu_cursor = 0;
-      funds = 0;
-      } in
+  let game_loop context bol =
+    let rec loop () =
+      Gui.draw_state context init_state;
+      Html.window##requestAnimationFrame(
+        Js.wrap_callback (fun (t:float) -> loop ())
+      ) |> ignore
+    in loop ()
+  in game_loop context false
 
-  Gui.draw_state context init_state
-  (*
-  Game.game_loop context false
-*)
+
 (* Begin the game *)
 let _ = main ()

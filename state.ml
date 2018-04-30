@@ -219,7 +219,7 @@ let get_rng () = Random.int 100
     current = {coordinate = (0, 0); terrain = Plain};
     selected = None
   } *)
-let init_state j = failwith "Unimplemented"
+let init_state j = failwith "asdf"
 
 
 

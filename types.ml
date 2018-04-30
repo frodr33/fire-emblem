@@ -38,7 +38,7 @@ type terrain = Plain | Wall | Throne | Door | Chest of item option | Defence | F
 
 
 type tile_type =
-  | Grass | Tree | Crack | Bridge | Bush | Darkbus | Water1 | Water2 | Water3
+  | Grass | Tree | Crack | Bridge | Bush | Darkbush | Water1 | Water2 | Water3
   | Water4 | Water5 | Water6 | Water7 | Water8 | Water9 | Wall1 | Wall2
   | Wall3 | Wall4 | Wall5 | Wall6
 

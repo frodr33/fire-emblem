@@ -22,9 +22,9 @@ let map1 =
       {coordinate = (26 * 9, 26 * 0); ground = Peaks; tile_type = Bush};
       {coordinate = (26 * 10, 26 * 0); ground = Plain; tile_type = Grass};
       {coordinate = (26 * 11, 26 * 0); ground = Ocean; tile_type = Water1};
-      {coordinate = (26 * 12, 26 * 0); ground = Mounts; tile_type = Darkbush};
-      {coordinate = (26 * 13, 26 * 0); ground = Mounts; tile_type = Darkbush};
-      {coordinate = (26 * 14, 26 * 0); ground = Mounts; tile_type = Darkbush};
+      {coordinate = (26 * 12, 26 * 0); ground = Mountain; tile_type = Darkbush};
+      {coordinate = (26 * 13, 26 * 0); ground = Mountain; tile_type = Darkbush};
+      {coordinate = (26 * 14, 26 * 0); ground = Mountain; tile_type = Darkbush};
     |];
 
 (* 2nd row *)
@@ -43,7 +43,7 @@ let map1 =
       {coordinate = (26 * 11, 26 * 1); ground = Ocean; tile_type = Water2};
       {coordinate = (26 * 12, 26 * 1); ground = Plain; tile_type = Grass};
       {coordinate = (26 * 13, 26 * 1); ground = Plain; tile_type = Grass};
-      {coordinate = (26 * 14, 26 * 1); ground = Mounts; tile_type = Darkbush};
+      {coordinate = (26 * 14, 26 * 1); ground = Mountain; tile_type = Darkbush};
   |];
 
 

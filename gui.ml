@@ -19,7 +19,7 @@ let tile_to_img_mapping (tile : tile) =
   | Crack  -> js "sprites/Crack.png"
   | Bridge  -> js "sprites/Bridge.png"
   | Bush  -> js "sprites/Bush.png"
-  | Darkbus  -> js "sprites/Darkbush.png"
+  | Darkbush  -> js "sprites/Darkbush.png"
   | Water1  -> js "sprites/Water1.png"
   | Water2  -> js "sprites/Water2.png"
   | Water3  -> js "sprites/Water3.png"

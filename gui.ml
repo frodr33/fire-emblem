@@ -1,10 +1,10 @@
 open Types
-
+open State
 
 let js = Js.string (* partial function, takes in string *)
 
-let canvas_width = 390
-let canvas_height = 260
+let canvas_width = 390.
+let canvas_height = 260.
 
 module Html = Dom_html
 let js = Js.string
@@ -14,16 +14,12 @@ let document = Html.document
  * location of the associated object *)
 let tile_to_img_mapping (tile : tile) =
   match tile.tile_type with
-  | Portal -> js "sprites/door.png"
-  | Texture  -> js "sprites/grass.png"
-  | Obstacle  -> js "sprites/tree.png"
-  | End  -> js "sprites/end.png"
   | Grass  -> js "sprites/grass.png"
   | Tree  -> js "sprites/tree.png"
   | Crack  -> js "sprites/Crack.png"
   | Bridge  -> js "sprites/Bridge.png"
   | Bush  -> js "sprites/Bush.png"
-  | Darkbush  -> js "sprites/Darkbush.png"
+  | Darkbus  -> js "sprites/Darkbush.png"
   | Water1  -> js "sprites/Water1.png"
   | Water2  -> js "sprites/Water2.png"
   | Water3  -> js "sprites/Water3.png"
@@ -43,21 +39,23 @@ let tile_to_img_mapping (tile : tile) =
 
 (* [draw_tiles map] draws each of the tiles in map's
  * tile list by finding the associated image *)
-let draw_map my_map context =
+let draw_map context state =
   context##fillStyle <- js "black";
   context##fillRect (0,0,canvas_width,canvas_height);
-  let rec draw_tiles tiles =
-    match tiles with
-    | [] -> ()
-    | tile::t -> begin
+  let draw_tiles (grid : tile array array) =
+    for i = 0 to 10 do
+      for j = 0 to 15 do
+        let tile = grid.(i).(j) in
         let x = fst tile.coordinate in
         let y = snd tile.coordinate in
         let img_src = tile_to_img_mapping tile in
         let img = Html.createImg document in
         img##src <- img_src;
         context##drawImage (img, x, y)
-      end in
-  draw_tiles my_map.grid
+      done
+    done
+  in
+  draw_tiles state.act_map.grid
 
 let draw_sprites sprite_list =
   failwith "Unimplemented"
@@ -172,6 +170,7 @@ let draw_selection_board =
   failwith "Unimplemented"
 
 (* Drawing *)
-let draw_state context state =
-  draw_map context state;
-  menu_manager context state
+let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
+  context##clearRect (0., 0., canvas_width, canvas_height);
+  draw_map context state
+  (* menu_manager context state *)

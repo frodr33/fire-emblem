@@ -101,7 +101,7 @@ type tile = {coordinate : int*int;
 
 type map = {width: int;
             length: int;
-            grid: tile array array}
+            grid: tile array array} 
 (** Represents a list of all player unit locations*)
 type player_locations = (character * tile) list
 (** Representns a list of all enemy unit locations*)

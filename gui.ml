@@ -42,12 +42,7 @@ let tile_to_img_mapping (tile : tile) =
 let draw_map (context: Html.canvasRenderingContext2D Js.t) state =
   context##fillStyle <- js "black";
   context##fillRect (0.,0.,canvas_width,canvas_height);
-  (* TEST *)
-  let img_src = js "Sprites/grass.png" in
-  let img = Html.createImg document in
-  img##src <- img_src;
-  context##drawImage ((img), (0.), (0.))
-  (* let draw_tiles (grid : tile array array) =
+  let draw_tiles (grid : tile array array) =
     for i = 0 to 9 do
       for j = 0 to 14 do
         let tile = grid.(i).(j) in
@@ -58,12 +53,8 @@ let draw_map (context: Html.canvasRenderingContext2D Js.t) state =
         img##src <- img_src;
         context##drawImage (img, float_of_int x, float_of_int y)
       done
-    done
-  in
-     () *)
-
-
-  (* draw_tiles state.act_map.grid *)
+    done in
+   draw_tiles state.act_map.grid
 
 (* let draw_Sprites sprite_list =
   failwith "bbbbbbbbbbb" *)

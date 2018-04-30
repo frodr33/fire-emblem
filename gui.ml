@@ -1,5 +1,8 @@
 open Types
 
+module Html = Dom_html
+let js = Js.string (* partial function, takes in string *)
+
 let canvas_width = 390
 let canvas_height = 260
 
@@ -41,11 +44,11 @@ let tile_to_img_mapping (tile : tile) =
 (* [draw_tiles map] draws each of the tiles in map's
  * tile list by finding the associated image *)
 let draw_map my_map context =
-  context#fillStyle <- js "black";
-  context#fillRect (0,0,canvas_width,canvas_height);
+  context##fillStyle <- js "black";
+  context##fillRect (0,0,canvas_width,canvas_height);
   let rec draw_tiles tiles =
     match tiles with
-    | [] ->
+    | [] -> ()
     | tile::t -> begin
         let x = fst tile.coordinate in
         let y = snd tile.coordinate in

@@ -1,8 +1,8 @@
 open Types
 
-
+(* Why is this here?? -Frank *)
 (**The current map*)
-type map
+(* type map *)
 
 (**The current state of the game*)
 

@@ -1,6 +1,6 @@
 open Gui
 open State
-(* open Types *)
+open Types
 
 module Html = Dom_html
 let js = Js.string (* partial function, takes in string *)
@@ -33,6 +33,7 @@ let main () =
   let p3 = Html.createP document in
   let audio = Html.createAudio document in
   let canvas = Html.createCanvas document in
+  let context = canvas##getContext (Html._2d_) in
   gui##style##textAlign <- js "center";
   body##style##backgroundImage <-js "url('sprites/background.png')";
   body##style##backgroundRepeat <- js "no-repeat";
@@ -51,7 +52,6 @@ let main () =
   Dom.appendChild gui canvas;
   Dom.appendChild gui p2;
   Dom.appendChild gui p3;
-
   (* Add event listeners to the HTML for key press and key
    * lift events. *)
   let _ = Html.addEventListener

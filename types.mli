@@ -7,7 +7,9 @@ type wtype = Sword | Tome | Staff | Potion | Key
 (** Represents the names of possible AI types*)
 type ai = BossStay | BossHunt
 
-type menu = string list
+(* Old Menu...didnt match ml *)
+(* type menu = string list *)
+type menu =  {size:int;options:string list}
 
 type allegiance = Player | Enemy | Allied
 

@@ -1,4 +1,6 @@
-open Types
+open Gui
+open State
+(* open Types *)
 
 module Html = Dom_html
 let js = Js.string (* partial function, takes in string *)
@@ -41,11 +43,11 @@ let main () =
   gui##style##textAlign <- js "center";
   canvas##width <- int_of_float Gui.canvas_width;
   canvas##height <- int_of_float Gui.canvas_height;
-  append_text p "Welcome to Fire Emblem! Some stuff about the game ...";
+  append_text p1 "Welcome to Fire Emblem! Some stuff about the game ...";
   append_text p2 "Developed by: Frank Rodriguez, Albert Tsao, Darren Tsai, and Ray Gu";
   append_text p3 "for our 3110 final project. Thanks for playing!";
   Dom.appendChild gui logo;
-  Dom.appendChild gui p;
+  Dom.appendChild gui p1;
   Dom.appendChild gui canvas;
   Dom.appendChild gui p2;
   Dom.appendChild gui p3;
@@ -55,6 +57,26 @@ let main () =
   let _ = Html.addEventListener
       document Html.Event.keydown (Html.handler Command.keydown)
       Js._true in
+
+  (* Temp until we implement game loop somewhere *)
+  let init_state =
+    {
+      player = [];
+      items = [];
+      enemies = [];
+      allies = [];
+      won = false;
+      active_tile = {coordinate = (0,0); ground = Plain; tile_type = Grass};
+      active_unit = None;
+      act_map = {width = 0; length = 0; grid = [|[||]|]};
+      menus = [];
+      current_menu = {size = 0; options = []};
+      menu_active = false;
+      menu_cursor = 0;
+      funds = 0;
+      } in
+
+  Gui.draw_state context init_state
   (*
   Game.game_loop context false
 *)

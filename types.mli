@@ -36,11 +36,18 @@ type terrain = Plain | Wall | Throne | Door | Chest of item option | Defence | F
                Village of item option | Armory of item list * int | Shop of item list * int |
                Damaged_wall of int | Mountain | Ocean | Desert | Despawn | Peaks
 
+
+
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|Moving|Attacking|Done
 type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectTile|SelectPlayer|SelectEnemy
 
+
+type tile_type =
+  | Grass | Tree | Crack | Bridge | Bush | Darkbus | Water1 | Water2 | Water3
+  | Water4 | Water5 | Water6 | Water7 | Water8 | Water9 | Wall1 | Wall2
+  | Wall3 | Wall4 | Wall5 | Wall6
 (** Represents a map as a whole*)
 (** Represents a character, its stats and other details*)
 type character = {
@@ -78,11 +85,15 @@ type character = {
 }
 
 (** Represents one tile on a map*)
-type tile = {
+(* type tile = {
   coordinate : int*int;
   ground : terrain;
   character : character option
-}
+   } *)
+type tile = {coordinate : int*int;
+             ground : terrain;
+             tile_type: tile_type}
+
 (** Represents an enemy unit and its stats*)
 
 

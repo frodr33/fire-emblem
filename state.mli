@@ -6,7 +6,7 @@ type map
 
 (**The current state of the game*)
 
-type state = {
+(* type state = {
   player: character list;
   items : item list;
   enemies: character list;
@@ -14,6 +14,22 @@ type state = {
   active_tile: tile;
   active_unit: character option;
   menus: (string * menu) list;
+  current_menu : menu;
+  menu_active: bool;
+  menu_cursor: int;
+  funds : int;
+   } *)
+
+type state = {
+  player: character list;
+  items : item list;
+  enemies: character list;
+  allies: character list;
+  won : bool;
+  active_tile: tile;
+  active_unit: character option;
+  act_map: map;
+  menus:(string * menu) list;
   current_menu : menu;
   menu_active: bool;
   menu_cursor: int;

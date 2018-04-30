@@ -1,11 +1,11 @@
 (** This module handles all of the types that we need for this project*)
-type class' = Paladin | Theif | Mage
+type class' = Paladin | Thief | Mage
 
 (** Represents a weapon type*)
 type wtype = Sword | Tome | Staff | Potion | Key
 
 (** Represents the names of possible AI types*)
-type ai
+type ai = BossStay | BossHunt
 
 type menu = {size:int;options:string list}
 
@@ -20,6 +20,7 @@ type item = {
   wtype : wtype;
   mgt : int;
   acc : int;
+  crit : int;
   range : int * int;
   uses : int;
   cost : int;
@@ -31,10 +32,10 @@ type item = {
 }
 
 (** Represents different types of terrain*)
-type terrain = Plain | Wall | Throne | Door | Chest | Defence | Forest |
-               Village | Armory of item list | Shop of item list |
-               Damaged_wall of int | Mountain | Ocean | Desert | Despawn |
-               Peaks
+type terrain = Plain | Wall | Throne | Door | Chest of item option | Defence | Forest |
+               Village of item option | Armory of item list * int | Shop of item list * int |
+               Damaged_wall of int | Mountain | Ocean | Desert | Despawn | Peaks
+
 
 type tile_type =
   | Grass | Tree | Crack | Bridge | Bush | Darkbus | Water1 | Water2 | Water3
@@ -48,7 +49,7 @@ type tile = {coordinate : int*int;
 
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|Moving|Attacking|Done
-type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenTileMenu|CloseMenu|
+type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackaTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
               Invalid
 
@@ -60,6 +61,7 @@ type character = {
   stage: status;
   class' : class';
   growths : (stat * int) list;
+  caps : (stat * int) list;
   level : int;
   exp : int;
   health : int * int;
@@ -83,9 +85,9 @@ type character = {
   ability : string list;
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;
+  ai : ai;
   location: tile;
   movement: tile list;
-  ai : ai
 }
 
 type map = {width: int;

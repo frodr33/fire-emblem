@@ -42,15 +42,35 @@ type terrain = Plain | Wall | Throne | Door | Chest of item option | Defence | F
 
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|Moving|Attacking|Done
+
+(* NOTE: type didnt match the one in the ml *)
+(* type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
+              SelectMOption|Undo|SelectTile|SelectPlayer|SelectEnemy *)
 type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
-              SelectMOption|Undo|SelectTile|SelectPlayer|SelectEnemy
+              SelectMOption|Undo|SelectMoveTile|SelectAttackaTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
+              Invalid
 
 
 type tile_type =
   | Grass | Tree | Crack | Bridge | Bush | Darkbus | Water1 | Water2 | Water3
   | Water4 | Water5 | Water6 | Water7 | Water8 | Water9 | Wall1 | Wall2
   | Wall3 | Wall4 | Wall5 | Wall6
-(** Represents a map as a whole*)
+  (** Represents a map as a whole*)
+
+
+
+
+(** Represents one tile on a map*)
+(* type tile = {
+   coordinate : int*int;
+   ground : terrain;
+   character : character option
+   } *)
+type tile = {coordinate : int*int;
+             ground : terrain;
+             tile_type: tile_type}
+
+
 (** Represents a character, its stats and other details*)
 type character = {
   name : string;
@@ -82,26 +102,19 @@ type character = {
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;
   ai : ai;
-  location: int * int;
-  movement: (int * int) list
+  (* location: int * int;
+     movement: (int * int) list *)
+  location: tile;
+  movement: tile list;
 }
 
-(** Represents one tile on a map*)
-(* type tile = {
-  coordinate : int*int;
-  ground : terrain;
-  character : character option
-   } *)
-type tile = {coordinate : int*int;
-             ground : terrain;
-             tile_type: tile_type}
 
 (** Represents an enemy unit and its stats*)
 
 
 type map = {width: int;
             length: int;
-            grid: tile array array} 
+            grid: tile array array}
 (** Represents a list of all player unit locations*)
 type player_locations = (character * tile) list
 (** Representns a list of all enemy unit locations*)

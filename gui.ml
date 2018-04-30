@@ -39,9 +39,9 @@ let tile_to_img_mapping (tile : tile) =
 
 (* [draw_tiles map] draws each of the tiles in map's
  * tile list by finding the associated image *)
-let draw_map context state =
+let draw_map (context: Html.canvasRenderingContext2D Js.t) state =
   context##fillStyle <- js "black";
-  context##fillRect (0,0,canvas_width,canvas_height);
+  context##fillRect (0.,0.,canvas_width,canvas_height);
   let draw_tiles (grid : tile array array) =
     for i = 0 to 10 do
       for j = 0 to 15 do
@@ -51,7 +51,7 @@ let draw_map context state =
         let img_src = tile_to_img_mapping tile in
         let img = Html.createImg document in
         img##src <- img_src;
-        context##drawImage (img, x, y)
+        context##drawImage (img, float_of_int x, float_of_int y)
       done
     done
   in

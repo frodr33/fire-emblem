@@ -19,7 +19,7 @@ type state = {
   funds : int;
 }
 let ctile c map =
-  map.grid.(fst c.location).(snd c.location)
+  map.grid.(fst c.location.coordinate).(snd c.location.coordinate)
 
 let check_player_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.player
@@ -31,14 +31,14 @@ let check_ally_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
 
 let distance_tile a (t:tile) =
-  abs (fst a.location - fst t.coordinate) +
-  abs (snd a.location - snd t.coordinate)
+  abs (fst a.location.coordinate - fst t.coordinate) +
+  abs (snd a.location.coordinate - snd t.coordinate)
 
 let in_range_tile a t =
   match a.eqp with
   |None   -> false
   |Some x -> let l = distance_tile a t in l >= fst x.range && l <= snd x.range
-let translate_key st =
+(* let translate_key st =
   match input with
   |A ->if st.menu_active = true then SelectMOption else
       match st.active_unit with
@@ -61,6 +61,7 @@ let translate_key st =
       |Right ->if st.menu_active=true then Invalid else Tright
       |Left ->if st.menu_active=true then Invalid else Tleft
       |_ ->Invalid
+  | _ -> () *)
 
 
 
@@ -69,24 +70,26 @@ let translate_key st =
     let y = snd (st.active_tile.coordinate) in
     match act with
     |Tup -> if y =0  then st.active_tile else
-        st.map_act.grid.(x).(y-1)
+        st.act_map.grid.(x).(y-1)
     |Tdown ->if y=(st.act_map.length -1) then st.active_tile else
-        st.map_act.grid.(x).(y+1)
-    |Tleft ->if x = 0 then st.active_tile else   st.map_act.grid.(x-1).(y)
-    |Tright ->if x = (St.act_map.width-1) then st.active_tile else
-        st.map_act.grid.(x+1).(y)
+        st.act_map.grid.(x).(y+1)
+    |Tleft ->if x = 0 then st.active_tile else   st.act_map.grid.(x-1).(y)
+    |Tright ->if x = (st.act_map.width-1) then st.active_tile else
+        st.act_map.grid.(x+1).(y)
 
   let new_menu_cursor act st = match act with
     |Mup -> if st.menu_cursor =0 then st.current_menu.size -1 else
         st.menu_cursor -1
-    |Mdown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
+    |MDown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
         st.menu_cursor +1
+    | _ -> failwith "placeholder"
 
 let new_menu_cursor act st = match act with
   |Mup -> if st.menu_cursor =0 then st.current_menu.size -1 else
       st.menu_cursor -1
-  |Mdown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
+  |MDown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
       st.menu_cursor +1
+  | _ -> failwith "placeholder"
 
 (*-----------------------------SPAGHETT FLOOD FILL----------------------------*)
 (*For the curious*)
@@ -198,25 +201,30 @@ let seed = 10
 
 let get_rng () = Random.int 100
 
-let new_tile = {coordinate= (0, 0); ground = Plain; character = None}
+(* character is not a field of tile?? -Frank *)
+(* let new_tile = {coordinate= (0, 0); ground = Plain; character = None} *)
 
-let new_map = [(new_tile, None)]
+(* Uses new_tile above *)
+(* let new_map = [(new_tile, None)] *)
 
-let init_state d = Random.init seed;
+
+(* idek what this is doing, doesn't compile -Frank *)
+(* let init_state d = Random.init seed;
   {
     player = [];
     items = [];
     enemies = [];
     maps = [];
-    map_act = [];
+    act_map = [];
     current = {coordinate = (0, 0); terrain = Plain};
     selected = None
-  }
-
+  } *)
+let init_state j = failwith "Unimplemented"
 
 
 
 let do' act s =
   match act with
-  |OpenTileMenu ->{s with current_menu=tile_menu;menu_active=true;menu_cursor=0}
-  | _ -> () (* Just putting this here so it would compile -Frank*)
+  (* OpenTileMenu ->{s with current_menu=tile_menu;menu_active=true;menu_cursor=0} NOTE: OpenTileMenu not defined*)
+  | OpenMenu -> s (* NOTE: temporary *)
+  | _ -> failwith "TODO" (* Just putting this here so it would compile -Frank*)

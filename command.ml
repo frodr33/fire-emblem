@@ -3,6 +3,8 @@ open Types
 module Html = Dom_html
 let js = Js.string
 
+type action = TODO 
+
 let input = ref Nothing
 
 let keydown event =

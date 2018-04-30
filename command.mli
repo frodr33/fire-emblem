@@ -2,12 +2,13 @@ open Types
 
 
 type action
+
+(* Didnt match ml *)
 (** [input i st] takes a button input and returns an appropriate action based on te
     current state [st]*)
-val input : Dom_html.keyboardEvent Js.t -> bool Js.t
+(* val input : Dom_html.keyboardEvent Js.t -> bool Js.t *)
+val input : key ref
+
 
 (* [keydown event] registers when a key has been pressed. *)
 val keydown : Dom_html.keyboardEvent Js.t -> bool Js.t
-
-(* [keyup event] registers when a key has been lifted. *)
-val keyup : Dom_html.keyboardEvent Js.t -> bool Js.t

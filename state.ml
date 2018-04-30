@@ -219,4 +219,4 @@ let init_state d = Random.init seed;
 let do' act s =
   match act with
   |OpenTileMenu ->{s with current_menu=tile_menu;menu_active=true;menu_cursor=0}
-  |
+  | _ -> () (* Just putting this here so it would compile -Frank*)

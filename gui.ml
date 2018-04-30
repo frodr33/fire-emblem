@@ -1,6 +1,6 @@
 open Types
 
-module Html = Dom_html
+
 let js = Js.string (* partial function, takes in string *)
 
 let canvas_width = 390

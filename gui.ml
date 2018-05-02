@@ -10,6 +10,13 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
+let counter = ref 0
+let sync = ref true
+
+(*********************************************************)
+(***************** Map Drawing Functions *****************)
+(*********************************************************)
+
 (* [obj_to_img_mapping obj] returns the image source
  * location of the associated object *)
 let tile_to_img_mapping (tile : tile) =
@@ -77,6 +84,48 @@ let draw_map_9x9 (context: Html.canvasRenderingContext2D Js.t) state =
 
 (* let draw_Sprites sprite_list =
   failwith "bbbbbbbbbbb" *)
+
+(*********************************************************)
+(**************** Cursor Drawing Functions ***************)
+(*********************************************************)
+
+let real_time_clock () =
+  counter := !counter + 1;
+  match !counter mod 30 with
+  | 0 -> sync := not(!sync)
+  | _ -> ()
+
+
+(* [draw_cursor context state] draws the cursor (big) on the 
+ * canvas given the integer location defined in tile *)
+let draw_cursor_big (context: Html.canvasRenderingContext2D Js.t) tile = 
+  let (x,y) = tile.coordinate in
+  let img = Html.createImg document in
+  img##src <- js "Sprites/CursorLarge.png";
+  context##drawImage (img, 26. *. float_of_int x, 26. *. float_of_int y)
+
+(* [draw_cursor context state] draws the cursor (small) on the 
+ * canvas given the integer location defined in tile *)
+let draw_cursor_small (context: Html.canvasRenderingContext2D Js.t) tile = 
+  let (x,y) = tile.coordinate in
+  let img = Html.createImg document in
+  img##src <- js "Sprites/CursorSmall.png";
+  context##drawImage (img, 26. *. float_of_int x, 26. *. float_of_int y)
+
+
+let draw_cursor (context: Html.canvasRenderingContext2D Js.t) tile = 
+  match (!sync) with
+  | true -> 
+    draw_cursor_small context tile
+  | false -> 
+    draw_cursor_big context tile
+
+
+(*********************************************************)
+(**************** Sprite Drawing Functions ***************)
+(*********************************************************)
+(* let draw_player (context: Html.canvasRenderingContext2D Js.t) state = 
+  failwith "Unimplemented"; *)
 
 (*********************************************************)
 (***************** Menu Drawing Functions ****************)
@@ -192,5 +241,8 @@ let menu_manager context state =
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
   draw_map context state;
+  draw_cursor context state.active_tile;
+  (* draw_player context state; *)
   draw_unit_menu context;
+  real_time_clock ();
   (* menu_manager context state *)

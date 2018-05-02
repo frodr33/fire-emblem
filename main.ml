@@ -28,7 +28,7 @@ let init_state =
     enemies = [];
     allies = [];
     won = false;
-    active_tile = {coordinate = (0,0); ground = Plain; tile_type = Grass};
+    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass};
     active_unit = None;
     act_map = {width = 0; length = 0; grid = Room.map1.grid};
     menus = [];

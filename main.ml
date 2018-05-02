@@ -18,17 +18,54 @@ let fail = fun _ -> assert false
 let get_element_by_id id =
   Js.Opt.get (Html.document##getElementById (js id)) fail
 
+let temp_character =
+  {
+    name = "Lyn";
+    stage= Moving;
+    class' = Paladin;
+    growths = [];
+    caps = [];
+    level = 0;
+    exp = 0;
+    health = (0,0);
+    allegiance = Player;
+    str = 0;
+    mag = 0;
+    def = 0;
+    spd = 0;
+    res = 0;
+    skl = 0;
+    lck = 0;
+    mov = 0;
+    con = 0;
+    aid = 0;
+    hit = 0;
+    atk = 0;
+    crit = 0;
+    avoid = 0;
+    inv = [];
+    eqp = None;
+    ability = [];
+    supports = [];
+    wlevels = [];
+    ai = BossHunt;
+    location= (5,5);
+    movement= [];
+    direction= South;
+  }
+
+
 (* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
 let init_state =
   {
-    player = [];
+    player = [temp_character];
     items = [];
     enemies = [];
     allies = [];
     won = false;
-    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass};
+    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=None};
     active_unit = None;
     act_map = {width = 0; length = 0; grid = Room.map1.grid};
     menus = [];

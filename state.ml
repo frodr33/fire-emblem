@@ -18,7 +18,9 @@ type state = {
   menu_cursor: int;
   funds : int;
 }
-
+let ctile c map =
+  map.grid.(fst c.location).(snd c.location)
+(*
 let ctile c map =
   map.grid.(fst c.location.coordinate).(snd c.location.coordinate)
 
@@ -39,13 +41,14 @@ let in_range_tile a t =
   match a.eqp with
   |None   -> false
   |Some x -> let l = distance_tile a t in l >= fst x.range && l <= snd x.range
+*)
 (*let translate_key st =
-  match input with
+  match !input with
   |A ->if st.menu_active = true then SelectMOption else
-      match st.active_unit with
+     begin   match st.active_unit with
       |Some c ->(
           match c.stage with
-          |Moving ->if List.exists (fun t -> t.coordinate=st.active_tile) c.movement
+          |Moving ->if List.exists (fun t -> t.coordinate=st.active_tile.coordinate) c.movement
             then SelectMoveTile else Invalid
           |Attacking -> if in_range_tile c st.active_tile &&check_enemy_loc then
               SelectAttackTile else Invalid
@@ -55,19 +58,16 @@ let in_range_tile a t =
           if check_enemy_loc st then SelectEnemy else
           if check_ally_loc st then SelectAlly else
             OpenMenu)
-      |B -> if st.menu_active=true then CloseMenu else Undo
-      |LT ->FindReady
-      |Up -> if st.menu_active=true  then Mup else Tup
-      |Down ->if st.menu_active=true  then Mdown else Tdown
-      |Right ->if st.menu_active=true then Invalid else Tright
-      |Left ->if st.menu_active=true then Invalid else Tleft
-      |_ ->Invalid
-  | _ -> () *)
+     end
+  |B -> if st.menu_active=true then CloseMenu else Undo
+  |LT ->FindReady
+  |Up -> if st.menu_active=true  then Mup else Tup
+  |Down ->if st.menu_active=true  then Mdown else Tdown
+  |Right ->if st.menu_active=true then Invalid else Tright
+  |Left ->if st.menu_active=true then Invalid else Tleft
+  |_ ->Invalid
+*)
 
-let translate_key st =
-  match !input with
-  |A -> "lol"
-  |_ -> "xdd"
 
   let new_active_tile act st =
     let x = fst(st.active_tile.coordinate) in
@@ -80,18 +80,19 @@ let translate_key st =
     |Tleft ->if x = 0 then st.active_tile else   st.act_map.grid.(x-1).(y)
     |Tright ->if x = (st.act_map.width-1) then st.active_tile else
         st.act_map.grid.(x+1).(y)
+    |_ -> failwith "placeholder"
 
   let new_menu_cursor act st = match act with
     |Mup -> if st.menu_cursor =0 then st.current_menu.size -1 else
         st.menu_cursor -1
-    |MDown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
+    |Mdown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
         st.menu_cursor +1
     | _ -> failwith "placeholder"
 
 let new_menu_cursor act st = match act with
   |Mup -> if st.menu_cursor =0 then st.current_menu.size -1 else
       st.menu_cursor -1
-  |MDown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
+  |Mdown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
       st.menu_cursor +1
   | _ -> failwith "placeholder"
 

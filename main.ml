@@ -18,7 +18,7 @@ let fail = fun _ -> assert false
 let get_element_by_id id =
   Js.Opt.get (Html.document##getElementById (js id)) fail
 
-let temp_character = 
+let temp_character =
   {
     name = "Lyn";
     stage= Moving;
@@ -49,7 +49,7 @@ let temp_character =
     supports = [];
     wlevels = [];
     ai = BossHunt;
-    location= {coordinate = (5,5); ground = Plain; tile_type = Grass};
+    location= (5,5);
     movement= [];
     direction= South;
   }
@@ -65,7 +65,7 @@ let init_state =
     enemies = [];
     allies = [];
     won = false;
-    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass};
+    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=None};
     active_unit = None;
     act_map = {width = 0; length = 0; grid = Room.map1.grid};
     menus = [];

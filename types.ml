@@ -42,15 +42,12 @@ type tile_type =
   | Water4 | Water5 | Water6 | Water7 | Water8 | Water9 | Wall1 | Wall2
   | Wall3 | Wall4 | Wall5 | Wall6
 
-(** Represents one tile on a map*)
-type tile = {coordinate : int*int;
-             ground : terrain;
-             tile_type: tile_type}
+
 
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|Moving|Attacking|Done
 type direction = North | West | South | East
-type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
+type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
               Invalid
 
@@ -89,11 +86,15 @@ type character = {
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;
   ai : ai;
-  location: tile;
-  movement: tile list;
+  location: int*int;
+  movement: (int*int) list;
   direction: direction;
 }
-
+(** Represents one tile on a map*)
+type tile = {coordinate : int*int;
+             ground : terrain;
+             tile_type: tile_type;
+            c:character option}
 type map = {width: int;
             length: int;
             grid: tile array array}

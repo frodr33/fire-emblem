@@ -47,7 +47,7 @@ type direction = North | West | South | East
 (* NOTE: type didnt match the one in the ml *)
 (* type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectTile|SelectPlayer|SelectEnemy *)
-              type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
+              type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
                             SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
                             Invalid
 
@@ -67,9 +67,6 @@ val input : key ref
    ground : terrain;
    character : character option
    } *)
-type tile = {coordinate : int*int;
-             ground : terrain;
-             tile_type: tile_type}
 
 
 (** Represents a character, its stats and other details*)
@@ -105,10 +102,14 @@ type character = {
   ai : ai;
   (* location: int * int;
      movement: (int * int) list *)
-  location: tile;
-  movement: tile list;
+  location: int*int;
+  movement: (int*int) list;
   direction: direction;
 }
+type tile = {coordinate : int*int;
+             ground : terrain;
+             tile_type: tile_type;
+             c:character option}
 
 
 (** Represents an enemy unit and its stats*)

@@ -3,8 +3,8 @@ open State
 
 let js = Js.string (* partial function, takes in string *)
 
-let canvas_width = 390.
-let canvas_height = 260.
+let canvas_width = 676. (* 390 *)
+let canvas_height = 676. (* 260 *)
 
 module Html = Dom_html
 let js = Js.string
@@ -45,6 +45,25 @@ let draw_map (context: Html.canvasRenderingContext2D Js.t) state =
   let draw_tiles (grid : tile array array) =
     for i = 0 to 9 do
       for j = 0 to 14 do
+        let tile = grid.(i).(j) in
+        let x = fst tile.coordinate in
+        let y = snd tile.coordinate in
+        let img_src = tile_to_img_mapping tile in
+        let img = Html.createImg document in
+        img##src <- img_src;
+        context##drawImage (img, float_of_int x, float_of_int y)
+      done
+    done in
+   draw_tiles state.act_map.grid
+
+   (* [draw_tiles map] draws each of the tiles in map's
+ * tile list by finding the associated image *)
+let draw_map_9x9 (context: Html.canvasRenderingContext2D Js.t) state =
+  context##fillStyle <- js "black";
+  context##fillRect (0.,0.,canvas_width,canvas_height);
+  let draw_tiles (grid : tile array array) =
+    for i = 0 to 2 do
+      for j = 0 to 2 do
         let tile = grid.(i).(j) in
         let x = fst tile.coordinate in
         let y = snd tile.coordinate in

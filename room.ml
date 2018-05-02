@@ -201,3 +201,28 @@ let map1 =
 
   |]
   }
+
+let test =
+  {
+    width = 3;
+    length = 3;
+    grid =
+      [|
+        [|
+          {coordinate = (26 * 0, 26 * 0); ground = Plain; tile_type = Grass};
+          {coordinate = (26 * 1, 26 * 0); ground = Plain; tile_type = Grass};
+          {coordinate = (26 * 2, 26 * 0); ground = Plain; tile_type = Grass};
+        |];
+        [|
+          {coordinate = (26 * 0, 26 * 1); ground = Plain; tile_type = Grass};
+          {coordinate = (26 * 1, 26 * 1); ground = Plain; tile_type = Grass};
+          {coordinate = (26 * 2, 26 * 1); ground = Plain; tile_type = Grass};
+        |];
+        [|
+          {coordinate = (26 * 0, 26 * 2); ground = Plain; tile_type = Grass};
+          {coordinate = (26 * 1, 26 * 2); ground = Plain; tile_type = Grass};
+          {coordinate = (26 * 2, 26 * 2); ground = Plain; tile_type = Grass};
+        |]
+
+      |]
+  }

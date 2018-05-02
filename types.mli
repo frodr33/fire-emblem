@@ -46,9 +46,9 @@ type status = Ready|Moving|Attacking|Done
 (* NOTE: type didnt match the one in the ml *)
 (* type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectTile|SelectPlayer|SelectEnemy *)
-type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
-              SelectMOption|Undo|SelectMoveTile|SelectAttackaTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
-              Invalid
+              type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
+                            SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
+                            Invalid
 
 
 type tile_type =
@@ -58,7 +58,7 @@ type tile_type =
   (** Represents a map as a whole*)
 
 
-
+val input : key ref
 
 (** Represents one tile on a map*)
 (* type tile = {

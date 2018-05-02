@@ -39,7 +39,7 @@ let in_range_tile a t =
   match a.eqp with
   |None   -> false
   |Some x -> let l = distance_tile a t in l >= fst x.range && l <= snd x.range
-(* let translate_key st =
+(*let translate_key st =
   match input with
   |A ->if st.menu_active = true then SelectMOption else
       match st.active_unit with
@@ -54,7 +54,7 @@ let in_range_tile a t =
           if check_player_loc st then SelectPlayer else
           if check_enemy_loc st then SelectEnemy else
           if check_ally_loc st then SelectAlly else
-            OpenTileMenu)
+            OpenMenu)
       |B -> if st.menu_active=true then CloseMenu else Undo
       |LT ->FindReady
       |Up -> if st.menu_active=true  then Mup else Tup
@@ -64,7 +64,10 @@ let in_range_tile a t =
       |_ ->Invalid
   | _ -> () *)
 
-
+let translate_key st =
+  match !input with
+  |A -> "lol"
+  |_ -> "xdd"
 
   let new_active_tile act st =
     let x = fst(st.active_tile.coordinate) in

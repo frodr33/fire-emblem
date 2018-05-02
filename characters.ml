@@ -1,58 +1,6 @@
 open Types
 open State
 
-(*let make_fresh_item s = {
-  name = s;
-  wtype = Sword;
-  mgt = 16;
-  acc = 80;
-  weight = 10;
-  range = 1, 2;
-  uses = 50, 50;
-  cost = 1000;
-  sell = 7;
-  level = 'A';
-  users = [];
-  effective = [];
-  penalty = [];
-
-}
-*)
-(*let make_fresh s = {
-  name = s;
-  class' = Paladin;
-  growths = [(Health, 50); (Str , 50);(Mag, 50);(Def, 50);
-             (Spd, 50);(Res, 50);(Skl, 50);(Lck, 50);];
-  level = 1;
-  exp = 0;
-  health = 10, 10;
-  str = 1;
-  mag = 1;
-  def = 1;
-  spd = 1;
-  res = 1;
-  skl = 1;
-  lck = 1;
-  mov = 1;
-  con = 1;
-  aid = 1;
-  hit = 100;
-  atk = 1;
-  crit = 0;
-  avoid = 10;
-  inv = [];
-  eqp = Some (make_fresh_item "Seigfried");
-  ability = [];
-  supports = [];
-  wlevels = []
-  }*)
-
-(** [cap lst s] takes a (stat * int) list and returns the in associated with
- *  stat [s].
- *  requires:
- *  - [lst] is a (stat * int) list
- *  - [s] is a valid stat
-*)
 let rec cap lst s =
   match lst with
   |[]   -> failwith "Nonexistant stat"
@@ -188,6 +136,13 @@ let rec remove_item a i =
   match a with
   |[]   -> failwith "not in inventory"
   |h::t -> if i = h then t else h :: (remove_item t i)
+
+let wlgt a i =
+  match a. with
+  |"a" ->
+
+let equippable a i =
+  if wlgt
 
 let eqp_item a i =
   match a.eqp with

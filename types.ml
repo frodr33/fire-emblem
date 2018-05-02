@@ -85,7 +85,7 @@ type character = {
   ability : string list;
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;
-  ai : ai;
+  ai : ai option;
   location: tile;
   movement: tile list;
 }

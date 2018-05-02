@@ -8,7 +8,8 @@ build:
 clean:
 	ocamlbuild -clean
 
-
+test:
+	ocamlbuild -use-ocamlfind test2.byte && ./test2.byte
 # compile:
 # 	ocamlc -c types.mli
 # 	ocamlc -c room.mli

@@ -34,7 +34,7 @@ type state = {
   menu_active: bool;
   menu_cursor: int;
   funds : int;
-}
+} 
 
 val dijkstra's_helper : (tile * int) list -> (int*int) list -> tile -> int -> map -> (int*int) list
 val get_rng : unit -> int

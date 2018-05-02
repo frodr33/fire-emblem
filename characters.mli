@@ -23,3 +23,7 @@ val promote : character -> character
 val update_character : character -> character
 
 val add_item : character -> item -> character
+
+val remove_item : item list -> item -> item list
+
+val eqp_item : character -> item -> character

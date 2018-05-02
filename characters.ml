@@ -183,3 +183,15 @@ let rec update_character c =
             crit = calc_crit c;
             avoid = calc_avoid c
     }
+
+let rec remove_item a i =
+  match a with
+  |[]   -> failwith "not in inventory"
+  |h::t -> if i = h then t else h :: (remove_item t i)
+
+let eqp_item a i =
+  match a.eqp with
+  |None   -> {a with inv = (remove_item a.inv i);
+                   eqp = Some i}
+  |Some x -> {a with inv = (x :: (remove_item a.inv i));
+                     eqp = Some i}

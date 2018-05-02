@@ -39,3 +39,6 @@ open State
   (** visits a village*)
 
   val village : character -> terrain -> character
+
+
+  val trade : character -> character -> item -> item -> character * character

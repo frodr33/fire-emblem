@@ -181,3 +181,5 @@ let village c t =
   |Village (Some x) -> add_item c x
   |Village (None) -> failwith "visited village"
   |_ -> failwith "visiting nonvillage"
+
+let trade c1 c2 i1 i2 = failwith "unimplemented"

@@ -11,6 +11,41 @@ let combatQ = Queue.create()
 
 let expQ = Queue.create()
 
+let empty_character = {
+  name = "";
+  stage = Ready;
+  class' : class';
+  growths : (stat * int) list;
+  caps : (stat * int) list;
+  level : int;
+  exp : int;
+  health : int * int;
+  allegiance : allegiance;
+  str : int;
+  mag : int;
+  def : int;
+  spd : int;
+  res : int;
+  skl : int;
+  lck : int;
+  mov : int;
+  con : int;
+  aid : int;
+  hit : int;
+  atk : int;
+  crit : int;
+  avoid : int;
+  inv : item list;
+  eqp : item option;
+  ability : string list;
+  supports : (string * char) list;
+  wlevels : (wtype * char * int) list;
+  ai : ai;
+  location: tile;
+  movement: tile list;
+}
+
+let i =
 
 let survive (d:character) i =
   i > fst d.health

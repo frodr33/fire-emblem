@@ -18,6 +18,7 @@ type state = {
   menu_cursor: int;
   funds : int;
 }
+
 let ctile c map =
   map.grid.(fst c.location.coordinate).(snd c.location.coordinate)
 
@@ -201,24 +202,6 @@ let seed = 10
 
 let get_rng () = Random.int 100
 
-(* character is not a field of tile?? -Frank *)
-(* let new_tile = {coordinate= (0, 0); ground = Plain; character = None} *)
-
-(* Uses new_tile above *)
-(* let new_map = [(new_tile, None)] *)
-
-
-(* idek what this is doing, doesn't compile -Frank *)
-(* let init_state d = Random.init seed;
-  {
-    player = [];
-    items = [];
-    enemies = [];
-    maps = [];
-    act_map = [];
-    current = {coordinate = (0, 0); terrain = Plain};
-    selected = None
-  } *)
 let init_state j = failwith "asdf"
 
 

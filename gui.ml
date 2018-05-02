@@ -10,7 +10,7 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
-let counter = ref 0
+let clock = ref 0
 let sync = ref true
 
 (*********************************************************)
@@ -89,14 +89,16 @@ let draw_map_9x9 (context: Html.canvasRenderingContext2D Js.t) state =
 (**************** Cursor Drawing Functions ***************)
 (*********************************************************)
 
+(* [real_time_clock] updates the clock at every loop of the game.
+ * Every 30 "time" units, sync is negated which represents the 
+ * static movement of the cursor and players *)
 let real_time_clock () =
-  counter := !counter + 1;
-  match !counter mod 30 with
+  clock := !clock + 1;
+  match !clock mod 30 with
   | 0 -> sync := not(!sync)
   | _ -> ()
 
-
-(* [draw_cursor context state] draws the cursor (big) on the 
+(* [draw_cursor context tile] draws the cursor (big) on the 
  * canvas given the integer location defined in tile *)
 let draw_cursor_big (context: Html.canvasRenderingContext2D Js.t) tile = 
   let (x,y) = tile.coordinate in
@@ -104,7 +106,7 @@ let draw_cursor_big (context: Html.canvasRenderingContext2D Js.t) tile =
   img##src <- js "Sprites/CursorLarge.png";
   context##drawImage (img, 26. *. float_of_int x, 26. *. float_of_int y)
 
-(* [draw_cursor context state] draws the cursor (small) on the 
+(* [draw_cursor context tile] draws the cursor (small) on the 
  * canvas given the integer location defined in tile *)
 let draw_cursor_small (context: Html.canvasRenderingContext2D Js.t) tile = 
   let (x,y) = tile.coordinate in
@@ -112,7 +114,9 @@ let draw_cursor_small (context: Html.canvasRenderingContext2D Js.t) tile =
   img##src <- js "Sprites/CursorSmall.png";
   context##drawImage (img, 26. *. float_of_int x, 26. *. float_of_int y)
 
-
+(* [draw_cursor context tile] chooses to draw a big cursor or small 
+ * cursor based on the current synchornization reference (sync) and 
+ * then draws that cursor on the coordinate defined by tile *)
 let draw_cursor (context: Html.canvasRenderingContext2D Js.t) tile = 
   match (!sync) with
   | true -> 

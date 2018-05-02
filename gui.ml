@@ -129,24 +129,55 @@ let draw_cursor (context: Html.canvasRenderingContext2D Js.t) tile =
 (**************** Sprite Drawing Functions ***************)
 (*********************************************************)
 
+let draw_sprite img' context (sx, sy) (sw, sh) (x,y) = 
+  let img = Html.createImg document in
+  img##src <- img';
+  context##drawImage_full (img, sx, sy, sw, sh, 26. *. (float_of_int x), 26. *. (float_of_int y), sw, sh)
+
+
+
 let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character = 
-  let img = "Sprites/Lyn.png" in
+  let img = js "Sprites/Lyn.png" in
   match character.direction with
-  | North -> ()
+  | South -> begin
+      match character.stage with
+      | Ready -> ()
+      | Moving -> 
+        let sprite_coordinate = (420., 420.) in
+        let sprite_wxl = (15., 15.) in
+        let coordinate = character.location.coordinate in 
+        draw_sprite img context sprite_coordinate sprite_wxl coordinate
+      | Attacking -> () 
+      | Done -> ()
+    end 
   | East -> ()
-  | South -> ()
+  | North -> ()
   | _ -> () 
+
+  (* let animate_on_context context (sprite: sprite)  =
+  let img = Html.createImg document in
+  let (sx, sy) = sprite.params.offset in
+  let (sw, sh) = sprite.params.frame_size in
+  let (x, y) = animate_help sprite in
+  img##src <- js sprite.params.img;
+  context##drawImage_full (img, sx, sy, sw, sh, x, y, sw, sh) 
+
+          sprite.params <- {img; frame_size = (15., 16.);
+                            offset = (0., 0.);};
+          sprite.size <- (15., 16.);
+          sprite.max_frame <- 1;
+          sprite.max_count <- 60*)
 
 let draw_player (context: Html.canvasRenderingContext2D Js.t) character_list = 
   match character_list with
   | [] -> ()
   | h::t -> 
     match h.name with
-    | "lyn" -> draw_lyn context h
+    | "Lyn" -> draw_lyn context h
     | _ -> ()
 
   (* NOTES:
-    1. Front: Left foot = 420 420 and Right foot = 463 419  *)
+    1. Moving Down: Left foot = 420 420 and Right foot = 463 419  *)
 
 (*********************************************************)
 (***************** Menu Drawing Functions ****************)

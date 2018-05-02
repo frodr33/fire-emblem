@@ -49,9 +49,12 @@ type tile = {coordinate : int*int;
 
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|Moving|Attacking|Done
+type direction = North | West | South | East
 type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
               Invalid
+
+
 let input = ref Nothing
 
 (** Represents a map as a whole*)
@@ -88,6 +91,7 @@ type character = {
   ai : ai;
   location: tile;
   movement: tile list;
+  direction: direction;
 }
 
 type map = {width: int;

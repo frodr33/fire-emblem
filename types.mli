@@ -42,6 +42,7 @@ type terrain = Plain | Wall | Throne | Door | Chest of item option | Defence | F
 
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|Moving|Attacking|Done
+type direction = North | West | South | East
 
 (* NOTE: type didnt match the one in the ml *)
 (* type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
@@ -106,6 +107,7 @@ type character = {
      movement: (int * int) list *)
   location: tile;
   movement: tile list;
+  direction: direction;
 }
 
 

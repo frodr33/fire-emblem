@@ -128,8 +128,25 @@ let draw_cursor (context: Html.canvasRenderingContext2D Js.t) tile =
 (*********************************************************)
 (**************** Sprite Drawing Functions ***************)
 (*********************************************************)
-(* let draw_player (context: Html.canvasRenderingContext2D Js.t) state = 
-  failwith "Unimplemented"; *)
+
+let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character = 
+  let img = "Sprites/Lyn.png" in
+  match character.direction with
+  | North -> ()
+  | East -> ()
+  | South -> ()
+  | _ -> () 
+
+let draw_player (context: Html.canvasRenderingContext2D Js.t) character_list = 
+  match character_list with
+  | [] -> ()
+  | h::t -> 
+    match h.name with
+    | "lyn" -> draw_lyn context h
+    | _ -> ()
+
+  (* NOTES:
+    1. Front: Left foot = 420 420 and Right foot = 463 419  *)
 
 (*********************************************************)
 (***************** Menu Drawing Functions ****************)
@@ -246,7 +263,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
   draw_map context state;
   draw_cursor context state.active_tile;
-  (* draw_player context state; *)
+  draw_player context state.player;
   draw_unit_menu context;
   real_time_clock ();
   (* menu_manager context state *)

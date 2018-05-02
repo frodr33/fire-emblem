@@ -2,15 +2,6 @@ open Types
 open State
 open OUnit2
 
-type tile = {coordinate : int*int;
-             ground : terrain;
-             tile_type : Grass}
-
-
-type map = {width: int;
-            length: int;
-            grid: tile array array}
-
 
 let rec print_tile t =
   print_string "(";
@@ -43,25 +34,25 @@ let rec print_arrays s =
 
 
 let gridd = Array.make_matrix 8 8 {coordinate = (0,0);
-                                 ground = Plain}
+                                 ground = Plain; tile_type = Grass}
 
 let init_grid =
   for x = 0 to 7 do
     for y = 0 to 7 do
       gridd.(x).(y) <- {coordinate = (x, y);
-                       ground = Plain; tile_type : Grass}
+                       ground = Plain; tile_type = Grass}
     done
   done
 
 let init_terrain =
   gridd.(3).(2) <- {coordinate = (3, 2);
-                   ground = Forest; tile_type : Grass};
+                   ground = Forest; tile_type = Grass};
   gridd.(1).(4) <- {coordinate = (1, 4);
-                   ground = Forest; tile_type : Grass};
+                   ground = Forest; tile_type = Grass};
   gridd.(3).(5) <- {coordinate = (3, 5);
-                   ground = Forest; tile_type : Grass};
+                   ground = Forest; tile_type = Grass};
   gridd.(4).(5) <- {coordinate = (4, 5);
-                   ground = Forest ; tile_type : Grass}
+                   ground = Forest ; tile_type = Grass}
 
 let test_map = {
   width = 8;
@@ -89,8 +80,8 @@ let m = snd (List.hd step1)*)
 
 
 let valid_moves = dijkstra's_helper [] [] ({coordinate = (3, 4);
-                                            ground = Plain}) 3 test_map
-
+                                            ground = Plain; tile_type = Grass}) 3 test_map
+    (*
 let nc c d =
   let a = c.coordinate in
   let b = d.coordinate in
@@ -98,22 +89,18 @@ let nc c d =
   else if fst a = fst b then -(comp a b)
   else 1
 
-let sorted = List.sort nc valid_moves
+let sorted = List.sort nc valid_moves*)
 
-let lst1 = dijkstra's_helper [] [] ({coordinate = (3, 4); ground = Plain}) 3 test_map
-let lst2 = dijkstra's_helper [] [] ({coordinate = (4, 6); ground = Plain}) 3 test_map
-let lst3 = dijkstra's_helper [] [] ({coordinate = (0, 0); ground = Plain}) 3 test_map
+let lst1 = dijkstra's_helper [] [] ({coordinate = (3, 4); ground = Plain; tile_type = Grass}) 3 test_map
+let lst2 = dijkstra's_helper [] [] ({coordinate = (4, 6); ground = Plain; tile_type = Grass}) 3 test_map
+let lst3 = dijkstra's_helper [] [] ({coordinate = (0, 0); ground = Plain; tile_type = Grass}) 3 test_map
 
-let tests : OUnit2.test list = "test_suite" >:::
+let tests  = "test_suite" >:::
   [
-    "d1" >:: (fun _ -> assert_equal 22 (List.length lst1));
-    "d2" >:: (fun _ -> assert_equal 10 (List.length lst2));
-    "d3" >:: (fun _ -> assert_equal 19 (List.length lst3));
+    "d1" >:: (fun _ -> assert_equal 21 (List.length lst1));
+    "d2" >:: (fun _ -> assert_equal 19 (List.length lst2));
+    "d3" >:: (fun _ -> assert_equal 10 (List.length lst3));
   ]
 
-  let suite =
-    [
-      tests;
-    ]
 
-let _ = run_test_tt_main suite
+let _ = run_test_tt_main tests

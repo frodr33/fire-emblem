@@ -85,7 +85,7 @@ type character = {
   ability : string list;
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;
-  ai : ai option;
+  ai : ai;
   location: tile;
   movement: tile list;
 }
@@ -93,7 +93,7 @@ type character = {
 type map = {width: int;
             length: int;
             grid: tile array array}
-            
+
 (** Represents a list of all player unit locations*)
 type player_locations = (character * tile) list
 (** Representns a list of all enemy unit locations*)

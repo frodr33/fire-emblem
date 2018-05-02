@@ -28,4 +28,4 @@ val remove_item : item list -> item -> item list
 
 val eqp_item : character -> item -> character
 
-val equippable : character -> item -> bool
+(*val equippable : character -> item -> bool*)

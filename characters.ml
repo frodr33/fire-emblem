@@ -137,13 +137,6 @@ let rec remove_item a i =
   |[]   -> failwith "not in inventory"
   |h::t -> if i = h then t else h :: (remove_item t i)
 
-let wlgt a i =
-  match a. with
-  |"a" ->
-
-let equippable a i =
-  if wlgt
-
 let eqp_item a i =
   match a.eqp with
   |None   -> {a with inv = (remove_item a.inv i);

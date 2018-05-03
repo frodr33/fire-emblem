@@ -129,22 +129,27 @@ let draw_cursor (context: Html.canvasRenderingContext2D Js.t) tile =
 (**************** Sprite Drawing Functions ***************)
 (*********************************************************)
 
-let draw_sprite img' context (sx, sy) (sw, sh) (x,y) =
+let testf context = 
   let img = Html.createImg document in
-  img##src <- img';
-  context##drawImage_full (img, sx, sy, sw, sh, 26. *. (float_of_int x), 26. *. (float_of_int y), sw, sh)
+  img##src <- js "Sprites/databackground.png";
+  context##drawImage (img, 0.,0.)
 
+
+let draw_sprite img_src context (sx, sy) (sw, sh) (x,y) =
+  let img = Html.createImg document in
+  img##src <- img_src;
+  context##drawImage_full (img, sx, sy, sw, sh, (26. *. (float_of_int x)) +. 5., 26. *. (float_of_int y), 25., 25.)
 
 
 let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
-  let img = js "Sprites/Lyn.png" in
+  let img = js "Sprites/lynsheet.png" in
   match character.direction with
   | South -> begin
       match character.stage with
       | Ready -> ()
       | Moving ->
         let sprite_coordinate = (420., 420.) in
-        let sprite_wxl = (15., 15.) in
+        let sprite_wxl = (15., 16.) in
         let coordinate = character.location in
         draw_sprite img context sprite_coordinate sprite_wxl coordinate
       | Attacking -> ()
@@ -153,6 +158,8 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
   | East -> ()
   | North -> ()
   | _ -> ()
+
+
 
   (* let animate_on_context context (sprite: sprite)  =
   let img = Html.createImg document in

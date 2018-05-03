@@ -171,7 +171,7 @@ let rec update_character c =
     }
 
 let rec remove_item a i =
-  a.inv.(i) <- None
+  a.inv.(i) <- None;a
 
 let move_to_top a i =
   let temp = a.inv.(0) in

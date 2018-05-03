@@ -345,7 +345,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
       end
     end
-  | _ -> ()
+  | West -> ()
 
 
 let draw_player (context: Html.canvasRenderingContext2D Js.t) character_list =

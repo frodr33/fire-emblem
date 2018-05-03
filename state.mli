@@ -44,4 +44,4 @@ val get_rng : unit -> int
 val init_state : 'json -> state
 
 (**[do' act st] returns the state after an input action [act]*)
-val do' : action -> state -> state
+val do' : state -> state

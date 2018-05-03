@@ -1,3 +1,6 @@
+
+val key_down: bool ref
+
 (** This module handles all of the types that we need for this project*)
 type class' = Paladin | Thief | Mage
 
@@ -61,6 +64,7 @@ type tile_type =
 
 val input : key ref
 
+
 (** Represents one tile on a map*)
 (* type tile = {
    coordinate : int*int;
@@ -71,42 +75,38 @@ val input : key ref
 
 (** Represents a character, its stats and other details*)
 type character = {
-  name : string;
-  stage: status;
-  class' : class';
-  growths : (stat * int) list;
-  caps : (stat * int) list;
-  level : int;
-  exp : int;
-  health : int * int;
-  allegiance : allegiance;
-  str : int;
-  mag : int;
-  def : int;
-  spd : int;
-  res : int;
-
-  skl : int;
-  lck : int;
-  mov : int;
-  con : int;
-  aid : int;
-
-  hit : int;
-  atk : int;
-  crit : int;
-  avoid : int;
-  eqp : int;
+  mutable name : string;
+  mutable stage: status;
+  mutable class' : class';
+  mutable growths : (stat * int) list;
+  mutable caps : (stat * int) list;
+  mutable level : int;
+  mutable exp : int;
+  mutable health : int * int;
+  mutable allegiance : allegiance;
+  mutable str : int;
+  mutable mag : int;
+  mutable def : int;
+  mutable spd : int;
+  mutable res : int;
+  mutable skl : int;
+  mutable lck : int;
+  mutable mov : int;
+  mutable con : int;
+  mutable aid : int;
+  mutable hit : int;
+  mutable atk : int;
+  mutable crit : int;
+  mutable avoid : int;
   inv : item option array;
-  ability : string list;
-  supports : (string * char) list;
-  wlevels : (wtype * char * int) list;
-  ai : ai;
-  (* location: int * int;
-     movement: (int * int) list *)
-  location: int*int;
-  movement: (int*int) list;
-  direction: direction;
+  mutable eqp : int ;
+  mutable ability : string list;
+  mutable supports : (string * char) list;
+  mutable wlevels : (wtype * char * int) list;
+  mutable ai : ai;
+  mutable location: int*int;
+  mutable movement: (int*int) list;
+  mutable direction: direction;
 }
 type tile = {coordinate : int*int;
              ground : terrain;

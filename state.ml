@@ -67,7 +67,35 @@ let in_range_tile a t =
   |Left ->if st.menu_active=true then Invalid else Tleft
   |_ ->Invalid
 *)
+let translate_key st =
+  match !input with
+  |Up -> Tup
+  |Down -> Tdown
+  |Left -> Tleft
+  |Right ->Tright
+  |A -> begin 
+    (* need to map A to proper action, for now only doing current player
+     * and not current player...not sure
+     * is "SelectPlayer" when you click on the player?  *)
+    if st.active_tile.coordinate = (List.hd st.player).location then SelectPlayer
+    else Invalid
+  end
+  |_ -> Invalid
 
+(* Temp function (Frank) wrote to update the active_unit's 
+ * stage field *)
+  let new_active_unit st = 
+    let find_player lst = 
+      List.map (fun chr -> 
+        match st.active_unit with
+        | None -> failwith "??";
+        | Some x -> 
+          if x = chr then 
+            let chr_stage = chr.stage in 
+            let chr_stage' = if chr.stage = Ready then Moving else Ready in
+            {chr with stage = chr_stage'}
+          else x) lst in
+    find_player st.player       
 
   let new_active_tile act st =
     let x = fst(st.active_tile.coordinate) in
@@ -75,7 +103,7 @@ let in_range_tile a t =
     match act with
     |Tup -> if y =0  then st.active_tile else
         st.act_map.grid.(x).(y-1)
-    |Tdown ->if y=(st.act_map.length -1) then st.active_tile else
+    |Tdown ->if y=(st.act_map.length-1) then st.active_tile else
         st.act_map.grid.(x).(y+1)
     |Tleft ->if x = 0 then st.active_tile else   st.act_map.grid.(x-1).(y)
     |Tright ->if x = (st.act_map.width-1) then st.active_tile else
@@ -213,8 +241,13 @@ let init_state j = failwith "asdf"
 
 
 
-let do' act s =
+let do' s =
+  if !key_down = false then
+    let act = translate_key s in
   match act with
   (* OpenTileMenu ->{s with current_menu=tile_menu;menu_active=true;menu_cursor=0} NOTE: OpenTileMenu not defined*)
-  | OpenMenu -> s (* NOTE: temporary *)
-  | _ -> failwith "TODO" (* Just putting this here so it would compile -Frank*)
+  |Tdown|Tright|Tleft|Tup ->let _ = key_down:=true in {s with active_tile = new_active_tile act s}
+  |SelectPlayer -> let _ = key_down:=true in {s with player = (new_active_unit s)}
+  | _-> s(* Just putting this here so it would compile -Frank*)
+  else
+    s

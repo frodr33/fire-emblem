@@ -6,7 +6,34 @@ let rec cap lst s =
   |[]   -> failwith "Nonexistant stat"
   |h::t -> if fst h = s then snd h else cap t s
 
+let lv_to_int a =
+  match a with
+  |'a' -> 4
+  |'b' -> 3
+  |'c' -> 2
+  |'d' -> 1
+  |'e' -> 0
+  |_ -> failwith "invalid weapon level"
 
+let comp a b =
+  (lv_to_int a) >= (lv_to_int b)
+
+let rec prof wlvlst i =
+  match wlvlst with
+  |[]   -> false
+  |(x, y, z)::t -> if i.wtype = x then (if comp y i.level then true else false)
+    else prof t i
+
+let equippable c i =
+  match i.wtype with
+  | Staff | Potion | Key -> false
+  | x -> prof c.wlevels i
+
+let rec equip_id c n =
+  match c.inv.(n) with
+  |None -> if n = 4 then -1 else equip_id c (n+1)
+  |Some x -> if equippable c x then n
+    else if n = 4 then -1 else equip_id c (n+1)
 
 (** [stat_up c s i] is a function that returns a character, [c], with the passed
  *  stat, [s], changed by [i] points. If increasing a stat would push it past
@@ -85,8 +112,8 @@ let level_up c =
  *  requires: [c] and [i] are valid characters and int respectively
 *)
 let update_health (c:character) i =
-  if i > fst c.health then {c with health = 0, snd c.health}
-  else if fst c.health + i > snd c.health then {c with health = (snd c.health, snd c.health)}
+  if i >= fst c.health then {c with health = 0, snd c.health}
+  else if fst c.health - i > snd c.health then {c with health = (snd c.health, snd c.health)}
   else {c with health = (fst c.health - i), snd c.health}
 
 (** [add_item c i] adds an item [i] to [c]'s inventory.
@@ -94,10 +121,17 @@ let update_health (c:character) i =
  *  - [c] is a valid character
     - [i] is a valid item
 *)
-let add_item c i =
-  {c with inv = i :: c.inv}
+let rec add_helper a i n =
+  if n = 5 then () else
+  match a.(n) with
+  |Some x -> add_helper a i (n + 1)
+  |None -> a.(n) <- Some i
 
-let promote = failwith "Unimplemented"
+let add_item c i =
+  add_helper c.inv i 0;
+  c
+
+(*let promote = failwith "Unimplemented"*)
 
 (** [update_character c] updates a characters values to be correct. If the
  *  character has > 100 xp, it will level it up. If the character has too
@@ -110,18 +144,22 @@ let rec update_character c =
   else if fst c.health < 0 then update_character {c with health = (0, snd c.health)}
   else if fst c.health > snd c.health then update_character {c with health = (snd c.health, snd c.health)}
   else
+    let e = equip_id c 0 in
     let calc_hit c =
-      match c.eqp with
+      if e = -1 then 0 else
+      match c.inv.(e) with
       |None -> 0
       |Some x -> x.acc + 2 * c.skl + c.lck
     in
     let calc_atk c =
-      match c.eqp with
+      if e = -1 then 0 else
+      match c.inv.(e) with
       |None -> 0
       |Some x -> if c.class' = Mage then x.mgt + c.mag else x.mgt + c.str
     in
     let calc_crit c =
-      match c.eqp with
+      if e = -1 then 0 else
+      match c.inv.(e) with
       |None -> 0
       |Some x -> x.crit + (c.lck / 2)
     in
@@ -133,13 +171,47 @@ let rec update_character c =
     }
 
 let rec remove_item a i =
-  match a with
-  |[]   -> failwith "not in inventory"
-  |h::t -> if i = h then t else h :: (remove_item t i)
+  a.inv.(i) <- None
 
-let eqp_item a i =
-  match a.eqp with
-  |None   -> {a with inv = (remove_item a.inv i);
-                   eqp = Some i}
-  |Some x -> {a with inv = (x :: (remove_item a.inv i));
-                     eqp = Some i}
+let move_to_top a i =
+  let temp = a.inv.(0) in
+  a.inv.(0) <- a.inv.(i);
+  a.inv.(i) <- temp;
+  update_character a
+
+let make_char n cl grth cps lv xp hp all str mag def spd res skl lck mov con
+    aid inv abl sup wlv ai loc =
+  let c = {
+    name = n;
+    stage = Ready;
+    class' = cl;
+    growths = grth;
+    caps = cps;
+    level = lv;
+    exp = xp;
+    health = hp;
+    allegiance = all;
+    str = str;
+    mag = mag;
+    def = def;
+    spd = spd;
+    res = res;
+    skl = skl;
+    lck = lck;
+    mov = mov;
+    con = con;
+    aid = aid;
+    hit = 0;
+    atk = 0;
+    crit = 0;
+    avoid = 0;
+    inv = Array.make 5 None;
+    ability = abl;
+    supports = sup;
+    wlevels = wlv;
+    ai = ai;
+    location = loc;
+    movement = [];
+    direction = North
+  } in
+  update_character c

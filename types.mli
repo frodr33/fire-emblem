@@ -85,17 +85,19 @@ type character = {
   def : int;
   spd : int;
   res : int;
+
   skl : int;
   lck : int;
   mov : int;
   con : int;
   aid : int;
+
   hit : int;
   atk : int;
   crit : int;
   avoid : int;
-  inv : item list;
-  eqp : item option;
+  eqp : int;
+  inv : item option array;
   ability : string list;
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;

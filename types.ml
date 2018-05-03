@@ -80,8 +80,8 @@ type character = {
   atk : int;
   crit : int;
   avoid : int;
-  inv : item list;
-  eqp : item option;
+  eqp : int;
+  inv : item option array;
   ability : string list;
   supports : (string * char) list;
   wlevels : (wtype * char * int) list;

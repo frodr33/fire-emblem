@@ -11,41 +11,61 @@ let combatQ = Queue.create()
 
 let expQ = Queue.create()
 
+let empty_item = {
+  name  = "";
+  wtype = Sword;
+  mgt = 0;
+  acc = 0;
+  crit = 0;
+  range = 0, 0;
+  uses = 0;
+  cost = 0;
+  sell = 0;
+  level = 'd';
+  users = [];
+  effective = [];
+  penalty = [];
+}
+
+
+
 let empty_character = {
   name = "";
   stage = Ready;
-  class' : class';
-  growths : (stat * int) list;
-  caps : (stat * int) list;
-  level : int;
-  exp : int;
-  health : int * int;
-  allegiance : allegiance;
-  str : int;
-  mag : int;
-  def : int;
-  spd : int;
-  res : int;
-  skl : int;
-  lck : int;
-  mov : int;
-  con : int;
-  aid : int;
-  hit : int;
-  atk : int;
-  crit : int;
-  avoid : int;
-  inv : item list;
-  eqp : item option;
-  ability : string list;
-  supports : (string * char) list;
-  wlevels : (wtype * char * int) list;
-  ai : ai;
-  location: tile;
-  movement: tile list;
+  class' = Paladin;
+  growths = [];
+  caps = [];
+  level = 0;
+  exp = 0;
+  health = 0,0;
+  allegiance = Player;
+  str = 0;
+  mag = 0;
+  def = 0;
+  spd = 0;
+  res = 0;
+  skl = 0;
+  lck = 0;
+  mov = 0;
+  con = 0;
+  aid = 0;
+  hit = 0;
+  atk = 0;
+  crit = 0;
+  avoid = 0;
+  inv = Array.make 5 None;
+  ability = [];
+  supports = [];
+  wlevels = [];
+  ai = BossStay;
+  location = 0, 0;
+  movement = [];
+  direction = North
 }
 
-let i =
+let attacker = ref empty_character
+
+let defender = ref empty_character
 
 let survive (d:character) i =
   i > fst d.health
@@ -57,12 +77,12 @@ let rec penalty_helper (p: (stat * (int * int)) list) (s:stat) =
       penalty_helper t s
 
 let find_penalty a s =
-  match a.eqp with
+  match a.inv.(0) with
   |None -> (0, 0)
   |Some x -> penalty_helper x.penalty s
 
 let damage a d =
-  match a.eqp with
+  match a.inv.(0) with
   | None -> 0
   | Some x ->
     match x.wtype with
@@ -70,12 +90,15 @@ let damage a d =
     |_ -> a.atk - d.def
 
 let item_eqp a =
-  match a.eqp with
+  match a.inv.(0) with
   |None -> false
-  |Some x -> true
+  |Some x -> begin match x.wtype with
+      | Staff | Potion | Key -> false
+      | _ -> true
+    end
 
 let eqp_use a =
-  match a.eqp with
+  match a.inv.(0) with
   |None -> 0
   |Some x -> x.uses
                (*
@@ -85,9 +108,10 @@ let distance a b =
 *)
 let distance a b =
   abs (fst a.location - fst b.location) +
-  abs (snd a.location- snd b.location)
+  abs (snd a.location - snd b.location)
+
 let in_range a d =
-  match a.eqp with
+  match a.inv.(0) with
   |None   -> false
   |Some x -> let l = distance a d in l >= fst x.range && l <= snd x.range
 
@@ -159,49 +183,50 @@ let award_xp t =
 let award_levels t =
   (level_up (fst t), level_up (snd t))
 
-let resolveE a d =
-  if not (item_eqp a) then (a, d)
-  else if (get_rng () + get_rng())/2 > a.hit - d.avoid then begin
-    Queue.add Miss expQ;
-    ({a with eqp = use_eqp a.eqp}, d)
-  end
-  else
-    let new_d =
-      if get_rng () > a.crit - d.lck then update_health d (3 * (damage a d))
-      else update_health d (damage a d) in
-    if fst new_d.health = 0 then
-      Queue.clear combatQ;
-    if fst new_d.health = 0 && a.allegiance = Player then
-      Queue.add Kill expQ;
-    if a.allegiance = Player then
-      Queue.add Hit expQ;
-    ({a with eqp = use_eqp a.eqp}, new_d)
+let resolveE (a : character ref) (d : character ref) =
+  if not (item_eqp !a) then ()
+  else if (get_rng () + get_rng())/2 > !a.hit - !d.avoid then
+    !a.inv.(0) <- (use !a.inv.(0))
+  else (if get_rng () < !a.crit - (!d.lck * 2) then d := update_health !d (3 * (damage !a !d))
+    else d := update_health !d (damage !a !d);
+  if fst !d.health = 0 then
+    Queue.clear combatQ;
+  if fst !d.health = 0 && !a.allegiance = Player then
+    a := (kill_xp !a !d);
+  if !a.allegiance = Player then
+    a := (hit_xp !a !d);
+  !a.inv.(0) <- (use !a.inv.(0)))
 
-let rec resolveQ acc =
-  if Queue.is_empty combatQ then acc else
+let rec resolveQ () =
+  if Queue.is_empty combatQ then () else
     let round = Queue.pop combatQ in
-    resolveQ (resolveE (fst round) (snd round))
+    resolveE (fst round) (snd round);
+    resolveQ ()
 
 let combat a d =
+  attacker := a;
+  defender := d;
   let new_a_speed = a.spd + fst (find_penalty a Spd) in
   let new_d_speed = d.spd + snd (find_penalty d Spd) in
   let double = new_a_speed > new_d_speed + 5 in
   let redouble = new_d_speed > new_a_speed + 5 in
-  Queue.add (a, d) combatQ;
+  Queue.add (attacker, defender) combatQ;
   let counter = in_range a d in
-  if counter then Queue.add (d, a) combatQ;
-  if double then Queue.add (a, d) combatQ
-  else if counter && redouble then Queue.add (d, a) combatQ;
-  (a, d) |> resolveQ |> award_xp |> award_levels
+  if counter then Queue.add (defender, attacker) combatQ;
+  if double then Queue.add (attacker, defender) combatQ
+  else if counter && redouble then Queue.add (defender, attacker) combatQ;
+  resolveQ ();
+  (!attacker |> level_up |> update_character,
+   !defender |> level_up |> update_character)
 
 let remove_item ilst s =
   List.fold_left (fun a v -> if v = s then a else v::a) [] ilst
 
-let rec use_not_eqp ilst s =
-  if s.uses = 1 then remove_item ilst s
-  else List.map (fun a -> if a = s then use a else a) ilst
+let rec use_not_eqp c i =
+  c.inv.(i) <- (use c.inv.(i));
+  c
 
-let heal a t s =
+(*let heal a t s =
   (level_up {a with inv = use_not_eqp a.inv s;
                     exp = a.exp + 12}, (update_health t (- (a.mag + s.mgt))))
 
@@ -220,4 +245,4 @@ let village c t =
   |Village (None) -> failwith "visited village"
   |_ -> failwith "visiting nonvillage"
 
-let trade c1 c2 i1 i2 = failwith "unimplemented"
+  let trade c1 c2 i1 i2 = failwith "unimplemented"*)

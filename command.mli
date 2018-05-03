@@ -12,3 +12,4 @@ open Types
 
 (* [keydown event] registers when a key has been pressed. *)
 val keydown : Dom_html.keyboardEvent Js.t -> bool Js.t
+val keyup: Dom_html.keyboardEvent Js.t -> bool Js.t

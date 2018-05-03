@@ -34,7 +34,7 @@ type state = {
   menu_active: bool;
   menu_cursor: int;
   funds : int;
-} 
+}
 
 val dijkstra's_helper : (tile * int) list -> (int*int) list -> tile -> int -> map -> (int*int) list
 val get_rng : unit -> int
@@ -43,4 +43,4 @@ val get_rng : unit -> int
 val init_state : 'json -> state
 
 (**[do' act st] returns the state after an input action [act]*)
-val do' : action -> state -> state
+val do' : state -> state

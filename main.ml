@@ -67,14 +67,14 @@ let init_state =
     won = false;
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=None};
     active_unit = None;
-    act_map = {width = 0; length = 0; grid = Room.map1.grid};
+    act_map = Room.map1;
     menus = [];
     current_menu = {size = 0; options = []};
     menu_active = false;
     menu_cursor = 0;
     funds = 0;
   }
-
+let state = ref init_state
 (* [main ()] is begins game execution by first building and designing
  * the html page and designing and subsequently calling the REPL to
  * start execution using the game engine *)
@@ -112,10 +112,16 @@ let main () =
   let _ = Html.addEventListener
       document Html.Event.keydown (Html.handler Command.keydown)
       Js._true in
-
+  let _ = Html.addEventListener
+      document Html.Event.keyup (Html.handler Command.keyup)
+      Js._true in
   let game_loop context bol =
     let rec loop () =
+      state := State.do' !state;
+      Gui.draw_state context !state;
+      (*
       Gui.draw_state context init_state;
+*)
       Html.window##requestAnimationFrame(
         Js.wrap_callback (fun (t:float) -> loop ())
       ) |> ignore

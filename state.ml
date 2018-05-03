@@ -1,5 +1,6 @@
 open Types
 
+
 let unit_menu = {size = 6;options = ["Attack";"Item";"Visit";"Open";"Trade";"Wait"]}
 let tile_menu = {size = 4;options = ["Unit";"Status";"Suspend";"End"]}
 let item_menu = {size = 2;options = ["Equip/Use";"Discard"]}
@@ -88,13 +89,12 @@ let translate_key st =
     let find_player lst = 
       List.map (fun chr -> 
         match st.active_unit with
-        | None -> failwith "??";
+        | None -> chr;
         | Some x -> 
           if x = chr then 
-            let chr_stage = chr.stage in 
             let chr_stage' = if chr.stage = Ready then Moving else Ready in
             {chr with stage = chr_stage'}
-          else x) lst in
+          else chr) lst in
     find_player st.player       
 
   let new_active_tile act st =

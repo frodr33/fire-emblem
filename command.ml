@@ -10,8 +10,8 @@ let js = Js.string
 
 let keydown event =
   let () =match event##keyCode with
-      |90 ->input := A
-      |88 ->input := B
+      |90 ->input := A (* Mapped to Z used to select units *)
+      |88 ->input := B (* Mapped to X used to deselect *)
       |13 ->input := Start
       |65 ->input := LT
       |83 ->input := RT

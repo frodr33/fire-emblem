@@ -66,7 +66,7 @@ let init_state =
     allies = [];
     won = false;
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=None};
-    active_unit = None;
+    active_unit = Some temp_character;
     act_map = Room.map1;
     menus = [];
     current_menu = {size = 0; options = []};

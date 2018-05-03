@@ -232,7 +232,10 @@ let dijkstra's c map =
 
 let seed = 10
 
-let get_rng () = Random.int 100
+let get_rng () =
+  let rng = Random.int 100 in
+  print_string ((string_of_int rng) ^ " ");
+  rng
 
 let init_state j = failwith "asdf"
 

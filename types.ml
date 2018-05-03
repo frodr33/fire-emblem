@@ -82,8 +82,8 @@ type character = {
   mutable atk : int;
   mutable crit : int;
   mutable avoid : int;
-  mutable inv : item list;
-  mutable eqp : item option;
+  inv : item option array;
+  mutable eqp : int ;
   mutable ability : string list;
   mutable supports : (string * char) list;
   mutable wlevels : (wtype * char * int) list;

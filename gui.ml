@@ -10,8 +10,9 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
-let clock = ref 0
+let clock = ref 1
 let sync = ref true
+let midattack = ref false
 
 (*********************************************************)
 (***************** Map Drawing Functions *****************)
@@ -93,10 +94,18 @@ let draw_map_9x9 (context: Html.canvasRenderingContext2D Js.t) state =
  * Every 30 "time" units, sync is negated which represents the
  * static movement of the cursor and players *)
 let real_time_clock () =
-  clock := !clock + 1;
-  match !clock mod 30 with
-  | 0 -> sync := not(!sync)
-  | _ -> ()
+  clock := if !clock < 25 then !clock + 1 else 1;
+  let x1 = !clock mod 25 in (* bounds *)
+  let x2 = !clock mod 30 in (* middle for standing *)
+  match x1,x2 with
+  | 0,_ -> sync := not(!sync)
+  | _,0 -> midattack := not(!midattack)
+  | _,_ -> ()
+
+ (*  match !clock mod 5 with
+  | 0 -> midattack := not(!midattack)
+  | 1 -> ()
+ *)
 
 (* [draw_cursor context tile] draws the cursor (big) on the
  * canvas given the integer location defined in tile *)
@@ -138,7 +147,7 @@ let testf context =
 let draw_sprite img_src context (sx, sy) (sw, sh) (x,y) =
   let img = Html.createImg document in
   img##src <- img_src;
-  context##drawImage_full (img, sx, sy, sw, sh, 26. *. (float_of_int x), 26. *. (float_of_int y), 25., 25.)
+  context##drawImage_full (img, sx, sy, sw, sh, x, y, 25., 25.)
 
 
 let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
@@ -147,36 +156,195 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
   | South -> begin
       match character.stage with
       | Ready -> begin
-        match (!sync) with
+        match ((!sync)) with
         | true -> 
             let sprite_coordinate = (417., 400.) in
             let sprite_wxl = (15., 16.) in
-            let coordinate = character.location in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         | false -> 
             let sprite_coordinate = (457., 399.) in
             let sprite_wxl = (15., 16.) in
-            let coordinate = character.location in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end 
       | Moving -> begin
-        match (!sync) with
-        | true -> 
+        match ((!sync)) with
+        | true-> 
             let sprite_coordinate = (463., 419.) in
             let sprite_wxl = (15., 16.) in
-            let coordinate = character.location in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         | false -> 
             let sprite_coordinate = (420., 420.) in
             let sprite_wxl = (15., 16.) in
-            let coordinate = character.location in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end
-      | Attacking -> ()
-      | Done -> ()
+        (* Must finish attacking animation!...fix this so that it guarantees animation will always finish *)
+      | Attacking -> begin
+        match ((!sync)) with
+        | true-> 
+            let sprite_coordinate = (463., 419.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y) +. 6.) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (420., 420.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end
+      | Done -> begin
+        match ((!sync)) with
+        | true -> 
+            let sprite_coordinate = (417., 400.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (457., 399.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+      end
     end
-  | East -> ()
-  | North -> ()
+  | East -> begin
+      match character.stage with
+      | Ready -> begin
+        match ((!sync)) with
+        | true -> 
+            let sprite_coordinate = (417., 400.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (457., 399.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end 
+      | Moving -> begin
+        match ((!sync)) with
+        | true-> 
+            let sprite_coordinate = (418., 442.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (441., 442.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end
+        (* Must finish attacking animation!...fix this so that it guarantees animation will always finish *)
+      | Attacking -> begin
+        match ((!sync)) with
+        | true-> 
+            let sprite_coordinate = (418., 442.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (441., 442.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end
+      | Done -> begin
+        match ((!sync)) with
+        | true -> 
+            let sprite_coordinate = (417., 400.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (457., 399.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+      end
+    end
+  | North -> begin
+      match character.stage with
+      | Ready -> begin
+        match ((!sync)) with
+        | true -> 
+            let sprite_coordinate = (417., 400.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (457., 399.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end 
+      | Moving -> begin
+        match ((!sync)) with
+        | true-> 
+            let sprite_coordinate = (419., 461.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (442., 461.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end
+        (* Must finish attacking animation!...fix this so that it guarantees animation will always finish *)
+      | Attacking -> begin
+        match ((!sync)) with
+        | true-> 
+            let sprite_coordinate = (419., 461.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y) -. 6.) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (442., 461.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end
+      | Done -> begin
+        match ((!sync)) with
+        | true -> 
+            let sprite_coordinate = (417., 400.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (457., 399.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+      end
+    end
   | _ -> ()
 
 

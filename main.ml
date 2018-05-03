@@ -21,7 +21,7 @@ let get_element_by_id id =
 let temp_character =
   {
     name = "Lyn";
-    stage= Ready;
+    stage= Done;
     class' = Paladin;
     growths = [];
     caps = [];
@@ -51,7 +51,7 @@ let temp_character =
     ai = BossHunt;
     location= (5,5);
     movement= [];
-    direction= South;
+    direction= North;
   }
 
 

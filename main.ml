@@ -21,7 +21,7 @@ let get_element_by_id id =
 let temp_character =
   {
     name = "Lyn";
-    stage= Moving;
+    stage= Ready;
     class' = Paladin;
     growths = [];
     caps = [];

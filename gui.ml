@@ -138,7 +138,7 @@ let testf context =
 let draw_sprite img_src context (sx, sy) (sw, sh) (x,y) =
   let img = Html.createImg document in
   img##src <- img_src;
-  context##drawImage_full (img, sx, sy, sw, sh, (26. *. (float_of_int x)) +. 5., 26. *. (float_of_int y), 25., 25.)
+  context##drawImage_full (img, sx, sy, sw, sh, 26. *. (float_of_int x), 26. *. (float_of_int y), 25., 25.)
 
 
 let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
@@ -146,12 +146,32 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
   match character.direction with
   | South -> begin
       match character.stage with
-      | Ready -> ()
-      | Moving ->
-        let sprite_coordinate = (420., 420.) in
-        let sprite_wxl = (15., 16.) in
-        let coordinate = character.location in
-        draw_sprite img context sprite_coordinate sprite_wxl coordinate
+      | Ready -> begin
+        match (!sync) with
+        | true -> 
+            let sprite_coordinate = (417., 400.) in
+            let sprite_wxl = (15., 16.) in
+            let coordinate = character.location in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (457., 399.) in
+            let sprite_wxl = (15., 16.) in
+            let coordinate = character.location in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end 
+      | Moving -> begin
+        match (!sync) with
+        | true -> 
+            let sprite_coordinate = (463., 419.) in
+            let sprite_wxl = (15., 16.) in
+            let coordinate = character.location in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false -> 
+            let sprite_coordinate = (420., 420.) in
+            let sprite_wxl = (15., 16.) in
+            let coordinate = character.location in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end
       | Attacking -> ()
       | Done -> ()
     end
@@ -159,21 +179,6 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
   | North -> ()
   | _ -> ()
 
-
-
-  (* let animate_on_context context (sprite: sprite)  =
-  let img = Html.createImg document in
-  let (sx, sy) = sprite.params.offset in
-  let (sw, sh) = sprite.params.frame_size in
-  let (x, y) = animate_help sprite in
-  img##src <- js sprite.params.img;
-  context##drawImage_full (img, sx, sy, sw, sh, x, y, sw, sh)
-
-          sprite.params <- {img; frame_size = (15., 16.);
-                            offset = (0., 0.);};
-          sprite.size <- (15., 16.);
-          sprite.max_frame <- 1;
-          sprite.max_count <- 60*)
 
 let draw_player (context: Html.canvasRenderingContext2D Js.t) character_list =
   match character_list with

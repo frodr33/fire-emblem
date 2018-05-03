@@ -1,3 +1,5 @@
+
+
 (** This module handles all of the types that we need for this project*)
 type class' = Paladin | Thief | Mage
 
@@ -53,7 +55,7 @@ type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
 
 
 let input = ref Nothing
-
+let key_down = ref false
 (** Represents a map as a whole*)
 (** Represents a character, its stats and other details*)
 type character = {

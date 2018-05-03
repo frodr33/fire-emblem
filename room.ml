@@ -1,6 +1,6 @@
 open Types
 
-
+    (*
 let map1 =
   {
     width = 15;
@@ -10,197 +10,408 @@ let map1 =
 
     (* Top row *)
     [|
-      {coordinate = (26 * 0, 26 * 0); ground = Wall; tile_type = Wall1;c=None};
-      {coordinate = (26 * 1, 26 * 0); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 2, 26 * 0); ground = Wall; tile_type = Wall2;c=None};
-      {coordinate = (26 * 3, 26 * 0); ground = Wall; tile_type = Wall3;c=None};
-      {coordinate = (26 * 4, 26 * 0); ground = Wall; tile_type = Wall4;c=None};
-      {coordinate = (26 * 5, 26 * 0); ground = Forest; tile_type = Tree;c=None};
-      {coordinate = (26 * 6, 26 * 0); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 7, 26 * 0); ground = Peaks; tile_type = Bush;c=None};
-      {coordinate = (26 * 8, 26 * 0); ground = Peaks; tile_type = Bush;c=None};
-      {coordinate = (26 * 9, 26 * 0); ground = Peaks; tile_type = Bush;c=None};
-      {coordinate = (26 * 10, 26 * 0); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 11, 26 * 0); ground = Ocean; tile_type = Water1;c=None};
-      {coordinate = (26 * 12, 26 * 0); ground = Mountain; tile_type = Darkbush;c=None};
-      {coordinate = (26 * 13, 26 * 0); ground = Mountain; tile_type = Darkbush;c=None};
-      {coordinate = (26 * 14, 26 * 0); ground = Mountain; tile_type = Darkbush;c=None};
+      {coordinate = ( 0,  0); ground = Wall; tile_type = Wall1;c=None};
+      {coordinate = ( 1,  0); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 2,  0); ground = Wall; tile_type = Wall2;c=None};
+      {coordinate = ( 3,  0); ground = Wall; tile_type = Wall3;c=None};
+      {coordinate = ( 4,  0); ground = Wall; tile_type = Wall4;c=None};
+      {coordinate = ( 5,  0); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = ( 6,  0); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 7,  0); ground = Peaks; tile_type = Bush;c=None};
+      {coordinate = ( 8,  0); ground = Peaks; tile_type = Bush;c=None};
+      {coordinate = ( 9,  0); ground = Peaks; tile_type = Bush;c=None};
+      {coordinate = ( 10,  0); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 11,  0); ground = Ocean; tile_type = Water1;c=None};
+      {coordinate = ( 12,  0); ground = Mountain; tile_type = Darkbush;c=None};
+      {coordinate = ( 13,  0); ground = Mountain; tile_type = Darkbush;c=None};
+      {coordinate = ( 14,  0); ground = Mountain; tile_type = Darkbush;c=None};
     |];
 
 (* 2nd row *)
     [|
-      {coordinate = (26 * 0, 26 * 1); ground = Wall; tile_type = Wall6;c=None};
-      {coordinate = (26 * 1, 26 * 1); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 2, 26 * 1); ground = Wall; tile_type = Wall6;c=None};
-      {coordinate = (26 * 3, 26 * 1); ground = Wall; tile_type = Wall6;c=None};
-      {coordinate = (26 * 4, 26 * 1); ground = Wall; tile_type = Wall5;c=None};
-      {coordinate = (26 * 5, 26 * 1); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 6, 26 * 1); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 7, 26 * 1); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 8, 26 * 1); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 9, 26 * 1); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 10, 26 * 1); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 11, 26 * 1); ground = Ocean; tile_type = Water2;c=None};
-      {coordinate = (26 * 12, 26 * 1); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 13, 26 * 1); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (26 * 14, 26 * 1); ground = Mountain; tile_type = Darkbush;c=None};
+      {coordinate = ( 0,  1); ground = Wall; tile_type = Wall6;c=None};
+      {coordinate = ( 1,  1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 2,  1); ground = Wall; tile_type = Wall6;c=None};
+      {coordinate = ( 3,  1); ground = Wall; tile_type = Wall6;c=None};
+      {coordinate = ( 4,  1); ground = Wall; tile_type = Wall5;c=None};
+      {coordinate = ( 5,  1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 6,  1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 7,  1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 8,  1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 9,  1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 10,  1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 11,  1); ground = Ocean; tile_type = Water2;c=None};
+      {coordinate = ( 12,  1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 13,  1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 14,  1); ground = Mountain; tile_type = Darkbush;c=None};
   |];
 
 
 (* 3rd row *)
   [|
-    {coordinate = (26 * 0, 26 * 2); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 1, 26 * 2); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 2, 26 * 2); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 3, 26 * 2); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 4, 26 * 2); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 5, 26 * 2); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 6, 26 * 2); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 7, 26 * 2); ground = Wall; tile_type = Crack;c=None};
-    {coordinate = (26 * 8, 26 * 2); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 9, 26 * 2); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 10, 26 * 2); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 11, 26 * 2); ground = Plain; tile_type = Bridge;c=None};
-    {coordinate = (26 * 12, 26 * 2); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 13, 26 * 2); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 14, 26 * 2); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 0,  2); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 1,  2); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 2,  2); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 3,  2); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 4,  2); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 5,  2); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 6,  2); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 7,  2); ground = Wall; tile_type = Crack;c=None};
+    {coordinate = ( 8,  2); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 9,  2); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 10,  2); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 11,  2); ground = Plain; tile_type = Bridge;c=None};
+    {coordinate = ( 12,  2); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 13,  2); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 14,  2); ground = Plain; tile_type = Grass;c=None};
   |];
 
 (* 4th row *)
   [|
-    {coordinate = (26 * 0, 26 * 3); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 1, 26 * 3); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 2, 26 * 3); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 3, 26 * 3); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 4, 26 * 3); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 5, 26 * 3); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 6, 26 * 3); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 7, 26 * 3); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 8, 26 * 3); ground = Wall; tile_type = Crack;c=None};
-    {coordinate = (26 * 9, 26 * 3); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 10, 26 * 3); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 11, 26 * 3); ground = Ocean; tile_type = Water2;c=None};
-    {coordinate = (26 * 12, 26 * 3); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 13, 26 * 3); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 14, 26 * 3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 0,  3); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 1,  3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 2,  3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 3,  3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 4,  3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 5,  3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 6,  3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 7,  3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 8,  3); ground = Wall; tile_type = Crack;c=None};
+    {coordinate = ( 9,  3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 10,  3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 11,  3); ground = Ocean; tile_type = Water2;c=None};
+    {coordinate = ( 12,  3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 13,  3); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 14,  3); ground = Plain; tile_type = Grass;c=None};
   |];
 
 (* 5th row *)
   [|
-    {coordinate = (26 * 0, 26 * 4); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 1, 26 * 4); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 2, 26 * 4); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 3, 26 * 4); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 4, 26 * 4); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 5, 26 * 4); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 6, 26 * 4); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 7, 26 * 4); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 8, 26 * 4); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 9, 26 * 4); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 10, 26 * 4); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 11, 26 * 4); ground = Ocean; tile_type = Water3;c=None};
-    {coordinate = (26 * 12, 26 * 4); ground = Ocean; tile_type = Water4;c=None};
-    {coordinate = (26 * 13, 26 * 4); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 14, 26 * 4); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 0,  4); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 1,  4); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 2,  4); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 3,  4); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 4,  4); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 5,  4); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 6,  4); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 7,  4); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 8,  4); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 9,  4); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 10,  4); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 11,  4); ground = Ocean; tile_type = Water3;c=None};
+    {coordinate = ( 12,  4); ground = Ocean; tile_type = Water4;c=None};
+    {coordinate = ( 13,  4); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 14,  4); ground = Plain; tile_type = Grass;c=None};
   |];
 
 (* 6th row *)
   [|
-    {coordinate = (26 * 0, 26 * 5); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 1, 26 * 5); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 2, 26 * 5); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 3, 26 * 5); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 4, 26 * 5); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 5, 26 * 5); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 6, 26 * 5); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 7, 26 * 5); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 8, 26 * 5); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 9, 26 * 5); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 10, 26 * 5); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 11, 26 * 5); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 12, 26 * 5); ground = Plain; tile_type = Bridge;c=None};
-    {coordinate = (26 * 13, 26 * 5); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 14, 26 * 5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 0,  5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 1,  5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 2,  5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 3,  5); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 4,  5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 5,  5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 6,  5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 7,  5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 8,  5); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 9,  5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 10,  5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 11,  5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 12,  5); ground = Plain; tile_type = Bridge;c=None};
+    {coordinate = ( 13,  5); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 14,  5); ground = Plain; tile_type = Grass;c=None};
   |];
 
 (* 7th row *)
   [|
-    {coordinate = (26 * 0, 26 * 6); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 1, 26 * 6); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 2, 26 * 6); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 3, 26 * 6); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 4, 26 * 6); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 5, 26 * 6); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 6, 26 * 6); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 7, 26 * 6); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 8, 26 * 6); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 9, 26 * 6); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 10, 26 * 6); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 11, 26 * 6); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 12, 26 * 6); ground = Ocean; tile_type = Water3;c=None};
-    {coordinate = (26 * 13, 26 * 6); ground = Ocean; tile_type = Water4;c=None};
-    {coordinate = (26 * 14, 26 * 6); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 0,  6); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 1,  6); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 2,  6); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 3,  6); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 4,  6); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 5,  6); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 6,  6); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 7,  6); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 8,  6); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 9,  6); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 10,  6); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 11,  6); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 12,  6); ground = Ocean; tile_type = Water3;c=None};
+    {coordinate = ( 13,  6); ground = Ocean; tile_type = Water4;c=None};
+    {coordinate = ( 14,  6); ground = Plain; tile_type = Grass;c=None};
   |];
 
 (* 8th row *)
   [|
-    {coordinate = (26 * 0, 26 * 7); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 1, 26 * 7); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 2, 26 * 7); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 3, 26 * 7); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 4, 26 * 7); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 5, 26 * 7); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 6, 26 * 7); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 7, 26 * 7); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 8, 26 * 7); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 9, 26 * 7); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 10, 26 * 7); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 11, 26 * 7); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 12, 26 * 7); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 13, 26 * 7); ground = Ocean; tile_type = Water1;c=None};
-    {coordinate = (26 * 14, 26 * 7); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 0,  7); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 1,  7); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 2,  7); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 3,  7); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 4,  7); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 5,  7); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 6,  7); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 7,  7); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 8,  7); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 9,  7); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 10,  7); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 11,  7); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 12,  7); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 13,  7); ground = Ocean; tile_type = Water1;c=None};
+    {coordinate = ( 14,  7); ground = Plain; tile_type = Grass;c=None};
   |];
 
 (* 9th row *)
   [|
-    {coordinate = (26 * 0, 26 * 8); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 1, 26 * 8); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 2, 26 * 8); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 3, 26 * 8); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 4, 26 * 8); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 5, 26 * 8); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 6, 26 * 8); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 7, 26 * 8); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 8, 26 * 8); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 9, 26 * 8); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 10, 26 * 8); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 11, 26 * 8); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 12, 26 * 8); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 13, 26 * 8); ground = Ocean; tile_type = Water5;c=None};
-    {coordinate = (26 * 14, 26 * 8); ground = Ocean; tile_type = Water6;c=None};
+    {coordinate = ( 0,  8); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 1,  8); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 2,  8); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 3,  8); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 4,  8); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 5,  8); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 6,  8); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 7,  8); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 8,  8); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 9,  8); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 10,  8); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 11,  8); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 12,  8); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 13,  8); ground = Ocean; tile_type = Water5;c=None};
+    {coordinate = ( 14,  8); ground = Ocean; tile_type = Water6;c=None};
   |];
 
 (* 10th row *)
   [|
-    {coordinate = (26 * 0, 26 * 9); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 1, 26 * 9); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 2, 26 * 9); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 3, 26 * 9); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 4, 26 * 9); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 5, 26 * 9); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 6, 26 * 9); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 7, 26 * 9); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 8, 26 * 9); ground = Forest; tile_type = Tree;c=None};
-    {coordinate = (26 * 9, 26 * 9); ground = Plain; tile_type = Grass;c=None};
-    {coordinate = (26 * 10, 26 * 9); ground = Ocean; tile_type = Water8;c=None};
-    {coordinate = (26 * 11, 26 * 9); ground = Ocean; tile_type = Water9;c=None};
-    {coordinate = (26 * 12, 26 * 9); ground = Ocean; tile_type = Water8;c=None};
-    {coordinate = (26 * 13, 26 * 9); ground = Ocean; tile_type = Water7;c=None};
-    {coordinate = (26 * 14, 26 * 9); ground = Ocean; tile_type = Water7;c=None};
+    {coordinate = ( 0,  9); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 1,  9); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 2,  9); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 3,  9); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 4,  9); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 5,  9); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 6,  9); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 7,  9); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 8,  9); ground = Forest; tile_type = Tree;c=None};
+    {coordinate = ( 9,  9); ground = Plain; tile_type = Grass;c=None};
+    {coordinate = ( 10,  9); ground = Ocean; tile_type = Water8;c=None};
+    {coordinate = ( 11,  9); ground = Ocean; tile_type = Water9;c=None};
+    {coordinate = ( 12,  9); ground = Ocean; tile_type = Water8;c=None};
+    {coordinate = ( 13,  9); ground = Ocean; tile_type = Water7;c=None};
+    {coordinate = ( 14,  9); ground = Ocean; tile_type = Water7;c=None};
   |]
 
   |]
   }
+  *)
+
+let map1 = {
+  width = 15;
+  length = 10;
+  grid = [|
+    (*first column*)
+    [|
+      {coordinate = (  0,   0); ground = Wall; tile_type = Wall1;c=None};
+      {coordinate = (  0,   1); ground = Wall; tile_type = Wall6;c=None};
+      {coordinate = (  0,   2); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  0,   3); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  0,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  0,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  0,   6); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  0,   7); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  0,   8); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (0, 9); ground = Plain; tile_type = Grass;c=None};
+    |];
+    (*second column*)
+    [|
+      {coordinate = (  1,   0); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  1,   1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  1,   2); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  1,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  1,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  1,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  1,   6); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  1,   7); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  1,   8); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (1, 9); ground = Forest; tile_type = Tree;c=None};
+    |];
+    (*third column*)
+    [|
+      {coordinate = (  2,   0); ground = Wall; tile_type = Wall2;c=None};
+      {coordinate = (  2,   1); ground = Wall; tile_type = Wall6;c=None};
+      {coordinate = (  2,   2); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  2,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  2,   4); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  2,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  2,   6); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  2,   7); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = ( 2,   8); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (2, 9); ground = Plain; tile_type = Grass;c=None};
+    |];
+
+    (*fourth column*)
+    [|
+      {coordinate = (  3,   0); ground = Wall; tile_type = Wall3;c=None};
+      {coordinate = (  3,   1); ground = Wall; tile_type = Wall6;c=None};
+      {coordinate = (  3,   2); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  3,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  3,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  3,   5); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  3,   6); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  3,   7); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = ( 3, 8); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (3, 9); ground = Plain; tile_type = Grass;c=None};
+    |];
+
+    (*fifth column*)
+    [|
+      {coordinate = (  4,   0); ground = Wall; tile_type = Wall4;c=None};
+      {coordinate = (  4,   1); ground = Wall; tile_type = Wall5;c=None};
+      {coordinate = (  4,   2); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  4,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  4,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  4,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  4,   6); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  4,   7); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (4, 8); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (4, 9); ground = Plain; tile_type = Grass;c=None};
+    |];
+
+    (*sixth column*)
+    [|
+      {coordinate = (  5,   0); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  5,   1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  5,   2); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  5,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  5,   4); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  5,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  5,   6); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  5,   7); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (5, 8); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (5,  9); ground = Plain; tile_type = Grass;c=None};
+    |];
+
+    (*seventh column*)
+    [|
+      {coordinate = (  6,   0); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  6,   1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  6,   2); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  6,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  6,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  6,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  6,   6); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  6,   7); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (6, 8); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (6, 9); ground = Forest; tile_type = Tree;c=None};
+    |];
+    (*eigth column*)
+    [|
+      {coordinate = (  7,   0); ground = Peaks; tile_type = Bush;c=None};
+      {coordinate = (  7,   1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  7,   2); ground = Wall; tile_type = Crack;c=None};
+      {coordinate = (  7,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  7,   4); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  7,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  7,   6); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  7,   7); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (7, 8); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (7, 9); ground = Plain; tile_type = Grass;c=None};
+    |];
+    (*9th column*)
+    [|
+      {coordinate = (  8,   0); ground = Peaks; tile_type = Bush;c=None};
+      {coordinate = (  8,   1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  8,   2); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  8,   3); ground = Wall; tile_type = Crack;c=None};
+      {coordinate = (  8,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  8,   5); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  8,   6); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  8,   7); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (8, 8); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (8, 9); ground = Forest; tile_type = Tree;c=None};
+    |];
+    (*10th column*)
+
+    [|
+      {coordinate = (  9,   0); ground = Peaks; tile_type = Bush;c=None};
+      {coordinate = (  9,   1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  9,   2); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  9,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  9,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  9,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  9,   6); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  9,   7); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (9, 8); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (9, 9); ground = Plain; tile_type = Grass;c=None};
+    |];
+
+    (*11th column*)
+    [|
+      {coordinate = (  10,   0); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  10,   1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  10,   2); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  10,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  10,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  10,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  10,   6); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  10,   7); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (10, 8); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (10, 9); ground = Ocean; tile_type = Water8;c=None};
+    |];
+    (*12th column*)
+    [|
+      {coordinate = (  11,   0); ground = Ocean; tile_type = Water1;c=None};
+        {coordinate = ( 11,  1); ground = Ocean; tile_type = Water2;c=None};
+      {coordinate = (  11,   2); ground = Plain; tile_type = Bridge;c=None};
+      {coordinate = (  11,   3); ground = Ocean; tile_type = Water2;c=None};
+      {coordinate = (  11,   4); ground = Ocean; tile_type = Water3;c=None};
+      {coordinate = (  11,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  11,   6); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  11,   7); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (11, 8); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (11, 9); ground = Ocean; tile_type = Water9;c=None};
+    |];
+
+    (*13th column*)
+    [|
+      {coordinate = (  12,   0); ground = Mountain; tile_type = Darkbush;c=None};
+      {coordinate = (  12,   1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  12,   2); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  12,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  12,   4); ground = Ocean; tile_type = Water4;c=None};
+      {coordinate = (  12,   5); ground = Plain; tile_type = Bridge;c=None};
+      {coordinate = (  12,   6); ground = Ocean; tile_type = Water3;c=None};
+      {coordinate = (  12,   7); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (12, 8); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (12,  9); ground = Ocean; tile_type = Water8;c=None};
+    |];
+    (*14th column*)
+    [|
+      {coordinate = (  13,   0); ground = Mountain; tile_type = Darkbush;c=None};
+      {coordinate = (  13,   1); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  13,   2); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  13,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  13,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  13,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  13,   6); ground = Ocean; tile_type = Water4;c=None};
+      {coordinate = (  13,   7); ground = Ocean; tile_type = Water1;c=None};
+      {coordinate = (13, 8); ground = Ocean; tile_type = Water5;c=None};
+          {coordinate = ( 13,  9); ground = Ocean; tile_type = Water7;c=None};
+    |];
+
+    (*15th column*)
+    [|
+      {coordinate = (  14,   0); ground = Mountain; tile_type = Darkbush;c=None};
+      {coordinate = (  14,   1); ground = Mountain; tile_type = Darkbush;c=None};
+      {coordinate = (  14,   2); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  14,   3); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  14,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  14,   5); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  14,   6); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  14,   7); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (14, 8); ground = Ocean; tile_type = Water6;c=None};
+      {coordinate = ( 14,  9); ground = Ocean; tile_type = Water7;c=None};
+    |]
+  |]
+}
 
 let test =
   {
@@ -209,19 +420,19 @@ let test =
     grid =
       [|
         [|
-          {coordinate = (26 * 0, 26 * 0); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = (26 * 1, 26 * 0); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = (26 * 2, 26 * 0); ground = Plain; tile_type = Grass;c=None};
+          {coordinate = ( 0,  0); ground = Plain; tile_type = Grass;c=None};
+          {coordinate = ( 1,  0); ground = Plain; tile_type = Grass;c=None};
+          {coordinate = ( 2,  0); ground = Plain; tile_type = Grass;c=None};
         |];
         [|
-          {coordinate = (26 * 0, 26 * 1); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = (26 * 1, 26 * 1); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = (26 * 2, 26 * 1); ground = Plain; tile_type = Grass;c=None};
+          {coordinate = ( 0,  1); ground = Plain; tile_type = Grass;c=None};
+          {coordinate = ( 1,  1); ground = Plain; tile_type = Grass;c=None};
+          {coordinate = ( 2,  1); ground = Plain; tile_type = Grass;c=None};
         |];
         [|
-          {coordinate = (26 * 0, 26 * 2); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = (26 * 1, 26 * 2); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = (26 * 2, 26 * 2); ground = Plain; tile_type = Grass;c=None};
+          {coordinate = ( 0,  2); ground = Plain; tile_type = Grass;c=None};
+          {coordinate = ( 1,  2); ground = Plain; tile_type = Grass;c=None};
+          {coordinate = ( 2,  2); ground = Plain; tile_type = Grass;c=None};
         |]
 
       |]

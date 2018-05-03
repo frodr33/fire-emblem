@@ -21,3 +21,6 @@ let keydown event =
       |39 ->input := Right
       |_  ->input := Nothing
   in Js._true
+let keyup event =
+  let () = key_down:=false in
+  Js._true

@@ -1,3 +1,6 @@
+
+val key_down: bool ref
+
 (** This module handles all of the types that we need for this project*)
 type class' = Paladin | Thief | Mage
 
@@ -60,6 +63,7 @@ type tile_type =
 
 
 val input : key ref
+
 
 (** Represents one tile on a map*)
 (* type tile = {

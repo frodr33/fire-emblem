@@ -53,6 +53,7 @@ let empty_character = {
   atk = 0;
   crit = 0;
   avoid = 0;
+  eqp = -1;
   inv = Array.make 5 None;
   ability = [];
   supports = [];

@@ -205,6 +205,7 @@ let make_char n cl grth cps lv xp hp all str mag def spd res skl lck mov con
     atk = 0;
     crit = 0;
     avoid = 0;
+    eqp = -1;
     inv = Array.make 5 None;
     ability = abl;
     supports = sup;

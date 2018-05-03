@@ -222,6 +222,6 @@ let do' s =
   match act with
   (* OpenTileMenu ->{s with current_menu=tile_menu;menu_active=true;menu_cursor=0} NOTE: OpenTileMenu not defined*)
   |Tdown|Tright|Tleft|Tup ->let _ = key_down:=true in {s with active_tile = new_active_tile act s}
-  | _ -> s(* Just putting this here so it would compile -Frank*)
+  | _-> s(* Just putting this here so it would compile -Frank*)
   else
     s

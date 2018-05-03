@@ -55,7 +55,7 @@ type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
 
 
 let input = ref Nothing
-let key_down = ref false
+let key_down = ref true (*set to true b/c it gets rid of 2 step bug in beginning*)
 (** Represents a map as a whole*)
 (** Represents a character, its stats and other details*)
 type character = {

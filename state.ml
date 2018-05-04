@@ -92,7 +92,7 @@ let translate_key st =
         | None -> chr;
         | Some x -> 
           (* if x = chr then  *)
-            let chr_stage' = if chr.stage = Ready then Moving else Ready in
+            let chr_stage' = if chr.stage = Moving then Ready else Moving in
             {chr with stage = chr_stage'}
           (* else chr *)) lst in
     find_player st.player       

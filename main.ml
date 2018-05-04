@@ -51,7 +51,7 @@ let temp_character =
     ai = BossHunt;
     location= (5,5);
     movement= [];
-    direction= North;
+    direction= East;
   }
 
 
@@ -116,6 +116,9 @@ let main () =
   let _ = Html.addEventListener
       document Html.Event.keyup (Html.handler Command.keyup)
       Js._true in
+  (* let event_keydown = get_element_by_id "keydown" in 
+  event_keydown##preventDefault; *)
+
   let game_loop context bol =
     let rec loop () =
       state := State.do' !state;

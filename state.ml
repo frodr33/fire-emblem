@@ -91,10 +91,10 @@ let translate_key st =
         match st.active_unit with
         | None -> chr;
         | Some x -> 
-          if x = chr then 
+          (* if x = chr then  *)
             let chr_stage' = if chr.stage = Ready then Moving else Ready in
             {chr with stage = chr_stage'}
-          else chr) lst in
+          (* else chr *)) lst in
     find_player st.player       
 
   let new_active_tile act st =

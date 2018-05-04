@@ -21,7 +21,7 @@ let get_element_by_id id =
 let temp_character =
   {
     name = "Lyn";
-    stage= Done;
+    stage= Ready;
     class' = Paladin;
     growths = [];
     caps = [];
@@ -74,6 +74,7 @@ let init_state =
     menu_cursor = 0;
     funds = 0;
   }
+
 let state = ref init_state
 (* [main ()] is begins game execution by first building and designing
  * the html page and designing and subsequently calling the REPL to

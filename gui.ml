@@ -83,8 +83,9 @@ let draw_map_9x9 (context: Html.canvasRenderingContext2D Js.t) state =
     done in
    draw_tiles state.act_map.grid
 
-(* let draw_Sprites sprite_list =
-  failwith "bbbbbbbbbbb" *)
+(* let possible_movement_tiles context state = *)
+
+
 
 (*********************************************************)
 (**************** Cursor Drawing Functions ***************)
@@ -101,11 +102,6 @@ let real_time_clock () =
   | 0,_ -> sync := not(!sync)
   | _,0 -> midattack := not(!midattack)
   | _,_ -> ()
-
- (*  match !clock mod 5 with
-  | 0 -> midattack := not(!midattack)
-  | 1 -> ()
- *)
 
 (* [draw_cursor context tile] draws the cursor (big) on the
  * canvas given the integer location defined in tile *)
@@ -138,18 +134,23 @@ let draw_cursor (context: Html.canvasRenderingContext2D Js.t) tile =
 (**************** Sprite Drawing Functions ***************)
 (*********************************************************)
 
+(* [testf context] is a debugging function *)
 let testf context =
   let img = Html.createImg document in
   img##src <- js "Sprites/databackground.png";
   context##drawImage (img, 0.,0.)
 
-
+(* [draw_sprite] draws the sprite located at (sx,sy) with
+ * sw width and sh height inside the spritesheet and 
+ * projects it onto the canvas at location (x,y) *)
 let draw_sprite img_src context (sx, sy) (sw, sh) (x,y) =
   let img = Html.createImg document in
   img##src <- img_src;
   context##drawImage_full (img, sx, sy, sw, sh, x, y, 25., 25.)
 
-
+(* [draw_lyn context character] draws the proper sprite configuration 
+ * for the character lyn based on the character's direction and stage 
+ * fields  *)
 let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
   let img = js "Sprites/lynsheet.png" in
   match character.direction with
@@ -347,7 +348,8 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
     end
   | West -> ()
 
-
+(* [draw_player context character_list] draws all the characters inside
+ * the character_list *)
 let draw_player (context: Html.canvasRenderingContext2D Js.t) character_list =
   match character_list with
   | [] -> ()

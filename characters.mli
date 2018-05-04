@@ -10,6 +10,8 @@ val make_char : string -> class' -> (stat * int) list -> (stat * int) list -> in
   (string * char) list -> (wtype * char * int) list -> ai -> int * int ->
   (int * int) list -> character
 *)
+val equipped : character -> item option
+
 val make_char : string -> class' -> (stat * int) list -> (stat * int) list -> int -> int ->
   int * int -> allegiance -> int -> int -> int -> int -> int -> int -> int ->
   int -> int -> int -> item option list -> string list ->

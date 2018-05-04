@@ -7,6 +7,8 @@ type ability
 
 type combatResolutions = Kill | Hit | Miss
 
+let exp : combatResolutions list ref = ref []
+
 let combatQ = Queue.create()
 
 let expQ = Queue.create()
@@ -77,13 +79,13 @@ let rec penalty_helper (p: (stat * (int * int)) list) (s:stat) =
   |h::t -> if fst h = s then snd h else
       penalty_helper t s
 
-let find_penalty a s =
-  match a.inv.(0) with
+let find_penalty (a: character) (s:stat) :int * int =
+  match equipped a with
   |None -> (0, 0)
   |Some x -> penalty_helper x.penalty s
 
 let damage a d =
-  match a.inv.(0) with
+  match equipped a with
   | None -> 0
   | Some x ->
     match x.wtype with
@@ -91,7 +93,7 @@ let damage a d =
     |_ -> a.atk - d.def
 
 let item_eqp a =
-  match a.inv.(0) with
+  match equipped a with
   |None -> false
   |Some x -> begin match x.wtype with
       | Staff | Potion | Key -> false
@@ -99,7 +101,7 @@ let item_eqp a =
     end
 
 let eqp_use a =
-  match a.inv.(0) with
+  match equipped a with
   |None -> 0
   |Some x -> x.uses
                (*
@@ -112,7 +114,7 @@ let distance a b =
   abs (snd a.location - snd b.location)
 
 let in_range a d =
-  match a.inv.(0) with
+  match equipped a with
   |None   -> false
   |Some x -> let l = distance a d in l >= fst x.range && l <= snd x.range
 
@@ -123,7 +125,7 @@ let kill_xp a d =
     | 3 -> {a with exp = a.exp + 80}
     | 4 -> {a with exp = a.exp + 70}
     | x -> if x > 4 then {a with exp = a.exp + 60}
-      else {a with exp = a.exp + 100}
+      else  {a with exp = a.exp + 100}
   else
     match a.level - d.level with
     | -4 -> {a with exp = a.exp + 60}
@@ -171,32 +173,33 @@ let comp_outcome a t =
 let find_player_character t =
   if (fst t).allegiance = Player then fst t else snd t
 
-let award_xp t =
-  let outcome = Queue.fold comp_outcome Miss expQ in
-  Queue.clear expQ;
-  match outcome, t with
-  |Kill, (a, d) -> if (fst t).allegiance = Player then
-      (kill_xp (fst t) (snd t), snd t) else (fst t, kill_xp (snd t) (fst t))
-  |Hit, (a, d) -> if (fst t).allegiance = Player then
-      (hit_xp (fst t) (snd t), snd t) else (fst t, hit_xp (snd t) (fst t))
-  |Miss, _ -> t
+let award_xp () =
+  let outcome = List.fold_left (fun a v -> comp_outcome a v) Miss !exp in
+  let a = attacker in
+  let d = defender in
+  match outcome with
+  |Kill -> if !a.allegiance = Player then
+      a := kill_xp !a !d else d := kill_xp !d !a
+  |Hit -> if !a.allegiance = Player then
+      a := hit_xp !a !d else d := hit_xp !d !a
+  |Miss -> ()
 
 let award_levels t =
   (level_up (fst t), level_up (snd t))
 
 let resolveE (a : character ref) (d : character ref) =
-  if not (item_eqp !a) then ()
+  if (!a.eqp = -1) then ()
   else if (get_rng () + get_rng())/2 > !a.hit - !d.avoid then
-    !a.inv.(0) <- (use !a.inv.(0))
+    !a.inv.(!a.eqp) <- (use (!a.inv.(!a.eqp)))
   else (if get_rng () < !a.crit - (!d.lck * 2) then d := update_health !d (3 * (damage !a !d))
-    else d := update_health !d (damage !a !d);
-  if fst !d.health = 0 then
+        else d := update_health !d (damage !a !d));
+  if fst !d.health = 0 || fst !a.health = 0 then
     Queue.clear combatQ;
   if fst !d.health = 0 && !a.allegiance = Player then
-    a := (kill_xp !a !d);
-  if !a.allegiance = Player then
-    a := (hit_xp !a !d);
-  !a.inv.(0) <- (use !a.inv.(0)))
+    exp := (Kill :: !exp);
+  if fst !d.health != 0 && !a.allegiance = Player then
+    exp := (Hit :: !exp);
+  !a.inv.(!a.eqp) <- (use (!a.inv.(!a.eqp)))
 
 let rec resolveQ () =
   if Queue.is_empty combatQ then () else
@@ -207,16 +210,19 @@ let rec resolveQ () =
 let combat a d =
   attacker := a;
   defender := d;
-  let new_a_speed = a.spd + fst (find_penalty a Spd) in
-  let new_d_speed = d.spd + snd (find_penalty d Spd) in
-  let double = new_a_speed > new_d_speed + 5 in
-  let redouble = new_d_speed > new_a_speed + 5 in
+  let new_a_speed_atk = a.spd + fst (find_penalty a Spd) in
+  let new_a_speed_def = a.spd + snd (find_penalty a Spd) in
+  let new_d_speed_atk = d.spd + fst (find_penalty d Spd) in
+  let new_d_speed_def = d.spd + snd (find_penalty d Spd) in
+  let double = new_a_speed_atk > new_d_speed_def + 5 in
+  let redouble = new_d_speed_atk > new_a_speed_def + 5 in
   Queue.add (attacker, defender) combatQ;
-  let counter = in_range a d in
+  let counter = in_range d a in
   if counter then Queue.add (defender, attacker) combatQ;
   if double then Queue.add (attacker, defender) combatQ
   else if counter && redouble then Queue.add (defender, attacker) combatQ;
   resolveQ ();
+  award_xp ();
   (!attacker |> level_up |> update_character,
    !defender |> level_up |> update_character)
 

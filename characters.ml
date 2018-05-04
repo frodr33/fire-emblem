@@ -6,6 +6,9 @@ let rec cap lst s =
   |[]   -> failwith "Nonexistant stat"
   |h::t -> if fst h = s then snd h else cap t s
 
+let equipped c =
+  if c.eqp = -1 then None else (c.inv.(c.eqp))
+
 let lv_to_int a =
   match a with
   |'a' -> 4
@@ -103,7 +106,8 @@ let rec level_up_h c g =
  *  requires: [c] is a valid character
 *)
 let level_up c =
-  if c.exp > 100 then {(level_up_h c c.growths) with exp = c.exp - 100}
+  if c.exp >= 100 then {(level_up_h c c.growths) with exp = c.exp - 100;
+                                                      level = c.level + 1}
   else c
 
 (** [update_health c i] returns [c] with its health lowered by [i]. If [c]'s
@@ -167,7 +171,8 @@ let rec update_character c =
     {c with hit = calc_hit c;
             atk = calc_atk c;
             crit = calc_crit c;
-            avoid = calc_avoid c
+            avoid = calc_avoid c;
+            eqp = e
     }
 
 let rec remove_item a i =

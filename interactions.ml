@@ -11,8 +11,6 @@ let exp : combatResolutions list ref = ref []
 
 let combatQ = Queue.create()
 
-let expQ = Queue.create()
-
 let empty_item = {
   name  = "";
   wtype = Sword;

@@ -27,8 +27,6 @@ let empty_item = {
   penalty = [];
 }
 
-
-
 let empty_character = {
   name = "";
   stage = Ready;
@@ -231,18 +229,31 @@ let rec use_not_eqp c i =
   c.inv.(i) <- (use c.inv.(i));
   c
 
-(*let heal a t s =
-  (level_up {a with inv = use_not_eqp a.inv s;
-                    exp = a.exp + 12}, (update_health t (- (a.mag + s.mgt))))
+let heal a t i =
+  match a.inv.(i) with
+  |None -> failwith "No staff"
+  |Some x ->
+    let heal_amount = - (a.mag + x.mgt) in
+  a.inv.(i) <- use a.inv.(i);
+  (level_up {a with exp = a.exp + 12}, (update_health t heal_amount))
+
 
 let consumable a i =
-  update_health {a with inv = use_not_eqp a.inv i} (- i.mgt)
+  match a.inv.(i) with
+  |None -> failwith "No item"
+  |Some x -> let heal_amount = -(x.mgt) in
+    a.inv.(i) <- use a.inv.(i);
+    update_health a heal_amount
 
 let chest c t i =
   match t with
-  |Chest (Some x) -> {(add_item c x) with inv = use_not_eqp c.inv i}
+  |Chest (Some x) -> c.inv.(i) <- use c.inv.(i); add_item c x
   |Chest (None) -> failwith "empty chest"
   |_ -> failwith "Opening nonchest"
+
+let door c t i =
+  if t = Door then c.inv.(i) <- use c.inv.(i)
+
 
 let village c t =
   match t with
@@ -250,4 +261,4 @@ let village c t =
   |Village (None) -> failwith "visited village"
   |_ -> failwith "visiting nonvillage"
 
-  let trade c1 c2 i1 i2 = failwith "unimplemented"*)
+let trade c1 c2 i1 i2 = failwith "unimplemented"

@@ -1,9 +1,9 @@
 open Types
 
 
-let unit_menu = {size = 6;options = ["Attack";"Item";"Visit";"Open";"Trade";"Wait"]}
-let tile_menu = {size = 4;options = ["Unit";"Status";"Suspend";"End"]}
-let item_menu = {size = 2;options = ["Equip/Use";"Discard"]}
+let unit_menu = {size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
+let tile_menu = {size = 4;options = [|"Unit";"Status";"Suspend";"End"|]}
+let item_menu = {size = 2;options = [|"Equip/Use";"Discard"|]}
 type state = {
   player: character list;
   items : item list;
@@ -30,26 +30,26 @@ let check_player_loc st =
 
 let check_enemy_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
-
+*)
 let check_ally_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
 
 let distance_tile a (t:tile) =
-  abs (fst a.location.coordinate - fst t.coordinate) +
-  abs (snd a.location.coordinate - snd t.coordinate)
+  abs (fst a.location - fst t.coordinate) +
+  abs (snd a.location- snd t.coordinate)
 
 let in_range_tile a t =
-  match a.eqp with
+  match a.inv.(a.eqp) with
   |None   -> false
   |Some x -> let l = distance_tile a t in l >= fst x.range && l <= snd x.range
-*)
+
 (*let translate_key st =
   match !input with
   |A ->if st.menu_active = true then SelectMOption else
      begin   match st.active_unit with
       |Some c ->(
           match c.stage with
-          |Moving ->if List.exists (fun t -> t.coordinate=st.active_tile.coordinate) c.movement
+          |MoveSelect ->if List.exists (fun t -> t.coordinate=st.active_tile.coordinate) c.movement
             then SelectMoveTile else Invalid
           |Attacking -> if in_range_tile c st.active_tile &&check_enemy_loc then
               SelectAttackTile else Invalid
@@ -69,6 +69,9 @@ let in_range_tile a t =
   |_ ->Invalid
 *)
 let translate_key st =
+  if !attacking= true then Invalid else
+
+    begin
   let old = !input in let _ = input := Nothing in
   match old with
   |Up -> Tup
@@ -76,27 +79,53 @@ let translate_key st =
   |Left -> Tleft
   |Right ->Tright
   |A -> begin
-    (* need to map A to proper action, for now only doing current player
-     * and not current player...not sure
-     * is "SelectPlayer" when you click on the player?  *)
-    if st.active_tile.coordinate = (List.hd st.player).location then SelectPlayer
-    else Invalid
+      if st.menu_active = true then SelectMOption else
+        begin match st.active_unit with
+          |Some c -> begin
+              match c.stage with
+              |Ready -> SelectPlayer
+              |MoveSelect-> SelectMoveTile
+              |MoveDone->SelectAttackTile
+              |Done -> SelectAttackTile
+              |_ -> SelectAttackTile
+            end
+          |None -> SelectPlayer
+        end
   end
   |_ -> Invalid
-
+end
 (* Temp function (Frank) wrote to update the active_unit's
  * stage field *)
-  let new_active_unit st =
+       let new_active_unit st =
     let find_player lst =
       List.map (fun chr ->
         match st.active_unit with
         | None -> chr;
         | Some x ->
           (* if x = chr then  *)
-            let chr_stage' = if chr.stage = Moving then Ready else Moving in
+            let chr_stage' = if chr.stage = MoveSelect then Ready else MoveSelect in
             {chr with stage = chr_stage'}
           (* else chr *)) lst in
     find_player st.player
+
+
+let new_active_unit_st st c=
+  let new_player_list = List.filter (fun x -> x<>c) st.player in
+  let new_c = c.stage<-MoveSelect;c  in
+  {st with player=new_player_list;active_unit= Some new_c}
+    (*Filler function to allow us to keep testing attack animation*)
+let set_next_stage c =
+  match c with
+  |Some x -> begin
+      match x.stage with
+      |Ready -> Some (x.stage<-MoveSelect;x)
+      |MoveSelect -> Some (x.stage<-MoveDone;x)
+      |MoveDone -> Some (x.stage <-Done;x)
+      |Done -> Some x
+      |_ -> Some x
+    end
+  |None -> c
+
 
   let new_active_tile act st =
     let x = fst(st.active_tile.coordinate) in
@@ -243,9 +272,14 @@ let init_state j = failwith "asdf"
 
 
 let do' s =
+<<<<<<< HEAD
   let act = translate_key s in
+=======
+    let act = translate_key s in
+>>>>>>> d106fde04c16587760bf23ba11dd891eab8234e8
   match act with
-  (* OpenTileMenu ->{s with current_menu=tile_menu;menu_active=true;menu_cursor=0} NOTE: OpenTileMenu not defined*)
+  |OpenMenu -> let _ = input:=Nothing in {s with menu_active=true;current_menu = tile_menu}
   |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
-  |SelectPlayer ->  {s with player = (new_active_unit s)}
-  |_-> s(* Just putting this here so it would compile -Frank*)
+  |SelectPlayer -> let _ = input:= Nothing in s
+  |SelectAttackTile -> let _ = input:=Nothing;attacking:=true in {s with active_unit = set_next_stage s.active_unit}
+  |_-> let _ =input:= Nothing in s(* Just putting this here so it would compile -Frank*)

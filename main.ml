@@ -21,7 +21,7 @@ let get_element_by_id id =
 let temp_character =
   {
     name = "Lyn";
-    stage= Ready;
+    stage= MoveDone;
     class' = Paladin;
     growths = [];
     caps = [];
@@ -69,7 +69,7 @@ let init_state =
     active_unit = Some temp_character;
     act_map = Room.map1;
     menus = [];
-    current_menu = {size = 0; options = []};
+    current_menu = {size = 0; options = [||]};
     menu_active = false;
     menu_cursor = 0;
     funds = 0;

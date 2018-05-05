@@ -1,5 +1,5 @@
 
-val key_down: bool ref
+
 
 (** This module handles all of the types that we need for this project*)
 type class' = Paladin | Thief | Mage

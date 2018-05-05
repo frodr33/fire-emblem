@@ -113,10 +113,10 @@ let main () =
   let _ = Html.addEventListener
       document Html.Event.keydown (Html.handler Command.keydown)
       Js._true in
-  let _ = Html.addEventListener
+  (*  let _ = Html.addEventListener
       document Html.Event.keyup (Html.handler Command.keyup)
-      Js._true in
-  (* let event_keydown = get_element_by_id "keydown" in 
+      Js._true in*)
+  (* let event_keydown = get_element_by_id "keydown" in
   event_keydown##preventDefault; *)
 
   let game_loop context bol =

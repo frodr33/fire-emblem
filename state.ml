@@ -243,8 +243,7 @@ let init_state j = failwith "asdf"
 
 
 let do' s =
-
-    let act = translate_key s in
+  let act = translate_key s in
   match act with
   (* OpenTileMenu ->{s with current_menu=tile_menu;menu_active=true;menu_cursor=0} NOTE: OpenTileMenu not defined*)
   |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}

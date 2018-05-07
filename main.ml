@@ -51,7 +51,7 @@ let temp_character =
     ai = BossHunt;
     location= (5,5);
     movement= [];
-    direction= East;
+    direction= South;
   }
 
 

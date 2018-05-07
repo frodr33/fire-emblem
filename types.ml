@@ -9,7 +9,7 @@ type wtype = Sword | Tome | Staff | Potion | Key
 (** Represents the names of possible AI types*)
 type ai = BossStay | BossHunt
 
-type menu = {size:int;options:string list}
+type menu = {size:int;options:string array}
 
 type allegiance = Player | Enemy | Allied
 
@@ -47,7 +47,7 @@ type tile_type =
 
 
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
-type status = Ready|Moving|Attacking|Done
+type status =  Ready|MoveSelect|MoveDone|AttackSelect|TradeSelect|Done
 type direction = North | West | South | East
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
@@ -55,7 +55,8 @@ type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
 
 
 let input = ref Nothing
-let key_down = ref true (*set to true b/c it gets rid of 2 step bug in beginning*)
+let attacking = ref false
+let moved_forward = ref false
 (** Represents a map as a whole*)
 (** Represents a character, its stats and other details*)
 type character = {

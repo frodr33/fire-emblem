@@ -1,0 +1,8 @@
+-Changed variant for stage of characters
+-No more "moving" or "attacking" phase, the possible stages are Ready|MoveSelect|MoveDone|AttackSelect|TradeSelect|Done
+-When a player selects a tile to attack, their stage is changed to "Done" and the attack animation plays
+-I changed the draw function for Lyn to reflect the change. For Done, whether it draws the attack or
+just the idle animation, depends on the "attacking" global variable.
+-Haven't dealt with trade yet.
+-Bug in animation where it either takes 2 or 3 frames depending on if
+sync = true or false when you start the animation. 

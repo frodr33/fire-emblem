@@ -21,7 +21,7 @@ let get_element_by_id id =
 let temp_character =
   {
     name = "Lyn";
-    stage= Ready;
+    stage= MoveDone;
     class' = Paladin;
     growths = [];
     caps = [];
@@ -69,7 +69,7 @@ let init_state =
     active_unit = Some temp_character;
     act_map = Room.map1;
     menus = [];
-    current_menu = {size = 0; options = []};
+    current_menu = {size = 0; options = [||]};
     menu_active = false;
     menu_cursor = 0;
     funds = 0;
@@ -113,10 +113,10 @@ let main () =
   let _ = Html.addEventListener
       document Html.Event.keydown (Html.handler Command.keydown)
       Js._true in
-  let _ = Html.addEventListener
+  (*  let _ = Html.addEventListener
       document Html.Event.keyup (Html.handler Command.keyup)
-      Js._true in
-  (* let event_keydown = get_element_by_id "keydown" in 
+      Js._true in*)
+  (* let event_keydown = get_element_by_id "keydown" in
   event_keydown##preventDefault; *)
 
   let game_loop context bol =

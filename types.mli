@@ -1,5 +1,5 @@
 
-val key_down: bool ref
+
 
 (** This module handles all of the types that we need for this project*)
 type class' = Paladin | Thief | Mage
@@ -12,7 +12,7 @@ type ai = BossStay | BossHunt
 
 (* Old Menu...didnt match ml *)
 (* type menu = string list *)
-type menu =  {size:int;options:string list}
+type menu =  {size:int;options:string array}
 
 type allegiance = Player | Enemy | Allied
 
@@ -44,15 +44,21 @@ type terrain = Plain | Wall | Throne | Door | Chest of item option | Defence | F
 
 
 type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
-type status = Ready|Moving|Attacking|Done
+type status = Ready|MoveSelect|MoveDone|AttackSelect|TradeSelect|Done
 type direction = North | West | South | East
 
 (* NOTE: type didnt match the one in the ml *)
 (* type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectTile|SelectPlayer|SelectEnemy *)
-              type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
-                            SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
-                            Invalid
+<<<<<<< HEAD
+type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
+              SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
+              Invalid
+=======
+  type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
+        SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
+        Invalid
+>>>>>>> d106fde04c16587760bf23ba11dd891eab8234e8
 
 
 type tile_type =
@@ -63,8 +69,8 @@ type tile_type =
 
 
 val input : key ref
-
-
+val attacking: bool ref
+val moved_forward: bool ref
 (** Represents one tile on a map*)
 (* type tile = {
    coordinate : int*int;

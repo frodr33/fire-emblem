@@ -21,20 +21,20 @@ open State
   * that details how much each player heals. Generally the healer doesnt heal
   * but with some skills maybe both targets will heal. Its just there in case.*)
 
-  val heal : character -> character -> item -> character * character
+  val heal : character -> character -> int -> character * character
 
 (** consumable takes a character and returns that character with its stats
  *  accordingly.*)
 
-  val consumable : character -> item -> character
+  val consumable : character -> int -> character
 
   (** loot a chest.*)
 
-  val chest : character -> terrain -> character
+  val chest : character -> terrain -> int -> character
 
   (** open a door.*)
 
-  val door : character -> terrain -> character
+  val door : character -> terrain -> int -> unit
 
   (** visits a village*)
 

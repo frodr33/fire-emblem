@@ -141,22 +141,22 @@ let testf context =
   context##drawImage (img, 0.,0.)
 
 (* [draw_sprite] draws the sprite located at (sx,sy) with
- * sw width and sh height inside the spritesheet and 
+ * sw width and sh height inside the spritesheet and
  * projects it onto the canvas at location (x,y) *)
 let draw_sprite img_src context (sx, sy) (sw, sh) (x,y) =
   let img = Html.createImg document in
   img##src <- img_src;
   context##drawImage_full (img, sx, sy, sw, sh, x, y, 25., 25.)
 
-(* [draw_lyn context character] draws the proper sprite configuration 
- * for the character lyn based on the character's direction and stage 
+(* [draw_lyn context character] draws the proper sprite configuration
+ * for the character lyn based on the character's direction and stage
  * fields  *)
 let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
   let img = js "Sprites/lynsheet.png" in
   match character.direction with
   | South -> begin
       match character.stage with
-      | Ready -> begin
+      | Ready|MoveDone|AttackSelect|TradeSelect|AttackSelect|TradeSelect -> begin
         match ((!sync)) with
         | true ->
             let sprite_coordinate = (417., 400.) in
@@ -171,7 +171,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end
-      | Moving -> begin
+      | MoveSelect -> begin
         match ((!sync)) with
         | true->
             let sprite_coordinate = (463., 419.) in
@@ -187,22 +187,24 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end
         (* Must finish attacking animation!...fix this so that it guarantees animation will always finish *)
-      | Attacking -> begin
+      | Done when !attacking=true-> begin
         match ((!sync)) with
         | true->
             let sprite_coordinate = (463., 419.) in
             let sprite_wxl = (15., 16.) in
             let (x,y) = character.location in
             let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y) +. 6.) in
-            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;moved_forward:=true
+
         | false ->
             let sprite_coordinate = (420., 420.) in
             let sprite_wxl = (15., 16.) in
             let (x,y) = character.location in
             let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y)) in
-            draw_sprite img context sprite_coordinate sprite_wxl coordinate
-        end
-      | Done -> begin
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;if !moved_forward = true then
+              (moved_forward:=false;attacking:=false) else ()
+      end
+      | Done when !attacking=false -> begin
         match ((!sync)) with
         | true ->
             let sprite_coordinate = (417., 400.) in
@@ -217,10 +219,11 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
       end
+      |Done -> ()
     end
   | East -> begin
       match character.stage with
-      | Ready -> begin
+      | Ready|MoveDone|AttackSelect|TradeSelect -> begin
         match ((!sync)) with
         | true ->
             let sprite_coordinate = (417., 400.) in
@@ -235,7 +238,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end
-      | Moving -> begin
+      | MoveSelect -> begin
         match ((!sync)) with
         | true->
             let sprite_coordinate = (418., 442.) in
@@ -250,23 +253,25 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end
-        (* Must finish attacking animation!...fix this so that it guarantees animation will always finish *)
-      | Attacking -> begin
+(* If you start the attack animation when sync = true,the attack animation
+will take 2 frames. When sync = false, the attack animation will take 3 frames. *)
+      | Done when !attacking = true ->begin
         match ((!sync)) with
         | true->
             let sprite_coordinate = (418., 442.) in
             let sprite_wxl = (16., 16.) in
             let (x,y) = character.location in
             let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y)) in
-            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;moved_forward:=true
         | false ->
             let sprite_coordinate = (441., 442.) in
             let sprite_wxl = (16., 16.) in
             let (x,y) = character.location in
             let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
-            draw_sprite img context sprite_coordinate sprite_wxl coordinate
-        end
-      | Done -> begin
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;if !moved_forward = true then
+              (moved_forward:=false;attacking:=false) else ()
+      end
+      | Done when !attacking = false-> begin
         match ((!sync)) with
         | true ->
             let sprite_coordinate = (417., 400.) in
@@ -281,10 +286,11 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
       end
+      |Done -> ()
     end
   | North -> begin
       match character.stage with
-      | Ready -> begin
+      | Ready|MoveDone|AttackSelect|TradeSelect -> begin
         match ((!sync)) with
         | true ->
             let sprite_coordinate = (417., 400.) in
@@ -299,7 +305,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end
-      | Moving -> begin
+      | MoveSelect -> begin
         match ((!sync)) with
         | true->
             let sprite_coordinate = (419., 461.) in
@@ -315,22 +321,23 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end
         (* Must finish attacking animation!...fix this so that it guarantees animation will always finish *)
-      | Attacking -> begin
+      | Done when !attacking = true-> begin
         match ((!sync)) with
         | true->
             let sprite_coordinate = (419., 461.) in
             let sprite_wxl = (16., 16.) in
             let (x,y) = character.location in
             let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y) -. 6.) in
-            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;moved_forward:=true
         | false ->
             let sprite_coordinate = (442., 461.) in
             let sprite_wxl = (16., 16.) in
             let (x,y) = character.location in
             let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
-            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;if !moved_forward = true then
+              (moved_forward:=false;attacking:=false) else ()
         end
-      | Done -> begin
+      | Done when !attacking = false-> begin
         match ((!sync)) with
         | true ->
             let sprite_coordinate = (417., 400.) in
@@ -345,8 +352,10 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
       end
+      |Done -> ()
     end
   | West -> ()
+
 
 (* [draw_player context character_list] draws all the characters inside
  * the character_list *)

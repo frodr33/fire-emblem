@@ -4,6 +4,7 @@
 #mod_use "items.ml";;
 #use "interactions.ml";;
 let i = make_item "iron sword" Sword 4 90 0 (1,1) 45 460 46 'd' [] [] [(Spd, (0, 0))];;
-let c1 = make_char "attack_faster" Paladin [] [] 1 0 (60, 60) Player 21 2 7 22 7 8 9 8 12 16 [] [] [] [(Sword, 'a', 0)] BossHunt (1, 0);;
+let s = make_item "staff of destiny" Staff 4 100 0 (1,1) 30 520 65 'd' [] [] [];;
+let c1 = make_char "attack_faster" Paladin [] [] 1 0 (60, 60) Player 21 2 7 22 7 8 9 8 12 16 [] [] [] [(Sword, 'a', 0); (Staff, 'd', 0)] BossHunt (1, 0);;
 let c1 = add_item c1 i; update_character c1;;
 let c2 = make_char "attack_faster" Paladin [] [] 1 0 (30, 30) Player 10 2 7 12 7 8 9 8 12 16 [] [] [] [] BossHunt (0, 0) ;;

@@ -120,13 +120,15 @@ let update_health (c:character) i =
   else if fst c.health - i > snd c.health then {c with health = (snd c.health, snd c.health)}
   else {c with health = (fst c.health - i), snd c.health}
 
+
+let discard_item a = failwith "unimplemented"
 (** [add_item c i] adds an item [i] to [c]'s inventory.
  *  requires:
  *  - [c] is a valid character
     - [i] is a valid item
 *)
 let rec add_helper a i n =
-  if n = 5 then () else
+  if n = 5 then discard_item a else
   match a.(n) with
   |Some x -> add_helper a i (n + 1)
   |None -> a.(n) <- Some i

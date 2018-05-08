@@ -459,7 +459,7 @@ let draw_text_7 context str_arr =
   context##strokeRect (280., 26. ,110.,186.);
   let position = ref 50. in
   for i = 0 to Array.length str_arr - 1 do
-    context##strokeText (js str_arr.(i), 295., !position);
+    context##strokeText (js str_arr.(i), 300., !position);
     position := !position +. 25.
   done
 
@@ -563,6 +563,30 @@ let rec draw_healthbar context chr_list =
     draw_health context health max_health x' y';
     draw_healthbar context t
 
+
+(*********************************************************)
+(****************** Draw Arrow Functions *****************)
+(*********************************************************)
+
+
+let draw_menu_arrow context state = 
+  let img = Html.createImg document in
+  img##src <- js "Sprites/arrow.png";
+  if state.menu_active then
+    match state.menu_cursor with
+    | 0 -> context##drawImage (img, 271. ,32.)
+    | 1 -> context##drawImage (img, 271. ,58.)
+    | 2 -> context##drawImage (img, 271. ,84.)
+    | 3 -> context##drawImage (img, 271. ,110.)
+    | 4 -> context##drawImage (img, 271. ,136.)
+    | 5 -> context##drawImage (img, 271. ,162.)
+    | 6 -> context##drawImage (img, 271. ,188.)
+    | 7 -> context##drawImage (img, 271. ,214.)
+    | _ -> ()
+  else ()
+
+
+
 (*********************************************************)
 (****************** Draw State Functions *****************)
 (*********************************************************)
@@ -580,7 +604,8 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_cursor context state.active_tile;
   draw_player context state.player;
   (* draw_tile_menu context; *)
-  (* menu_manager context state; *)
+  menu_manager context state;
+  draw_menu_arrow context state;
   draw_healthbar context state.player;
   real_time_clock ();
   (* menu_manager context state *)

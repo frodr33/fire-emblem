@@ -278,4 +278,4 @@ let do' s =
   |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
   |SelectPlayer -> let _ = input:= Nothing in s
   |SelectAttackTile -> let _ = input:=Nothing;attacking:=true in {s with active_unit = set_next_stage s.active_unit}
-  |_-> let _ =input:= Nothing in s(* Just putting this here so it would compile -Frank*)
+  |_-> let _ =input:= Nothing in s

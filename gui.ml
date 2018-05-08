@@ -373,102 +373,122 @@ let draw_player (context: Html.canvasRenderingContext2D Js.t) character_list =
 (*********************************************************)
 (***************** Menu Drawing Functions ****************)
 (*********************************************************)
-(* [draw_menu_movement_back context] draws the background to the
- * movement menu *)
-let draw_unit_back context =
-  let x = 286. in
+
+let draw_back_4 context = 
+  let x = 281. in
   let y = 26. in
   let rec ys x y =
-    if x = 364. then ()
-    else
-      let img = Html.createImg document in
-      img##src <- js "Sprites/databackground.png";
-      context##drawImage (img, x,y);
-      if y = 156. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y
-
-(* [unit_movement context] draws text onto the movement menu *)
-let menu_unit context =
-  context##strokeStyle <- js "white";
-  context##font <- js "16px sans-serif";
-  context##lineWidth <- Js.float 1.0;
-  context##strokeRect (286., 26. ,83.,160.);
-  context##strokeText (js "Visit", 300., 50.);
-  context##strokeText (js "Attack", 300., 75.);
-  context##strokeText (js "Item", 300., 100.);
-  context##strokeText (js "Wait", 300., 125.);
-  context##strokeText (js "Trade", 300., 150.);
-  context##strokeText (js "Open", 300., 175.)
-
-(* [draw_unit_menu context] draws a unit menu
- * on the canvas.*)
-let draw_unit_menu context =
-  draw_unit_back context;
-  menu_unit context
-
-
-let draw_item_back context =
-  let x = 286. in
-  let y = 26. in
-  let rec ys x y =
-    if x = 364. then ()
-    else
-      let img = Html.createImg document in
-      img##src <- js "Sprites/databackground.png";
-      context##drawImage (img, x,y);
-      if y = 52. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y
-
-let menu_item context =
-  context##strokeStyle <- js "white";
-  context##font <- js "Arial";
-  context##strokeRect (286., 26. ,83.,56.);
-  context##strokeText (js "Equip/Use", 290., 48.);
-  context##strokeText (js "Discard", 300., 73.)
-
-(* [draw_item_menu context] draws an item menu
- * on the canvas.*)
-let draw_item_menu context =
-  draw_item_back context;
-  menu_item context
-
-let draw_tile_back context =
-  let x = 286. in
-  let y = 26. in
-  let rec ys x y =
-    if x = 364. then ()
+    if x = 385. then ()
     else
       let img = Html.createImg document in
       img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 104. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y
-
-let menu_tile context =
+  ys x y  
+  
+let draw_text_4 context str_arr = 
   context##strokeStyle <- js "white";
-  context##font <- js "Arial";
-  context##strokeRect (286., 26. ,83.,108.);
-  context##strokeText (js "Unit", 300., 50.);
-  context##strokeText (js "Status", 300., 75.);
-  context##strokeText (js "Suspend", 300., 100.);
-  context##strokeText (js "End", 300., 125.)
+  context##font <- js "16px sans-serif";
+  context##strokeRect (280., 26. ,110.,108.);
+  let position = ref 50. in
+  for i = 0 to Array.length str_arr - 1 do
+    context##strokeText (js str_arr.(i), 300., !position);
+    position := !position +. 25.
+  done
 
-(* [draw_tile_menu context] draws a tile menu
- * on the canvas.*)
-let draw_tile_menu context =
-  draw_tile_back context;
-  menu_tile context
+let draw_back_5 context = 
+  let x = 281. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 385. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "Sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 130. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y  
+  
+let draw_text_5 context str_arr = 
+  context##strokeStyle <- js "white";
+  context##font <- js "16px sans-serif";
+  context##strokeRect (280., 26. ,110.,134.);
+  let position = ref 50. in
+  for i = 0 to Array.length str_arr - 1 do
+    context##strokeText (js str_arr.(i), 300., !position);
+    position := !position +. 25.
+  done
 
+let draw_back_6 context = 
+  let x = 281. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 385. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "Sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 156. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y  
+  
+let draw_text_6 context str_arr = 
+  context##strokeStyle <- js "white";
+  context##font <- js "16px sans-serif";
+  context##strokeRect (280., 26. ,110.,161.);
+  let position = ref 50. in
+  for i = 0 to Array.length str_arr - 1 do
+    context##strokeText (js str_arr.(i), 300., !position);
+    position := !position +. 25.
+  done
+
+let draw_back_7 context = 
+  let x = 281. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 385. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "Sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 182. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y  
+  
+let draw_text_7 context str_arr = 
+  context##strokeStyle <- js "white";
+  context##font <- js "16px sans-serif";
+  context##strokeRect (280., 26. ,110.,186.);
+  let position = ref 50. in
+  for i = 0 to Array.length str_arr - 1 do
+    context##strokeText (js str_arr.(i), 295., !position);
+    position := !position +. 25.
+  done
+
+let draw_4_menu context menu = 
+  draw_back_4 context;
+  draw_text_4 context menu.options
+
+let draw_5_menu context menu = 
+  draw_back_5 context;
+  draw_text_5 context menu.options
+
+let draw_6_menu context menu = 
+  draw_back_6 context;
+  draw_text_6 context menu.options
+
+let draw_7_menu context menu = 
+  draw_back_7 context;
+  draw_text_7 context menu.options
 
 (* [menu_manager context state] draws a menu
  * if is active, otherwise does nothing *)
 let menu_manager context state =
   if state.menu_active then
-    match state.current_menu with
-    | unit_menu -> draw_unit_menu context;
-    | tile_menu -> draw_tile_menu context;
-    | item_menu -> draw_item_menu context;
+    match state.current_menu.size with
+    | 4 -> draw_4_menu context state.current_menu
+    | 5 -> draw_5_menu context state.current_menu
+    | 6 -> draw_6_menu context state.current_menu
+    | 7 -> draw_7_menu context state.current_menu
   else ()
+
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
@@ -486,6 +506,8 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_map context state;
   draw_cursor context state.active_tile;
   draw_player context state.player;
-  draw_unit_menu context;
+  (* draw_tile_menu context; *)
+  menu_manager context state;
+  
   real_time_clock ();
   (* menu_manager context state *)

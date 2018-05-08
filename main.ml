@@ -69,8 +69,8 @@ let init_state =
     active_unit = Some temp_character;
     act_map = Room.map1;
     menus = [];
-    current_menu = {size = 0; options = [||]};
-    menu_active = false;
+    current_menu = {size = 4; options = [|"Aasdfasdf"; "B"; "C"; "D";|]};
+    menu_active = true;
     menu_cursor = 0;
     funds = 0;
   }

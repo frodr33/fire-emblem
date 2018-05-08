@@ -92,10 +92,10 @@ let draw_map_9x9 (context: Html.canvasRenderingContext2D Js.t) state =
 (**************** Cursor Drawing Functions ***************)
 (*********************************************************)
 
-(* [real_time_clock] updates the clock at every loop of the game.
+(* [clock ()] updates the clock at every loop of the game.
  * Every 30 "time" units, sync is negated which represents the
  * static movement of the cursor and players *)
-let real_time_clock () =
+let clock () =
   clock := if !clock < 25 then !clock + 1 else 1;
   let x1 = !clock mod 25 in (* bounds *)
   let x2 = !clock mod 30 in (* middle for standing *)
@@ -568,7 +568,6 @@ let rec draw_healthbar context chr_list =
 (****************** Draw Arrow Functions *****************)
 (*********************************************************)
 
-
 let draw_menu_arrow context state = 
   let img = Html.createImg document in
   img##src <- js "Sprites/arrow.png";
@@ -585,17 +584,21 @@ let draw_menu_arrow context state =
     | _ -> ()
   else ()
 
+(*********************************************************)
+(***************** Draw Dijsktra Squares *****************)
+(*********************************************************)
+
+let draw_dijsktra_squares context st = 
+  let img = Html.createImg document in
+  img##src <- js "Sprites/blue_test.png";
+  context##globalAlpha <- 0.5;
+  context##drawImage (img, 0., 0.)
 
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
 (*********************************************************)
 
-(* [draw_selection_board] draws the red and blue
- * tiles around the player which signifies valid
- * moves *)
-(* let draw_selection_board =
-  failwith "aaaaaaaa" *)
 
 (* Drawing *)
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
@@ -603,9 +606,9 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_map context state;
   draw_cursor context state.active_tile;
   draw_player context state.player;
-  (* draw_tile_menu context; *)
   menu_manager context state;
   draw_menu_arrow context state;
   draw_healthbar context state.player;
-  real_time_clock ();
-  (* menu_manager context state *)
+  draw_dijsktra_squares context state;
+  context##globalAlpha <- 1.;
+  clock ();

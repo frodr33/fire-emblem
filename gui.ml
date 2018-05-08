@@ -3,8 +3,8 @@ open State
 
 let js = Js.string (* partial function, takes in string *)
 
-let canvas_width = 676. (* 390 *)
-let canvas_height = 676. (* 260 *)
+let canvas_width = 390. (* 390 *)
+let canvas_height = 390. (* 260 *)
 
 module Html = Dom_html
 let js = Js.string
@@ -37,6 +37,7 @@ let tile_to_img_mapping (tile : tile) =
   | Water7  -> js "Sprites/Water7.png"
   | Water8  -> js "Sprites/Water8.png"
   | Water9  -> js "Sprites/Water9.png"
+  | Water10 -> js "Sprites/Water10.png"
   | Wall1  -> js "Sprites/Wall1.png"
   | Wall2  -> js "Sprites/Wall2.png"
   | Wall3  -> js "Sprites/Wall3.png"
@@ -52,7 +53,7 @@ let draw_map (context: Html.canvasRenderingContext2D Js.t) state =
   context##fillRect (0.,0.,canvas_width,canvas_height);
   let draw_tiles (grid : tile array array) =
     for i = 0 to 14 do
-      for j = 0 to 9 do
+      for j = 0 to 14 do
         let tile = grid.(i).(j) in
         let x = fst tile.coordinate in
         let y = snd tile.coordinate in
@@ -491,6 +492,78 @@ let menu_manager context state =
 
 
 (*********************************************************)
+(******************** Draw Health Bar ********************)
+(*********************************************************)
+
+
+let draw_health context health max_health x y = 
+  let hp = float_of_int health in 
+  let max_hp = float_of_int max_health in
+  if  (hp = 0.) then ()
+  else if  (hp <= max_hp *. 0.125) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/RedHealth.png";
+    for i = (x + 1) to (x + 3) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= max_hp *. 0.25) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/RedHealth.png";
+    for i = (x + 1) to (x + 6) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= max_hp *. 0.375) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/YellowHealth.png";
+    for i = (x + 1) to (x + 9) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= (max_hp *. 0.5)) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/YellowHealth.png";
+    for i = (x + 1) to (x + 12) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= (max_hp *. 0.625)) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/GreenHealth.png";
+    for i = (x + 1) to (x + 15) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= (max_hp *. 0.75)) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/GreenHealth.png";
+    for i = (x + 1) to (x + 18) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= (max_hp *. 0.875)) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/GreenHealth.png";
+    for i = (x + 1) to (x + 21) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else
+    let img = Html.createImg document in
+    img##src <- js "Sprites/GreenHealth.png";
+    for i = (x + 1) to (x + 24) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+    
+let rec draw_healthbar context chr_list = 
+  match chr_list with
+  | [] -> ()
+  | chr::t -> 
+    let (x,y) = chr.location in
+    let x' = x * 26 + 3 in
+    let y' = y * 26 + 23 in
+    let (health, max_health) = chr.health in
+    let img = Html.createImg document in
+    img##src <- js "Sprites/HealthBar.png";
+    context##drawImage (img,float_of_int x', float_of_int y');
+    draw_health context health max_health x' y';
+    draw_healthbar context t
+
+(*********************************************************)
 (****************** Draw State Functions *****************)
 (*********************************************************)
 
@@ -508,6 +581,6 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_player context state.player;
   (* draw_tile_menu context; *)
   (* menu_manager context state; *)
-  
+  draw_healthbar context state.player;
   real_time_clock ();
   (* menu_manager context state *)

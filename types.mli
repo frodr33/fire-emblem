@@ -59,7 +59,7 @@ type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
 type tile_type =
   | Grass | Tree | Crack | Bridge | Bush | Darkbush | Water1 | Water2 | Water3
   | Water4 | Water5 | Water6 | Water7 | Water8 | Water9 | Wall1 | Wall2
-  | Wall3 | Wall4 | Wall5 | Wall6
+  | Wall3 | Wall4 | Wall5 | Wall6 | Water10
   (** Represents a map as a whole*)
 
 

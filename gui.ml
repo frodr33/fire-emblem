@@ -507,7 +507,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_cursor context state.active_tile;
   draw_player context state.player;
   (* draw_tile_menu context; *)
-  menu_manager context state;
+  (* menu_manager context state; *)
   
   real_time_clock ();
   (* menu_manager context state *)

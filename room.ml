@@ -219,6 +219,10 @@ let map1 = {
       {coordinate = (  0,   7); ground = Forest; tile_type = Tree;c=None};
       {coordinate = (  0,   8); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (0, 9); ground = Plain; tile_type = Grass;c=None};
+(*       {coordinate = (0, 10); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (0, 11); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (0, 12); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (0, 13); ground = Plain; tile_type = Grass;c=None}; *)
     |];
     (*second column*)
     [|

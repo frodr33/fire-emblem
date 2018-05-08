@@ -573,14 +573,46 @@ let draw_menu_arrow context state =
   img##src <- js "Sprites/arrow.png";
   if state.menu_active then
     match state.menu_cursor with
-    | 0 -> context##drawImage (img, 271. ,32.)
-    | 1 -> context##drawImage (img, 271. ,58.)
-    | 2 -> context##drawImage (img, 271. ,84.)
-    | 3 -> context##drawImage (img, 271. ,110.)
-    | 4 -> context##drawImage (img, 271. ,136.)
-    | 5 -> context##drawImage (img, 271. ,162.)
-    | 6 -> context##drawImage (img, 271. ,188.)
-    | 7 -> context##drawImage (img, 271. ,214.)
+    | 0 -> begin
+      match ((!sync)) with
+      | true -> context##drawImage (img, 271. ,32.)
+      | false -> context##drawImage (img, 273. ,32.)
+    end
+    | 1 -> begin
+      match ((!sync)) with 
+      | true -> context##drawImage (img, 271. ,58.)
+      | false -> context##drawImage (img, 273. ,58.)
+    end 
+    | 2 -> begin
+      match ((!sync)) with
+      | true -> context##drawImage (img, 271. ,84.)
+      | false -> context##drawImage (img, 273. ,84.)
+    end 
+    | 3 -> begin
+      match ((!sync)) with 
+      | true -> context##drawImage (img, 271. ,110.)
+      | false -> context##drawImage (img, 273. ,110.)
+    end 
+    | 4 -> begin
+      match ((!sync)) with 
+      | true -> context##drawImage (img, 271. ,136.)
+      | false -> context##drawImage (img, 273. ,136.)
+    end 
+    | 5 -> begin
+      match ((!sync)) with
+      | true -> context##drawImage (img, 271. ,162.)
+      | false -> context##drawImage (img, 273. ,162.)
+    end 
+    | 6 -> begin
+      match ((!sync)) with 
+      | true -> context##drawImage (img, 271. ,188.)
+      | false -> context##drawImage (img, 273. ,188.)
+    end 
+    | 7 -> begin
+      match ((!sync)) with 
+      | true -> context##drawImage (img, 271. ,214.)
+      | false -> context##drawImage (img, 273. ,214.)
+    end
     | _ -> ()
   else ()
 

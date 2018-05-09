@@ -33,7 +33,7 @@ val update_health : character -> int -> character
 
 val update_character : character -> character
 
-val add_item : character -> item -> character
+val add_item : character -> item -> unit
 
 val remove_item : character -> int -> character
 

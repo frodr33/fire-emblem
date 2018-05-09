@@ -1,4 +1,5 @@
 open Types
+open Interactions
 let extract (Some c)= c
 
 let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
@@ -302,7 +303,10 @@ let move_helper st =
   if List.mem (st.active_tile.coordinate) (extract st.active_unit).movement && st.active_tile.c =None then
     move_char_helper st else let old_tile = (extract st.active_unit).location in
     {st with active_tile = st.act_map.grid.(fst old_tile).(snd old_tile)}
-
+let village_checker st =
+  match st.active_tile.ground with
+  |Village _ -> true
+  |_ -> false
 let do' s =
 
   let act = translate_key s in
@@ -324,6 +328,8 @@ let do' s =
                   match s.current_menu.options.(s.menu_cursor) with
                   |"Wait"->  ch.stage<-Done;{s with active_unit = None;menu_active=false;menu_cursor=0}
                   |"Item"-> {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
+                  |"Visit"-> if village_checker s then let _ = village ch s.active_tile.ground;ch.stage<-Done in
+                    {s with active_unit = None;menu_active=false;menu_cursor=0} else s
                   |_ -> s
                 end
             |_ -> s

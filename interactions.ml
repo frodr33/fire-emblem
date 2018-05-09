@@ -1,5 +1,5 @@
 open Types
-open State
+
 open Characters
 open Items
 
@@ -62,6 +62,15 @@ let empty_character = {
   movement = [];
   direction = North
 }
+
+
+
+let seed = 10
+
+let get_rng () =
+  let rng = Random.int 100 in
+  print_string ((string_of_int rng) ^ " ");
+  rng
 
 let attacker = ref empty_character
 

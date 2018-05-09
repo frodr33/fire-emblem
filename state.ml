@@ -276,7 +276,10 @@ let get_rng () =
   print_string ((string_of_int rng) ^ " ");
   rng
 
-
+let create_inventory_menu c =
+  let o = Array.map (fun x -> match x with
+      |Some i -> i.iname
+      |None -> "") c.inv in {size = 5;options=o}
 
 
 let move_char_helper st =
@@ -290,7 +293,7 @@ let move_char_helper st =
     let _ = st.act_map.grid.(fst old_pos).(snd old_pos)<-{old_tile with c=None};
       st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
     in
-    {st with menu_active=true;current_menu=unit_menu}
+    {st with menu_active=true;current_menu=unit_menu;active_tile={new_tile with c = Some x}}
   |None -> st
 
 let move_helper st =
@@ -311,8 +314,14 @@ let do' s =
   |SelectAttackTile -> let _ = input:=Nothing;attacking:=true in {s with active_unit = set_next_stage s.active_unit}
   |DeselectPlayer -> let _ = input:=Nothing in let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
   |SelectMOption -> let _ = input:=Nothing in begin
-      match s.current_menu.options.(s.menu_cursor) with
-      |"Wait" -> let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None;menu_active=false;menu_cursor=0}
-      |_ -> s
+      match s.active_unit with
+      |Some ch -> begin
+          match s.current_menu.options.(s.menu_cursor) with
+          |""-> ch.stage<-Done;{s with active_unit = None;menu_active=false;menu_cursor=0}
+          |"Wait"->  ch.stage<-Done;{s with active_unit = None;menu_active=false;menu_cursor=0}
+          |"Item"-> {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
+          |_ -> s
+          end
+      |None -> s
     end
   |_-> let _ =input:= Nothing in s

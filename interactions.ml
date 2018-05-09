@@ -12,7 +12,7 @@ let exp : combatResolutions list ref = ref []
 let combatQ = Queue.create()
 
 let empty_item = {
-  name  = "";
+  iname  = "";
   wtype = Sword;
   mgt = 0;
   acc = 0;
@@ -26,6 +26,7 @@ let empty_item = {
   effective = [];
   penalty = [];
 }
+
 
 let empty_character = {
   name = "";

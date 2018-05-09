@@ -21,7 +21,7 @@ type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
 
 (** Represents an item with stats and shop values*)
 type item = {
-  name : string;
+  iname : string;
   wtype : wtype;
   mgt : int;
   acc : int;

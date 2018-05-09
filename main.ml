@@ -36,7 +36,7 @@ let temp_character =
     res = 0;
     skl = 0;
     lck = 0;
-    mov = 2;
+    mov = 1;
     con = 0;
     aid = 0;
     hit = 0;
@@ -86,7 +86,7 @@ let init_state =
     menus = [];
     current_menu = {size = 7; options = [|"Aasdfasdf"; "B"; "C"; "D"; "S"; "sdf"; "sdfasdga"|]};
     menu_active = false;
-    menu_cursor = 2;
+    menu_cursor = 0;
     funds = 0;
   } in set_init_ch_movement x.player x
 

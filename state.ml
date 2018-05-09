@@ -1,5 +1,5 @@
 open Types
-
+let extract (Some c)= c
 
 let unit_menu = {size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
 let tile_menu = {size = 4;options = [|"Unit";"Status";"Suspend";"End"|]}
@@ -99,13 +99,15 @@ let translate_key st =
             end
         end
     end
-  |B -> if st.menu_active then CloseMenu else
-    if st.active_unit <>None then DeselectPlayer else Invalid
+  |B -> if st.menu_active && st.active_unit = None then CloseMenu else
+    if st.active_unit <>None then
+      if (extract st.active_unit).stage = MoveSelect then DeselectPlayer else Invalid
+    else Invalid
   |_ -> Invalid
 end
 (* Temp function (Frank) wrote to update the active_unit's
  * stage field *)
-       let new_active_unit st =
+ let new_active_unit st =
     let find_player lst =
       List.map (fun chr ->
         match st.active_unit with
@@ -274,7 +276,9 @@ let get_rng () =
   print_string ((string_of_int rng) ^ " ");
   rng
 
-let extract (Some c)= c
+
+
+
 let move_char_helper st =
   match st.active_unit with
   |Some x->
@@ -282,15 +286,15 @@ let move_char_helper st =
     let new_pos = st.active_tile.coordinate in
     let old_tile = st.act_map.grid.(fst old_pos).(snd old_pos) in
     let new_tile = st.act_map.grid.(fst new_pos).(snd new_pos) in
-    let _ = x.location<-new_pos;x.stage<-Done in
+    let _ = x.location<-new_pos;x.stage<-MoveDone in
     let _ = st.act_map.grid.(fst old_pos).(snd old_pos)<-{old_tile with c=None};
       st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
     in
-    {st with active_unit = None}
+    {st with menu_active=true;current_menu=unit_menu}
   |None -> st
 
 let move_helper st =
-  if List.mem (st.active_tile.coordinate) (extract st.active_unit).movement then
+  if List.mem (st.active_tile.coordinate) (extract st.active_unit).movement && st.active_tile.c =None then
     move_char_helper st else let old_tile = (extract st.active_unit).location in
     {st with active_tile = st.act_map.grid.(fst old_tile).(snd old_tile)}
 
@@ -305,4 +309,10 @@ let do' s =
     {s with active_unit = set_next_stage s.active_tile.c}
   |SelectMoveTile ->let _ = input:=Nothing in move_helper s
   |SelectAttackTile -> let _ = input:=Nothing;attacking:=true in {s with active_unit = set_next_stage s.active_unit}
+  |DeselectPlayer -> let _ = input:=Nothing in let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
+  |SelectMOption -> let _ = input:=Nothing in begin
+      match s.current_menu.options.(s.menu_cursor) with
+      |"Wait" -> let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None;menu_active=false;menu_cursor=0}
+      |_ -> s
+    end
   |_-> let _ =input:= Nothing in s

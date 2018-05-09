@@ -84,7 +84,7 @@ let init_state =
     active_unit = None;
     act_map = add_init_characters [temp_character] Room.map1;
     menus = [];
-    current_menu = {size = 7; options = [|"Aasdfasdf"; "B"; "C"; "D"; "S"; "sdf"; "sdfasdga"|]};
+    current_menu = unit_menu;
     menu_active = false;
     menu_cursor = 0;
     funds = 0;

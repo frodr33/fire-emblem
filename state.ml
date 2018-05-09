@@ -1,9 +1,9 @@
 open Types
 let extract (Some c)= c
 
-let unit_menu = {size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
-let tile_menu = {size = 4;options = [|"Unit";"Status";"Suspend";"End"|]}
-let item_menu = {size = 2;options = [|"Equip/Use";"Discard"|]}
+let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
+let tile_menu = {kind=Tile;size = 4;options = [|"Unit";"Status";"Suspend";"End"|]}
+let item_menu = {kind=Item;size = 2;options = [|"Equip/Use";"Discard"|]}
 type state = {
   player: character list;
   items : item list;
@@ -99,10 +99,12 @@ let translate_key st =
             end
         end
     end
-  |B -> if st.menu_active && st.active_unit = None then CloseMenu else
-    if st.active_unit <>None then
-      if (extract st.active_unit).stage = MoveSelect then DeselectPlayer else Invalid
-    else Invalid
+  |B -> if st.menu_active then begin
+      match st.active_unit with
+      |None -> CloseMenu
+      |_ -> BackMenu
+    end else if st.active_unit <>None then DeselectPlayer else Invalid
+
   |_ -> Invalid
 end
 (* Temp function (Frank) wrote to update the active_unit's
@@ -279,7 +281,7 @@ let get_rng () =
 let create_inventory_menu c =
   let o = Array.map (fun x -> match x with
       |Some i -> i.iname
-      |None -> "") c.inv in {size = 5;options=o}
+      |None -> "") c.inv in {kind=Inventory;size = 5;options=o}
 
 
 let move_char_helper st =
@@ -302,26 +304,31 @@ let move_helper st =
     {st with active_tile = st.act_map.grid.(fst old_tile).(snd old_tile)}
 
 let do' s =
+
   let act = translate_key s in
+    let _ = input:=Nothing in
   match act with
-  |OpenMenu -> let _ = input:=Nothing in {s with menu_active=true;current_menu = tile_menu}
-  |CloseMenu -> let _ = input:=Nothing in {s with menu_active = false;menu_cursor = 0}
+  |OpenMenu -> {s with menu_active=true;current_menu = tile_menu}
+  |CloseMenu -> {s with menu_active = false;menu_cursor = 0}
   |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
   |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
-  |SelectPlayer -> let _ = input:= Nothing in
-    {s with active_unit = set_next_stage s.active_tile.c}
-  |SelectMoveTile ->let _ = input:=Nothing in move_helper s
-  |SelectAttackTile -> let _ = input:=Nothing;attacking:=true in {s with active_unit = set_next_stage s.active_unit}
-  |DeselectPlayer -> let _ = input:=Nothing in let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
-  |SelectMOption -> let _ = input:=Nothing in begin
+  |SelectPlayer -> {s with active_unit = set_next_stage s.active_tile.c}
+  |SelectMoveTile ->move_helper s
+  |SelectAttackTile ->let _ = attacking:=true in {s with active_unit = set_next_stage s.active_unit}
+  |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
+  |SelectMOption ->  begin
       match s.active_unit with
       |Some ch -> begin
           match s.current_menu.options.(s.menu_cursor) with
-          |""-> ch.stage<-Done;{s with active_unit = None;menu_active=false;menu_cursor=0}
           |"Wait"->  ch.stage<-Done;{s with active_unit = None;menu_active=false;menu_cursor=0}
           |"Item"-> {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
           |_ -> s
           end
       |None -> s
     end
-  |_-> let _ =input:= Nothing in s
+  |BackMenu -> begin match s.current_menu.kind with
+    |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
+    |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
+    |_ -> s
+    end
+  |_-> s

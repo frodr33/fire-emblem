@@ -8,8 +8,8 @@ type wtype = Sword | Tome | Staff | Potion | Key
 
 (** Represents the names of possible AI types*)
 type ai = BossStay | BossHunt
-
-type menu = {size:int;options:string array}
+type menutype = Inventory|Tile|Unit|Item
+type menu =  {kind:menutype;size:int;options:string array}
 
 type allegiance = Player | Enemy | Allied
 
@@ -51,7 +51,7 @@ type status =  Ready|MoveSelect|MoveDone|AttackSelect|TradeSelect|Done
 type direction = North | West | South | East
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectPlayer|DeselectPlayer|FindReady|
-              Invalid
+              Invalid|BackMenu
 
 
 let input = ref Nothing

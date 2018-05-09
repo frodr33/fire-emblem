@@ -19,6 +19,9 @@ open Types
   menu_cursor: int;
   funds : int;
    } *)
+val unit_menu:menu
+val tile_menu:menu
+val item_menu:menu
 
 type state = {
   player: character list;

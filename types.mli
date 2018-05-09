@@ -10,9 +10,10 @@ type wtype = Sword | Tome | Staff | Potion | Key
 (** Represents the names of possible AI types*)
 type ai = BossStay | BossHunt
 
+type menutype = Inventory|Tile|Unit|Item
 (* Old Menu...didnt match ml *)
 (* type menu = string list *)
-type menu =  {size:int;options:string array}
+type menu =  {kind:menutype;size:int;options:string array}
 
 type allegiance = Player | Enemy | Allied
 
@@ -48,7 +49,7 @@ type status = Ready|MoveSelect|MoveDone|AttackSelect|TradeSelect|Done
 type direction = North | West | South | East
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectPlayer|DeselectPlayer|FindReady|
-              Invalid
+              Invalid|BackMenu
 (*
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|

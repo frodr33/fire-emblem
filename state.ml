@@ -319,11 +319,15 @@ let do' s =
   |SelectMOption ->  begin
       match s.active_unit with
       |Some ch -> begin
-          match s.current_menu.options.(s.menu_cursor) with
-          |"Wait"->  ch.stage<-Done;{s with active_unit = None;menu_active=false;menu_cursor=0}
-          |"Item"-> {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
-          |_ -> s
-          end
+          match s.current_menu.kind with
+            |Unit -> begin
+                  match s.current_menu.options.(s.menu_cursor) with
+                  |"Wait"->  ch.stage<-Done;{s with active_unit = None;menu_active=false;menu_cursor=0}
+                  |"Item"-> {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
+                  |_ -> s
+                end
+            |_ -> s
+        end
       |None -> s
     end
   |BackMenu -> begin match s.current_menu.kind with

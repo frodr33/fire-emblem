@@ -19,6 +19,9 @@ type state = {
   menu_cursor: int;
   funds : int;
 }
+
+
+
 let ctile c map =
   map.grid.(fst c.location).(snd c.location)
 (*
@@ -74,24 +77,30 @@ let translate_key st =
     begin
   let old = !input in let _ = input := Nothing in
   match old with
-  |Up -> Tup
-  |Down -> Tdown
-  |Left -> Tleft
-  |Right ->Tright
+  |Up -> if st.menu_active = false then Tup else Mup
+  |Down -> if st.menu_active = false then Tdown else Mdown
+  |Left -> if st.menu_active = false then Tleft else Invalid
+  |Right ->if st.menu_active = false then Tright else Invalid
   |A -> begin
       if st.menu_active = true then SelectMOption else
         begin match st.active_unit with
           |Some c -> begin
+              if c.allegiance <>Player then Invalid else
               match c.stage with
-              |Ready -> SelectPlayer
               |MoveSelect-> SelectMoveTile
               |MoveDone->SelectAttackTile
               |Done -> SelectAttackTile
               |_ -> SelectAttackTile
             end
-          |None -> SelectPlayer
+          |None -> begin
+              match st.active_tile.c with
+              |Some x ->SelectPlayer
+              |None -> OpenMenu
+            end
         end
-  end
+    end
+  |B -> if st.menu_active then CloseMenu else
+    if st.active_unit <>None then DeselectPlayer else Invalid
   |_ -> Invalid
 end
 (* Temp function (Frank) wrote to update the active_unit's
@@ -113,6 +122,8 @@ let new_active_unit_st st c=
   let new_player_list = List.filter (fun x -> x<>c) st.player in
   let new_c = c.stage<-MoveSelect;c  in
   {st with player=new_player_list;active_unit= Some new_c}
+
+
     (*Filler function to allow us to keep testing attack animation*)
 let set_next_stage c =
   match c with
@@ -141,18 +152,13 @@ let set_next_stage c =
     |_ -> failwith "placeholder"
 
   let new_menu_cursor act st = match act with
-    |Mup -> if st.menu_cursor =0 then st.current_menu.size -1 else
+    |Mup -> if st.menu_cursor =0 then 0 else
         st.menu_cursor -1
-    |Mdown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
+    |Mdown ->if st.menu_cursor = st.current_menu.size-1 then st.current_menu.size-1 else
         st.menu_cursor +1
     | _ -> failwith "placeholder"
 
-let new_menu_cursor act st = match act with
-  |Mup -> if st.menu_cursor =0 then st.current_menu.size -1 else
-      st.menu_cursor -1
-  |Mdown ->if st.menu_cursor = st.current_menu.size-1 then 0 else
-      st.menu_cursor +1
-  | _ -> failwith "placeholder"
+
 
 (*-----------------------------SPAGHETT FLOOD FILL----------------------------*)
 (*For the curious*)
@@ -256,6 +262,7 @@ let dijkstra's c map =
   dijkstra's_helper [] [] (ctile c map) c.mov map
 
 
+
 (*-------------------------------END SPAGHETT---------------------------------*)
 
 
@@ -267,15 +274,35 @@ let get_rng () =
   print_string ((string_of_int rng) ^ " ");
   rng
 
-let init_state j = failwith "asdf"
+let extract (Some c)= c
+let move_char_helper st =
+  match st.active_unit with
+  |Some x->
+    let old_pos = x.location in
+    let new_pos = st.active_tile.coordinate in
+    let old_tile = st.act_map.grid.(fst old_pos).(snd old_pos) in
+    let new_tile = st.act_map.grid.(fst new_pos).(snd new_pos) in
+    let _ = x.location<-new_pos;x.stage<-Done in
+    let _ = st.act_map.grid.(fst old_pos).(snd old_pos)<-{old_tile with c=None};
+      st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
+    in
+    {st with active_unit = None}
+  |None -> st
 
-
+let move_helper st =
+  if List.mem (st.active_tile.coordinate) (extract st.active_unit).movement then
+    move_char_helper st else let old_tile = (extract st.active_unit).location in
+    {st with active_tile = st.act_map.grid.(fst old_tile).(snd old_tile)}
 
 let do' s =
   let act = translate_key s in
   match act with
   |OpenMenu -> let _ = input:=Nothing in {s with menu_active=true;current_menu = tile_menu}
+  |CloseMenu -> let _ = input:=Nothing in {s with menu_active = false;menu_cursor = 0}
   |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
-  |SelectPlayer -> let _ = input:= Nothing in s
+  |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
+  |SelectPlayer -> let _ = input:= Nothing in
+    {s with active_unit = set_next_stage s.active_tile.c}
+  |SelectMoveTile ->let _ = input:=Nothing in move_helper s
   |SelectAttackTile -> let _ = input:=Nothing;attacking:=true in {s with active_unit = set_next_stage s.active_unit}
   |_-> let _ =input:= Nothing in s

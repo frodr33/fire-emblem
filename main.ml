@@ -36,7 +36,7 @@ let temp_character =
     res = 0;
     skl = 0;
     lck = 0;
-    mov = 0;
+    mov = 2;
     con = 0;
     aid = 0;
     hit = 0;
@@ -53,27 +53,42 @@ let temp_character =
     movement= [];
     direction= South;
   }
+  (*Adds initial characters in player list to map*)
+let rec add_init_characters playerlst map =
+match playerlst with
+|[] -> map
+|h::t ->
+  let cloc = h.location in
+  let tile_to_change = map.grid.(fst cloc).(snd cloc) in
+  let new_tile = {tile_to_change with c = Some h} in
+  let _ = map.grid.(fst cloc).(snd cloc) <-new_tile in
+  add_init_characters t map
 
-
+    (*Sets movement for characters*)
+let rec set_init_ch_movement playerlst st =
+  match playerlst with
+  |[] -> st
+  |h::t ->let _ =  h.movement<-dijkstra's h st.act_map in set_init_ch_movement t st
 (* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
 let init_state =
+  let x =
   {
     player = [temp_character];
     items = [];
     enemies = [];
     allies = [];
     won = false;
-    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=None};
-    active_unit = Some temp_character;
-    act_map = Room.map1;
+    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};
+    active_unit = None;
+    act_map = add_init_characters [temp_character] Room.map1;
     menus = [];
     current_menu = {size = 7; options = [|"Aasdfasdf"; "B"; "C"; "D"; "S"; "sdf"; "sdfasdga"|]};
-    menu_active = true;
+    menu_active = false;
     menu_cursor = 2;
     funds = 0;
-  }
+  } in set_init_ch_movement x.player x
 
 let state = ref init_state
 (* [main ()] is begins game execution by first building and designing

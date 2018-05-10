@@ -305,23 +305,23 @@ let village_checker st =
   |_ -> false
 
 let rec has_key c i =
-  if i = 5 then false
+  if i = 5 then false, -1
   else
     match c.inv.(i) with
     |Some x -> begin match x.wtype with
-      |Key -> true
+      |Key -> true, i
       |_ -> has_key c (i + 1)
       end
     |None  -> has_key c (i + 1)
 
 let chest_checker s =
   match s.active_unit with
-  |Some x ->
+  |Some x -> let key = has_key x 0 in
     begin match s.active_tile.ground with
-    |Chest i -> if has_key x 0 then true else false
-    |_       -> false
+    |Chest i -> if fst key then true, snd key else false, -1
+    |_       -> false, -1
     end
-  |None -> false
+  |None -> false, -1
 
 let do' s =
 
@@ -353,17 +353,23 @@ let do' s =
                     {s with active_unit = None;
                             menu_active=false;
                             menu_cursor=0}
-
                   |"Visit" -> if village_checker s
                     then let _ = village ch s.active_tile.ground;
                       ch.stage <- Done in
-                      ignore ();
+                      ignore (village (extract s.active_unit) s.active_tile.ground);
                       {s with active_unit = None;
                               menu_active = false;
                               menu_cursor = 0;
                               }
                     else s
-                  |"Open" -> if chest_checker s then s else s
+                  |"Open" -> let chestable = chest_checker s in
+                    if fst chestable then (ch.stage <-Done;
+                      ignore (chest (extract s.active_unit) s.active_tile.ground (snd chestable));
+                                           {s with active_unit = None;
+                                                   menu_active = false;
+                                                   menu_cursor = 0
+                                           })
+                    else s
                   |_ -> s
                 end
 

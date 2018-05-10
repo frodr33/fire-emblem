@@ -1,5 +1,5 @@
 open Types
-
+open Interactions
 (* Why is this here?? -Frank *)
 (**The current map*)
 (* type map *)

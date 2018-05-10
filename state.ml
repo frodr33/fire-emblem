@@ -207,16 +207,6 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
     |Desert -> if mov < 2 then (false, -1) else (true, mov - 2)
     |_ -> if mov < 1 then (false, -1) else (true, mov - 1)
 
-
-(*let rec flood_fill_helper (mov:int) (dimensions: int * int) (t:tile) (lst:tile list) : tile list=
-  if List.exists (fun a -> a = t) then lst
-  else if mov = 0 then t::lst
-  else (t::lst)
-       |> check_dir mov South t dimensions
-       |> check_dir mov West t dimensions
-       |> check_dir mov East t dimensions
-       |> check_dir mov North t dimensions*)
-
 let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
   match f with
   |[]   -> [(tile,i)]
@@ -242,8 +232,7 @@ let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list)
 
 (*-----------------------------SPAGHETT DIJKSTRA'S----------------------------*)
 
-let comp a b =
-  snd b - snd a
+
 
 let rec check_surround s t m map f:(tile * int) list =
   f
@@ -251,7 +240,7 @@ let rec check_surround s t m map f:(tile * int) list =
   |> check_dir m East t map s
   |> check_dir m North t map s
   |> check_dir m West t map s
-  |> List.sort comp
+
 
 
 (**Name keeping:
@@ -293,7 +282,7 @@ let move_char_helper st =
       st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
     in
     let _ = x.movement<-dijkstra's x st.act_map in
-    {st with menu_active=true;current_menu=unit_menu;active_tile={new_tile with c = Some x}}
+    {st with menu_active=true;current_menu=unit_menu;active_tile=st.act_map.grid.(fst new_pos).(snd new_pos)}
   |None -> st
 
 let move_helper st =
@@ -324,8 +313,9 @@ let do' s =
       |Some ch -> begin
           match s.current_menu.kind with
             |Unit -> begin
-                  match s.current_menu.options.(s.menu_cursor) with
-                  |"Wait"->  ch.stage<-Done;{s with active_unit = None;menu_active=false;menu_cursor=0}
+                match s.current_menu.options.(s.menu_cursor) with
+                  |"Attack"-> ch.stage<-AttackSelect;{s with menu_active=false;menu_cursor=0}
+                  |"Wait"->  ch.stage<-Ready;{s with active_unit = None;menu_active=false;menu_cursor=0}
                   |"Item"-> {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
                   |"Visit"-> if village_checker s then let _ = village ch s.active_tile.ground;ch.stage<-Done in
                     {s with active_unit = None;menu_active=false;menu_cursor=0} else s

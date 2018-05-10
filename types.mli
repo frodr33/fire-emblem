@@ -12,7 +12,10 @@ type ai = BossStay | BossHunt
 
 (* Old Menu...didnt match ml *)
 (* type menu = string list *)
-type menu =  {size:int;options:string array}
+type menu =  {
+  size : int;
+  options : string array
+}
 
 type allegiance = Player | Enemy | Allied
 
@@ -50,15 +53,9 @@ type direction = North | West | South | East
 (* NOTE: type didnt match the one in the ml *)
 (* type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectTile|SelectPlayer|SelectEnemy *)
-<<<<<<< HEAD
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
               Invalid
-=======
-  type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
-        SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
-        Invalid
->>>>>>> d106fde04c16587760bf23ba11dd891eab8234e8
 
 
 type tile_type =

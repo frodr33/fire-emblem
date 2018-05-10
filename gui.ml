@@ -3,8 +3,8 @@ open State
 
 let js = Js.string (* partial function, takes in string *)
 
-let canvas_width = 676. (* 390 *)
-let canvas_height = 676. (* 260 *)
+let canvas_width = 390. (* 390 *)
+let canvas_height = 390. (* 260 *)
 
 module Html = Dom_html
 let js = Js.string
@@ -37,6 +37,7 @@ let tile_to_img_mapping (tile : tile) =
   | Water7  -> js "Sprites/Water7.png"
   | Water8  -> js "Sprites/Water8.png"
   | Water9  -> js "Sprites/Water9.png"
+  | Water10 -> js "Sprites/Water10.png"
   | Wall1  -> js "Sprites/Wall1.png"
   | Wall2  -> js "Sprites/Wall2.png"
   | Wall3  -> js "Sprites/Wall3.png"
@@ -52,7 +53,7 @@ let draw_map (context: Html.canvasRenderingContext2D Js.t) state =
   context##fillRect (0.,0.,canvas_width,canvas_height);
   let draw_tiles (grid : tile array array) =
     for i = 0 to 14 do
-      for j = 0 to 9 do
+      for j = 0 to 14 do
         let tile = grid.(i).(j) in
         let x = fst tile.coordinate in
         let y = snd tile.coordinate in
@@ -91,10 +92,10 @@ let draw_map_9x9 (context: Html.canvasRenderingContext2D Js.t) state =
 (**************** Cursor Drawing Functions ***************)
 (*********************************************************)
 
-(* [real_time_clock] updates the clock at every loop of the game.
+(* [clock ()] updates the clock at every loop of the game.
  * Every 30 "time" units, sync is negated which represents the
  * static movement of the cursor and players *)
-let real_time_clock () =
+let clock () =
   clock := if !clock < 25 then !clock + 1 else 1;
   let x1 = !clock mod 25 in (* bounds *)
   let x2 = !clock mod 30 in (* middle for standing *)
@@ -373,112 +374,263 @@ let draw_player (context: Html.canvasRenderingContext2D Js.t) character_list =
 (*********************************************************)
 (***************** Menu Drawing Functions ****************)
 (*********************************************************)
-(* [draw_menu_movement_back context] draws the background to the
- * movement menu *)
-let draw_unit_back context =
-  let x = 286. in
+
+let draw_back_4 context = 
+  let x = 281. in
   let y = 26. in
   let rec ys x y =
-    if x = 364. then ()
-    else
-      let img = Html.createImg document in
-      img##src <- js "Sprites/databackground.png";
-      context##drawImage (img, x,y);
-      if y = 156. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y
-
-(* [unit_movement context] draws text onto the movement menu *)
-let menu_unit context =
-  context##strokeStyle <- js "white";
-  context##font <- js "16px sans-serif";
-  context##lineWidth <- Js.float 1.0;
-  context##strokeRect (286., 26. ,83.,160.);
-  context##strokeText (js "Visit", 300., 50.);
-  context##strokeText (js "Attack", 300., 75.);
-  context##strokeText (js "Item", 300., 100.);
-  context##strokeText (js "Wait", 300., 125.);
-  context##strokeText (js "Trade", 300., 150.);
-  context##strokeText (js "Open", 300., 175.)
-
-(* [draw_unit_menu context] draws a unit menu
- * on the canvas.*)
-let draw_unit_menu context =
-  draw_unit_back context;
-  menu_unit context
-
-
-let draw_item_back context =
-  let x = 286. in
-  let y = 26. in
-  let rec ys x y =
-    if x = 364. then ()
-    else
-      let img = Html.createImg document in
-      img##src <- js "Sprites/databackground.png";
-      context##drawImage (img, x,y);
-      if y = 52. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y
-
-let menu_item context =
-  context##strokeStyle <- js "white";
-  context##font <- js "Arial";
-  context##strokeRect (286., 26. ,83.,56.);
-  context##strokeText (js "Equip/Use", 290., 48.);
-  context##strokeText (js "Discard", 300., 73.)
-
-(* [draw_item_menu context] draws an item menu
- * on the canvas.*)
-let draw_item_menu context =
-  draw_item_back context;
-  menu_item context
-
-let draw_tile_back context =
-  let x = 286. in
-  let y = 26. in
-  let rec ys x y =
-    if x = 364. then ()
+    if x = 385. then ()
     else
       let img = Html.createImg document in
       img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 104. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y
-
-let menu_tile context =
+  ys x y  
+  
+let draw_text_4 context str_arr = 
   context##strokeStyle <- js "white";
-  context##font <- js "Arial";
-  context##strokeRect (286., 26. ,83.,108.);
-  context##strokeText (js "Unit", 300., 50.);
-  context##strokeText (js "Status", 300., 75.);
-  context##strokeText (js "Suspend", 300., 100.);
-  context##strokeText (js "End", 300., 125.)
+  context##font <- js "16px sans-serif";
+  context##strokeRect (280., 26. ,110.,108.);
+  let position = ref 50. in
+  for i = 0 to Array.length str_arr - 1 do
+    context##strokeText (js str_arr.(i), 300., !position);
+    position := !position +. 25.
+  done
 
-(* [draw_tile_menu context] draws a tile menu
- * on the canvas.*)
-let draw_tile_menu context =
-  draw_tile_back context;
-  menu_tile context
+let draw_back_5 context = 
+  let x = 281. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 385. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "Sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 130. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y  
+  
+let draw_text_5 context str_arr = 
+  context##strokeStyle <- js "white";
+  context##font <- js "16px sans-serif";
+  context##strokeRect (280., 26. ,110.,134.);
+  let position = ref 50. in
+  for i = 0 to Array.length str_arr - 1 do
+    context##strokeText (js str_arr.(i), 300., !position);
+    position := !position +. 25.
+  done
 
+let draw_back_6 context = 
+  let x = 281. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 385. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "Sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 156. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y  
+  
+let draw_text_6 context str_arr = 
+  context##strokeStyle <- js "white";
+  context##font <- js "16px sans-serif";
+  context##strokeRect (280., 26. ,110.,161.);
+  let position = ref 50. in
+  for i = 0 to Array.length str_arr - 1 do
+    context##strokeText (js str_arr.(i), 300., !position);
+    position := !position +. 25.
+  done
+
+let draw_back_7 context = 
+  let x = 281. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 385. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "Sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 182. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y  
+  
+let draw_text_7 context str_arr = 
+  context##strokeStyle <- js "white";
+  context##font <- js "16px sans-serif";
+  context##strokeRect (280., 26. ,110.,186.);
+  let position = ref 50. in
+  for i = 0 to Array.length str_arr - 1 do
+    context##strokeText (js str_arr.(i), 300., !position);
+    position := !position +. 25.
+  done
+
+let draw_4_menu context menu = 
+  draw_back_4 context;
+  draw_text_4 context menu.options
+
+let draw_5_menu context menu = 
+  draw_back_5 context;
+  draw_text_5 context menu.options
+
+let draw_6_menu context menu = 
+  draw_back_6 context;
+  draw_text_6 context menu.options
+
+let draw_7_menu context menu = 
+  draw_back_7 context;
+  draw_text_7 context menu.options
 
 (* [menu_manager context state] draws a menu
  * if is active, otherwise does nothing *)
 let menu_manager context state =
   if state.menu_active then
-    match state.current_menu with
-    | unit_menu -> draw_unit_menu context;
-    | tile_menu -> draw_tile_menu context;
-    | item_menu -> draw_item_menu context;
+    match state.current_menu.size with
+    | 4 -> draw_4_menu context state.current_menu
+    | 5 -> draw_5_menu context state.current_menu
+    | 6 -> draw_6_menu context state.current_menu
+    | 7 -> draw_7_menu context state.current_menu
   else ()
+
+
+(*********************************************************)
+(******************** Draw Health Bar ********************)
+(*********************************************************)
+
+
+let draw_health context health max_health x y = 
+  let hp = float_of_int health in 
+  let max_hp = float_of_int max_health in
+  if  (hp = 0.) then ()
+  else if  (hp <= max_hp *. 0.125) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/RedHealth.png";
+    for i = (x + 1) to (x + 3) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= max_hp *. 0.25) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/RedHealth.png";
+    for i = (x + 1) to (x + 6) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= max_hp *. 0.375) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/YellowHealth.png";
+    for i = (x + 1) to (x + 9) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= (max_hp *. 0.5)) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/YellowHealth.png";
+    for i = (x + 1) to (x + 12) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= (max_hp *. 0.625)) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/GreenHealth.png";
+    for i = (x + 1) to (x + 15) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= (max_hp *. 0.75)) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/GreenHealth.png";
+    for i = (x + 1) to (x + 18) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else if (hp <= (max_hp *. 0.875)) then
+    let img = Html.createImg document in
+    img##src <- js "Sprites/GreenHealth.png";
+    for i = (x + 1) to (x + 21) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+  else
+    let img = Html.createImg document in
+    img##src <- js "Sprites/GreenHealth.png";
+    for i = (x + 1) to (x + 24) do
+      context##drawImage (img, float_of_int i, float_of_int y +. 1.);
+    done
+    
+let rec draw_healthbar context chr_list = 
+  match chr_list with
+  | [] -> ()
+  | chr::t -> 
+    let (x,y) = chr.location in
+    let x' = x * 26 + 3 in
+    let y' = y * 26 + 23 in
+    let (health, max_health) = chr.health in
+    let img = Html.createImg document in
+    img##src <- js "Sprites/HealthBar.png";
+    context##drawImage (img,float_of_int x', float_of_int y');
+    draw_health context health max_health x' y';
+    draw_healthbar context t
+
+
+(*********************************************************)
+(****************** Draw Arrow Functions *****************)
+(*********************************************************)
+
+let draw_menu_arrow context state = 
+  let img = Html.createImg document in
+  img##src <- js "Sprites/arrow.png";
+  if state.menu_active then
+    match state.menu_cursor with
+    | 0 -> begin
+      match ((!sync)) with
+      | true -> context##drawImage (img, 271. ,32.)
+      | false -> context##drawImage (img, 273. ,32.)
+    end
+    | 1 -> begin
+      match ((!sync)) with 
+      | true -> context##drawImage (img, 271. ,58.)
+      | false -> context##drawImage (img, 273. ,58.)
+    end 
+    | 2 -> begin
+      match ((!sync)) with
+      | true -> context##drawImage (img, 271. ,84.)
+      | false -> context##drawImage (img, 273. ,84.)
+    end 
+    | 3 -> begin
+      match ((!sync)) with 
+      | true -> context##drawImage (img, 271. ,110.)
+      | false -> context##drawImage (img, 273. ,110.)
+    end 
+    | 4 -> begin
+      match ((!sync)) with 
+      | true -> context##drawImage (img, 271. ,136.)
+      | false -> context##drawImage (img, 273. ,136.)
+    end 
+    | 5 -> begin
+      match ((!sync)) with
+      | true -> context##drawImage (img, 271. ,162.)
+      | false -> context##drawImage (img, 273. ,162.)
+    end 
+    | 6 -> begin
+      match ((!sync)) with 
+      | true -> context##drawImage (img, 271. ,188.)
+      | false -> context##drawImage (img, 273. ,188.)
+    end 
+    | 7 -> begin
+      match ((!sync)) with 
+      | true -> context##drawImage (img, 271. ,214.)
+      | false -> context##drawImage (img, 273. ,214.)
+    end
+    | _ -> ()
+  else ()
+
+(*********************************************************)
+(***************** Draw Dijsktra Squares *****************)
+(*********************************************************)
+
+let draw_dijsktra_squares context st = 
+  let img = Html.createImg document in
+  img##src <- js "Sprites/blue_test.png";
+  context##globalAlpha <- 0.5;
+  context##drawImage (img, 0., 0.)
+
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
 (*********************************************************)
 
-(* [draw_selection_board] draws the red and blue
- * tiles around the player which signifies valid
- * moves *)
-(* let draw_selection_board =
-  failwith "aaaaaaaa" *)
 
 (* Drawing *)
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
@@ -486,6 +638,9 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_map context state;
   draw_cursor context state.active_tile;
   draw_player context state.player;
-  draw_unit_menu context;
-  real_time_clock ();
-  (* menu_manager context state *)
+  menu_manager context state;
+  draw_menu_arrow context state;
+  draw_healthbar context state.player;
+  draw_dijsktra_squares context state;
+  context##globalAlpha <- 1.;
+  clock ();

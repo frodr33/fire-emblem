@@ -1,5 +1,4 @@
 open Types
-open State
 
 let rec cap lst s =
   match lst with
@@ -134,8 +133,7 @@ let rec add_helper a i n =
   |None -> a.(n) <- Some i
 
 let add_item c i =
-  add_helper c.inv i 0;
-  c
+  add_helper c.inv i 0
 
 (*let promote = failwith "Unimplemented"*)
 

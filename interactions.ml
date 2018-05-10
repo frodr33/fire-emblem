@@ -1,5 +1,5 @@
 open Types
-open State
+
 open Characters
 open Items
 
@@ -12,7 +12,7 @@ let exp : combatResolutions list ref = ref []
 let combatQ = Queue.create()
 
 let empty_item = {
-  name  = "";
+  iname  = "";
   wtype = Sword;
   mgt = 0;
   acc = 0;
@@ -26,6 +26,7 @@ let empty_item = {
   effective = [];
   penalty = [];
 }
+
 
 let empty_character = {
   name = "";
@@ -61,6 +62,15 @@ let empty_character = {
   movement = [];
   direction = North
 }
+
+
+
+let seed = 10
+
+let get_rng () =
+  let rng = Random.int 100 in
+  print_string ((string_of_int rng) ^ " ");
+  rng
 
 let attacker = ref empty_character
 

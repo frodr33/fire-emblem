@@ -8,8 +8,8 @@ type wtype = Sword | Tome | Staff | Potion | Key
 
 (** Represents the names of possible AI types*)
 type ai = BossStay | BossHunt
-
-type menu = {size:int;options:string array}
+type menutype = Inventory|Tile|Unit|Item
+type menu =  {kind:menutype;size:int;options:string array}
 
 type allegiance = Player | Enemy | Allied
 
@@ -18,7 +18,7 @@ type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
 
 (** Represents an item with stats and shop values*)
 type item = {
-  name : string;
+  iname : string;
   wtype : wtype;
   mgt : int;
   acc : int;
@@ -42,7 +42,7 @@ type terrain = Plain | Wall | Throne | Door | Chest of item option | Defence | F
 type tile_type =
   | Grass | Tree | Crack | Bridge | Bush | Darkbush | Water1 | Water2 | Water3
   | Water4 | Water5 | Water6 | Water7 | Water8 | Water9 | Wall1 | Wall2
-  | Wall3 | Wall4 | Wall5 | Wall6
+  | Wall3 | Wall4 | Wall5 | Wall6 | Water10
 
 
 
@@ -50,8 +50,8 @@ type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status =  Ready|MoveSelect|MoveDone|AttackSelect|TradeSelect|Done
 type direction = North | West | South | East
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
-              SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
-              Invalid
+              SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectPlayer|DeselectPlayer|FindReady|
+              Invalid|BackMenu
 
 
 let input = ref Nothing

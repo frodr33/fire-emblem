@@ -21,13 +21,13 @@ let get_element_by_id id =
 let temp_character =
   {
     name = "Lyn";
-    stage= MoveDone;
+    stage= Ready;
     class' = Paladin;
     growths = [];
     caps = [];
     level = 0;
     exp = 0;
-    health = (0,0);
+    health = (3,10);
     allegiance = Player;
     str = 0;
     mag = 0;
@@ -36,14 +36,14 @@ let temp_character =
     res = 0;
     skl = 0;
     lck = 0;
-    mov = 0;
+    mov = 1;
     con = 0;
     aid = 0;
     hit = 0;
     atk = 0;
     crit = 0;
     avoid = 0;
-    inv = [||];
+    inv = [|None;None;None;None;None|];
     eqp = 0;
     ability = [];
     supports = [];
@@ -51,29 +51,44 @@ let temp_character =
     ai = BossHunt;
     location= (5,5);
     movement= [];
-    direction= East;
+    direction= South;
   }
+  (*Adds initial characters in player list to map*)
+let rec add_init_characters playerlst map =
+match playerlst with
+|[] -> map
+|h::t ->
+  let cloc = h.location in
+  let tile_to_change = map.grid.(fst cloc).(snd cloc) in
+  let new_tile = {tile_to_change with c = Some h} in
+  let _ = map.grid.(fst cloc).(snd cloc) <-new_tile in
+  add_init_characters t map
 
-
+    (*Sets movement for characters*)
+let rec set_init_ch_movement playerlst st =
+  match playerlst with
+  |[] -> st
+  |h::t ->let _ =  h.movement<-dijkstra's h st.act_map in set_init_ch_movement t st
 (* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
 let init_state =
+  let x =
   {
     player = [temp_character];
     items = [];
     enemies = [];
     allies = [];
     won = false;
-    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=None};
-    active_unit = Some temp_character;
-    act_map = Room.map1;
+    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};
+    active_unit = None;
+    act_map = add_init_characters [temp_character] Room.map1;
     menus = [];
-    current_menu = {size = 0; options = [||]};
+    current_menu = unit_menu;
     menu_active = false;
     menu_cursor = 0;
     funds = 0;
-  }
+  } in set_init_ch_movement x.player x
 
 let state = ref init_state
 (* [main ()] is begins game execution by first building and designing

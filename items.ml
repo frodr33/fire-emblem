@@ -2,7 +2,7 @@ open Types
 
 let make_item n wt m a c r u cst s l usr e p =
   {
-    name  = n;
+    iname  = n;
     wtype = wt;
     mgt = m;
     acc = a;

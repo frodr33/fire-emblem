@@ -10,12 +10,16 @@ type wtype = Sword | Tome | Staff | Potion | Key
 (** Represents the names of possible AI types*)
 type ai = BossStay | BossHunt
 
+type menutype = Inventory|Tile|Unit|Item
 (* Old Menu...didnt match ml *)
 (* type menu = string list *)
+
 type menu =  {
+  kind : menutype;
   size : int;
   options : string array
 }
+
 
 type allegiance = Player | Enemy | Allied
 
@@ -24,7 +28,7 @@ type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
 
 (** Represents an item with stats and shop values*)
 type item = {
-  name : string;
+  iname : string;
   wtype : wtype;
   mgt : int;
   acc : int;
@@ -50,18 +54,20 @@ type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
 type status = Ready|MoveSelect|MoveDone|AttackSelect|TradeSelect|Done
 type direction = North | West | South | East
 
-(* NOTE: type didnt match the one in the ml *)
-(* type action = Tup|Tdown|Tleft|Tright|Mup|MDown|OpenMenu|CloseMenu|
-              SelectMOption|Undo|SelectTile|SelectPlayer|SelectEnemy *)
+type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
+              SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectPlayer|DeselectPlayer|FindReady|
+              Invalid|BackMenu
+(*
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
-              Invalid
+              Invalid *)
+
 
 
 type tile_type =
   | Grass | Tree | Crack | Bridge | Bush | Darkbush | Water1 | Water2 | Water3
   | Water4 | Water5 | Water6 | Water7 | Water8 | Water9 | Wall1 | Wall2
-  | Wall3 | Wall4 | Wall5 | Wall6
+  | Wall3 | Wall4 | Wall5 | Wall6 | Water10
   (** Represents a map as a whole*)
 
 

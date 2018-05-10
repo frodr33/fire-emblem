@@ -205,7 +205,7 @@ let map1 =
 
 let map1 = {
   width = 15;
-  length = 10;
+  length = 15;
   grid = [|
     (*first column*)
     [|
@@ -219,6 +219,11 @@ let map1 = {
       {coordinate = (  0,   7); ground = Forest; tile_type = Tree;c=None};
       {coordinate = (  0,   8); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (0, 9); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (0, 10); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (0, 11); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (0, 12); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (0, 13); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (0, 14); ground = Forest; tile_type = Tree;c=None};
     |];
     (*second column*)
     [|
@@ -232,6 +237,11 @@ let map1 = {
       {coordinate = (  1,   7); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  1,   8); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (1, 9); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (1, 10); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (1, 11); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (1, 12); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (1, 13); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (1, 14); ground = Forest; tile_type = Tree;c=None};
     |];
     (*third column*)
     [|
@@ -245,6 +255,11 @@ let map1 = {
       {coordinate = (  2,   7); ground = Plain; tile_type = Grass;c=None};
       {coordinate = ( 2,   8); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (2, 9); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (2, 10); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (2, 11); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (2, 12); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (2, 13); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (2, 14); ground = Plain; tile_type = Grass;c=None};
     |];
 
     (*fourth column*)
@@ -259,6 +274,11 @@ let map1 = {
       {coordinate = (  3,   7); ground = Forest; tile_type = Tree;c=None};
       {coordinate = ( 3, 8); ground = Forest; tile_type = Tree;c=None};
       {coordinate = (3, 9); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (3, 10); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (3, 11); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (3, 12); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (3, 13); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (3, 14); ground = Plain; tile_type = Grass;c=None};
     |];
 
     (*fifth column*)
@@ -267,12 +287,17 @@ let map1 = {
       {coordinate = (  4,   1); ground = Wall; tile_type = Wall5;c=None};
       {coordinate = (  4,   2); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  4,   3); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (  4,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  4,   4); ground = Wall; tile_type = Wall1;c=None};
       {coordinate = (  4,   5); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  4,   6); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  4,   7); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (4, 8); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (4, 9); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (4, 10); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (4, 11); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (4, 12); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (4, 13); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (4, 14); ground = Plain; tile_type = Grass;c=None};
     |];
 
     (*sixth column*)
@@ -281,12 +306,17 @@ let map1 = {
       {coordinate = (  5,   1); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  5,   2); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  5,   3); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (  5,   4); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  5,   4); ground = Wall; tile_type = Wall1;c=None};
       {coordinate = (  5,   5); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  5,   6); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  5,   7); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (5, 8); ground = Forest; tile_type = Tree;c=None};
       {coordinate = (5,  9); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (5, 10); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (5, 11); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (5, 12); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (5, 13); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (5, 14); ground = Forest; tile_type = Tree;c=None};
     |];
 
     (*seventh column*)
@@ -295,12 +325,17 @@ let map1 = {
       {coordinate = (  6,   1); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  6,   2); ground = Forest; tile_type = Tree;c=None};
       {coordinate = (  6,   3); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (  6,   4); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (  6,   4); ground = Wall; tile_type = Wall1;c=None};
       {coordinate = (  6,   5); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  6,   6); ground = Forest; tile_type = Tree;c=None};
-      {coordinate = (  6,   7); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (  6,   7); ground = Plain; tile_type = Tree;c=None};
       {coordinate = (6, 8); ground = Forest; tile_type = Tree;c=None};
-      {coordinate = (6, 9); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (6, 9); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (6, 10); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (6, 11); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (6, 12); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (6, 13); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (6, 14); ground = Plain; tile_type = Grass;c=None};
     |];
     (*eigth column*)
     [|
@@ -314,6 +349,11 @@ let map1 = {
       {coordinate = (  7,   7); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (7, 8); ground = Forest; tile_type = Tree;c=None};
       {coordinate = (7, 9); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (7, 10); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (7, 11); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (7, 12); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (7, 13); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (7, 14); ground = Plain; tile_type = Grass;c=None};
     |];
     (*9th column*)
     [|
@@ -326,7 +366,12 @@ let map1 = {
       {coordinate = (  8,   6); ground = Forest; tile_type = Tree;c=None};
       {coordinate = (  8,   7); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (8, 8); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (8, 9); ground = Forest; tile_type = Tree;c=None};
+      {coordinate = (8, 9); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (8, 10); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (8, 11); ground = Ocean; tile_type = Water8;c=None};
+      {coordinate = (8, 12); ground = Ocean; tile_type = Water10;c=None};
+      {coordinate = (8, 13); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (8, 14); ground = Plain; tile_type = Grass;c=None};
     |];
     (*10th column*)
 
@@ -341,6 +386,11 @@ let map1 = {
       {coordinate = (  9,   7); ground = Forest; tile_type = Tree;c=None};
       {coordinate = (9, 8); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (9, 9); ground = Plain; tile_type = Grass;c=None};
+      {coordinate = (9, 10); ground = Ocean; tile_type = Water8;c=None};
+      {coordinate = (9, 11); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (9, 12); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (9, 13); ground = Ocean; tile_type = Water10;c=None};
+      {coordinate = (9, 14); ground = Plain; tile_type = Grass;c=None};
     |];
 
     (*11th column*)
@@ -355,6 +405,11 @@ let map1 = {
       {coordinate = (  10,   7); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (10, 8); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (10, 9); ground = Ocean; tile_type = Water8;c=None};
+      {coordinate = (10, 10); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (10, 11); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (10, 12); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (10, 13); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (10, 14); ground = Ocean; tile_type = Water10;c=None};
     |];
     (*12th column*)
     [|
@@ -368,6 +423,11 @@ let map1 = {
       {coordinate = (  11,   7); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (11, 8); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (11, 9); ground = Ocean; tile_type = Water9;c=None};
+      {coordinate = (11, 10); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (11, 11); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (11, 12); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (11, 13); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (11, 14); ground = Ocean; tile_type = Water7;c=None};
     |];
 
     (*13th column*)
@@ -382,6 +442,11 @@ let map1 = {
       {coordinate = (  12,   7); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (12, 8); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (12,  9); ground = Ocean; tile_type = Water8;c=None};
+      {coordinate = (12, 10); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (12, 11); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (12, 12); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (12, 13); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (12, 14); ground = Ocean; tile_type = Water7;c=None};
     |];
     (*14th column*)
     [|
@@ -394,7 +459,12 @@ let map1 = {
       {coordinate = (  13,   6); ground = Ocean; tile_type = Water4;c=None};
       {coordinate = (  13,   7); ground = Ocean; tile_type = Water1;c=None};
       {coordinate = (13, 8); ground = Ocean; tile_type = Water5;c=None};
-          {coordinate = ( 13,  9); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = ( 13,  9); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (13, 10); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (13, 11); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (13, 12); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (13, 13); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (13, 14); ground = Ocean; tile_type = Water7;c=None};
     |];
 
     (*15th column*)
@@ -409,6 +479,11 @@ let map1 = {
       {coordinate = (  14,   7); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (14, 8); ground = Ocean; tile_type = Water6;c=None};
       {coordinate = ( 14,  9); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (14, 10); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (14, 11); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (14, 12); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (14, 13); ground = Ocean; tile_type = Water7;c=None};
+      {coordinate = (14, 14); ground = Ocean; tile_type = Water7;c=None};
     |]
   |]
 }

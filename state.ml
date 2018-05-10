@@ -89,13 +89,17 @@ let translate_key st =
               if c.allegiance <>Player then Invalid else
               match c.stage with
               |MoveSelect-> SelectMoveTile
-              |MoveDone->SelectAttackTile
-              |Done -> SelectAttackTile
-              |_ -> SelectAttackTile
+              |AttackSelect -> SelectAttackTile
+              |TradeSelect -> SelectTradeTile
+              |_ -> Invalid
             end
           |None -> begin
               match st.active_tile.c with
-              |Some x ->SelectPlayer
+              |Some x ->begin
+                  match x.stage with
+                  |Ready ->SelectPlayer
+                  |_ -> Invalid
+                end
               |None -> OpenMenu
             end
         end
@@ -130,17 +134,18 @@ let new_active_unit_st st c=
 
 
     (*Filler function to allow us to keep testing attack animation*)
-let set_next_stage c =
+(*let set_next_stage c =
   match c with
   |Some x -> begin
       match x.stage with
       |Ready -> Some (x.stage<-MoveSelect;x)
       |MoveSelect -> Some (x.stage<-MoveDone;x)
       |MoveDone -> Some (x.stage <-Done;x)
+      |AttackSe
       |Done -> Some x
       |_ -> Some x
     end
-  |None -> c
+  |None -> *)
 
 
   let new_active_tile act st =
@@ -270,15 +275,6 @@ let dijkstra's c map =
 
 (*-------------------------------END SPAGHETT---------------------------------*)
 
-
-
-let seed = 10
-
-let get_rng () =
-  let rng = Random.int 100 in
-  print_string ((string_of_int rng) ^ " ");
-  rng
-
 let create_inventory_menu c =
   let o = Array.map (fun x -> match x with
       |Some i -> i.iname
@@ -292,10 +288,11 @@ let move_char_helper st =
     let new_pos = st.active_tile.coordinate in
     let old_tile = st.act_map.grid.(fst old_pos).(snd old_pos) in
     let new_tile = st.act_map.grid.(fst new_pos).(snd new_pos) in
-    let _ = x.location<-new_pos;x.stage<-MoveDone in
+    let _ = x.location<-new_pos;x.stage<-MoveDone; in
     let _ = st.act_map.grid.(fst old_pos).(snd old_pos)<-{old_tile with c=None};
       st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
     in
+    let _ = x.movement<-dijkstra's x st.act_map in
     {st with menu_active=true;current_menu=unit_menu;active_tile={new_tile with c = Some x}}
   |None -> st
 
@@ -308,16 +305,19 @@ let village_checker st =
   |Village _ -> true
   |_ -> false
 let do' s =
+
   let act = translate_key s in
-  let _ = input:=Nothing in
+    let _ = input:=Nothing in
   match act with
   |OpenMenu -> {s with menu_active=true;current_menu = tile_menu}
   |CloseMenu -> {s with menu_active = false;menu_cursor = 0}
   |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
   |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
-  |SelectPlayer -> {s with active_unit = set_next_stage s.active_tile.c}
+  |SelectPlayer -> let ch = extract s.active_tile.c in
+    ch.stage<-MoveSelect;{s with active_unit = s.active_tile.c}
   |SelectMoveTile ->move_helper s
-  |SelectAttackTile ->let _ = attacking:=true in {s with active_unit = set_next_stage s.active_unit}
+  |SelectAttackTile ->let _ = attacking:=true in
+    let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}
   |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
   |SelectMOption ->  begin
       match s.active_unit with

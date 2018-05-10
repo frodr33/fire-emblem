@@ -90,13 +90,17 @@ let translate_key st =
               if c.allegiance <>Player then Invalid else
               match c.stage with
               |MoveSelect-> SelectMoveTile
-              |MoveDone->SelectAttackTile
-              |Done -> SelectAttackTile
-              |_ -> SelectAttackTile
+              |AttackSelect -> SelectAttackTile
+              |TradeSelect -> SelectTradeTile
+              |_ -> Invalid
             end
           |None -> begin
               match st.active_tile.c with
-              |Some x ->SelectPlayer
+              |Some x ->begin
+                  match x.stage with
+                  |Ready ->SelectPlayer
+                  |_ -> Invalid
+                end
               |None -> OpenMenu
             end
         end
@@ -131,17 +135,18 @@ let new_active_unit_st st c=
 
 
     (*Filler function to allow us to keep testing attack animation*)
-let set_next_stage c =
+(*let set_next_stage c =
   match c with
   |Some x -> begin
       match x.stage with
       |Ready -> Some (x.stage<-MoveSelect;x)
       |MoveSelect -> Some (x.stage<-MoveDone;x)
       |MoveDone -> Some (x.stage <-Done;x)
+      |AttackSe
       |Done -> Some x
       |_ -> Some x
     end
-  |None -> c
+  |None -> *)
 
 
   let new_active_tile act st =
@@ -203,16 +208,6 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
     |Desert -> if mov < 2 then (false, -1) else (true, mov - 2)
     |_ -> if mov < 1 then (false, -1) else (true, mov - 1)
 
-
-(*let rec flood_fill_helper (mov:int) (dimensions: int * int) (t:tile) (lst:tile list) : tile list=
-  if List.exists (fun a -> a = t) then lst
-  else if mov = 0 then t::lst
-  else (t::lst)
-       |> check_dir mov South t dimensions
-       |> check_dir mov West t dimensions
-       |> check_dir mov East t dimensions
-       |> check_dir mov North t dimensions*)
-
 let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
   match f with
   |[]   -> [(tile,i)]
@@ -238,8 +233,7 @@ let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list)
 
 (*-----------------------------SPAGHETT DIJKSTRA'S----------------------------*)
 
-let comp a b =
-  snd b - snd a
+
 
 let rec check_surround s t m map f:(tile * int) list =
   f
@@ -247,7 +241,7 @@ let rec check_surround s t m map f:(tile * int) list =
   |> check_dir m East t map s
   |> check_dir m North t map s
   |> check_dir m West t map s
-  |> List.sort comp
+
 
 
 (**Name keeping:
@@ -270,15 +264,6 @@ let dijkstra's c map =
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)
-
-
-
-let seed = 10
-
-let get_rng () =
-  let rng = Random.int 100 in
-  print_string ((string_of_int rng) ^ " ");
-  rng
 
 let create_inventory_menu c =
   let o = Array.map (fun x -> match x with
@@ -339,21 +324,22 @@ let chest_checker s =
   |None -> false
 
 let do' s =
+
   let act = translate_key s in
-  let _ = input:=Nothing in
+    let _ = input:=Nothing in
   match act with
   |OpenMenu -> {s with menu_active = true;
                        current_menu = tile_menu}
   |CloseMenu -> {s with menu_active = false;
                         menu_cursor = 0}
   |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
-  |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s}
-  |SelectPlayer -> {s with active_unit = set_next_stage s.active_tile.c}
-  |SelectMoveTile -> move_helper s
-  |SelectAttackTile -> let _ = attacking := true in
-    {s with active_unit = set_next_stage s.active_unit}
-  |DeselectPlayer -> let ch = extract s.active_unit in ch.stage <- Ready;
-    {s with active_unit = None}
+  |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
+  |SelectPlayer -> let ch = extract s.active_tile.c in
+    ch.stage<-MoveSelect;{s with active_unit = s.active_tile.c}
+  |SelectMoveTile ->move_helper s
+  |SelectAttackTile ->let _ = attacking:=true in
+    let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}
+  |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
   |SelectMOption ->  begin
       match s.active_unit with
       |Some ch -> begin

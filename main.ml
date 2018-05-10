@@ -36,7 +36,7 @@ let temp_character =
     res = 0;
     skl = 0;
     lck = 0;
-    mov = 1;
+    mov = 12;
     con = 0;
     aid = 0;
     hit = 0;
@@ -49,7 +49,7 @@ let temp_character =
     supports = [];
     wlevels = [];
     ai = BossHunt;
-    location= (5,5);
+    location= (10, 0);
     movement= [];
     direction= South;
   }

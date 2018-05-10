@@ -236,8 +236,7 @@ let remove_item ilst s =
   List.fold_left (fun a v -> if v = s then a else v::a) [] ilst
 
 let rec use_not_eqp c i =
-  c.inv.(i) <- (use c.inv.(i));
-  c
+  c.inv.(i) <- (use c.inv.(i))
 
 let heal a t i =
   match a.inv.(i) with

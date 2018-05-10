@@ -287,7 +287,7 @@ let map1 = {
       {coordinate = (  4,   1); ground = Wall; tile_type = Wall5;c=None};
       {coordinate = (  4,   2); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  4,   3); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (  4,   4); ground = Wall; tile_type = Wall1;c=None};
+      {coordinate = (  4,   4); ground = Plain; tile_type = Wall1;c=None};
       {coordinate = (  4,   5); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  4,   6); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  4,   7); ground = Plain; tile_type = Grass;c=None};
@@ -306,7 +306,7 @@ let map1 = {
       {coordinate = (  5,   1); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  5,   2); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  5,   3); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (  5,   4); ground = Wall; tile_type = Wall1;c=None};
+      {coordinate = (  5,   4); ground = Plain; tile_type = Wall1;c=None};
       {coordinate = (  5,   5); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  5,   6); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  5,   7); ground = Plain; tile_type = Grass;c=None};
@@ -325,7 +325,7 @@ let map1 = {
       {coordinate = (  6,   1); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  6,   2); ground = Forest; tile_type = Tree;c=None};
       {coordinate = (  6,   3); ground = Plain; tile_type = Grass;c=None};
-      {coordinate = (  6,   4); ground = Wall; tile_type = Wall1;c=None};
+      {coordinate = (  6,   4); ground = Plain; tile_type = Wall1;c=None};
       {coordinate = (  6,   5); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  6,   6); ground = Forest; tile_type = Tree;c=None};
       {coordinate = (  6,   7); ground = Plain; tile_type = Tree;c=None};

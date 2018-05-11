@@ -22,7 +22,16 @@ type state = {
   funds : int;
 }
 
+let rec replace_helper c lst =
+  match lst with
+  |[]   -> [c]
+  |h::t -> if h.name = c.name then c::t else h::(replace_helper c t)
 
+let replace c st =
+  match c.allegiance with
+  |Player -> {st with player = replace_helper c st.player}
+  |Enemy  -> {st with enemies = replace_helper c st.enemies}
+  |Allied -> {st with allies = replace_helper c st.allies}
 
 let ctile c map =
   map.grid.(fst c.location).(snd c.location)
@@ -278,14 +287,12 @@ let move_char_helper st =
     let new_pos = st.active_tile.coordinate in
     let old_tile = st.act_map.grid.(fst old_pos).(snd old_pos) in
     let new_tile = st.act_map.grid.(fst new_pos).(snd new_pos) in
-    let _ = x.location<-new_pos;x.stage <- MoveDone in
-    let _ = st.act_map.grid.(fst old_pos).(snd old_pos) <- {old_tile with c=None};
-      st.act_map.grid.(fst new_pos).(snd new_pos) <- {new_tile with c = Some x}
+    let _ = x.location<-new_pos;x.stage<-MoveDone; in
+    let _ = st.act_map.grid.(fst old_pos).(snd old_pos)<-{old_tile with c=None};
+      st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
     in
-    {st with menu_active = true;
-             current_menu = unit_menu;
-             active_tile = {new_tile with c = Some x}
-    }
+    let _ = x.movement<-dijkstra's x st.act_map in
+    {st with menu_active=true;current_menu=unit_menu;active_tile=st.act_map.grid.(fst new_pos).(snd new_pos)}
   |None -> st
 
 let move_helper st =
@@ -338,7 +345,10 @@ let do' s =
     ch.stage<-MoveSelect;{s with active_unit = s.active_tile.c}
   |SelectMoveTile ->move_helper s
   |SelectAttackTile ->let _ = attacking:=true in
-    let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}
+    let ch = extract s.active_unit in ch.stage<-Done;
+    let e  = extract s.active_tile.c in
+    let damage = combat ch e in
+    {s with active_unit = None} |> replace (fst damage) |> replace (snd damage)
   |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
   |SelectMOption ->  begin
       match s.active_unit with
@@ -346,7 +356,8 @@ let do' s =
           match s.current_menu.kind with
           |Unit -> begin
                   match s.current_menu.options.(s.menu_cursor) with
-                  |"Attack" -> (*NOTE: placeholder*) s
+                  |"Attack" -> ch.stage<-AttackSelect;
+                    {s with menu_active=false;menu_cursor=0}
                   |"Item"-> {s with current_menu = create_inventory_menu ch;
                                     menu_cursor = 0}
                   |"Wait" -> ch.stage <- Done;
@@ -372,7 +383,7 @@ let do' s =
                     else s
                   |_ -> s
                 end
-
+            |Inventory
             |_ -> s
         end
       |None -> s

@@ -362,6 +362,17 @@ let do' s =
                   else s
                   |_ -> s
                 end
+            |Item -> begin 
+              match s.current_menu.options.(s.menu_cursor) with
+              |"Equip/Use" -> begin
+                let item = extract s.active_item in
+                 match item.wtype with 
+                 |Consumable -> ignore (consumable ch s.menu_cursor); 
+                   {s with active_unit = None;
+                           menu_active = false;
+                           menu_cursor = 0}
+                 |_ -> if equippable ch item then (ignore (move_to_top ch s.menu_cursor); {s with menu = create_inventory_menu ch;
+                                                                                                  menu_cursor = 0}) else s
             |_ -> s
         end
       |None -> s

@@ -168,15 +168,16 @@ let rec update_character c =
       |Some x -> x.crit + (c.lck / 2)
     in
     let calc_avoid c = c.spd + c.lck in
-    {c with hit = calc_hit c;
-            atk = calc_atk c;
-            crit = calc_crit c;
-            avoid = calc_avoid c;
-            eqp = e
-    }
+    c.hit <- (calc_hit c);
+    c.atk <- calc_atk c;
+    c.crit <- calc_crit c;
+    c.avoid <- calc_avoid c;
+    c.eqp <- e;
+    c
 
 let rec remove_item a i =
-  a.inv.(i) <- None;a
+  a.inv.(i) <- None;
+  a
 
 let move_to_top a i =
   let temp = a.inv.(0) in

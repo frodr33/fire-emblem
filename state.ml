@@ -330,6 +330,8 @@ let chest_checker s =
     end
   |None -> false, -1
 
+
+
 let do' s =
 
   let act = translate_key s in
@@ -367,7 +369,7 @@ let do' s =
                   |"Visit" -> if village_checker s
                     then let _ = village ch s.active_tile.ground;
                       ch.stage <- Done in
-                      ignore (village (extract s.active_unit) s.active_tile.ground);
+                      ignore (village ch s.active_tile.ground);
                       {s with active_unit = None;
                               menu_active = false;
                               menu_cursor = 0;
@@ -375,7 +377,7 @@ let do' s =
                     else s
                   |"Open" -> let chestable = chest_checker s in
                     if fst chestable then (ch.stage <-Done;
-                      ignore (chest (extract s.active_unit) s.active_tile.ground (snd chestable));
+                      ignore (chest ch s.active_tile.ground (snd chestable));
                                            {s with active_unit = None;
                                                    menu_active = false;
                                                    menu_cursor = 0

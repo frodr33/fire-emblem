@@ -363,6 +363,9 @@ let do' s =
                   else s
                   |_ -> s
                 end
+            |Inventory -> {s with active_item = s.menu_cursor;
+                                  current_menu = item_menu;
+                                  menu_cursor = 0}
             |Item -> begin
               match s.current_menu.options.(s.menu_cursor) with
               |"Equip/Use" -> begin

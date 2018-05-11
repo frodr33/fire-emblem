@@ -294,7 +294,6 @@ let village_checker st =
   match st.active_tile.ground with
   |Village _ -> true
   |_ -> false
-<<<<<<< HEAD
 
 let rec has_key c i =
   if i = 5 then false, -1
@@ -317,8 +316,6 @@ let chest_checker s =
 
 
 
-=======
->>>>>>> 75789463d70dc1fba39d022865cb32aaed75cd3e
 let do' s =
   let act = translate_key s in
     let _ = input:=Nothing in

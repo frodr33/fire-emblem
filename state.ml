@@ -1,5 +1,6 @@
 open Types
 open Interactions
+open Characters
 let extract (Some c)= c
 
 let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
@@ -13,7 +14,7 @@ type state = {
   won : bool;
   active_tile: tile;
   active_unit: character option;
-  active_item: item option;
+  active_item: int;
   act_map: map;
   menus:(string * menu) list;
   current_menu : menu;
@@ -362,25 +363,26 @@ let do' s =
                   else s
                   |_ -> s
                 end
-            |Item -> begin 
+            |Item -> begin
               match s.current_menu.options.(s.menu_cursor) with
               |"Equip/Use" -> begin
-                let item = extract s.active_item in
-                 match item.wtype with 
-                 |Consumable -> ignore (consumable ch s.menu_cursor); 
+                  let item = extract (ch.inv.(s.active_item)) in
+                 match item.wtype with
+                 |Potion-> ignore (consumable ch s.active_item);
                    {s with active_unit = None;
                            menu_active = false;
                            menu_cursor = 0}
-                 |_ -> if equippable ch item then (ignore (move_to_top ch s.menu_cursor); {s with menu = create_inventory_menu ch;
+                 |_ -> if equippable ch item then (ignore (move_to_top ch s.active_item); {s with current_menu = create_inventory_menu ch;
                                                                                                   menu_cursor = 0;}) else s
               end
               |"Discard" -> begin
-                let item = extract s.active_item in
-                ignore (remove_item ch item);
-                {s with menu = create_inventory_menu ch;
+                ignore (remove_item ch s.active_item);
+                {s with current_menu = create_inventory_menu ch;
                         menu_cursor = 0}
+              end
               |_ -> s
-            end  
+
+            end
             |_ -> s
         end
       |None -> s

@@ -31,7 +31,7 @@ type state = {
   won : bool;
   active_tile: tile;
   active_unit: character option;
-  active_item: item option;
+  active_item: int;
   act_map: map;
   menus:(string * menu) list;
   current_menu : menu;

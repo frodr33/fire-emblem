@@ -2,8 +2,7 @@ open Types
 open Interactions
 let extract (Some c)= c
 
-let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";
-                                                "Trade";"Wait"|]}
+let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
 let tile_menu = {kind=Tile;size = 4;options = [|"Unit";"Status";"Suspend";"End"|]}
 let item_menu = {kind=Item;size = 2;options = [|"Equip/Use";"Discard"|]}
 type state = {
@@ -14,6 +13,7 @@ type state = {
   won : bool;
   active_tile: tile;
   active_unit: character option;
+  active_item: item option;
   act_map: map;
   menus:(string * menu) list;
   current_menu : menu;
@@ -22,16 +22,7 @@ type state = {
   funds : int;
 }
 
-let rec replace_helper c lst =
-  match lst with
-  |[]   -> [c]
-  |h::t -> if h.name = c.name then c::t else h::(replace_helper c t)
 
-let replace c st =
-  match c.allegiance with
-  |Player -> {st with player = replace_helper c st.player}
-  |Enemy  -> {st with enemies = replace_helper c st.enemies}
-  |Allied -> {st with allies = replace_helper c st.allies}
 
 let ctile c map =
   map.grid.(fst c.location).(snd c.location)
@@ -296,100 +287,46 @@ let move_char_helper st =
   |None -> st
 
 let move_helper st =
-  if List.mem (st.active_tile.coordinate) (extract st.active_unit).movement
-    && st.active_tile.c = None then move_char_helper st
-  else
-    let old_tile = (extract st.active_unit).location in
+  if List.mem (st.active_tile.coordinate) (extract st.active_unit).movement && st.active_tile.c =None then
+    move_char_helper st else let old_tile = (extract st.active_unit).location in
     {st with active_tile = st.act_map.grid.(fst old_tile).(snd old_tile)}
-
 let village_checker st =
   match st.active_tile.ground with
-  |Village i-> begin
-      match i with
-      |None -> false
-      |Some x -> true
-    end
+  |Village _ -> true
   |_ -> false
-
-let rec has_key c i =
-  if i = 5 then false, -1
-  else
-    match c.inv.(i) with
-    |Some x -> begin match x.wtype with
-      |Key -> true, i
-      |_ -> has_key c (i + 1)
-      end
-    |None  -> has_key c (i + 1)
-
-let chest_checker s =
-  match s.active_unit with
-  |Some x -> let key = has_key x 0 in
-    begin match s.active_tile.ground with
-    |Chest i -> if fst key then true, snd key else false, -1
-    |_       -> false, -1
-    end
-  |None -> false, -1
-
 let do' s =
-
   let act = translate_key s in
     let _ = input:=Nothing in
   match act with
-  |OpenMenu -> {s with menu_active = true;
-                       current_menu = tile_menu}
-  |CloseMenu -> {s with menu_active = false;
-                        menu_cursor = 0}
+  |OpenMenu -> {s with menu_active=true;current_menu = tile_menu}
+  |CloseMenu -> {s with menu_active = false;menu_cursor = 0}
   |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
   |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
   |SelectPlayer -> let ch = extract s.active_tile.c in
     ch.stage<-MoveSelect;{s with active_unit = s.active_tile.c}
   |SelectMoveTile ->move_helper s
   |SelectAttackTile ->let _ = attacking:=true in
-    let ch = extract s.active_unit in ch.stage<-Done;
-    let e  = extract s.active_tile.c in
-    let damage = combat ch e in
-    {s with active_unit = None} |> replace (fst damage) |> replace (snd damage)
+    let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}
   |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
   |SelectMOption ->  begin
       match s.active_unit with
       |Some ch -> begin
           match s.current_menu.kind with
-          |Unit -> begin
-                  match s.current_menu.options.(s.menu_cursor) with
-                  |"Attack" -> ch.stage<-AttackSelect;
-                    {s with menu_active=false;menu_cursor=0}
-                  |"Item"-> {s with current_menu = create_inventory_menu ch;
-                                    menu_cursor = 0}
-                  |"Wait" -> ch.stage <- Done;
-                    {s with active_unit = None;
-                            menu_active=false;
-                            menu_cursor=0}
-                  |"Visit" -> if village_checker s
-                    then let _ = village ch s.active_tile.ground;
-                      ch.stage <- Done in
-                      ignore (village (extract s.active_unit) s.active_tile.ground);
-                      {s with active_unit = None;
-                              menu_active = false;
-                              menu_cursor = 0;
-                              }
-                    else s
-                  |"Open" -> let chestable = chest_checker s in
-                    if fst chestable then (ch.stage <-Done;
-                      ignore (chest (extract s.active_unit) s.active_tile.ground (snd chestable));
-                                           {s with active_unit = None;
-                                                   menu_active = false;
-                                                   menu_cursor = 0
-                                           })
-                    else s
+            |Unit -> begin
+                match s.current_menu.options.(s.menu_cursor) with
+                |"Attack"-> if ch.eqp = -1 then s else let _ = ch.stage<-AttackSelect in {s with menu_active=false;menu_cursor=0}
+                  |"Wait"->  ch.stage<-Ready;{s with active_unit = None;menu_active=false;menu_cursor=0}
+                  |"Item"-> {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
+                  |"Visit"-> if village_checker s then let _ = village ch s.active_tile.ground;ch.stage<-Done in
+                    {s with active_unit = None;menu_active=false;menu_cursor=0} else s
                   |_ -> s
                 end
-            |Inventory
             |_ -> s
         end
       |None -> s
     end
   |BackMenu -> begin match s.current_menu.kind with
-    |Inventory -> {s with current_menu = unit_menu;menu_cursor=0}
+    |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
     |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
     |_ -> s
     end

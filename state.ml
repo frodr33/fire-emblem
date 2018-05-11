@@ -372,7 +372,7 @@ let do' s =
                            menu_active = false;
                            menu_cursor = 0}
                  |_ -> if equippable ch item then (ignore (move_to_top ch s.menu_cursor); {s with menu = create_inventory_menu ch;
-                                                                                                  menu_cursor = 0}) else s
+                                                                                                  menu_cursor = 0;}) else s
             |_ -> s
         end
       |None -> s

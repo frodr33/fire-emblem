@@ -373,6 +373,14 @@ let do' s =
                            menu_cursor = 0}
                  |_ -> if equippable ch item then (ignore (move_to_top ch s.menu_cursor); {s with menu = create_inventory_menu ch;
                                                                                                   menu_cursor = 0;}) else s
+              end
+              |"Discard" -> begin
+                let item = extract s.active_item in
+                ignore (remove_item ch item);
+                {s with menu = create_inventory_menu ch;
+                        menu_cursor = 0}
+              |_ -> s
+            end  
             |_ -> s
         end
       |None -> s

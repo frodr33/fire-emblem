@@ -3,7 +3,7 @@ open Interactions
 open Characters
 
 let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
-let tile_menu = {kind=Tile;size = 4;options = [|"Unit";"Status";"Suspend";"End"|]}
+let tile_menu = {kind=Tile;size = 2;options = [|" ";"End"|]}
 let item_menu = {kind=Item;size = 2;options = [|"Equip/Use";"Discard"|]}
 let confirm_menu = {kind = Confirm;size=1;options=[|"Attack?"|]}
 type state = {
@@ -443,6 +443,10 @@ let do' s =
               end
               |_ -> s
             end
+            |Tile -> begin 
+              match s.current_menu.options.(s.menu_cursor) with
+              |" "   -> s 
+              |"End" -> (*TODO: insert AI function here*) 
             |Confirm->   let _ = attacking:=true in
               let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}
             |_ -> s

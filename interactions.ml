@@ -179,7 +179,7 @@ let wexp_level_up c =
   |'d' -> 'c'
   |'c' -> 'b'
   |'b' -> 'a'
-  |_ -> "wexp_level_up invalid level"
+  |_ -> failwith "wexp_level_up invalid level"
 
 let rec wexp_helper ty lst =
   match lst with 

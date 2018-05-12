@@ -284,6 +284,7 @@ let move_helper st =
   if List.mem (st.active_tile.coordinate) (extract st.active_unit).movement && st.active_tile.c =None then
     move_char_helper st else let old_tile = (extract st.active_unit).location in
     {st with active_tile = st.act_map.grid.(fst old_tile).(snd old_tile)}
+
 let village_checker st =
   match st.active_tile.ground with
   |Village _ -> true
@@ -308,7 +309,16 @@ let chest_checker s =
     end
   |None -> false, -1
 
+let rec replace_helper c lst =
+  match lst with
+  |[]   -> [c]
+  |h::t -> if h.name = c.name then c::t else h::(replace_helper c t)
 
+let replace c st =
+  match c.allegiance with
+  |Player -> {st with player = replace_helper c st.player}
+  |Enemy  -> {st with enemies = replace_helper c st.enemies}
+  |Allied -> {st with allies = replace_helper c st.allies}*)
 
 let do' s =
   let act = translate_key s in
@@ -394,7 +404,14 @@ let do' s =
       |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
       |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone;{s with current_menu = unit_menu;menu_cursor=0;}
       |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
-      |Confirm -> {s with menu_active=false;menu_cursor=0}
+      |Confirm -> 
+        let ch = extract s.active_unit in ch.stage<-Done;
+        let e  = extract s.active_tile.c in
+        let damage = combat ch e in
+        {s with active_unit = None;
+                menu_active=false;
+                menu_cursor=0} 
+        |> replace (fst damage) |> replace (snd damage)
       |_ -> s
     end
   |BackTrade -> let c = extract s.active_unit in

@@ -39,7 +39,7 @@ let check_enemy_loc st =
 
 (* ml is list of tiles under min range*)
 let rec attack_range mi ma i co ml fl =
-  if fst co > 0 && snd co > 0 && i < ma && not (List.mem co ml) && not (List.mem co fl) then 
+  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then 
   (if i < mi then fl
                    |> attack_range mi ma (i + 1) (fst co - 1, snd co) (co::ml)
                    |> attack_range mi ma (i + 1) (fst co, snd co - 1) (co::ml)
@@ -54,7 +54,7 @@ let rec attack_range mi ma i co ml fl =
   else fl
 
 let rec attack_range_mod mi ma i co movl ml fl =
-  if fst co > 0 && snd co > 0 && i < ma && not (List.mem co ml) && not (List.mem co fl) then 
+  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then 
   (if i < mi || List.mem co movl then fl
                    |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl (co::ml)
                    |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl (co::ml)
@@ -285,11 +285,18 @@ let rec dijkstra's_helper f s tile m map =
 let dijkstra's c map =
   dijkstra's_helper [] [] (ctile c map) c.mov map
 
+let rec add_no_dup lst1 lst2 = 
+  match lst1 with
+  |[]   -> lst2
+  |h::t -> if List.mem h lst2 then add_no_dup t lst2 else add_no_dup t (h::lst2)
+
 let rec red_tiles_helper mlst alst c =
   let w = extract c.inv.(c.eqp) in
   match mlst with
   |[]   -> alst
-  |h::t -> attack_range_mod (fst w.range) (snd w.range) 0 c.location c.movement [] []
+  |h::t -> let range = (attack_range_mod (fst w.range) (snd w.range) 0 h c.movement [] []) in
+    let new_alst = add_no_dup alst in
+    red_tiles_helper t new_alst c  
   
 let red_tiles c : (int * int) list = 
   if c.eqp = -1 then []

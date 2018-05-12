@@ -318,7 +318,7 @@ let replace c st =
   match c.allegiance with
   |Player -> {st with player = replace_helper c st.player}
   |Enemy  -> {st with enemies = replace_helper c st.enemies}
-  |Allied -> {st with allies = replace_helper c st.allies}*)
+  |Allied -> {st with allies = replace_helper c st.allies}
 
 let do' s =
   let act = translate_key s in

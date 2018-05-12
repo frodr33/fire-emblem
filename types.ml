@@ -60,7 +60,6 @@ let init_rng = Random.init 10;
 
 let get_rng () = Random.int 100 
 
-let 
 let input = ref Nothing
 let attacking = ref false
 let moved_forward = ref false

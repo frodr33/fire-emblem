@@ -97,6 +97,7 @@ type character = {
   mutable ai : ai;
   mutable location: int*int;
   mutable movement: (int*int) list;
+  mutable attackable : (int * int) list;
   mutable direction: direction;
 }
 (** Represents one tile on a map*)

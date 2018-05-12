@@ -38,33 +38,33 @@ let check_enemy_loc st =
 *)
 
 (* ml is list of tiles under min range*)
-let rec attack_range min max i co ml fl =
-  if fst co > 0 && snd co > 0 && i < max && not (List.mem co ml) && not (List.mem co fl) then 
-  (if i < min then fl
-                   |> attack_range min max (i + 1) (fst co - 1, snd co) co::ml
-                   |> attack_range min max (i + 1) (fst co, snd co - 1) co::ml
-                   |> attack_range min max (i + 1) (fst co + 1, snd co) co::ml
-                   |> attack_range min max (i + 1) (fst co, snd co + 1) co::ml
+let rec attack_range mi ma i co ml fl =
+  if fst co > 0 && snd co > 0 && i < ma && not (List.mem co ml) && not (List.mem co fl) then 
+  (if i < mi then fl
+                   |> attack_range mi ma (i + 1) (fst co - 1, snd co) (co::ml)
+                   |> attack_range mi ma (i + 1) (fst co, snd co - 1) (co::ml)
+                   |> attack_range mi ma (i + 1) (fst co + 1, snd co) (co::ml)
+                   |> attack_range mi ma (i + 1) (fst co, snd co + 1) (co::ml)
    else co::fl
-        |> attack_range min max (i + 1) (fst co - 1, snd co) ml
-        |> attack_range min max (i + 1) (fst co, snd co - 1) ml
-        |> attack_range min max (i + 1) (fst co + 1, snd co) ml
-        |> attack_range min max (i + 1) (fst co, snd co + 1) ml
+        |> attack_range mi ma (i + 1) (fst co - 1, snd co) ml
+        |> attack_range mi ma (i + 1) (fst co, snd co - 1) ml
+        |> attack_range mi ma (i + 1) (fst co + 1, snd co) ml
+        |> attack_range mi ma (i + 1) (fst co, snd co + 1) ml
   )
   else fl
 
-let rec attack_range_mod min max i co movl ml fl =
-  if fst co > 0 && snd co > 0 && i < max && not (List.mem co ml) && not (List.mem co fl) then 
-  (if i < min || List.mem co movl then fl
-                   |> attack_range_mod min max (i + 1) (fst co - 1, snd co) movl co::ml
-                   |> attack_range_mod min max (i + 1) (fst co, snd co - 1) movl co::ml
-                   |> attack_range_mod min max (i + 1) (fst co + 1, snd co) movl co::ml
-                   |> attack_range_mod min max (i + 1) (fst co, snd co + 1) movl co::ml
+let rec attack_range_mod mi ma i co movl ml fl =
+  if fst co > 0 && snd co > 0 && i < ma && not (List.mem co ml) && not (List.mem co fl) then 
+  (if i < mi || List.mem co movl then fl
+                   |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl (co::ml)
+                   |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl (co::ml)
+                   |> attack_range_mod mi ma (i + 1) (fst co + 1, snd co) movl (co::ml)
+                   |> attack_range_mod mi ma (i + 1) (fst co, snd co + 1) movl (co::ml)
    else co::fl
-        |> attack_range_mod min max (i + 1) (fst co - 1, snd co) movl ml
-        |> attack_range_mod min max (i + 1) (fst co, snd co - 1) movl ml
-        |> attack_range_mod min max (i + 1) (fst co + 1, snd co) movl ml
-        |> attack_range_mod min max (i + 1) (fst co, snd co + 1) movl ml
+        |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl ml
+        |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl ml
+        |> attack_range_mod mi ma (i + 1) (fst co + 1, snd co) movl ml
+        |> attack_range_mod mi ma (i + 1) (fst co, snd co + 1) movl ml
   )
   else fl
     

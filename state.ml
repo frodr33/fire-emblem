@@ -289,9 +289,9 @@ let rec red_tiles_helper mlst alst c =
   let w = extract c.inv.(c.eqp) in
   match mlst with
   |[]   -> alst
-  |h::t -> attack_range_mod (fst w.range) (snd w.range) 0 c.movement [] []
+  |h::t -> attack_range_mod (fst w.range) (snd w.range) 0 c.location c.movement [] []
   
-let red_tiles c = 
+let red_tiles c : (int * int) list = 
   if c.eqp = -1 then []
   else red_tiles_helper c.movement [] c
 

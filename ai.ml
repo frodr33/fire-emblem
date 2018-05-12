@@ -15,6 +15,43 @@ type path_map =
     grid: path_tile array array;
   }
 
+let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
+  match f with
+  |[]   -> [(tile,i)]
+  |h::t -> if fst h = tile then (if i < snd h then (tile, i) :: t
+                                 else h :: t) else h :: (add_f tile i t)
+
+let rec check_dir (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
+  let mapg = map.grid in
+    match t.coordinate with
+    |(x, y) ->
+      let next = match d with
+      |North -> mapg.(x).(y - 1)
+      |East  -> mapg.(x + 1).(y)
+      |South -> mapg.(x).(y + 1)
+      |West  -> mapg.(x - 1).(y)
+      in
+      if fst next.coordinate >= 0 && fst next.coordinate < map.width
+         && snd next.coordinate >= 0 && snd next.coordinate < map.length then
+        match next.ground with
+        |Wall -> f
+        |Door -> f
+        |Damaged_wall (x) -> f
+        |Mountain -> f
+        |Ocean -> f
+        |Peaks -> add_f next 3 f
+        |Forest -> add_f next 2 f
+        |Desert -> add_f next 2 f
+        |_ -> add_f next 1 f
+      else f
+
+let rec check_surround s t m map f:(tile * int) list =
+  f
+  |> check_dir South t map s
+  |> check_dir East t map s
+  |> check_dir North t map s
+  |> check_dir West t map s
+
 let fill_map len wid =
   let (t : path_tile) = {length = 1000;prev = None} in
   Array.make_matrix len wid t

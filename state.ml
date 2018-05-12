@@ -1,7 +1,6 @@
 open Types
 open Interactions
 open Characters
-let extract (Some c)= c
 
 let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
 let tile_menu = {kind=Tile;size = 4;options = [|"Unit";"Status";"Suspend";"End"|]}
@@ -24,8 +23,6 @@ type state = {
   funds : int;
 }
 
-
-
 let ctile c map =
   map.grid.(fst c.location).(snd c.location)
 (*
@@ -38,6 +35,40 @@ let check_player_loc st =
 let check_enemy_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
 *)
+
+(* ml is list of tiles under min range*)
+let rec attack_range mi ma i co ml fl =
+  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then 
+  (if i < mi then fl
+                   |> attack_range mi ma (i + 1) (fst co - 1, snd co) (co::ml)
+                   |> attack_range mi ma (i + 1) (fst co, snd co - 1) (co::ml)
+                   |> attack_range mi ma (i + 1) (fst co + 1, snd co) (co::ml)
+                   |> attack_range mi ma (i + 1) (fst co, snd co + 1) (co::ml)
+   else co::fl
+        |> attack_range mi ma (i + 1) (fst co - 1, snd co) ml
+        |> attack_range mi ma (i + 1) (fst co, snd co - 1) ml
+        |> attack_range mi ma (i + 1) (fst co + 1, snd co) ml
+        |> attack_range mi ma (i + 1) (fst co, snd co + 1) ml
+  )
+  else fl
+
+let rec attack_range_mod mi ma i co movl ml fl =
+  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then 
+  (if i < mi || List.mem co movl then fl
+                   |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl (co::ml)
+                   |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl (co::ml)
+                   |> attack_range_mod mi ma (i + 1) (fst co + 1, snd co) movl (co::ml)
+                   |> attack_range_mod mi ma (i + 1) (fst co, snd co + 1) movl (co::ml)
+   else co::fl
+        |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl ml
+        |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl ml
+        |> attack_range_mod mi ma (i + 1) (fst co + 1, snd co) movl ml
+        |> attack_range_mod mi ma (i + 1) (fst co, snd co + 1) movl ml
+  )
+  else fl
+    
+  
+
 let check_ally_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
 
@@ -187,6 +218,7 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
     |South -> mapg.(x).(y + 1)
     |West  -> mapg.(x - 1).(y)
     in
+    if next_tile.c = None then 
     match next_tile.ground with
     |Wall -> (false, -1)
     |Door -> (false, -1)
@@ -197,12 +229,13 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
     |Forest -> if mov < 2 then (false, -1) else (true, mov - 2)
     |Desert -> if mov < 2 then (false, -1) else (true, mov - 2)
     |_ -> if mov < 1 then (false, -1) else (true, mov - 1)
+    else (false, -1)
 
 let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
   match f with
   |[]   -> [(tile,i)]
   |h::t -> if fst h = tile then (if i > snd h then (tile, i) :: t
-                              else h :: t) else h :: (add_f tile i t)
+                                 else h :: t) else h :: (add_f tile i t)
 
 let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
   let mapg = map.grid in
@@ -251,6 +284,23 @@ let rec dijkstra's_helper f s tile m map =
 let dijkstra's c map =
   dijkstra's_helper [] [] (ctile c map) c.mov map
 
+let rec add_no_dup lst1 lst2 = 
+  match lst1 with
+  |[]   -> lst2
+  |h::t -> if List.mem h lst2 then add_no_dup t lst2 else add_no_dup t (h::lst2)
+
+let rec red_tiles_helper mlst alst c =
+  let w = extract c.inv.(c.eqp) in
+  match mlst with
+  |[]   -> alst
+  |h::t -> let range = (attack_range_mod (fst w.range) (snd w.range) 0 h c.movement [] []) in
+    let new_alst = add_no_dup range alst in
+    red_tiles_helper t new_alst c  
+  
+let red_tiles c : (int * int) list = 
+  if c.eqp = -1 then []
+  else red_tiles_helper c.movement [] c
+
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)
@@ -284,6 +334,7 @@ let move_helper st =
   if List.mem (st.active_tile.coordinate) (extract st.active_unit).movement && st.active_tile.c =None then
     move_char_helper st else let old_tile = (extract st.active_unit).location in
     {st with active_tile = st.act_map.grid.(fst old_tile).(snd old_tile)}
+
 let village_checker st =
   match st.active_tile.ground with
   |Village _ -> true
@@ -308,7 +359,16 @@ let chest_checker s =
     end
   |None -> false, -1
 
+let rec replace_helper c lst =
+  match lst with
+  |[]   -> [c]
+  |h::t -> if h.name = c.name then c::t else h::(replace_helper c t)
 
+let replace c st =
+  match c.allegiance with
+  |Player -> {st with player = replace_helper c st.player}
+  |Enemy  -> {st with enemies = replace_helper c st.enemies}
+  |Allied -> {st with allies = replace_helper c st.allies}
 
 let do' s =
   let act = translate_key s in
@@ -394,7 +454,14 @@ let do' s =
       |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
       |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone;{s with current_menu = unit_menu;menu_cursor=0;}
       |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
-      |Confirm -> {s with menu_active=false;menu_cursor=0}
+      |Confirm -> 
+        let ch = extract s.active_unit in ch.stage<-Done;
+        let e  = extract s.active_tile.c in
+        let damage = combat ch e in
+        {s with active_unit = None;
+                menu_active=false;
+                menu_cursor=0} 
+        |> replace (fst damage) |> replace (snd damage)
       |_ -> s
     end
   |BackTrade -> let c = extract s.active_unit in

@@ -18,6 +18,23 @@ type state = {
   funds : int;
 }
 
+let empty_item = {
+  iname  = "d";
+  wtype = Sword;
+  mgt = 0;
+  acc = 0;
+  crit = 0;
+  range = 1, 1;
+  uses = 0;
+  cost = 0;
+  sell = 0;
+  level = 'd';
+  users = [];
+  effective = [];
+  penalty = [];
+}
+
+
 
 
 let temp_character =
@@ -38,14 +55,14 @@ let temp_character =
     res = 0;
     skl = 0;
     lck = 0;
-    mov = 2;
+    mov = 3;
     con = 0;
     aid = 0;
     hit = 0;
     atk = 0;
     crit = 0;
     avoid = 0;
-    inv = [|None;None;None;None;None|];
+    inv = [|Some empty_item;None;None;None;None|];
     eqp = 0;
     ability = [];
     supports = [];
@@ -510,6 +527,57 @@ let init_state =
       funds = 0;
     } in set_init_ch_movement x.player x
 
+let extract (Some x) = x
+
+(* ml is list of tiles under min range*)
+let rec attack_range mi ma i co ml fl =
+  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then 
+  (if i < mi then fl
+                   |> attack_range mi ma (i + 1) (fst co - 1, snd co) (co::ml)
+                   |> attack_range mi ma (i + 1) (fst co, snd co - 1) (co::ml)
+                   |> attack_range mi ma (i + 1) (fst co + 1, snd co) (co::ml)
+                   |> attack_range mi ma (i + 1) (fst co, snd co + 1) (co::ml)
+   else co::fl
+        |> attack_range mi ma (i + 1) (fst co - 1, snd co) ml
+        |> attack_range mi ma (i + 1) (fst co, snd co - 1) ml
+        |> attack_range mi ma (i + 1) (fst co + 1, snd co) ml
+        |> attack_range mi ma (i + 1) (fst co, snd co + 1) ml
+  )
+  else fl
+
+let rec attack_range_mod mi ma i co movl ml fl =
+  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then 
+  (if i < mi || List.mem co movl then fl
+                   |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl (co::ml)
+                   |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl (co::ml)
+                   |> attack_range_mod mi ma (i + 1) (fst co + 1, snd co) movl (co::ml)
+                   |> attack_range_mod mi ma (i + 1) (fst co, snd co + 1) movl (co::ml)
+   else co::fl
+        |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl ml
+        |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl ml
+        |> attack_range_mod mi ma (i + 1) (fst co + 1, snd co) movl ml
+        |> attack_range_mod mi ma (i + 1) (fst co, snd co + 1) movl ml
+  )
+  else fl
+    
+  
+
+    let rec add_no_dup lst1 lst2 = 
+      match lst1 with
+      |[]   -> lst2
+      |h::t -> if List.mem h lst2 then add_no_dup t lst2 else add_no_dup t (h::lst2)
+    
+    let rec red_tiles_helper mlst alst c =
+      let w = extract c.inv.(c.eqp) in
+      match mlst with
+      |[]   -> alst
+      |h::t -> let range = (attack_range_mod (fst w.range) (snd w.range) 0 h c.movement [] []) in
+        let new_alst = add_no_dup range alst in
+        red_tiles_helper t new_alst c  
+      
+    let red_tiles c : (int * int) list = 
+      if c.eqp = -1 then []
+      else red_tiles_helper c.movement [] c    
 (*let step1 = check_surround [] ({coordinate = (3, 4);
                                 ground = Plain}) 3 test_map []
 

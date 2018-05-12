@@ -67,12 +67,13 @@ let temp_character =
     ai = BossHunt;
     location= (5,5);
     movement= [];
+    attackable = [];
     direction= South;
   }
 
 
 
-  (*Adds initial characters in player list to map*)
+(*Adds initial characters in player list to map*)
 let rec add_init_characters playerlst map =
 match playerlst with
 |[] -> map
@@ -87,7 +88,9 @@ match playerlst with
 let rec set_init_ch_movement playerlst st =
   match playerlst with
   |[] -> st
-  |h::t ->let _ =  h.movement<-dijkstra's h st.act_map in set_init_ch_movement t st
+  |h::t ->let _ =  h.movement <- dijkstra's h st.act_map;
+                   h.attackable <- red_tiles h in set_init_ch_movement t st
+
 (* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 

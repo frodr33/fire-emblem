@@ -70,7 +70,8 @@ type tile_type =
   | Wall3 | Wall4 | Wall5 | Wall6 | Water10
   (** Represents a map as a whole*)
 
-
+val extract : 'a option -> 'a
+val get_rng : unit -> int 
 val input : key ref
 val attacking: bool ref
 val moved_forward: bool ref
@@ -115,6 +116,7 @@ type character = {
   mutable ai : ai;
   mutable location: int*int;
   mutable movement: (int*int) list;
+  mutable attackable : (int * int) list;
   mutable direction: direction;
 }
 type tile = {coordinate : int*int;

@@ -41,7 +41,8 @@ type state = {
 }
 
 val dijkstra's_helper : (tile * int) list -> (int*int) list -> tile -> int -> map -> (int*int) list
-val dijkstra's: character -> map -> (int*int) list
+val dijkstra's : character -> map -> (int*int) list
+val red_tiles : character -> (int * int) list
 
 
 (**[do' act st] returns the state after an input action [act]*)

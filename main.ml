@@ -128,6 +128,7 @@ let main () =
   body##style##backgroundRepeat <- js "no-repeat";
   logo##src <- js "Sprites/Logo.png";
   audio##src <- js "Sprites/Music/MainTheme.mp3";
+  audio##loop <- Js._true;
   audio##play ();
   gui##style##cssText <- js "font-size:16px";
   gui##style##textAlign <- js "center";

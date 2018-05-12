@@ -1,7 +1,6 @@
 open Types
 open Interactions
 open Characters
-let extract (Some c)= c
 
 let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
 let tile_menu = {kind=Tile;size = 4;options = [|"Unit";"Status";"Suspend";"End"|]}
@@ -295,7 +294,7 @@ let rec red_tiles_helper mlst alst c =
   match mlst with
   |[]   -> alst
   |h::t -> let range = (attack_range_mod (fst w.range) (snd w.range) 0 h c.movement [] []) in
-    let new_alst = add_no_dup alst in
+    let new_alst = add_no_dup range alst in
     red_tiles_helper t new_alst c  
   
 let red_tiles c : (int * int) list = 

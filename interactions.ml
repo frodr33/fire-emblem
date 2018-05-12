@@ -2,7 +2,6 @@ open Types
 
 open Characters
 open Items
-open State
 
 type ability
 
@@ -182,17 +181,18 @@ let wexp_level_up c =
   |'b' -> 'a'
   |_ -> "wexp_level_up invalid level"
 
-let wexp_helper t lst =
+let rec wexp_helper ty lst =
   match lst with 
   |[]              -> failwith "not in weapon type list"
-  |(wt, lv, xp)::t -> if wt = t then
-                        if lv = 's' then (wt, lv, xp)::t
+  |(wt, lv, xp)::t -> if wt = ty then
+                        (if lv = 's' then (wt, lv, xp)::t
                         else if lv 'a' && (xp + 5 > 100) then (wt, 's', 0)::t
                         else if xp + 5 > 100 then (wt, wexp_level_up lv, xp + 5 - 100)::t 
-                        else (wt, lv, xp+ + 5)::t
+                        else (wt, lv, xp+ + 5)::t)
+                      else wexp_helper ty t
 
 let award_wexp a =
-  if a.allegience = Player then a.wlevels <- wexp_helper a.inv.(a.eqp).wtype a.wlevels
+  if a.allegiance = Player then a.wlevels <- wexp_helper a.inv.(a.eqp).wtype a.wlevels
   else ()
   
 

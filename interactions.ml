@@ -186,13 +186,13 @@ let rec wexp_helper ty lst =
   |[]              -> failwith "not in weapon type list"
   |(wt, lv, xp)::t -> if wt = ty then
                         (if lv = 's' then (wt, lv, xp)::t
-                        else if lv 'a' && (xp + 5 > 100) then (wt, 's', 0)::t
+                        else if lv = 'a' && (xp + 5 > 100) then (wt, 's', 0)::t
                         else if xp + 5 > 100 then (wt, wexp_level_up lv, xp + 5 - 100)::t 
                         else (wt, lv, xp+ + 5)::t)
                       else wexp_helper ty t
 
 let award_wexp a =
-  if a.allegiance = Player then a.wlevels <- wexp_helper a.inv.(a.eqp).wtype a.wlevels
+  if a.allegiance = Player then a.wlevels <- wexp_helper (extract a.inv.(a.eqp)).wtype a.wlevels
   else ()
   
 

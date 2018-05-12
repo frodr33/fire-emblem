@@ -53,18 +53,18 @@ let rec attack_range min max i co ml fl =
   )
   else fl
 
-let rec attack_range_mod min max i co ml fl movl =
+let rec attack_range_mod min max i co movl ml fl =
   if fst co > 0 && snd co > 0 && i < max && not (List.mem co ml) && not (List.mem co fl) then 
   (if i < min || List.mem co movl then fl
-                   |> attack_range min max (i + 1) (fst co - 1, snd co) co::ml
-                   |> attack_range min max (i + 1) (fst co, snd co - 1) co::ml
-                   |> attack_range min max (i + 1) (fst co + 1, snd co) co::ml
-                   |> attack_range min max (i + 1) (fst co, snd co + 1) co::ml
+                   |> attack_range_mod min max (i + 1) (fst co - 1, snd co) movl co::ml
+                   |> attack_range_mod min max (i + 1) (fst co, snd co - 1) movl co::ml
+                   |> attack_range_mod min max (i + 1) (fst co + 1, snd co) movl co::ml
+                   |> attack_range_mod min max (i + 1) (fst co, snd co + 1) movl co::ml
    else co::fl
-        |> attack_range min max (i + 1) (fst co - 1, snd co) ml
-        |> attack_range min max (i + 1) (fst co, snd co - 1) ml
-        |> attack_range min max (i + 1) (fst co + 1, snd co) ml
-        |> attack_range min max (i + 1) (fst co, snd co + 1) ml
+        |> attack_range_mod min max (i + 1) (fst co - 1, snd co) movl ml
+        |> attack_range_mod min max (i + 1) (fst co, snd co - 1) movl ml
+        |> attack_range_mod min max (i + 1) (fst co + 1, snd co) movl ml
+        |> attack_range_mod min max (i + 1) (fst co, snd co + 1) movl ml
   )
   else fl
     
@@ -289,7 +289,7 @@ let rec red_tiles_helper mlst alst c =
   let w = extract c.inv.(eqp) in
   match mlst with
   |[]   -> alst
-  |h::t -> attack_range_mod (fst w.rng) (snd w.rng) 0 c.mov [] []
+  |h::t -> attack_range_mod (fst w.rng) (snd w.rng) 0 c.locations [] []
   
 let red_tiles c = 
   if c.eqp = -1 then []

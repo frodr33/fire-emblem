@@ -286,14 +286,14 @@ let dijkstra's c map =
   dijkstra's_helper [] [] (ctile c map) c.mov map
 
 let rec red_tiles_helper mlst alst c =
-  let w = extract c.inv.(eqp) in
+  let w = extract c.inv.(c.eqp) in
   match mlst with
   |[]   -> alst
-  |h::t -> attack_range_mod (fst w.rng) (snd w.rng) 0 c.locations [] []
+  |h::t -> attack_range_mod (fst w.range) (snd w.range) 0 c.movement [] []
   
 let red_tiles c = 
   if c.eqp = -1 then []
-  else red_tiles_helper c.mov [] c
+  else red_tiles_helper c.movement [] c
 
 
 

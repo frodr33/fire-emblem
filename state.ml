@@ -24,8 +24,6 @@ type state = {
   funds : int;
 }
 
-
-
 let ctile c map =
   map.grid.(fst c.location).(snd c.location)
 (*
@@ -38,6 +36,40 @@ let check_player_loc st =
 let check_enemy_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
 *)
+
+(* ml is list of tiles under min range*)
+let rec attack_range min max i co ml fl =
+  if fst co > 0 && snd co > 0 && i < max && not (List.mem co ml) && not (List.mem co fl) then 
+  (if i < min then fl
+                   |> attack_range min max (i + 1) (fst co - 1, snd co) co::ml
+                   |> attack_range min max (i + 1) (fst co, snd co - 1) co::ml
+                   |> attack_range min max (i + 1) (fst co + 1, snd co) co::ml
+                   |> attack_range min max (i + 1) (fst co, snd co + 1) co::ml
+   else co::fl
+        |> attack_range min max (i + 1) (fst co - 1, snd co) ml
+        |> attack_range min max (i + 1) (fst co, snd co - 1) ml
+        |> attack_range min max (i + 1) (fst co + 1, snd co) ml
+        |> attack_range min max (i + 1) (fst co, snd co + 1) ml
+  )
+  else fl
+
+let rec attack_range_mod min max i co ml fl movl =
+  if fst co > 0 && snd co > 0 && i < max && not (List.mem co ml) && not (List.mem co fl) then 
+  (if i < min || List.mem co movl then fl
+                   |> attack_range min max (i + 1) (fst co - 1, snd co) co::ml
+                   |> attack_range min max (i + 1) (fst co, snd co - 1) co::ml
+                   |> attack_range min max (i + 1) (fst co + 1, snd co) co::ml
+                   |> attack_range min max (i + 1) (fst co, snd co + 1) co::ml
+   else co::fl
+        |> attack_range min max (i + 1) (fst co - 1, snd co) ml
+        |> attack_range min max (i + 1) (fst co, snd co - 1) ml
+        |> attack_range min max (i + 1) (fst co + 1, snd co) ml
+        |> attack_range min max (i + 1) (fst co, snd co + 1) ml
+  )
+  else fl
+    
+  
+
 let check_ally_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
 
@@ -187,6 +219,7 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
     |South -> mapg.(x).(y + 1)
     |West  -> mapg.(x - 1).(y)
     in
+    if next_tile.c = None then 
     match next_tile.ground with
     |Wall -> (false, -1)
     |Door -> (false, -1)
@@ -197,12 +230,13 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
     |Forest -> if mov < 2 then (false, -1) else (true, mov - 2)
     |Desert -> if mov < 2 then (false, -1) else (true, mov - 2)
     |_ -> if mov < 1 then (false, -1) else (true, mov - 1)
+    else (false, -1)
 
 let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
   match f with
   |[]   -> [(tile,i)]
   |h::t -> if fst h = tile then (if i > snd h then (tile, i) :: t
-                              else h :: t) else h :: (add_f tile i t)
+                                 else h :: t) else h :: (add_f tile i t)
 
 let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
   let mapg = map.grid in
@@ -250,6 +284,16 @@ let rec dijkstra's_helper f s tile m map =
 
 let dijkstra's c map =
   dijkstra's_helper [] [] (ctile c map) c.mov map
+
+let rec red_tiles_helper mlst alst c =
+  let w = extract c.inv.(eqp) in
+  match mlst with
+  |[]   -> alst
+  |h::t -> attack_range_mod (fst w.rng) (snd w.rng) 0 c.mov [] []
+  
+let red_tiles c = 
+  if c.eqp = -1 then []
+  else red_tiles_helper c.mov [] c
 
 
 

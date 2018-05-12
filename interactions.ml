@@ -2,6 +2,7 @@ open Types
 
 open Characters
 open Items
+open State
 
 type ability
 
@@ -64,20 +65,25 @@ let empty_character = {
 }
 
 
-
-let seed = 10
-
-let get_rng () =
-  let rng = Random.int 100 in
-  print_string ((string_of_int rng) ^ " ");
-  rng
-
 let attacker = ref empty_character
 
 let defender = ref empty_character
 
-let survive (d:character) i =
+
+(** 
+ *  [survive d] is a function that checks if the character, [d], will survive an attack of [i] damage.
+ *  requires: 
+ *  - d is a valid character
+ *  - i is an int
+*)
+let survive (d : character) (i : int) =
   i > fst d.health
+
+(** 
+ *  [penalty_helper p s] is a function that searches a list of penalties, [p], on an item and find the one that corresponds to stat, [s].
+ *  requires:
+ *  - p is a (stat * (int * int)) list, but 
+*)
 
 let rec penalty_helper (p: (stat * (int * int)) list) (s:stat) =
   match p with
@@ -168,6 +174,28 @@ let hit_xp a d =
     |  x -> if x > 4 then {a with exp = a.exp + 1}
       else {a with exp = a.exp + 23}
 
+let wexp_level_up c = 
+  match c with 
+  |'e' -> 'd'
+  |'d' -> 'c'
+  |'c' -> 'b'
+  |'b' -> 'a'
+  |_ -> "wexp_level_up invalid level"
+
+let wexp_helper t lst =
+  match lst with 
+  |[]              -> failwith "not in weapon type list"
+  |(wt, lv, xp)::t -> if wt = t then
+                        if lv = 's' then (wt, lv, xp)::t
+                        else if lv 'a' && (xp + 5 > 100) then (wt, 's', 0)::t
+                        else if xp + 5 > 100 then (wt, wexp_level_up lv, xp + 5 - 100)::t 
+                        else (wt, lv, xp+ + 5)::t
+
+let award_wexp a =
+  if a.allegience = Player then a.wlevels <- wexp_helper a.inv.(a.eqp).wtype a.wlevels
+  else ()
+  
+
 let comp_outcome a t =
   match a, t with
   |Kill, _ -> a
@@ -229,6 +257,8 @@ let combat a d =
   else if counter && redouble then Queue.add (defender, attacker) combatQ;
   resolveQ ();
   award_xp ();
+  award_wexp a;
+  award_wexp d;
   (!attacker |> level_up |> update_character,
    !defender |> level_up |> update_character)
 
@@ -270,4 +300,8 @@ let village c t =
   |Village (None) -> failwith "visited village"
   |_ -> failwith "visiting nonvillage"
 
-let trade c1 c2 i1 i2 = failwith "unimplemented"
+let trade c1 c2 i1 i2 = 
+  let temp = c1.inv.(i1) in
+  c1.inv.(i1) <- c2.inv.(i2);
+  c2.inv.(i2) <- temp;
+

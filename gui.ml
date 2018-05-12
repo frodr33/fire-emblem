@@ -696,7 +696,10 @@ let rec draw_dijsktra_helper context tile_lst =
 let draw_dijsktra_squares context st =
   match st.active_unit with
   | None -> ()
-  | Some chr -> draw_dijsktra_helper context chr.movement
+  | Some chr -> 
+      if chr.stage = MoveSelect then
+          draw_dijsktra_helper context chr.movement
+      else ()
 
 
 (*********************************************************)

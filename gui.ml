@@ -375,6 +375,51 @@ let draw_player (context: Html.canvasRenderingContext2D Js.t) character_list =
 (***************** Menu Drawing Functions ****************)
 (*********************************************************)
 
+let draw_back_1 context = 
+  let x = 281. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 385. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "Sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 26. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y  
+  
+let draw_text_1 context str_arr = 
+  context##strokeStyle <- js "white";
+  context##font <- js "16px sans-serif";
+  context##strokeRect (280., 26. ,110.,30.);
+  let position = ref 50. in
+  for i = 0 to Array.length str_arr - 1 do
+    context##strokeText (js str_arr.(i), 300., !position);
+    position := !position +. 25.
+  done
+
+let draw_back_2 context = 
+  let x = 281. in
+  let y = 26. in
+  let rec ys x y =
+    if x = 385. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "Sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 52. then ys (x+.26.) 26. else ys x (y+.26.) in
+  ys x y  
+  
+let draw_text_2 context str_arr = 
+  context##strokeStyle <- js "white";
+  context##font <- js "16px sans-serif";
+  context##strokeRect (280., 26. ,110.,56.);
+  let position = ref 50. in
+  for i = 0 to Array.length str_arr - 1 do
+    context##strokeText (js str_arr.(i), 300., !position);
+    position := !position +. 25.
+  done
+
+
 let draw_back_4 context = 
   let x = 281. in
   let y = 26. in
@@ -463,6 +508,14 @@ let draw_text_7 context str_arr =
     position := !position +. 25.
   done
 
+let draw_1_menu context menu = 
+  draw_back_1 context;
+  draw_text_1 context menu.options
+
+let draw_2_menu context menu = 
+  draw_back_2 context;
+  draw_text_2 context menu.options
+
 let draw_4_menu context menu = 
   draw_back_4 context;
   draw_text_4 context menu.options
@@ -484,6 +537,8 @@ let draw_7_menu context menu =
 let menu_manager context state =
   if state.menu_active then
     match state.current_menu.size with
+    | 1 -> draw_1_menu context state.current_menu
+    | 2 -> draw_2_menu context state.current_menu
     | 4 -> draw_4_menu context state.current_menu
     | 5 -> draw_5_menu context state.current_menu
     | 6 -> draw_6_menu context state.current_menu
@@ -612,7 +667,7 @@ let draw_menu_arrow context state =
       match ((!sync)) with 
       | true -> context##drawImage (img, 271. ,214.)
       | false -> context##drawImage (img, 273. ,214.)
-    end
+    end 
     | _ -> ()
   else ()
 
@@ -620,11 +675,28 @@ let draw_menu_arrow context state =
 (***************** Draw Dijsktra Squares *****************)
 (*********************************************************)
 
-let draw_dijsktra_squares context st = 
+(* let draw_dijsktra_squares context st = 
   let img = Html.createImg document in
   img##src <- js "Sprites/blue_test.png";
   context##globalAlpha <- 0.5;
   context##drawImage (img, 0., 0.)
+ *)
+
+let rec draw_dijsktra_helper context tile_lst = 
+  match tile_lst with
+  | [] -> ()
+  | (x,y)::t ->
+      let img = Html.createImg document in
+      img##src <- js "Sprites/blue_test.png";
+      context##globalAlpha <- 0.5;
+      context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);
+      draw_dijsktra_helper context t
+
+
+let draw_dijsktra_squares context st =
+  match st.active_unit with
+  | None -> ()
+  | Some chr -> draw_dijsktra_helper context chr.movement
 
 
 (*********************************************************)
@@ -636,11 +708,11 @@ let draw_dijsktra_squares context st =
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
   draw_map context state;
-  draw_cursor context state.active_tile;
+  draw_dijsktra_squares context state;
+  context##globalAlpha <- 1.;
   draw_player context state.player;
+  draw_cursor context state.active_tile;
   menu_manager context state;
   draw_menu_arrow context state;
   draw_healthbar context state.player;
-  draw_dijsktra_squares context state;
-  context##globalAlpha <- 1.;
   clock ();

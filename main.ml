@@ -18,6 +18,22 @@ let fail = fun _ -> assert false
 let get_element_by_id id =
   Js.Opt.get (Html.document##getElementById (js id)) fail
 
+let temp_item =
+  {
+    iname  = "xd";
+    wtype = Sword;
+    mgt = 0;
+    acc = 0;
+    crit = 0;
+    range = (2,4);
+    uses = 5;
+    cost = 0;
+    sell = 0;
+    level = 'e';
+    users = [];
+    effective = [];
+    penalty = [];
+  }
 let temp_character =
   {
     name = "Lyn";
@@ -43,16 +59,19 @@ let temp_character =
     atk = 0;
     crit = 0;
     avoid = 0;
-    inv = [|None;None;None;None;None|];
+    inv = [|Some temp_item;None;None;None;None|];
     eqp = 0;
     ability = [];
     supports = [];
-    wlevels = [];
+    wlevels = [(Sword,'a',0)];
     ai = BossHunt;
-    location= (10, 0);
+    location= (5,5);
     movement= [];
     direction= South;
   }
+
+
+
   (*Adds initial characters in player list to map*)
 let rec add_init_characters playerlst map =
 match playerlst with

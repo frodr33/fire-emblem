@@ -6,6 +6,7 @@ let extract (Some c)= c
 let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
 let tile_menu = {kind=Tile;size = 4;options = [|"Unit";"Status";"Suspend";"End"|]}
 let item_menu = {kind=Item;size = 2;options = [|"Equip/Use";"Discard"|]}
+let confirm_menu = {kind = Confirm;size=1;options=[|"Attack?"|]}
 type state = {
   player: character list;
   items : item list;
@@ -49,31 +50,6 @@ let in_range_tile a t =
   |None   -> false
   |Some x -> let l = distance_tile a t in l >= fst x.range && l <= snd x.range
 
-(*let translate_key st =
-  match !input with
-  |A ->if st.menu_active = true then SelectMOption else
-     begin   match st.active_unit with
-      |Some c ->(
-          match c.stage with
-          |MoveSelect ->if List.exists (fun t -> t.coordinate=st.active_tile.coordinate) c.movement
-            then SelectMoveTile else Invalid
-          |Attacking -> if in_range_tile c st.active_tile &&check_enemy_loc then
-              SelectAttackTile else Invalid
-          |_ ->Invalid)
-      |None ->(
-          if check_player_loc st then SelectPlayer else
-          if check_enemy_loc st then SelectEnemy else
-          if check_ally_loc st then SelectAlly else
-            OpenMenu)
-     end
-  |B -> if st.menu_active=true then CloseMenu else Undo
-  |LT ->FindReady
-  |Up -> if st.menu_active=true  then Mup else Tup
-  |Down ->if st.menu_active=true  then Mdown else Tdown
-  |Right ->if st.menu_active=true then Invalid else Tright
-  |Left ->if st.menu_active=true then Invalid else Tleft
-  |_ ->Invalid
-*)
 let translate_key st =
   if !attacking= true then Invalid else
 
@@ -106,11 +82,24 @@ let translate_key st =
             end
         end
     end
-  |B -> if st.menu_active then begin
+  |B -> begin
+      match st.active_unit with
+      |Some c -> if st.menu_active then BackMenu else
+          begin
+            match c.stage with
+            |AttackSelect->BackAttack
+            |MoveSelect -> DeselectPlayer
+            |TradeSelect->BackTrade
+            |_ ->Invalid
+          end
+      |None -> if st.menu_active then CloseMenu else Invalid
+
+    end
+    (*if st.menu_active then begin
       match st.active_unit with
       |None -> CloseMenu
       |_ -> BackMenu
-    end else if st.active_unit <>None then DeselectPlayer else Invalid
+      end else if st.active_unit <>None then DeselectPlayer else Invalid*)
 
   |_ -> Invalid
 end
@@ -271,6 +260,10 @@ let create_inventory_menu c =
       |Some i -> i.iname
       |None -> "") c.inv in {kind=Inventory;size = 5;options=o}
 
+let create_attack_menu c =
+  let o = Array.map (fun x -> match x with
+      |Some i when equippable c i=true -> i.iname
+      |_ -> "") c.inv in {kind = AttackInventory;size=5;options = o}
 
 let move_char_helper st =
   match st.active_unit with
@@ -328,8 +321,7 @@ let do' s =
   |SelectPlayer -> let ch = extract s.active_tile.c in
     ch.stage<-MoveSelect;{s with active_unit = s.active_tile.c}
   |SelectMoveTile ->move_helper s
-  |SelectAttackTile ->let _ = attacking:=true in
-    let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}
+  |SelectAttackTile -> {s with current_menu=confirm_menu;menu_cursor=0;menu_active=true}
   |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
   |SelectMOption ->  begin
       match s.active_unit with
@@ -337,7 +329,7 @@ let do' s =
           match s.current_menu.kind with
             |Unit -> begin
                 match s.current_menu.options.(s.menu_cursor) with
-                |"Attack" -> if ch.eqp = -1 then s else let _ = ch.stage<-AttackSelect in {s with menu_active=false;menu_cursor=0}
+                |"Attack" -> if ch.eqp = -1 then s else let _ = ch.stage<-AttackSelect in {s with current_menu=create_attack_menu ch;menu_cursor=0}
                 |"Item" -> {s with current_menu = create_inventory_menu ch;
                                   menu_cursor = 0}
                 |"Wait" -> ch.stage <- Done;
@@ -363,10 +355,15 @@ let do' s =
                   else s
                   |_ -> s
                 end
-            |Inventory -> if s.current_menu.options.(s.menu_cursor) = "" then s else 
+            |Inventory -> if s.current_menu.options.(s.menu_cursor) = "" then s else
               {s with active_item = s.menu_cursor;
                                     current_menu = item_menu;
-                                    menu_cursor = 0}
+                      menu_cursor = 0}
+            |AttackInventory -> begin
+                match s.current_menu.options.(s.menu_cursor) with
+                |"" -> s
+                |_ -> (ignore(move_to_top ch s.menu_cursor));{s with menu_active=false;menu_cursor=0}
+              end
             |Item -> begin
               match s.current_menu.options.(s.menu_cursor) with
               |"Equip/Use" -> begin
@@ -385,15 +382,25 @@ let do' s =
                         menu_cursor = 0}
               end
               |_ -> s
-
             end
+            |Confirm->   let _ = attacking:=true in
+              let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}
             |_ -> s
         end
       |None -> s
     end
+
   |BackMenu -> begin match s.current_menu.kind with
-    |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
-    |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
-    |_ -> s
+      |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
+      |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone;{s with current_menu = unit_menu;menu_cursor=0;}
+      |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
+      |Confirm -> {s with menu_active=false;menu_cursor=0}
+      |_ -> s
     end
+  |BackTrade -> let c = extract s.active_unit in
+    let loc = c.location in let _ = c.stage<-MoveDone in
+    {s with active_tile = s.act_map.grid.(fst loc).(snd loc);current_menu = unit_menu;menu_cursor=0;menu_active=true};
+  |BackAttack->let c = extract s.active_unit in
+    let loc = c.location in let _ = c.stage<-MoveDone in
+    {s with active_tile = s.act_map.grid.(fst loc).(snd loc);current_menu = unit_menu;menu_cursor=0;menu_active=true};
   |_-> s

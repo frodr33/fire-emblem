@@ -68,10 +68,14 @@ let fill_map len wid =
   let (t : path_tile) = {length = 1000;prev = None} in
   Array.make_matrix len wid t
 
+(*[update_map] takes a [path_map] and updates its values if a shorter path is
+ * found by the algorithm*)
 let update_map (pmap : path_map) x y (ptile : path_tile) : path_map =
   pmap.grid.(x).(y) <- ptile;
   pmap
 
+(*[path_finder] searches a completed [path_map] to output a list of coordinates
+ * from the ally unit to the original enemy unit's coordinates*)
 let rec path_finder coor pmap acc =
   match coor with
   |(x, y) ->

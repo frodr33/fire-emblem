@@ -1,7 +1,7 @@
 open Types
 open Interactions
 open Characters
-open Ai
+(*open Ai*)
 
 let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
 let tile_menu = {kind=Tile;size = 2;options = [|" ";"End"|]}

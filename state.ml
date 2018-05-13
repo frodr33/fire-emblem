@@ -382,7 +382,7 @@ let do' s =
   |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
   |SelectPlayer -> let ch = extract s.active_tile.c in
     ch.stage<-MoveSelect;
-    ch.movement <- dijkstra's ch s.active_map;
+    ch.movement <- dijkstra's ch s.act_map;
     ch.attackable <- red_tiles ch;
     {s with active_unit = s.active_tile.c}
   |SelectMoveTile ->move_helper s
@@ -452,6 +452,7 @@ let do' s =
               match s.current_menu.options.(s.menu_cursor) with
               |" "   -> s 
               |"End" -> s (*TODO: insert AI function here*) 
+              |_     -> s
             end
             |Confirm->   let _ = attacking:=true in
               let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}

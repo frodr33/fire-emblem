@@ -458,7 +458,7 @@ let do' s =
             |Tile -> begin
               match s.current_menu.options.(s.menu_cursor) with
               |" "   -> s 
-              |"End" -> reset_ch st.player; step s 
+              |"End" -> reset_ch s.player; step s 
               |_     -> s
             end
             |Confirm->   let _ = attacking:=true in

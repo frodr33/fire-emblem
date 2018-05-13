@@ -39,38 +39,47 @@ let check_enemy_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
 *)
 
-(* ml is list of tiles under min range*)
-let rec attack_range_helper mi ma i co ml fl =
-  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
-  (if i < mi then fl
-                   |> attack_range_helper mi ma (i + 1) (fst co - 1, snd co) (co::ml)
-                   |> attack_range_helper mi ma (i + 1) (fst co, snd co - 1) (co::ml)
-                   |> attack_range_helper mi ma (i + 1) (fst co + 1, snd co) (co::ml)
-                   |> attack_range_helper mi ma (i + 1) (fst co, snd co + 1) (co::ml)
-   else co::fl
-        |> attack_range_helper mi ma (i + 1) (fst co - 1, snd co) ml
-        |> attack_range_helper mi ma (i + 1) (fst co, snd co - 1) ml
-        |> attack_range_helper mi ma (i + 1) (fst co + 1, snd co) ml
-        |> attack_range_helper mi ma (i + 1) (fst co, snd co + 1) ml
-  )
-  else fl
+let rec check_exist co lst =
+  match lst with
+  |[]   -> false
+  |h::t -> if fst h = co then true else check_exist co t
 
-let rec attack_range_mod mi ma i co movl ml fl =
-  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
-  (if i < mi || List.mem co movl then fl
-                   |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl (co::ml)
-                   |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl (co::ml)
-                   |> attack_range_mod mi ma (i + 1) (fst co + 1, snd co) movl (co::ml)
-                   |> attack_range_mod mi ma (i + 1) (fst co, snd co + 1) movl (co::ml)
-   else co::fl
-        |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl ml
-        |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl ml
-        |> attack_range_mod mi ma (i + 1) (fst co + 1, snd co) movl ml
-        |> attack_range_mod mi ma (i + 1) (fst co, snd co + 1) movl ml
-  )
-  else fl
+let a_range_add ma i co fl ml sl =
+
+  let addon = if i > ma then [] else(
+  let nleft = ((fst co) - 1, snd co) in
+  let cleft = if (fst co) - 1 < 0 ||
+              List.mem nleft ml ||
+              List.mem nleft sl ||
+              check_exist nleft fl then [] else (nleft, i)::[] in
+  let nright = ((fst co) + 1, snd co) in
+  let cright = if (fst co) + 1 > 14 ||
+              List.mem nright ml ||
+              List.mem nright sl ||
+              check_exist nright fl then cleft else (nright, i)::cleft in
+  let nup = (fst co, snd co - 1) in
+  let cup = if (snd co) - 1 < 0 ||
+              List.mem nup ml ||
+              List.mem nup sl ||
+              check_exist nup fl then cright else (nup, i)::cright in
+  let ndown = (fst co, snd co + 1) in
+  let cdown = if (snd co) + 1 > 14 ||
+              List.mem ndown ml ||
+              List.mem ndown sl ||
+              check_exist ndown fl then cup else (ndown, i)::cup in
+  cdown) in
+  fl @ addon
 
 
+
+let rec attack_range_helper mi ma i co fl ml sl =
+
+  let nml = (if i < mi  then co::ml else ml) in
+  let nsl = (if i >= mi then co::sl else sl) in
+  let nfl = a_range_add ma (i + 1) co fl ml sl in
+  match nfl with
+  |[]   -> nsl
+  |(h, x)::t -> attack_range_helper mi ma x h t nml nsl
 
 let check_ally_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
@@ -287,26 +296,26 @@ let rec dijkstra's_helper f s tile m map =
 let dijkstra's c map =
   dijkstra's_helper [] [] (ctile c map) c.mov map
 
-let rec add_no_dup lst1 lst2 =
+let rec add_no_dup lst1 lst2 movl =
   match lst1 with
   |[]   -> lst2
-  |h::t -> if List.mem h lst2 then add_no_dup t lst2 else add_no_dup t (h::lst2)
+  |h::t -> if List.mem h lst2 || List.mem h movl then add_no_dup t lst2 movl else add_no_dup t (h::lst2) movl
 
 let rec red_tiles_helper mlst alst c =
   let w = extract c.inv.(c.eqp) in
   match mlst with
   |[]   -> alst
-  |h::t -> let range = (attack_range_mod (fst w.range) (snd w.range) 0 h c.movement [] []) in
-    let new_alst = add_no_dup range alst in
+  |h::t -> let range = (attack_range_helper (fst w.range) (snd w.range) 0 h [] [] []) in
+    let new_alst = add_no_dup range alst c.movement in
     red_tiles_helper t new_alst c
 
 let red_tiles c : (int * int) list =
-  if c.eqp = -1 then []
-  else red_tiles_helper c.movement [] c
+if c.eqp = -1 then []
+else red_tiles_helper c.movement [] c
 
 let attack_range c =
-  let w = extract c.inv.(c.eqp) in
-  attack_range_helper (fst w.range) (snd w.range) 0 c.location [] []
+let w = extract c.inv.(c.eqp) in
+attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] []
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)
@@ -366,8 +375,8 @@ let chest_checker s =
 
 let rec replace_helper c lst =
   match lst with
-  |[]   -> [c]
-  |h::t -> if h.name = c.name then c::t else h::(replace_helper c t)
+  |[]   -> if fst c.health = 0 then [] else [c]
+  |h::t -> if h.name = c.name && (fst c.health > 0) then c::t else h::(replace_helper c t)
 
 let replace c st =
   match c.allegiance with
@@ -375,7 +384,7 @@ let replace c st =
   |Enemy  -> {st with enemies = replace_helper c st.enemies}
   |Allied -> {st with allies = replace_helper c st.allies}
 
-let rec reset_ch plst = 
+let rec reset_ch plst =
   match plst with
   |[]   -> ()
   |h::t -> h.stage <- Ready
@@ -458,12 +467,18 @@ let do' s =
             end
             |Tile -> begin
               match s.current_menu.options.(s.menu_cursor) with
-              |" "   -> s 
-              |"End" -> (*reset_ch s.player; step*) s 
+              |" "   -> s
+              |"End" -> (*reset_ch s.player; step*) s
               |_     -> s
             end
-            |Confirm->   let _ = attacking:=true in
-              let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}
+            |Confirm->   let _ = attacking := true in
+            let ch = extract s.active_unit in ch.stage<-Done;
+            let e  = extract s.active_tile.c in
+            let damage = combat ch e in
+            {s with active_unit = None;
+                    menu_active = false;
+                    menu_cursor = 0}
+            |> replace (fst damage) |> replace (snd damage)
             |_ -> s
         end
       |None -> s
@@ -473,14 +488,7 @@ let do' s =
       |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
       |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone;{s with current_menu = unit_menu;menu_cursor=0;}
       |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
-      |Confirm ->
-        let ch = extract s.active_unit in ch.stage<-Done;
-        let e  = extract s.active_tile.c in
-        let damage = combat ch e in
-        {s with active_unit = None;
-                menu_active=false;
-                menu_cursor=0}
-        |> replace (fst damage) |> replace (snd damage)
+      |Confirm -> s
       |_ -> s
     end
   |BackTrade -> let c = extract s.active_unit in
@@ -490,3 +498,268 @@ let do' s =
     let loc = c.location in let _ = c.stage<-MoveDone in
     {s with active_tile = s.act_map.grid.(fst loc).(snd loc);current_menu = unit_menu;menu_cursor=0;menu_active=true};
   |_-> s
+
+(*---------------------------------------------------------------------------------------
+ *Begin AI Section*)
+
+(*[path_tile] store the intermediary values of our Djikstra's shortest
+ *path algorithm*)
+type path_tile =
+  {
+    length: int;
+    prev: (int*int) option;
+  }
+
+(*[path_map] is a data type to mirror our ingame map but store the paths to
+ *traverse to an allied unit from an enemy*)
+type path_map =
+  {
+    width: int;
+    length: int;
+    grid: path_tile array array;
+  }
+
+(*[add_f2] is a list of frontier tiles sorted in increasing distance from a
+ * a settled node, as this is a grid map we know every frontier node is
+ * adjacent to a settled node therefore it's distance is its movement cost*)
+let rec add_f2 (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
+  match f with
+  |[]   -> [(tile,i)]
+  |h::t -> if fst h = tile then (if i < snd h then (tile, i) :: t
+                                 else h :: t) else h :: (add_f2 tile i t)
+
+(*[check_dir] ensures movement in a certain direction is valid and adds the
+ *node to the frontier if it is viable or returns the same frontier if its not*)
+let rec check_dir (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
+  let mapg = map.grid in
+  match t.coordinate with
+  |(x, y) ->
+    let next = match d with
+      |North -> mapg.(x).(y - 1)
+      |East  -> mapg.(x + 1).(y)
+      |South -> mapg.(x).(y + 1)
+      |West  -> mapg.(x - 1).(y)
+    in
+    if fst next.coordinate >= 0 && fst next.coordinate < map.width
+       && snd next.coordinate >= 0 && snd next.coordinate < map.length then
+      match next.ground with
+      |Wall -> f
+      |Door -> f
+      |Damaged_wall (x) -> f
+      |Mountain -> f
+      |Ocean -> f
+      |Peaks -> add_f2 next 3 f
+      |Forest -> add_f2 next 2 f
+      |Desert -> add_f2 next 2 f
+      |_ -> add_f2 next 1 f
+    else f
+
+(*[check_surround] checks movement in all directions of a given coordinate
+ *to expand the frontier set*)
+let rec check_surround s t map f:(tile * int) list =
+  f
+  |> check_dir South t map s
+  |> check_dir East t map s
+  |> check_dir North t map s
+  |> check_dir West t map s
+
+(*[fill_map] initializes the path_map necessary to compute Djikstra's*)
+let fill_map len wid =
+  let (t : path_tile) = {length = 1000;prev = None} in
+  Array.make_matrix len wid t
+
+(*[new_map] refreshes the map for a new target destination*)
+let new_map (pmap : path_map) =
+  let (t : path_tile) = {length = 1000;prev = None} in
+  Array.make_matrix pmap.length pmap.width t
+
+(*[update_map] takes a [path_map] and updates its values if a shorter path is
+ * found by the algorithm*)
+let update_map (pmap : path_map) x y (ptile : path_tile) : path_map =
+  pmap.grid.(x).(y) <- ptile;
+  pmap
+
+(*[path_finder] searches a completed [path_map] to output a list of coordinates
+ * from the ally unit to the original enemy unit's coordinates*)
+let rec path_finder coor pmap acc =
+  match coor with
+  |(x, y) ->
+    match pmap.grid.(x).(y).prev with
+    |None -> acc
+    |Some t -> path_finder t pmap ((pmap.grid.(x).(y).length, t)::acc)
+
+(**Name keeping:
+ * f = frontier set, tile * int (move) list
+ * s = settled set, tile list
+ * t = current tile
+ * m = moves left
+ * map = map
+*)
+(*[path_helper] runs djikstra's algorithm on the given map to find the shortest
+ * path from the enemy unit to the player unit it is targeting, and then calls
+ *[path_finder] to output a complete path*)
+let rec path_helper dest f s tile (map : map) pmap =
+  let new_f = check_surround s tile map f in
+  match new_f with
+  |[]   ->
+    path_finder dest pmap []
+  |h::t ->
+    match tile.coordinate with
+    |(x, y) ->
+      match (fst h).coordinate with
+      |(f, b) ->
+        let cost =
+          match map.grid.(f).(b).ground with
+          |Peaks -> 3
+          |Forest -> 2
+          |Desert -> 2
+          |_ -> 1 in
+        let curr = pmap.grid.(x).(y).length in
+        if curr + cost < pmap.grid.(f).(b).length then
+          let newt : path_tile = {length = (curr + cost); prev=Some (x,y)} in
+          let pmap2 = update_map pmap f b newt in
+          path_helper dest t s (fst h) map pmap2
+        else
+          path_helper dest t s (fst h) map pmap
+
+(*[search_helper] picks the closest player unit to attack and outputs the
+ * coordinates of the unit*)
+let rec search_helper (m : map) (c : character) lst rang pmap target =
+  match lst with
+  |[] -> target
+  |h::t ->
+    match c.location with (x, y) ->
+      let check = path_helper h.location [] [] m.grid.(x).(y) m pmap in
+      if fst (List.hd (List.rev check)) < fst (List.hd (List.rev target)) then
+        let pm = {width = pmap.width; length = pmap.width; grid = new_map pmap} in
+        search_helper m c t rang pm check
+      else
+        let pm = {width = pmap.width; length = pmap.width; grid = new_map pmap} in
+        search_helper m c t rang pm target
+
+(*[move] iterates through the shortest path to a target enemy unit, and moves as
+ * far on the path as permitted by its movement stats*)
+let rec move lst range last =
+  match lst with
+  |[] -> last
+  |h::t ->
+    match h with
+    |(a, b) ->
+      if a <= range then
+        move t range b
+      else
+        last
+
+(*[update_move] updates both characters and maps upon a character moving to a different
+ * position on the board*)
+let update_move (m : map) (c : character) init loc =
+  c.location <- loc;
+  match init, loc with
+  |(x,y),(h, t) ->
+    let replace_tile = m.grid.(x).(y) in
+    let new_tile = m.grid.(h).(t) in
+    m.grid.(x).(y) <-
+      {coordinate = replace_tile.coordinate;
+       ground = replace_tile.ground;
+       tile_type = replace_tile.tile_type;
+       c = None};
+    m.grid.(h).(t) <-
+      {coordinate = new_tile.coordinate;
+       ground = new_tile.ground;
+       tile_type = new_tile.tile_type;
+       c = Some c}
+
+(*[search]*)
+let search (m : map) (c : character) (lst : character list) (b  : bool) pm =
+  if b then
+    let range = c.mov * 2 in
+    match lst with
+    |[] -> ()
+    |h::t ->
+      let init =
+        match c.location with (x, y) ->
+          path_helper h.location [] [] m.grid.(x).(y) m pm in
+      let go = move (search_helper m c t range pm init) c.mov c.location in
+      update_move m c c.location go
+  else
+  if b then
+    let range = c.mov in
+    match lst with
+    |[] -> ()
+    |h::t ->
+      let init =
+        match c.location with (x, y) ->
+          path_helper h.location [] [] m.grid.(x).(y) m pm in
+      let go = move (search_helper m c t range pm init) range c.location in
+      update_move m c c.location go
+
+let rec aggro st clist plist acc = failwith "unimplemented"
+
+
+(*[foresight] AI can incredibly see 2 times its own movement range as well as
+ * triggering upon any fellow enemy unit spotting a player unit*)
+let rec foresight (m : map) clist plist =
+  match clist with
+  |[] -> ()
+  |h::t ->
+    let new_pm =
+      {width = m.width;
+       length = m.length;
+       grid = (fill_map m.length m.width)} in
+    search m h plist true new_pm;
+    foresight m t plist
+
+(*[passive] directs enemies to only attack and chase within their movement area
+ * however if enemies move within their movement area they will pursue*)
+let rec passive m clist plist acc = failwith "unimplemented"
+
+(*[heresjohnny] will directly attack a player character only if it is standing
+ * directly adjacent or diagonal to an enemy*)
+let rec heresjohnny m (c : character) (lst : character list) range =
+  match lst with
+  |[] -> ()
+  |h::t ->
+    match h.location, c.location with
+    |(x,y), (a, b)->
+      if (abs (b - y)) <= 1 && (abs (a - x)) <= 1 then
+        let comb = combat c h in
+        let f = fst comb in
+        let s = snd comb in
+        update_move m f f.location f.location;
+        update_move m s s.location s.location
+      else
+        heresjohnny m c t range
+
+(*[limp] offers some real limp AI that will half-heartedly attack you if you
+ * stand directly next to an enemy but won't chase*)
+let rec limp m clist plist =
+  match clist with
+  |[] -> ()
+  |h::t ->
+    if h.eqp > -1 then
+      let ind = h.eqp in
+      let item = (h.inv.(ind)) in
+      match item with
+      |None ->
+        limp m t plist
+      |Some i ->
+        heresjohnny m h plist i.range;
+    else
+      limp m t plist
+
+(*[move_enem] returns a list of characters that have all moved/attacked*)
+let move_enem (m : map) clist plist diff =
+  match diff with
+  |Insane ->
+    aggro m clist plist []
+  |Hard ->
+    foresight m clist plist
+  |Normal ->
+    passive m clist plist []
+  |Easy ->
+    limp m clist plist
+
+(*[step] returns unit after all enemy characters have performed
+ * their desired actions*)
+let step (e : character list) (p : character list) (m : map) (d : difficulty) =
+  move_enem m e p d;

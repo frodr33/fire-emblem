@@ -1,5 +1,5 @@
 open Types
-open State
+
 
 (*[aicommand st bot] is the input that [bot] will make in the current state
 [st]*)

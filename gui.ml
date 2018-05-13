@@ -675,14 +675,7 @@ let draw_menu_arrow context state =
 (***************** Draw Dijsktra Squares *****************)
 (*********************************************************)
 
-(* let draw_dijsktra_squares context st = 
-  let img = Html.createImg document in
-  img##src <- js "Sprites/blue_test.png";
-  context##globalAlpha <- 0.5;
-  context##drawImage (img, 0., 0.)
- *)
-
-let rec draw_dijsktra_helper context tile_lst = 
+let rec draw_dijsktra_blue context tile_lst = 
   match tile_lst with
   | [] -> ()
   | (x,y)::t ->
@@ -690,15 +683,25 @@ let rec draw_dijsktra_helper context tile_lst =
       img##src <- js "Sprites/blue_test.png";
       context##globalAlpha <- 0.5;
       context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);
-      draw_dijsktra_helper context t
+      draw_dijsktra context t
 
+let rec draw_dijsktra_red context tile_lst = 
+  match tile_lst with
+  | [] -> ()
+  | (x,y)::t ->
+      let img = Html.createImg document in
+      img##src <- js "Sprites/red.png";
+      context##globalAlpha <- 0.5;
+      context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);
+      draw_attack_squares context t
 
-let draw_dijsktra_squares context st =
+let draw_dijsktra context st =
   match st.active_unit with
   | None -> ()
   | Some chr -> 
       if chr.stage = MoveSelect then
-          draw_dijsktra_helper context chr.movement
+        draw_dijsktra_blue context chr.movement;
+        draw_dijsktra_red context chr.attackable
       else ()
 
 (*********************************************************)
@@ -709,14 +712,12 @@ let draw_is_player_done context active_unit =
   match active_unit with
   | Some chr ->
       if chr.stage = Done then
-          let (x,y) = chr.location in
-          let img = Html.createImg document in
-          img##src <- js "Sprites/Gray.png";
-          context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.)
+        let (x,y) = chr.location in
+        let img = Html.createImg document in
+        img##src <- js "Sprites/Gray.png";
+        context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.)
       else ()
   | _ -> ()
-
-
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
@@ -727,7 +728,7 @@ let draw_is_player_done context active_unit =
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
   draw_map context state;
-  draw_dijsktra_squares context state;
+  draw_dijsktra context state;
   context##globalAlpha <- 1.;
   draw_is_player_done context state.active_unit;
   draw_player context state.player;

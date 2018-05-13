@@ -325,7 +325,6 @@ let move_char_helper st =
     let new_pos = st.active_tile.coordinate in
     let old_tile = st.act_map.grid.(fst old_pos).(snd old_pos) in
     let new_tile = st.act_map.grid.(fst new_pos).(snd new_pos) in
-    let _ = x.location<-new_pos;x.stage<-MoveDone; in
     let _ = st.act_map.grid.(fst old_pos).(snd old_pos)<-{old_tile with c=None};
       st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
     in
@@ -382,7 +381,10 @@ let do' s =
   |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
   |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
   |SelectPlayer -> let ch = extract s.active_tile.c in
-    ch.stage<-MoveSelect;{s with active_unit = s.active_tile.c}
+    ch.stage<-MoveSelect;
+    ch.movement <- dijkstr's ch s.active_map;
+    ch.attackable <- red_tiles ch;
+    {s with active_unit = s.active_tile.c}
   |SelectMoveTile ->move_helper s
   |SelectAttackTile -> {s with current_menu=confirm_menu;menu_cursor=0;menu_active=true}
   |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}

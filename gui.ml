@@ -1,5 +1,6 @@
 open Types
 open State
+open Interactions
 
 let js = Js.string (* partial function, takes in string *)
 
@@ -852,28 +853,40 @@ let draw_attack_back context =
   ys x y  
 
 
-let draw_player_stats context player = 
+let draw_player_stats context player enemy = 
   context##font <- js "13px sans-serif";
   let hp = (string_of_int (fst (player.health))) ^ "/" ^ (string_of_int (snd (player.health))) in
+  let hp_enm = (string_of_int (fst (enemy.health))) ^ "/" ^ (string_of_int (snd (enemy.health))) in
+  let player_damage = damage player enemy in
+  let enemy_damage = damage enemy player in
   context##strokeText (js (player.name), 286., 320.);
-  context##strokeText (js ("Hp: " ^ hp), 286., 340.)
+  context##strokeText (js ("Hp: " ^ hp), 286., 340.);
+  context##strokeText (js ("Dam: " ^ (string_of_int player_damage)), 286., 360.);
+  context##strokeText (js (enemy.name), 320., 320.);
+  context##strokeText (js ("Hp: " ^ hp_enm), 320., 340.);
+  context##strokeText (js ("Dam: " ^ (string_of_int enemy_damage)), 340., 360.)
+
 
 
 
 let draw_attack_menu context state = 
   match state.active_unit with
   | Some chr -> begin
-    match chr.stage with
-    | AttackSelect ->
-      draw_attack_back context; 
-      context##strokeStyle <- js "white";
-      context##strokeRect (280.,304. ,110.,82.);
-      draw_player_stats context chr;
-      context##font <- js "12px sans-serif"
-    | _ -> ()
+    match chr.stage, state.active_tile.c with
+    | AttackSelect, Some enemy ->
+      if state.current_menu <> confirm_menu then ()
+      else
+        begin
+        draw_attack_back context; 
+        context##strokeStyle <- js "white";
+        context##strokeRect (280.,304. ,110.,82.);
+        draw_player_stats context chr enemy;
+        context##font <- js "12px sans-serif"
+      end
+    | _,_-> ()
   end
   | None -> ()
-  
+
 
 
 

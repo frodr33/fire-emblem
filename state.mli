@@ -22,6 +22,7 @@ open Interactions
 val unit_menu:menu
 val tile_menu:menu
 val item_menu:menu
+val confirm_menu:menu
 
 type state = {
   player: character list;

@@ -40,7 +40,7 @@ let check_enemy_loc st =
 
 (* ml is list of tiles under min range*)
 let rec attack_range_helper mi ma i co ml fl =
-  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
+  if fst co >= 0 && snd co >= 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
   (if i < mi then fl
                    |> attack_range_helper mi ma (i + 1) (fst co - 1, snd co) (co::ml)
                    |> attack_range_helper mi ma (i + 1) (fst co, snd co - 1) (co::ml)

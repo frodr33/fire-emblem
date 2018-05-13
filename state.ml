@@ -55,7 +55,7 @@ let rec attack_range_helper mi ma i co ml fl =
   else fl
 
 let rec attack_range_mod mi ma i co movl ml fl =
-  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
+  if fst co >= 0 && snd co >= 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
   (if i < mi || List.mem co movl then fl
                    |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl (co::ml)
                    |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl (co::ml)

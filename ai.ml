@@ -2,12 +2,16 @@ open State
 open Characters
 open Types
 
+(*[path_tile] store the intermediary values of our Djikstra's shortest
+ *path algorithm*)
 type path_tile =
   {
     length: int;
     prev: (int*int) option;
   }
 
+(*[path_map] is a data type to mirror our ingame map but store the paths to
+ *traverse to an allied unit from an enemy*)
 type path_map =
   {
     width: int;
@@ -15,12 +19,17 @@ type path_map =
     grid: path_tile array array;
   }
 
-let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
+(*[add_f2] is a list of frontier tiles sorted in increasing distance from a
+ * a settled node, as this is a grid map we know every frontier node is
+ * adjacent to a settled node therefore it's distance is its movement cost*)
+let rec add_f2 (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
   match f with
   |[]   -> [(tile,i)]
   |h::t -> if fst h = tile then (if i < snd h then (tile, i) :: t
-                                 else h :: t) else h :: (add_f tile i t)
+                                 else h :: t) else h :: (add_f2 tile i t)
 
+(*[check_dir] ensures movement in a certain direction is valid and adds the
+ *node to the frontier if it is viable or returns the same frontier if its not*)
 let rec check_dir (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
   let mapg = map.grid in
     match t.coordinate with
@@ -39,12 +48,14 @@ let rec check_dir (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile *
         |Damaged_wall (x) -> f
         |Mountain -> f
         |Ocean -> f
-        |Peaks -> add_f next 3 f
-        |Forest -> add_f next 2 f
-        |Desert -> add_f next 2 f
-        |_ -> add_f next 1 f
+        |Peaks -> add_f2 next 3 f
+        |Forest -> add_f2 next 2 f
+        |Desert -> add_f2 next 2 f
+        |_ -> add_f2 next 1 f
       else f
 
+(*[check_surround] checks movement in all directions of a given coordinate
+ *to expand the frontier set*)
 let rec check_surround s t m map f:(tile * int) list =
   f
   |> check_dir South t map s
@@ -52,6 +63,7 @@ let rec check_surround s t m map f:(tile * int) list =
   |> check_dir North t map s
   |> check_dir West t map s
 
+(*[fill_map] initializes the path_map necessary to compute Djikstra's*)
 let fill_map len wid =
   let (t : path_tile) = {length = 1000;prev = None} in
   Array.make_matrix len wid t
@@ -103,7 +115,7 @@ let rec path_helper dest f s tile m (map : map) pmap =
               path_helper dest t s (fst h) (snd h) map pmap2
           else
               path_helper dest t s (fst h) (snd h) map pmap
-
+                (**
 let shortest_path (c1 : character)(c2 : character)(p : path_map)=
 
   match c1.location with
@@ -113,9 +125,9 @@ let enemy_search (c : character)(ls : character list) =
 
 let step_one (c : character)(s : state) =
   let new_map = fill_map s.act_map.length s.act_map.width in
-    enemy_search
+
 
 let step (s : state) =
-  match s with
+  match s.enemies with
   |[]->()
-  |h::t -> step_one h s;
+                   |h::t -> step_one h s;**)

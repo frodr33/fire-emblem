@@ -1,6 +1,7 @@
 open State
 open Characters
 open Types
+open Interactions
 
 (*[path_tile] store the intermediary values of our Djikstra's shortest
  *path algorithm*)
@@ -119,19 +120,53 @@ let rec path_helper dest f s tile m (map : map) pmap =
               path_helper dest t s (fst h) (snd h) map pmap2
           else
               path_helper dest t s (fst h) (snd h) map pmap
-                (**
-let shortest_path (c1 : character)(c2 : character)(p : path_map)=
 
-  match c1.location with
-  |(x, y) ->
-
-let enemy_search (c : character)(ls : character list) =
-
-let step_one (c : character)(s : state) =
-  let new_map = fill_map s.act_map.length s.act_map.width in
+let search (c : character) (lst : character list) (b  : boolean) =
+failwith "unimplemented"
 
 
+let rec aggro st clist plist acc = failwith "unimplemented"
+(*[foresight] AI can incredibly see 2 times its own movement range as well as
+ * triggering upon any fellow enemy unit spotting a player unit*)
+let rec foresight st clist plist acc =
+  match clist with
+  |[] -> acc
+  |h::t ->
+    search h plist true
+
+(*[heresjohnny] will directly attack a player character only if it is standing
+ * directly adjacent or diagonal to an enemy*)
+let rec heresjohnny (c : character) (lst : character list) : character =
+  match lst with
+  |[] -> c
+  |h::t ->
+    match h.location, c.location with
+    |(x,y), (a, b)->
+      if (abs (b - 1)) <= 1 && (abs (a - x)) <= 1 then
+        fst (combat c h)
+      else
+        heresjohnny c t
+
+(*[limp] offers some real limp AI that will half-heartedly attack you if you
+ * stand directly next to an enemy but won't chase*)
+let rec limp clist plist acc =
+  match clist with
+  |[] -> acc
+  |h::t ->
+    limp t plist ((heresjohnny h plist)::acc)
+
+let move_enem st clist plist diff =
+  match diff with
+  |Insane ->
+    aggro st clist plist []
+  |Hard ->
+    foresight st clist plist []
+  |Normal ->
+    passive st clist plist []
+  |Easy ->
+    limp clist plist []
+
+(*[step] returns unit after all enemy characters have performed
+ * their desired actions*)
 let step (s : state) =
-  match s.enemies with
-  |[]->()
-                   |h::t -> step_one h s;**)
+  move_enem s s.enemies s.player s.level;

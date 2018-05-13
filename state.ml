@@ -377,7 +377,7 @@ let replace c st =
 let rec reset_ch plst = 
   match plst with
   |[]   -> ()
-  |h::t -> h.status <- Ready
+  |h::t -> h.stage <- Ready
 
 let do' s =
   let act = translate_key s in

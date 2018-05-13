@@ -68,11 +68,10 @@ let rec path_finder coor pmap acc =
     |Some t -> path_finder t pmap ((pmap.grid.(x).(y).length, t)::acc)
 
 let frontier_compare l1 l2 =
-  let d1 =
     match fst l1 with
-    |(x, y) ->
+    |(x, y) -> failwith "uninitiated"
 
-let frontier_sort lst =
+let frontier_sort lst = failwith "uninitiated"
 
 (**Name keeping:
  * f = frontier set, tile * int (move) list
@@ -87,23 +86,20 @@ let rec path_helper dest f s tile m (map : map) pmap =
   |[]   ->
     path_finder dest pmap []
   |h::t ->
-    match frontier_sort new_f with
-    |[]-> failwith"Impossible"
-    |h::t ->
       match tile.coordinate with
       |(x, y) ->
-        match fst h with
-        |(f, s) ->
+        match (fst h).coordinate with
+        |(f, b) ->
           let cost =
-            match map.grid.(f).(s).ground with
+            match map.grid.(f).(b).ground with
             |Peaks -> 3
             |Forest -> 2
             |Desert -> 2
             |_ -> 1 in
           let curr = pmap.grid.(x).(y).length in
-          if curr + cost < pmap.grid.(f).(s).length then
+          if curr + cost < pmap.grid.(f).(b).length then
             let newt : path_tile = {length = (curr + cost); prev=Some (x,y)} in
-            let pmap2 = update_map pmap f s newt in
+            let pmap2 = update_map pmap f b newt in
               path_helper dest t s (fst h) (snd h) map pmap2
           else
               path_helper dest t s (fst h) (snd h) map pmap

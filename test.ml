@@ -527,6 +527,7 @@ let init_state =
       menu_active = false;
       menu_cursor = 0;
       funds = 0;
+      active_item = -1;
     } in set_init_ch_movement x.player x
 
 let extract (Some x) = x
@@ -580,19 +581,3 @@ let rec attack_range_mod mi ma i co movl ml fl =
     let red_tiles c : (int * int) list =
       if c.eqp = -1 then []
       else red_tiles_helper c.movement [] c
-(*let step1 = check_surround [] ({coordinate = (3, 4);
-                                ground = Plain}) 3 test_map []
-
-let step2 =
-  match step1 with
-  |[]   -> []
-  |h::t -> dijkstra's_helper t (fst h :: []) (fst h) (snd h) test_map
-
-let step3 =
-  let t = List.tl step1 in
-  let h = List.hd step1 in
-  dijkstra's_helper t (fst h :: []) (fst h) (snd h) test_map
-
-let f = List.tl step1
-let t = fst (List.hd step1)
-let m = snd (List.hd step1)*)

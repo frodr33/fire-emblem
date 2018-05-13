@@ -461,8 +461,14 @@ let do' s =
               |"End" -> (*reset_ch s.player; step*) s 
               |_     -> s
             end
-            |Confirm->   let _ = attacking:=true in
-              let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}
+            |Confirm->   let _ = attacking := true in
+            let ch = extract s.active_unit in ch.stage<-Done;
+            let e  = extract s.active_tile.c in
+            let damage = combat ch e in
+            {s with active_unit = None;
+                    menu_active = false;
+                    menu_cursor = 0}
+            |> replace (fst damage) |> replace (snd damage)
             |_ -> s
         end
       |None -> s
@@ -472,14 +478,7 @@ let do' s =
       |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
       |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone;{s with current_menu = unit_menu;menu_cursor=0;}
       |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
-      |Confirm ->
-        let ch = extract s.active_unit in ch.stage<-Done;
-        let e  = extract s.active_tile.c in
-        let damage = combat ch e in
-        {s with active_unit = None;
-                menu_active=false;
-                menu_cursor=0}
-        |> replace (fst damage) |> replace (snd damage)
+      |Confirm -> s 
       |_ -> s
     end
   |BackTrade -> let c = extract s.active_unit in

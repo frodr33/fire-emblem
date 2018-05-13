@@ -3,7 +3,7 @@ open Interactions
 open Characters
 
 let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
-let tile_menu = {kind=Tile;size = 4;options = [|"Unit";"Status";"Suspend";"End"|]}
+let tile_menu = {kind=Tile;size = 2;options = [|" ";"End"|]}
 let item_menu = {kind=Item;size = 2;options = [|"Equip/Use";"Discard"|]}
 let confirm_menu = {kind = Confirm;size=1;options=[|"Attack?"|]}
 type state = {
@@ -37,18 +37,18 @@ let check_enemy_loc st =
 *)
 
 (* ml is list of tiles under min range*)
-let rec attack_range mi ma i co ml fl =
+let rec attack_range_helper mi ma i co ml fl =
   if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then 
   (if i < mi then fl
-                   |> attack_range mi ma (i + 1) (fst co - 1, snd co) (co::ml)
-                   |> attack_range mi ma (i + 1) (fst co, snd co - 1) (co::ml)
-                   |> attack_range mi ma (i + 1) (fst co + 1, snd co) (co::ml)
-                   |> attack_range mi ma (i + 1) (fst co, snd co + 1) (co::ml)
+                   |> attack_range_helper mi ma (i + 1) (fst co - 1, snd co) (co::ml)
+                   |> attack_range_helper mi ma (i + 1) (fst co, snd co - 1) (co::ml)
+                   |> attack_range_helper mi ma (i + 1) (fst co + 1, snd co) (co::ml)
+                   |> attack_range_helper mi ma (i + 1) (fst co, snd co + 1) (co::ml)
    else co::fl
-        |> attack_range mi ma (i + 1) (fst co - 1, snd co) ml
-        |> attack_range mi ma (i + 1) (fst co, snd co - 1) ml
-        |> attack_range mi ma (i + 1) (fst co + 1, snd co) ml
-        |> attack_range mi ma (i + 1) (fst co, snd co + 1) ml
+        |> attack_range_helper mi ma (i + 1) (fst co - 1, snd co) ml
+        |> attack_range_helper mi ma (i + 1) (fst co, snd co - 1) ml
+        |> attack_range_helper mi ma (i + 1) (fst co + 1, snd co) ml
+        |> attack_range_helper mi ma (i + 1) (fst co, snd co + 1) ml
   )
   else fl
 
@@ -301,6 +301,9 @@ let red_tiles c : (int * int) list =
   if c.eqp = -1 then []
   else red_tiles_helper c.movement [] c
 
+let attack_range c = 
+  let w = extract c.inv.(c.eqp) in 
+  attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] 
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)
@@ -322,7 +325,6 @@ let move_char_helper st =
     let new_pos = st.active_tile.coordinate in
     let old_tile = st.act_map.grid.(fst old_pos).(snd old_pos) in
     let new_tile = st.act_map.grid.(fst new_pos).(snd new_pos) in
-    let _ = x.location<-new_pos;x.stage<-MoveDone; in
     let _ = st.act_map.grid.(fst old_pos).(snd old_pos)<-{old_tile with c=None};
       st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
     in
@@ -379,7 +381,10 @@ let do' s =
   |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
   |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
   |SelectPlayer -> let ch = extract s.active_tile.c in
-    ch.stage<-MoveSelect;{s with active_unit = s.active_tile.c}
+    ch.stage<-MoveSelect;
+    ch.movement <- dijkstr's ch s.active_map;
+    ch.attackable <- red_tiles ch;
+    {s with active_unit = s.active_tile.c}
   |SelectMoveTile ->move_helper s
   |SelectAttackTile -> {s with current_menu=confirm_menu;menu_cursor=0;menu_active=true}
   |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
@@ -442,6 +447,11 @@ let do' s =
                         menu_cursor = 0}
               end
               |_ -> s
+            end
+            |Tile -> begin 
+              match s.current_menu.options.(s.menu_cursor) with
+              |" "   -> s 
+              |"End" -> s (*TODO: insert AI function here*) 
             end
             |Confirm->   let _ = attacking:=true in
               let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}

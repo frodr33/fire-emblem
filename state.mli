@@ -40,6 +40,7 @@ type state = {
   funds : int;
 }
 
+val attack_range : character -> (int * int) list
 val dijkstra's_helper : (tile * int) list -> (int*int) list -> tile -> int -> map -> (int*int) list
 val dijkstra's : character -> map -> (int*int) list
 val red_tiles : character -> (int * int) list

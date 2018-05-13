@@ -683,7 +683,7 @@ let rec draw_dijsktra_blue context tile_lst =
       img##src <- js "Sprites/blue_test.png";
       context##globalAlpha <- 0.5;
       context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);
-      draw_dijsktra context t
+      draw_dijsktra_blue context t
 
 let rec draw_dijsktra_red context tile_lst = 
   match tile_lst with
@@ -693,7 +693,7 @@ let rec draw_dijsktra_red context tile_lst =
       img##src <- js "Sprites/red.png";
       context##globalAlpha <- 0.5;
       context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);
-      draw_attack_squares context t
+      draw_dijsktra_red context t
 
 let draw_dijsktra context st =
   match st.active_unit with
@@ -720,6 +720,11 @@ let draw_is_player_done context active_unit =
         context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.)
       else ()
   | _ -> ()
+
+(*********************************************************)
+(****************** Draw Attack Squares  *****************)
+(*********************************************************)
+
 
 (*********************************************************)
 (****************** Draw State Functions *****************)

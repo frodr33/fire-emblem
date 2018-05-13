@@ -53,12 +53,14 @@ type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectTradeTile|SelectPlayer|DeselectPlayer|FindReady|
               Invalid|BackMenu|BackAttack|BackTrade
 
+type difficulty = Easy|Normal|Hard|Insane
+
 let extract (Some c) = c
 let seed = 10
 
 let init_rng = Random.init 10
 
-let get_rng () = Random.int 100 
+let get_rng () = Random.int 100
 
 let input = ref Nothing
 let attacking = ref false

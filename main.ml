@@ -111,6 +111,7 @@ let init_state =
     menu_active = false;
     menu_cursor = 0;
     funds = 0;
+    level = Normal;
   } in set_init_ch_movement x.player x
 
 let state = ref init_state

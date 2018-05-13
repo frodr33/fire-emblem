@@ -57,6 +57,7 @@ type direction = North | West | South | East
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectTradeTile|SelectPlayer|DeselectPlayer|FindReady|
               Invalid|BackMenu|BackAttack|BackTrade
+type difficulty = Easy|Normal|Hard|Insane
 (*
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectAlly|SelectPlayer|SelectEnemy|FindReady|
@@ -71,7 +72,7 @@ type tile_type =
   (** Represents a map as a whole*)
 
 val extract : 'a option -> 'a
-val get_rng : unit -> int 
+val get_rng : unit -> int
 val input : key ref
 val attacking: bool ref
 val moved_forward: bool ref

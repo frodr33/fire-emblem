@@ -637,16 +637,19 @@ let rec search_helper (m : map) (c : character) lst rang pmap target =
 
 (*[move] iterates through the shortest path to a target enemy unit, and moves as
  * far on the path as permitted by its movement stats*)
-let rec move lst range last =
+let rec move lst range last attk =
   match lst with
-  |[] -> last
+  |[] -> (last, false)
   |h::t ->
     match h with
     |(a, b) ->
-      if a <= range then
-        move t range b
+      if List.length >= fst attk && List.length <= snd attk then
+        (b, true)
       else
-        last
+        if a <= range then
+          move t range b attk
+        else
+          (last, false)
 
 (*[update_move] updates both characters and maps upon a character moving to a different
  * position on the board*)
@@ -668,7 +671,7 @@ let update_move (m : map) (c : character) init loc =
        c = Some c}
 
 (*[search]*)
-let search (m : map) (c : character) (lst : character list) (b  : bool) pm =
+let search (m : map) (c : character) (lst : character list) (b  : bool) pm attk =
   if b then
     let range = c.mov * 2 in
     match lst with
@@ -677,8 +680,10 @@ let search (m : map) (c : character) (lst : character list) (b  : bool) pm =
       let init =
         match c.location with (x, y) ->
           path_helper h.location [] [] m.grid.(x).(y) m pm in
-      let go = move (search_helper m c t range pm init) c.mov c.location in
-      update_move m c c.location go
+      let go = move (search_helper m c t range pm init) c.mov c.location attk in
+      update_move m c c.location (fst go);
+      if snd go then
+        ignore (combat c h)
   else
   if b then
     let range = c.mov in
@@ -688,8 +693,10 @@ let search (m : map) (c : character) (lst : character list) (b  : bool) pm =
       let init =
         match c.location with (x, y) ->
           path_helper h.location [] [] m.grid.(x).(y) m pm in
-      let go = move (search_helper m c t range pm init) range c.location in
-      update_move m c c.location go
+      let go = move (search_helper m c t range pm init) c.mov c.location attk in
+      update_move m c c.location (fst go);
+      if snd go then
+        ignore (combat c h)
 
 let rec aggro st clist plist acc = failwith "unimplemented"
 
@@ -704,8 +711,12 @@ let rec foresight (m : map) clist plist =
       {width = m.width;
        length = m.length;
        grid = (fill_map m.length m.width)} in
-    search m h plist true new_pm;
-    foresight m t plist
+      if h.eqp >= 0 then
+        (search m h plist true new_pm ((extract h.inv.(h.eqp)).range);
+       foresight m t plist)
+      else
+        foresight m t plist
+
 
 (*[passive] directs enemies to only attack and chase within their movement area
  * however if enemies move within their movement area they will pursue*)
@@ -713,21 +724,20 @@ let rec passive m clist plist acc = failwith "unimplemented"
 
 (*[heresjohnny] will directly attack a player character only if it is standing
  * directly adjacent or diagonal to an enemy*)
-let rec heresjohnny m (c : character) (lst : character list) range =
+let rec heresjohnny m (c : character) (lst : character list) =
   match lst with
   |[] -> ()
   |h::t ->
     match h.location, c.location with
     |(x,y), (a, b)->
-       let ar = attack_range c in
-       if List.exists (fun (m, n) -> m = x && n = b) ar = true then
-        let comb = combat c h in
-        let f = fst comb in
-        let s = snd comb in
-        update_move m f f.location f.location;
-        update_move m s s.location s.location
+      if c.eqp > -1 then
+      (let ar = attack_range c in
+       if List.exists (fun (q, r) -> q = x && r = b) ar = true then
+         ignore (combat c h)
       else
-        heresjohnny m c t range
+        heresjohnny m c t)
+      else
+        ()
 
 (*[limp] offers some real limp AI that will half-heartedly attack you if you
  * stand directly in range of an enemy but won't chase*)
@@ -742,7 +752,7 @@ let rec limp m clist plist =
       |None ->
         limp m t plist
       |Some i ->
-        heresjohnny m h plist i.range;
+        heresjohnny m h plist;
     else
       limp m t plist
 

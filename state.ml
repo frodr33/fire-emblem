@@ -365,8 +365,8 @@ let chest_checker s =
 
 let rec replace_helper c lst =
   match lst with
-  |[]   -> [c]
-  |h::t -> if h.name = c.name then c::t else h::(replace_helper c t)
+  |[]   -> if fst c.health = 0 then [] else [c]
+  |h::t -> if h.name = c.name && (fst c.health > 0) then c::t else h::(replace_helper c t)
 
 let replace c st =
   match c.allegiance with

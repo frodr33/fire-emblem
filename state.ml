@@ -37,7 +37,7 @@ let check_enemy_loc st =
 *)
 
 (* ml is list of tiles under min range*)
-let rec attack_range mi ma i co ml fl =
+let rec attack_range_helper mi ma i co ml fl =
   if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then 
   (if i < mi then fl
                    |> attack_range mi ma (i + 1) (fst co - 1, snd co) (co::ml)
@@ -301,6 +301,9 @@ let red_tiles c : (int * int) list =
   if c.eqp = -1 then []
   else red_tiles_helper c.movement [] c
 
+let attack_range c = 
+  let w = extract c.inv.(c.eqp) in 
+  attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] 
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)

@@ -157,7 +157,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
   match character.direction with
   | South -> begin
       match character.stage with
-      | Ready|MoveDone|AttackSelect|TradeSelect|AttackSelect|TradeSelect -> begin
+      | Ready|MoveDone|AttackSelect|TradeSelect -> begin
         match ((!sync)) with
         | true ->
             let sprite_coordinate = (417., 400.) in
@@ -543,6 +543,7 @@ let menu_manager context state =
     | 5 -> draw_5_menu context state.current_menu
     | 6 -> draw_6_menu context state.current_menu
     | 7 -> draw_7_menu context state.current_menu
+    | _ -> ()
   else ()
 
 
@@ -681,7 +682,7 @@ let rec draw_dijsktra_blue context tile_lst =
   | (x,y)::t ->
       let img = Html.createImg document in
       img##src <- js "Sprites/blue_test.png";
-      context##globalAlpha <- 0.5;
+      context##globalAlpha <- 0.6;
       context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);
       draw_dijsktra_blue context t
 
@@ -691,7 +692,7 @@ let rec draw_dijsktra_red context tile_lst =
   | (x,y)::t ->
       let img = Html.createImg document in
       img##src <- js "Sprites/red.png";
-      context##globalAlpha <- 0.5;
+      context##globalAlpha <- 0.6;
       context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);
       draw_dijsktra_red context t
 
@@ -731,7 +732,7 @@ let rec draw_attack_helper context lst =
   | (x,y)::t -> 
     let img = Html.createImg document in
     img##src <- js "Sprites/red.png";
-    context##globalAlpha <- 0.5;
+    context##globalAlpha <- 0.6;
     context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);
     draw_attack_helper context t
 

@@ -1,4 +1,3 @@
-open State
 open Characters
 open Types
 open Interactions
@@ -57,7 +56,7 @@ let rec check_dir (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile *
 
 (*[check_surround] checks movement in all directions of a given coordinate
  *to expand the frontier set*)
-let rec check_surround s t m map f:(tile * int) list =
+let rec check_surround s t map f:(tile * int) list =
   f
   |> check_dir South t map s
   |> check_dir East t map s
@@ -68,6 +67,11 @@ let rec check_surround s t m map f:(tile * int) list =
 let fill_map len wid =
   let (t : path_tile) = {length = 1000;prev = None} in
   Array.make_matrix len wid t
+
+(*[new_map] refreshes the map for a new target destination*)
+let new_map (pmap : path_map) =
+  let (t : path_tile) = {length = 1000;prev = None} in
+    Array.make_matrix pmap.length pmap.width t
 
 (*[update_map] takes a [path_map] and updates its values if a shorter path is
  * found by the algorithm*)
@@ -97,8 +101,8 @@ let frontier_sort lst = failwith "uninitiated"
  * m = moves left
  * map = map
 *)
-let rec path_helper dest f s tile m (map : map) pmap =
-  let new_f = check_surround s tile m map f in
+let rec path_helper dest f s tile (map : map) pmap =
+  let new_f = check_surround s tile map f in
   match new_f with
   |[]   ->
     path_finder dest pmap []
@@ -117,24 +121,57 @@ let rec path_helper dest f s tile m (map : map) pmap =
           if curr + cost < pmap.grid.(f).(b).length then
             let newt : path_tile = {length = (curr + cost); prev=Some (x,y)} in
             let pmap2 = update_map pmap f b newt in
-              path_helper dest t s (fst h) (snd h) map pmap2
+              path_helper dest t s (fst h) map pmap2
           else
-              path_helper dest t s (fst h) (snd h) map pmap
+              path_helper dest t s (fst h) map pmap
 
-let search (c : character) (lst : character list) (b  : bool) =
-failwith "unimplemented"
+let rec search_helper (m : map) (c : character) lst rang pmap target =
+  match lst with
+  |[] -> target
+  |h::t ->
+    match c.location with (x, y) ->
+      let check = path_helper h.location [] [] m.grid.(x).(y) m pmap in
+      if fst (List.hd (List.rev check)) < fst (List.hd (List.rev target)) then
+        let pm = {width = pmap.width; length = pmap.width; grid = new_map pmap} in
+        search_helper m c t rang pm check
+      else
+        let pm = {width = pmap.width; length = pmap.width; grid = new_map pmap} in
+        search_helper m c t rang pm target
+
+let move lst range =
+  failwith "unimplemented"
+
+let search (m : map) (c : character) (lst : character list) (b  : bool) pm =
+  if b then
+    let range = c.mov * 2 in
+    match lst with
+    |[] -> ()
+    |h::t ->
+      let init =
+        match c.location with (x, y) ->
+          path_helper h.location [] [] m.grid.(x).(y) m pm
+      in
+      move (search_helper m c t range pm init)
+
+
 
 
 let rec aggro st clist plist acc = failwith "unimplemented"
 
-let rec passive st clist plist acc = failwith "unimplemented"
+
 (*[foresight] AI can incredibly see 2 times its own movement range as well as
  * triggering upon any fellow enemy unit spotting a player unit*)
-let rec foresight st clist plist acc =
+let rec foresight m clist plist acc =
   match clist with
   |[] -> acc
   |h::t ->
-    search h plist true
+    let new_pm =
+      {width = m.width; length = m.length; grid = fill_map m.length m.width} in
+    foresight m t plist ((search m h plist true new_pm)::acc)
+
+(*[passive] directs enemies to only attack and chase within their movement area
+ * however if enemies move within their movement area they will pursue*)
+let rec passive st clist plist acc = failwith "unimplemented"
 
 (*[heresjohnny] will directly attack a player character only if it is standing
  * directly adjacent or diagonal to an enemy*)
@@ -157,18 +194,19 @@ let rec limp clist plist acc =
   |h::t ->
     limp t plist ((heresjohnny h plist)::acc)
 
-let move_enem st clist plist diff =
+(*[move_enem] returns a list of characters that have all moved/attacked*)
+let move_enem m clist plist diff =
   match diff with
   |Insane ->
-    aggro st clist plist []
+    aggro m clist plist []
   |Hard ->
-    foresight st clist plist []
+    foresight m clist plist []
   |Normal ->
-    passive st clist plist []
+    passive m clist plist []
   |Easy ->
     limp clist plist []
 
 (*[step] returns unit after all enemy characters have performed
  * their desired actions*)
-let step (s : state) =
-  move_enem s s.enemies s.player s.level;
+let step (e : character list) (p : character list) (m : map) (d : difficulty) =
+  move_enem m e p d;

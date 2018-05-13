@@ -736,12 +736,14 @@ let rec draw_attack_helper context lst =
     draw_attack_helper context t
 
 
-let draw_attack_squares context active_unit = 
+let draw_attack_squares context active_unit= 
   match active_unit with
   | Some chr ->
-    let tile_lst = attack_range chr in
-    draw_attack_helper context tile_lst
-  | None -> ()
+    if chr.stage = AttackSelect then
+      let tile_lst = attack_range chr in
+      draw_attack_helper context tile_lst
+    else ()
+  | _-> ()
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
@@ -752,7 +754,8 @@ let draw_attack_squares context active_unit =
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
   draw_map context state;
-  (* draw_dijsktra context state; *)
+  draw_dijsktra context state;
+  draw_attack_squares context state.active_unit;
   context##globalAlpha <- 1.;
   draw_is_player_done context state.active_unit;
   draw_player context state.player;

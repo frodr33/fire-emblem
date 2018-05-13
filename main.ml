@@ -58,7 +58,7 @@ let temp_character =
     hit = 0;
     atk = 0;
     crit = 0;
-    avoid = 0;
+    avoid = 15;
     inv = [|Some temp_item;None;None;None;None|];
     eqp = 0;
     ability = [];
@@ -111,6 +111,7 @@ let init_state =
     menu_active = false;
     menu_cursor = 0;
     funds = 0;
+    last_character = Some temp_character;
     level = Normal;
   } in set_init_ch_movement x.player x
 

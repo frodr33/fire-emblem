@@ -22,6 +22,7 @@ type state = {
   menu_active: bool;
   menu_cursor: int;
   funds : int;
+  last_character : character option;
   level : difficulty;
 }
 

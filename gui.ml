@@ -3,7 +3,7 @@ open State
 
 let js = Js.string (* partial function, takes in string *)
 
-let canvas_width = 390. (* 390 *)
+let canvas_width = 546. (* 390 *)
 let canvas_height = 390. (* 260 *)
 
 module Html = Dom_html
@@ -746,10 +746,100 @@ let draw_attack_squares context active_unit=
     else ()
   | _-> ()
 
+
+(*********************************************************)
+(********************* Draw Side Bar *********************)
+(*********************************************************)
+
+let find_drawpoint_name context name = 
+  let len = String.length name in
+  let x = 455. in (* Default val *)
+  if len < 4 then x
+  else if len = 4 then x -. 6.
+  else if len = 5 then x -. 8.
+  else if len = 6 then x -. 10.
+  else if len = 7 then x -. 14.
+  else if len = 8 then x -. 18.
+  else if len = 9 then x -. 22.
+  else if len = 10 then x -. 26.  
+  else if len = 11 then x -. 30.
+  else if len = 12 then x -. 34.
+  else if len = 13 then x -. 38.
+  else if len = 14 then x -. 42.
+  else if len = 15 then x -. 46.
+  else if len = 16 then x -. 50.
+  else if len = 17 then x -. 54.
+  else 390. 
+
+let draw_sidebar_back context = 
+  for i = 15 to 20 do
+    for j = 0 to 14 do
+      let img = Html.createImg document in
+      img##src <- js "Sprites/sidebarback.png";
+      context##drawImage (img, float_of_int i *. 26., float_of_int j *. 26.)
+    done
+  done
+
+let draw_sidebar_title context state = 
+  match state.last_character with
+  | Some chr -> 
+    context##strokeStyle <- js "white";
+    context##font <- js "16px sans-serif";
+    let x = find_drawpoint_name context (chr.name) in
+    context##strokeText (js (chr.name), x, 26.);
+  | None -> ()
+
+let draw_lyn_face context = 
+  let img = Html.createImg document in
+  img##src <- js "Sprites/lyn.png";
+  context##drawImage (img, 416., 52.)
+
+(* 104 by 119 roughly *)
+let draw_sidebar_face context state = 
+  match state.last_character with
+  | Some chr ->
+    if chr.name = "Lyn" then draw_lyn_face context
+    else ()
+  | None -> ()
+
+let draw_sidebar_stats context state = 
+  match state.last_character with
+  | Some chr ->
+    let hp = (string_of_int (fst chr.health)) ^ "/" ^ (string_of_int (snd chr.health)) in
+    let hp_x = find_drawpoint_name context ("health :" ^ hp) in
+    context##strokeStyle <- js "white";
+    context##font <- js "16px sans-serif";
+    context##strokeText (js "Stats", 447., 195.);
+    context##strokeText (js ("level : " ^ string_of_int (chr.level)) , 392., 215.);
+    context##strokeText (js ("exp : " ^ string_of_int (chr.exp)) , 392., 235.);
+    context##strokeText (js ("health : " ^ hp) , hp_x, 45.);
+    context##strokeText (js ("str : " ^ string_of_int (chr.str)) , 392., 255.);
+    context##strokeText (js ("mag : " ^ string_of_int (chr.mag)) , 392., 275.);
+    context##strokeText (js ("def : " ^ string_of_int (chr.def)) , 392., 295.);
+    context##strokeText (js ("spd : " ^ string_of_int (chr.spd)) , 392., 315.);
+    context##strokeText (js ("res : " ^ string_of_int (chr.res)) , 392., 335.);
+    context##strokeText (js ("skl : " ^ string_of_int (chr.skl)) , 392., 355.);
+    context##strokeText (js ("lck : " ^ string_of_int (chr.lck)) , 475., 215.);
+    context##strokeText (js ("mov : " ^ string_of_int (chr.mov)) , 475., 235.);
+    context##strokeText (js ("hit : " ^ string_of_int (chr.hit)) , 475., 255.);
+    context##strokeText (js ("atk : " ^ string_of_int (chr.atk)) , 475., 275.);
+    context##strokeText (js ("crit : " ^ string_of_int (chr.crit)) , 475., 295.);
+    context##strokeText (js ("avoid : " ^ string_of_int (chr.avoid)) , 475., 315.)
+
+  | None -> ()
+
+let draw_sidebar context state = 
+  draw_sidebar_back context;
+  draw_sidebar_title context state;
+  draw_sidebar_face context state;
+  draw_sidebar_stats context state
+
+
+
+
 (*********************************************************)
 (****************** Draw State Functions *****************)
 (*********************************************************)
-
 
 (* Drawing *)
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
@@ -764,4 +854,5 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   menu_manager context state;
   draw_menu_arrow context state;
   draw_healthbar context state.player;
+  draw_sidebar context state;
   clock ();

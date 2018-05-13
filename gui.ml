@@ -157,7 +157,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
   match character.direction with
   | South -> begin
       match character.stage with
-      | Ready|MoveDone|AttackSelect|TradeSelect|AttackSelect|TradeSelect -> begin
+      | Ready|MoveDone|AttackSelect|TradeSelect -> begin
         match ((!sync)) with
         | true ->
             let sprite_coordinate = (417., 400.) in
@@ -543,6 +543,7 @@ let menu_manager context state =
     | 5 -> draw_5_menu context state.current_menu
     | 6 -> draw_6_menu context state.current_menu
     | 7 -> draw_7_menu context state.current_menu
+    | _ -> ()
   else ()
 
 
@@ -681,7 +682,7 @@ let rec draw_dijsktra_blue context tile_lst =
   | (x,y)::t ->
       let img = Html.createImg document in
       img##src <- js "Sprites/blue_test.png";
-      context##globalAlpha <- 0.5;
+      context##globalAlpha <- 0.6;
       context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);
       draw_dijsktra_blue context t
 
@@ -691,7 +692,7 @@ let rec draw_dijsktra_red context tile_lst =
   | (x,y)::t ->
       let img = Html.createImg document in
       img##src <- js "Sprites/red.png";
-      context##globalAlpha <- 0.5;
+      context##globalAlpha <- 0.6;
       context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);
       draw_dijsktra_red context t
 
@@ -731,17 +732,19 @@ let rec draw_attack_helper context lst =
   | (x,y)::t -> 
     let img = Html.createImg document in
     img##src <- js "Sprites/red.png";
-    context##globalAlpha <- 0.5;
+    context##globalAlpha <- 0.6;
     context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);
     draw_attack_helper context t
 
 
-let draw_attack_squares context active_unit = 
+let draw_attack_squares context active_unit= 
   match active_unit with
   | Some chr ->
-    let tile_lst = attack_range chr in
-    draw_attack_helper context tile_lst
-  | None -> ()
+    if chr.stage = AttackSelect then
+      let tile_lst = attack_range chr in
+      draw_attack_helper context tile_lst
+    else ()
+  | _-> ()
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
@@ -752,7 +755,8 @@ let draw_attack_squares context active_unit =
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
   draw_map context state;
-  (* draw_dijsktra context state; *)
+  draw_dijsktra context state;
+  draw_attack_squares context state.active_unit;
   context##globalAlpha <- 1.;
   draw_is_player_done context state.active_unit;
   draw_player context state.player;

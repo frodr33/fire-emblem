@@ -87,12 +87,6 @@ let rec path_finder coor pmap acc =
     |None -> acc
     |Some t -> path_finder t pmap ((pmap.grid.(x).(y).length, t)::acc)
 
-let frontier_compare l1 l2 =
-    match fst l1 with
-    |(x, y) -> failwith "uninitiated"
-
-let frontier_sort lst = failwith "uninitiated"
-
 (**Name keeping:
  * f = frontier set, tile * int (move) list
  * s = settled set, tile list
@@ -100,6 +94,9 @@ let frontier_sort lst = failwith "uninitiated"
  * m = moves left
  * map = map
 *)
+(*[path_helper] runs djikstra's algorithm on the given map to find the shortest
+ * path from the enemy unit to the player unit it is targeting, and then calls
+ *[path_finder] to output a complete path*)
 let rec path_helper dest f s tile (map : map) pmap =
   let new_f = check_surround s tile map f in
   match new_f with
@@ -124,6 +121,8 @@ let rec path_helper dest f s tile (map : map) pmap =
           else
               path_helper dest t s (fst h) map pmap
 
+(*[search_helper] picks the closest player unit to attack and outputs the
+ * coordinates of the unit*)
 let rec search_helper (m : map) (c : character) lst rang pmap target =
   match lst with
   |[] -> target
@@ -137,6 +136,8 @@ let rec search_helper (m : map) (c : character) lst rang pmap target =
         let pm = {width = pmap.width; length = pmap.width; grid = new_map pmap} in
         search_helper m c t rang pm target
 
+(*[move] iterates through the shortest path to a target enemy unit, and moves as
+ * far on the path as permitted by its movement stats*)
 let rec move lst range last =
   match lst with
   |[] -> last
@@ -148,6 +149,8 @@ let rec move lst range last =
       else
         last
 
+(*[update_move] updates both characters and maps upon a character moving to a different
+ * position on the board*)
 let update_move (m : map) (c : character) init loc =
   c.location <- loc;
   match init, loc with
@@ -165,6 +168,7 @@ let update_move (m : map) (c : character) init loc =
        tile_type = new_tile.tile_type;
        c = Some c}
 
+(*[search]*)
 let search (m : map) (c : character) (lst : character list) (b  : bool) pm =
   if b then
     let range = c.mov * 2 in
@@ -175,6 +179,17 @@ let search (m : map) (c : character) (lst : character list) (b  : bool) pm =
         match c.location with (x, y) ->
           path_helper h.location [] [] m.grid.(x).(y) m pm in
       let go = move (search_helper m c t range pm init) c.mov c.location in
+      update_move m c c.location go
+  else
+  if b then
+    let range = c.mov in
+    match lst with
+    |[] -> ()
+    |h::t ->
+      let init =
+        match c.location with (x, y) ->
+          path_helper h.location [] [] m.grid.(x).(y) m pm in
+      let go = move (search_helper m c t range pm init) range c.location in
         update_move m c c.location go
 
 let rec aggro st clist plist acc = failwith "unimplemented"

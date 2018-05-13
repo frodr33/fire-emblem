@@ -1,4 +1,3 @@
-open Characters
 open Types
 open Interactions
 
@@ -138,8 +137,33 @@ let rec search_helper (m : map) (c : character) lst rang pmap target =
         let pm = {width = pmap.width; length = pmap.width; grid = new_map pmap} in
         search_helper m c t rang pm target
 
-let move lst range =
-  failwith "unimplemented"
+let rec move lst range last =
+  match lst with
+  |[] -> last
+  |h::t ->
+    match h with
+    |(a, b) ->
+      if a <= range then
+        move t range b
+      else
+        last
+
+let update_move (m : map) (c : character) init loc =
+  c.location <- loc;
+  match init, loc with
+  |(x,y),(h, t) ->
+    let replace_tile = m.grid.(x).(y) in
+    let new_tile = m.grid.(h).(t) in
+    m.grid.(x).(y) <-
+      {coordinate = replace_tile.coordinate;
+       ground = replace_tile.ground;
+       tile_type = replace_tile.tile_type;
+       c = None};
+    m.grid.(h).(t) <-
+      {coordinate = new_tile.coordinate;
+       ground = new_tile.ground;
+       tile_type = new_tile.tile_type;
+       c = Some c}
 
 let search (m : map) (c : character) (lst : character list) (b  : bool) pm =
   if b then
@@ -149,62 +173,67 @@ let search (m : map) (c : character) (lst : character list) (b  : bool) pm =
     |h::t ->
       let init =
         match c.location with (x, y) ->
-          path_helper h.location [] [] m.grid.(x).(y) m pm
-      in
-      move (search_helper m c t range pm init)
-
-
-
+          path_helper h.location [] [] m.grid.(x).(y) m pm in
+      let go = move (search_helper m c t range pm init) c.mov c.location in
+        update_move m c c.location go
 
 let rec aggro st clist plist acc = failwith "unimplemented"
 
 
 (*[foresight] AI can incredibly see 2 times its own movement range as well as
  * triggering upon any fellow enemy unit spotting a player unit*)
-let rec foresight m clist plist acc =
+let rec foresight (m : map) clist plist =
   match clist with
-  |[] -> acc
+  |[] -> ()
   |h::t ->
     let new_pm =
-      {width = m.width; length = m.length; grid = fill_map m.length m.width} in
-    foresight m t plist ((search m h plist true new_pm)::acc)
+      {width = m.width;
+       length = m.length;
+       grid = (fill_map m.length m.width)} in
+    search m h plist true new_pm;
+    foresight m t plist
 
 (*[passive] directs enemies to only attack and chase within their movement area
  * however if enemies move within their movement area they will pursue*)
-let rec passive st clist plist acc = failwith "unimplemented"
+let rec passive m clist plist acc = failwith "unimplemented"
 
 (*[heresjohnny] will directly attack a player character only if it is standing
  * directly adjacent or diagonal to an enemy*)
-let rec heresjohnny (c : character) (lst : character list) : character =
+let rec heresjohnny m (c : character) (lst : character list) =
   match lst with
-  |[] -> c
+  |[] -> ()
   |h::t ->
     match h.location, c.location with
     |(x,y), (a, b)->
       if (abs (b - 1)) <= 1 && (abs (a - x)) <= 1 then
-        fst (combat c h)
+        let comb = combat c h in
+        let f = fst comb in
+        let s = snd comb in
+        update_move m f f.location f.location;
+        update_move m s s.location s.location
       else
-        heresjohnny c t
+        heresjohnny m c t
 
 (*[limp] offers some real limp AI that will half-heartedly attack you if you
  * stand directly next to an enemy but won't chase*)
-let rec limp clist plist acc =
+let rec limp m clist plist =
   match clist with
-  |[] -> acc
+  |[] -> ()
   |h::t ->
-    limp t plist ((heresjohnny h plist)::acc)
+    heresjohnny m h plist;
+    limp m t plist
 
 (*[move_enem] returns a list of characters that have all moved/attacked*)
-let move_enem m clist plist diff =
+let move_enem (m : map) clist plist diff =
   match diff with
   |Insane ->
     aggro m clist plist []
   |Hard ->
-    foresight m clist plist []
+    foresight m clist plist
   |Normal ->
     passive m clist plist []
   |Easy ->
-    limp clist plist []
+    limp m clist plist
 
 (*[step] returns unit after all enemy characters have performed
  * their desired actions*)

@@ -699,10 +699,12 @@ let draw_dijsktra context st =
   match st.active_unit with
   | None -> ()
   | Some chr -> 
-      if chr.stage = MoveSelect then
+      match chr.stage with
+      | MoveSelect ->
         draw_dijsktra_blue context chr.movement;
         draw_dijsktra_red context chr.attackable
-      else ()
+      | _ -> ()
+      
 
 (*********************************************************)
 (****************** Draw is player done ******************)

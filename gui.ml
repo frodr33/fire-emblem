@@ -835,7 +835,51 @@ let draw_sidebar context state =
   draw_sidebar_stats context state
 
 
+(*********************************************************)
+(******************** Draw Attack Menu *******************)
+(*********************************************************)
 
+let draw_attack_back context = 
+  let x = 281. in
+  let y = 304. in
+  let rec ys x y =
+    if x = 385. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "Sprites/databackground.png";
+      context##drawImage (img, x,y);
+      if y = 356. then ys (x+.26.) 304. else ys x (y+.26.) in
+  ys x y  
+
+
+let draw_player_stats context player = 
+  context##font <- js "13px sans-serif";
+  let hp = (string_of_int (fst (player.health))) ^ "/" ^ (string_of_int (snd (player.health))) in
+  context##strokeText (js (player.name), 286., 320.);
+  context##strokeText (js ("Hp: " ^ hp), 286., 340.)
+
+
+
+let draw_attack_menu context state = 
+  match state.active_unit with
+  | Some chr -> begin
+    match chr.stage with
+    | AttackSelect ->
+      draw_attack_back context; 
+      context##strokeStyle <- js "white";
+      context##strokeRect (280.,304. ,110.,82.);
+      draw_player_stats context chr;
+      context##font <- js "12px sans-serif"
+    | _ -> ()
+  end
+  | None -> ()
+  
+
+
+
+(*********************************************************)
+(******************** Draw Inventory *********************)
+(*********************************************************)
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
@@ -855,4 +899,5 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_menu_arrow context state;
   draw_healthbar context state.player;
   draw_sidebar context state;
+  draw_attack_menu context state;
   clock ();

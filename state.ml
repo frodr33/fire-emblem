@@ -413,7 +413,7 @@ let do' s =
   |SelectAttackTile -> {s with current_menu=confirm_menu;menu_cursor=0;menu_active=true}
   |SelectTradeTile -> let t1 =s.active_unit in
     let t2 = s.active_tile.c in
-    if (distance_tile (extract t1) s.active_tile)>1 then s else 
+    if (distance_tile (extract t1) s.active_tile)>1 then s else
     if (check_inventory t1)||(check_inventory t2) then s else s
 
 
@@ -638,7 +638,7 @@ let rec path_helper dest f s tile (map : map) pmap =
 
 (*[search_helper] picks the closest player unit to attack and outputs the
  * coordinates of the unit*)
-let rec search_helper (m : map) (c : character) lst rang pmap target =
+let rec search_helper (m : map) (c : character) lst pmap target =
   match lst with
   |[] -> target
   |h::t ->
@@ -646,10 +646,10 @@ let rec search_helper (m : map) (c : character) lst rang pmap target =
       let check = path_helper h.location [] [] m.grid.(x).(y) m pmap in
       if fst (List.hd (List.rev check)) < fst (List.hd (List.rev target)) then
         let pm = {width = pmap.width; length = pmap.width; grid = new_map pmap} in
-        search_helper m c t rang pm check
+        search_helper m c t pm check
       else
         let pm = {width = pmap.width; length = pmap.width; grid = new_map pmap} in
-        search_helper m c t rang pm target
+        search_helper m c t pm target
 
 (*[move] iterates through the shortest path to a target enemy unit, and moves as
  * far on the path as permitted by its movement stats*)
@@ -687,29 +687,27 @@ let update_move (m : map) (c : character) init loc =
        c = Some c}
 
 (*[search]*)
-let search (m : map) (c : character) (lst : character list) (b  : bool) pm (attk : int*int) =
-  if b then
-    let range = c.mov * 2 in
-    match lst with
+let search (m : map) (c : character) (lst : character list) (d : difficulty) pm (attk : int*int) =
+  match d with
+  |Insane ->
+   ( match lst with
     |[] -> ()
     |h::t ->
       let init =
         match c.location with (x, y) ->
           path_helper h.location [] [] m.grid.(x).(y) m pm in
-      let go = move (search_helper m c t range pm init) c.mov c.location attk in
+      let go = move (search_helper m c t pm init) c.mov c.location attk in
       update_move m c c.location (fst go);
       if snd go then
-        ignore (combat c h)
-  else
-  if b then
-    let range = c.mov in
+        ignore (combat c h))
+  |_ ->
     match lst with
     |[] -> ()
     |h::t ->
       let init =
         match c.location with (x, y) ->
           path_helper h.location [] [] m.grid.(x).(y) m pm in
-      let go = move (search_helper m c t range pm init) c.mov c.location attk in
+      let go = move (search_helper m c t pm init) c.mov c.location attk in
       update_move m c c.location (fst go);
       if snd go then
         ignore (combat c h)
@@ -728,7 +726,7 @@ let rec foresight (m : map) clist plist =
        length = m.length;
        grid = (fill_map m.length m.width)} in
       if h.eqp >= 0 then
-        (search m h plist true new_pm ((extract h.inv.(h.eqp)).range);
+        (search m h plist Hard new_pm ((extract h.inv.(h.eqp)).range);
        foresight m t plist)
       else
         foresight m t plist

@@ -382,7 +382,7 @@ let do' s =
   |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
   |SelectPlayer -> let ch = extract s.active_tile.c in
     ch.stage<-MoveSelect;
-    ch.movement <- dijkstr's ch s.active_map;
+    ch.movement <- dijkstra's ch s.active_map;
     ch.attackable <- red_tiles ch;
     {s with active_unit = s.active_tile.c}
   |SelectMoveTile ->move_helper s

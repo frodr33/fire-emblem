@@ -1,5 +1,5 @@
-*Begin AI Section*)
-
+open Types
+open Interactions
 (*[path_tile] store the intermediary values of our Djikstra's shortest
 *path algorithm*)
 type path_tile =
@@ -236,7 +236,7 @@ let rec attack_inrange m (c : character) (lst : character list) =
    match h.location, c.location with
    |(x,y), (a, b)->
      if c.eqp > -1 then
-     (let ar = attack_range c in
+     (let ar = State.attack_range c in
       if List.exists (fun (q, r) -> q = x && r = b) ar = true then
         ignore (combat c h)
      else

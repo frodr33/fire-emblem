@@ -214,20 +214,20 @@ let rec passive m clist plist acc = failwith "unimplemented"
 
 (*[heresjohnny] will directly attack a player character only if it is standing
  * directly adjacent or diagonal to an enemy*)
-let rec heresjohnny m (c : character) (lst : character list) =
+let rec heresjohnny m (c : character) (lst : character list) range =
   match lst with
   |[] -> ()
   |h::t ->
     match h.location, c.location with
     |(x,y), (a, b)->
-      if (abs (b - 1)) <= 1 && (abs (a - x)) <= 1 then
+      if (abs (b - y)) <= 1 && (abs (a - x)) <= 1 then
         let comb = combat c h in
         let f = fst comb in
         let s = snd comb in
         update_move m f f.location f.location;
         update_move m s s.location s.location
       else
-        heresjohnny m c t
+        heresjohnny m c t range
 
 (*[limp] offers some real limp AI that will half-heartedly attack you if you
  * stand directly next to an enemy but won't chase*)
@@ -235,8 +235,16 @@ let rec limp m clist plist =
   match clist with
   |[] -> ()
   |h::t ->
-    heresjohnny m h plist;
-    limp m t plist
+    if h.eqp > -1 then
+      let ind = h.eqp in
+      let item = (h.inv.(ind)) in
+      match item with
+      |None ->
+        limp m t plist
+      |Some i ->
+        heresjohnny m h plist i.range;
+    else
+      limp m t plist
 
 (*[move_enem] returns a list of characters that have all moved/attacked*)
 let move_enem (m : map) clist plist diff =

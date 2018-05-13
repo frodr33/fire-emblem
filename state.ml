@@ -383,7 +383,7 @@ let replace c st =
   |Enemy  -> {st with enemies = replace_helper c st.enemies}
   |Allied -> {st with allies = replace_helper c st.allies}
 
-let rec reset_ch plst = 
+let rec reset_ch plst =
   match plst with
   |[]   -> ()
   |h::t -> h.stage <- Ready
@@ -466,8 +466,8 @@ let do' s =
             end
             |Tile -> begin
               match s.current_menu.options.(s.menu_cursor) with
-              |" "   -> s 
-              |"End" -> (*reset_ch s.player; step*) s 
+              |" "   -> s
+              |"End" -> (*reset_ch s.player; step*) s
               |_     -> s
             end
             |Confirm->   let _ = attacking := true in
@@ -487,7 +487,7 @@ let do' s =
       |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
       |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone;{s with current_menu = unit_menu;menu_cursor=0;}
       |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
-      |Confirm -> s 
+      |Confirm -> s
       |_ -> s
     end
   |BackTrade -> let c = extract s.active_unit in

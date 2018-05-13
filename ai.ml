@@ -121,11 +121,13 @@ let rec path_helper dest f s tile m (map : map) pmap =
           else
               path_helper dest t s (fst h) (snd h) map pmap
 
-let search (c : character) (lst : character list) (b  : boolean) =
+let search (c : character) (lst : character list) (b  : bool) =
 failwith "unimplemented"
 
 
 let rec aggro st clist plist acc = failwith "unimplemented"
+
+let rec passive st clist plist acc = failwith "unimplemented"
 (*[foresight] AI can incredibly see 2 times its own movement range as well as
  * triggering upon any fellow enemy unit spotting a player unit*)
 let rec foresight st clist plist acc =

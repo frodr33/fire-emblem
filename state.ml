@@ -604,16 +604,14 @@ let rec path_finder coor pmap acc =
     |None -> acc
     |Some t -> path_finder t pmap ((pmap.grid.(x).(y).length, t)::acc)
 
-(**Name keeping:
+(*[path_helper] runs djikstra's algorithm on the given map to find the shortest
+ * path from the enemy unit to the player unit it is targeting, and then calls
+ *[path_finder] to output a complete path
  * f = frontier set, tile * int (move) list
  * s = settled set, tile list
  * t = current tile
  * m = moves left
- * map = map
-*)
-(*[path_helper] runs djikstra's algorithm on the given map to find the shortest
- * path from the enemy unit to the player unit it is targeting, and then calls
- *[path_finder] to output a complete path*)
+ * map = map*)
 let rec path_helper dest f s tile (map : map) pmap =
   let new_f = check_surround s tile map f in
   match new_f with
@@ -737,7 +735,8 @@ let rec heresjohnny m (c : character) (lst : character list) range =
   |h::t ->
     match h.location, c.location with
     |(x,y), (a, b)->
-      if (abs (b - y)) <= 1 && (abs (a - x)) <= 1 then
+       let ar = attack_range c in
+       if List.exists (fun (m, n) -> m = x && n = b) ar = true then
         let comb = combat c h in
         let f = fst comb in
         let s = snd comb in
@@ -747,7 +746,7 @@ let rec heresjohnny m (c : character) (lst : character list) range =
         heresjohnny m c t range
 
 (*[limp] offers some real limp AI that will half-heartedly attack you if you
- * stand directly next to an enemy but won't chase*)
+ * stand directly in range of an enemy but won't chase*)
 let rec limp m clist plist =
   match clist with
   |[] -> ()

@@ -457,13 +457,8 @@ let do' s =
             end
             |Tile -> begin
               match s.current_menu.options.(s.menu_cursor) with
-<<<<<<< HEAD
               |" "   -> s 
               |"End" -> reset_ch st.player; step s 
-=======
-              |" "   -> s
-              |"End" -> s (*TODO: insert AI function here*)
->>>>>>> 90dc43fe3e9b78a20cc5bd0ae6ca20d150fcc828
               |_     -> s
             end
             |Confirm->   let _ = attacking:=true in

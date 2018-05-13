@@ -686,7 +686,8 @@ let update_move (m : map) (c : character) init loc =
        tile_type = new_tile.tile_type;
        c = Some c}
 
-(*[search]*)
+(*[search] finds the nearest enemy, and the moves and attacks for the enemy unit
+ * depending on the distance and tendencies of unit of that difficulty level*)
 let search (m : map) (c : character) (lst : character list) (d : difficulty) pm (attk : int*int) =
   match d with
   |Insane ->
@@ -700,24 +701,37 @@ let search (m : map) (c : character) (lst : character list) (d : difficulty) pm 
       update_move m c c.location (fst go);
       if snd go then
         ignore (combat c h))
-  |_ ->
-    match lst with
+  |Hard ->
+    (match lst with
     |[] -> ()
     |h::t ->
       let init =
         match c.location with (x, y) ->
           path_helper h.location [] [] m.grid.(x).(y) m pm in
-      let go = move (search_helper m c t pm init) c.mov c.location attk in
-      update_move m c c.location (fst go);
-      if snd go then
-        ignore (combat c h)
+      let close = search_helper m c t pm init in
+      if fst (List.hd (List.rev close)) <= c.mov*2 then
+        let go = move (close) c.mov c.location attk in
+          update_move m c c.location (fst go);
+        if snd go then
+          ignore (combat c h))
+  |Normal ->
+    (match lst with
+     |[] -> ()
+     |h::t ->
+       let init =
+         match c.location with (x, y) ->
+           path_helper h.location [] [] m.grid.(x).(y) m pm in
+       let close = search_helper m c t pm init in
+       if fst (List.hd (List.rev close)) <= c.mov then
+         let go = move (close) c.mov c.location attk in
+         update_move m c c.location (fst go);
+         if snd go then
+           ignore (combat c h))
+  |Easy -> ()
 
-let rec aggro st clist plist acc = failwith "unimplemented"
-
-
-(*[foresight] AI can incredibly see 2 times its own movement range as well as
- * triggering upon any fellow enemy unit spotting a player unit*)
-let rec foresight (m : map) clist plist =
+(*[ai_helper] iterates through enemy units and moves and attacks for them
+ * through calls to the helper functions*)
+let rec ai_helper (m : map) clist plist diff =
   match clist with
   |[] -> ()
   |h::t ->
@@ -726,19 +740,14 @@ let rec foresight (m : map) clist plist =
        length = m.length;
        grid = (fill_map m.length m.width)} in
       if h.eqp >= 0 then
-        (search m h plist Hard new_pm ((extract h.inv.(h.eqp)).range);
-       foresight m t plist)
+        (search m h plist diff new_pm ((extract h.inv.(h.eqp)).range);
+       ai_helper m t plist diff)
       else
-        foresight m t plist
+       ai_helper m t plist diff
 
-
-(*[passive] directs enemies to only attack and chase within their movement area
- * however if enemies move within their movement area they will pursue*)
-let rec passive m clist plist acc = failwith "unimplemented"
-
-(*[heresjohnny] will directly attack a player character only if it is standing
+(*[attack_inrange] will directly attack a player character only if it is standing
  * directly adjacent or diagonal to an enemy*)
-let rec heresjohnny m (c : character) (lst : character list) =
+let rec attack_inrange m (c : character) (lst : character list) =
   match lst with
   |[] -> ()
   |h::t ->
@@ -749,13 +758,13 @@ let rec heresjohnny m (c : character) (lst : character list) =
        if List.exists (fun (q, r) -> q = x && r = b) ar = true then
          ignore (combat c h)
       else
-        heresjohnny m c t)
+        attack_inrange m c t)
       else
         ()
 
-(*[limp] offers some real limp AI that will half-heartedly attack you if you
+(*[simple] offers some real simple AI that will half-heartedly attack you if you
  * stand directly in range of an enemy but won't chase*)
-let rec limp m clist plist =
+let rec simple m clist plist =
   match clist with
   |[] -> ()
   |h::t ->
@@ -764,23 +773,19 @@ let rec limp m clist plist =
       let item = (h.inv.(ind)) in
       match item with
       |None ->
-        limp m t plist
+        simple m t plist
       |Some i ->
-        heresjohnny m h plist;
+        attack_inrange m h plist;
     else
-      limp m t plist
+      simple m t plist
 
 (*[move_enem] returns a list of characters that have all moved/attacked*)
 let move_enem (m : map) clist plist diff =
   match diff with
-  |Insane ->
-    aggro m clist plist []
-  |Hard ->
-    foresight m clist plist
-  |Normal ->
-    passive m clist plist []
   |Easy ->
-    limp m clist plist
+    simple m clist plist
+  |_ ->
+    ai_helper m clist plist diff
 
 (*[step] returns unit after all enemy characters have performed
  * their desired actions*)

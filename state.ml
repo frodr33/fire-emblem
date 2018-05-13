@@ -637,13 +637,13 @@ let rec search_helper (m : map) (c : character) lst rang pmap target =
 
 (*[move] iterates through the shortest path to a target enemy unit, and moves as
  * far on the path as permitted by its movement stats*)
-let rec move lst range last attk =
+let rec move lst range last (attk : int*int) =
   match lst with
   |[] -> (last, false)
   |h::t ->
     match h with
     |(a, b) ->
-      if List.length >= fst attk && List.length <= snd attk then
+      if List.length t >= (fst attk) && List.length t <= (snd attk) then
         (b, true)
       else
         if a <= range then
@@ -671,7 +671,7 @@ let update_move (m : map) (c : character) init loc =
        c = Some c}
 
 (*[search]*)
-let search (m : map) (c : character) (lst : character list) (b  : bool) pm attk =
+let search (m : map) (c : character) (lst : character list) (b  : bool) pm (attk : int*int) =
   if b then
     let range = c.mov * 2 in
     match lst with

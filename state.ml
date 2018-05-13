@@ -1,6 +1,7 @@
 open Types
 open Interactions
 open Characters
+(*open Ai*)
 
 let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
 let tile_menu = {kind=Tile;size = 2;options = [|" ";"End"|]}
@@ -39,7 +40,7 @@ let check_enemy_loc st =
 
 (* ml is list of tiles under min range*)
 let rec attack_range_helper mi ma i co ml fl =
-  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
+  if fst co >= 0 && snd co >= 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
   (if i < mi then fl
                    |> attack_range_helper mi ma (i + 1) (fst co - 1, snd co) (co::ml)
                    |> attack_range_helper mi ma (i + 1) (fst co, snd co - 1) (co::ml)
@@ -54,7 +55,7 @@ let rec attack_range_helper mi ma i co ml fl =
   else fl
 
 let rec attack_range_mod mi ma i co movl ml fl =
-  if fst co > 0 && snd co > 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
+  if fst co >= 0 && snd co >= 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
   (if i < mi || List.mem co movl then fl
                    |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl (co::ml)
                    |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl (co::ml)
@@ -326,10 +327,10 @@ let move_char_helper st =
     let new_pos = st.active_tile.coordinate in
     let old_tile = st.act_map.grid.(fst old_pos).(snd old_pos) in
     let new_tile = st.act_map.grid.(fst new_pos).(snd new_pos) in
+    let _ = x.location<-new_pos;x.stage<-MoveDone; in
     let _ = st.act_map.grid.(fst old_pos).(snd old_pos)<-{old_tile with c=None};
       st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
     in
-    let _ = x.movement<-dijkstra's x st.act_map in
     {st with menu_active=true;current_menu=unit_menu;active_tile=st.act_map.grid.(fst new_pos).(snd new_pos)}
   |None -> st
 
@@ -364,14 +365,19 @@ let chest_checker s =
 
 let rec replace_helper c lst =
   match lst with
-  |[]   -> [c]
-  |h::t -> if h.name = c.name then c::t else h::(replace_helper c t)
+  |[]   -> if fst c.health = 0 then [] else [c]
+  |h::t -> if h.name = c.name && (fst c.health > 0) then c::t else h::(replace_helper c t)
 
 let replace c st =
   match c.allegiance with
   |Player -> {st with player = replace_helper c st.player}
   |Enemy  -> {st with enemies = replace_helper c st.enemies}
   |Allied -> {st with allies = replace_helper c st.allies}
+
+let rec reset_ch plst = 
+  match plst with
+  |[]   -> ()
+  |h::t -> h.stage <- Ready
 
 let do' s =
   let act = translate_key s in
@@ -451,12 +457,18 @@ let do' s =
             end
             |Tile -> begin
               match s.current_menu.options.(s.menu_cursor) with
-              |" "   -> s
-              |"End" -> s (*TODO: insert AI function here*)
+              |" "   -> s 
+              |"End" -> (*reset_ch s.player; step*) s 
               |_     -> s
             end
-            |Confirm->   let _ = attacking:=true in
-              let ch = extract s.active_unit in ch.stage<-Done;{s with active_unit = None}
+            |Confirm->   let _ = attacking := true in
+            let ch = extract s.active_unit in ch.stage<-Done;
+            let e  = extract s.active_tile.c in
+            let damage = combat ch e in
+            {s with active_unit = None;
+                    menu_active = false;
+                    menu_cursor = 0}
+            |> replace (fst damage) |> replace (snd damage)
             |_ -> s
         end
       |None -> s
@@ -466,14 +478,7 @@ let do' s =
       |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
       |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone;{s with current_menu = unit_menu;menu_cursor=0;}
       |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
-      |Confirm ->
-        let ch = extract s.active_unit in ch.stage<-Done;
-        let e  = extract s.active_tile.c in
-        let damage = combat ch e in
-        {s with active_unit = None;
-                menu_active=false;
-                menu_cursor=0}
-        |> replace (fst damage) |> replace (snd damage)
+      |Confirm -> s 
       |_ -> s
     end
   |BackTrade -> let c = extract s.active_unit in

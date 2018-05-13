@@ -60,6 +60,7 @@ let empty_character = {
   ai = BossStay;
   location = 0, 0;
   movement = [];
+  attackable = [];
   direction = North
 }
 

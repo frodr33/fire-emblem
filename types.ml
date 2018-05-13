@@ -56,7 +56,7 @@ type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
 let extract (Some c) = c
 let seed = 10
 
-let init_rng = Random.init 10;
+let init_rng = Random.init 10
 
 let get_rng () = Random.int 100 
 
@@ -97,6 +97,7 @@ type character = {
   mutable ai : ai;
   mutable location: int*int;
   mutable movement: (int*int) list;
+  mutable attackable : (int * int) list;
   mutable direction: direction;
 }
 (** Represents one tile on a map*)

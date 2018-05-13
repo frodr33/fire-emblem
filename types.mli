@@ -116,6 +116,7 @@ type character = {
   mutable ai : ai;
   mutable location: int*int;
   mutable movement: (int*int) list;
+  mutable attackable : (int * int) list;
   mutable direction: direction;
 }
 type tile = {coordinate : int*int;

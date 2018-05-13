@@ -98,11 +98,10 @@ let draw_map_9x9 (context: Html.canvasRenderingContext2D Js.t) state =
 let clock () =
   clock := if !clock < 25 then !clock + 1 else 1;
   let x1 = !clock mod 25 in (* bounds *)
-  let x2 = !clock mod 30 in (* middle for standing *)
-  match x1,x2 with
-  | 0,_ -> sync := not(!sync)
-  | _,0 -> midattack := not(!midattack)
-  | _,_ -> ()
+(*   let x2 = !clock mod 30 in (* middle for standing *) *)
+  match x1 with
+  | 0 -> sync := not(!sync)
+  | _ -> ()
 
 (* [draw_cursor context tile] draws the cursor (big) on the
  * canvas given the integer location defined in tile *)
@@ -139,6 +138,7 @@ let draw_cursor (context: Html.canvasRenderingContext2D Js.t) tile =
 let testf context =
   let img = Html.createImg document in
   img##src <- js "Sprites/databackground.png";
+  context##asdf
   context##drawImage (img, 0.,0.)
 
 (* [draw_sprite] draws the sprite located at (sx,sy) with
@@ -701,6 +701,22 @@ let draw_dijsktra_squares context st =
           draw_dijsktra_helper context chr.movement
       else ()
 
+(*********************************************************)
+(****************** Draw is player done ******************)
+(*********************************************************)
+
+let draw_is_player_done context active_unit = 
+  match active_unit with
+  | Some chr ->
+      if chr.stage = Done then
+          let (x,y) = chr.location in
+          let img = Html.createImg document in
+          img##src <- js "Sprites/Gray.png";
+          context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.)
+      else ()
+  | _ -> ()
+
+
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
@@ -713,6 +729,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_map context state;
   draw_dijsktra_squares context state;
   context##globalAlpha <- 1.;
+  draw_is_player_done context state.active_unit;
   draw_player context state.player;
   draw_cursor context state.active_tile;
   menu_manager context state;

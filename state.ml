@@ -38,38 +38,47 @@ let check_enemy_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
 *)
 
-(* ml is list of tiles under min range*)
-let rec attack_range_helper mi ma i co ml fl =
-  if fst co >= 0 && snd co >= 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
-  (if i < mi then fl
-                   |> attack_range_helper mi ma (i + 1) (fst co - 1, snd co) (co::ml)
-                   |> attack_range_helper mi ma (i + 1) (fst co, snd co - 1) (co::ml)
-                   |> attack_range_helper mi ma (i + 1) (fst co + 1, snd co) (co::ml)
-                   |> attack_range_helper mi ma (i + 1) (fst co, snd co + 1) (co::ml)
-   else co::fl
-        |> attack_range_helper mi ma (i + 1) (fst co - 1, snd co) ml
-        |> attack_range_helper mi ma (i + 1) (fst co, snd co - 1) ml
-        |> attack_range_helper mi ma (i + 1) (fst co + 1, snd co) ml
-        |> attack_range_helper mi ma (i + 1) (fst co, snd co + 1) ml
-  )
-  else fl
+let rec check_exist co lst =
+  match lst with
+  |[]   -> false
+  |h::t -> if fst h = co then true else check_exist co t
 
-let rec attack_range_mod mi ma i co movl ml fl =
-  if fst co >= 0 && snd co >= 0 && i <= ma && not (List.mem co ml) && not (List.mem co fl) then
-  (if i < mi || List.mem co movl then fl
-                   |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl (co::ml)
-                   |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl (co::ml)
-                   |> attack_range_mod mi ma (i + 1) (fst co + 1, snd co) movl (co::ml)
-                   |> attack_range_mod mi ma (i + 1) (fst co, snd co + 1) movl (co::ml)
-   else co::fl
-        |> attack_range_mod mi ma (i + 1) (fst co - 1, snd co) movl ml
-        |> attack_range_mod mi ma (i + 1) (fst co, snd co - 1) movl ml
-        |> attack_range_mod mi ma (i + 1) (fst co + 1, snd co) movl ml
-        |> attack_range_mod mi ma (i + 1) (fst co, snd co + 1) movl ml
-  )
-  else fl
+let a_range_add ma i co fl ml sl =
+
+  let addon = if i > ma then [] else(
+  let nleft = ((fst co) - 1, snd co) in
+  let cleft = if (fst co) - 1 < 0 ||
+              List.mem nleft ml ||
+              List.mem nleft sl ||
+              check_exist nleft fl then [] else (nleft, i)::[] in
+  let nright = ((fst co) + 1, snd co) in
+  let cright = if (fst co) + 1 > 14 ||
+              List.mem nright ml ||
+              List.mem nright sl ||
+              check_exist nright fl then cleft else (nright, i)::cleft in
+  let nup = (fst co, snd co - 1) in
+  let cup = if (snd co) - 1 < 0 ||
+              List.mem nup ml ||
+              List.mem nup sl ||
+              check_exist nup fl then cright else (nup, i)::cright in
+  let ndown = (fst co, snd co + 1) in
+  let cdown = if (snd co) + 1 > 14 ||
+              List.mem ndown ml ||
+              List.mem ndown sl ||
+              check_exist ndown fl then cup else (ndown, i)::cup in
+  cdown) in
+  fl @ addon
 
 
+
+let rec attack_range_helper mi ma i co fl ml sl =
+
+  let nml = (if i < mi  then co::ml else ml) in
+  let nsl = (if i >= mi then co::sl else sl) in
+  let nfl = a_range_add ma (i + 1) co fl ml sl in
+  match nfl with
+  |[]   -> nsl
+  |(h, x)::t -> attack_range_helper mi ma x h t nml nsl
 
 let check_ally_loc st =
   List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
@@ -286,26 +295,26 @@ let rec dijkstra's_helper f s tile m map =
 let dijkstra's c map =
   dijkstra's_helper [] [] (ctile c map) c.mov map
 
-let rec add_no_dup lst1 lst2 =
+let rec add_no_dup lst1 lst2 movl =
   match lst1 with
   |[]   -> lst2
-  |h::t -> if List.mem h lst2 then add_no_dup t lst2 else add_no_dup t (h::lst2)
+  |h::t -> if List.mem h lst2 || List.mem h movl then add_no_dup t lst2 movl else add_no_dup t (h::lst2) movl
 
 let rec red_tiles_helper mlst alst c =
   let w = extract c.inv.(c.eqp) in
   match mlst with
   |[]   -> alst
-  |h::t -> let range = (attack_range_mod (fst w.range) (snd w.range) 0 h c.movement [] []) in
-    let new_alst = add_no_dup range alst in
+  |h::t -> let range = (attack_range_helper (fst w.range) (snd w.range) 0 h [] [] []) in
+    let new_alst = add_no_dup range alst c.movement in
     red_tiles_helper t new_alst c
 
 let red_tiles c : (int * int) list =
-  if c.eqp = -1 then []
-  else red_tiles_helper c.movement [] c
+if c.eqp = -1 then []
+else red_tiles_helper c.movement [] c
 
 let attack_range c =
-  let w = extract c.inv.(c.eqp) in
-  attack_range_helper (fst w.range) (snd w.range) 0 c.location [] []
+let w = extract c.inv.(c.eqp) in
+attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] []
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)

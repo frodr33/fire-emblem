@@ -8,7 +8,7 @@ type wtype = Sword | Tome | Staff | Potion | Key
 
 (** Represents the names of possible AI types*)
 type ai = BossStay | BossHunt
-type menutype = Inventory|Tile|Unit|Item|AttackInventory|Confirm
+type menutype = Inventory|Tile|Unit|Item|AttackInventory|Confirm|Trader1|Trader2
 type menu =  {kind:menutype;size:int;options:string array}
 
 type allegiance = Player | Enemy | Allied

@@ -388,6 +388,13 @@ let rec reset_ch plst =
   match plst with
   |[]   -> ()
   |h::t -> h.stage <- Ready
+let check_inventory c =
+  match c with
+  |Some ch ->
+  Array.fold_left (fun x y -> match y with
+      |Some i -> true
+      |None -> false||x) false ch.inv
+  |None -> false
 
 let do' s =
   let act = translate_key s in
@@ -404,6 +411,13 @@ let do' s =
     {s with active_unit = s.active_tile.c}
   |SelectMoveTile ->move_helper s
   |SelectAttackTile -> {s with current_menu=confirm_menu;menu_cursor=0;menu_active=true}
+  |SelectTradeTile -> let t1 =s.active_unit in
+    let t2 = s.active_tile.c in
+    if (distance_tile (extract t1) s.active_tile)>1 then s else 
+    if (check_inventory t1)||(check_inventory t2) then s else s
+
+
+
   |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
   |SelectMOption ->  begin
       match s.active_unit with
@@ -412,6 +426,7 @@ let do' s =
             |Unit -> begin
                 match s.current_menu.options.(s.menu_cursor) with
                 |"Attack" -> if ch.eqp = -1 then s else let _ = ch.stage<-AttackSelect in {s with current_menu=create_attack_menu ch;menu_cursor=0}
+                |"Trade"-> let _ = ch.stage<-TradeSelect in s
                 |"Item" -> {s with current_menu = create_inventory_menu ch;
                                   menu_cursor = 0}
                 |"Wait" -> ch.stage <- Done;
@@ -471,7 +486,7 @@ let do' s =
               |"End" -> (*reset_ch s.player; step*) s
               |_     -> s
             end
-            |Confirm->   let _ = attacking := true in
+            |Confirm->  begin  let _ = attacking := true in
             let ch = extract s.active_unit in ch.stage<-Done;
             let e  = extract s.active_tile.c in
             let damage = combat ch e in
@@ -479,6 +494,7 @@ let do' s =
                     menu_active = false;
                     menu_cursor = 0}
             |> replace (fst damage) |> replace (snd damage)
+              end
             |_ -> s
         end
       |None -> s
@@ -488,7 +504,7 @@ let do' s =
       |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
       |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone;{s with current_menu = unit_menu;menu_cursor=0;}
       |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
-      |Confirm -> s
+      |Confirm -> {s with menu_active=false;menu_cursor=0}
       |_ -> s
     end
   |BackTrade -> let c = extract s.active_unit in

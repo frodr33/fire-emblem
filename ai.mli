@@ -6,3 +6,5 @@ open State
 
 (* NOTE: enemy is not a type *)
 (* val aicommand: state -> enemy -> input *)
+
+val step : state -> state

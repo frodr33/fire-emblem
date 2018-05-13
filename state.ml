@@ -1,6 +1,7 @@
 open Types
 open Interactions
 open Characters
+open Ai
 
 let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
 let tile_menu = {kind=Tile;size = 2;options = [|" ";"End"|]}
@@ -325,10 +326,10 @@ let move_char_helper st =
     let new_pos = st.active_tile.coordinate in
     let old_tile = st.act_map.grid.(fst old_pos).(snd old_pos) in
     let new_tile = st.act_map.grid.(fst new_pos).(snd new_pos) in
+    let _ = x.location<-new_pos;x.stage<-MoveDone; in
     let _ = st.act_map.grid.(fst old_pos).(snd old_pos)<-{old_tile with c=None};
       st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
     in
-    let _ = x.movement<-dijkstra's x st.act_map in
     {st with menu_active=true;current_menu=unit_menu;active_tile=st.act_map.grid.(fst new_pos).(snd new_pos)}
   |None -> st
 
@@ -371,6 +372,11 @@ let replace c st =
   |Player -> {st with player = replace_helper c st.player}
   |Enemy  -> {st with enemies = replace_helper c st.enemies}
   |Allied -> {st with allies = replace_helper c st.allies}
+
+let rec reset_ch plst = 
+  match plst with
+  |[]   -> ()
+  |h::t -> h.status <- Ready
 
 let do' s =
   let act = translate_key s in
@@ -451,7 +457,7 @@ let do' s =
             |Tile -> begin 
               match s.current_menu.options.(s.menu_cursor) with
               |" "   -> s 
-              |"End" -> s (*TODO: insert AI function here*) 
+              |"End" -> reset_ch st.player; step s 
               |_     -> s
             end
             |Confirm->   let _ = attacking:=true in

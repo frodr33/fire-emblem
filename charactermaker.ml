@@ -36,7 +36,7 @@ let nsword =
     penalty = [];
   }
 
-let nsword =
+let ntome =
   {
     iname = "Plain Tome";
     wtype = Tome;
@@ -136,24 +136,24 @@ let make_archer loc =
      supports = [];
      wlevels = [(Sword,'a',0); (Bow,'a',0)];
      ai = Norm;
-     behave = Normal;
-     location= (8,5);
+     behave = Hard;
+     location= loc;
      movement= [];
      attackable = [];
      direction= South;
    } in Characters.update_character arch
 
 let make_swordsman loc =
- let arch =
+ let swd =
    {
-    name = "Archer";
+    name = "Melee";
     stage= Ready;
     class' = Paladin;
     growths = [];
     caps = [];
     level = 0;
     exp = 0;
-    health = (20,20);
+    health = (25,25);
     allegiance = Enemy;
     str = 8;
     mag = 0;
@@ -175,9 +175,165 @@ let make_swordsman loc =
     supports = [];
     wlevels = [(Sword,'a',0); (Bow,'a',0)];
     ai = Norm;
-    behave = Normal;
-    location= (8,5);
+    behave = Hard;
+    location= loc;
     movement= [];
     attackable = [];
     direction= South;
-    } in Characters.update_character arch
+    } in Characters.update_character swd
+
+let make_mage loc =
+  let mg =
+    {
+     name = "Mage";
+     stage= Ready;
+     class' = Paladin;
+     growths = [];
+     caps = [];
+     level = 0;
+     exp = 0;
+     health = (15,15);
+     allegiance = Enemy;
+     str = 6;
+     mag = 5;
+     def = 2;
+     spd = 3;
+     res = 6;
+     skl = 4;
+     lck = 1;
+     mov = 2;
+     con = 0;
+     aid = 0;
+     hit = 0;
+     atk = 0;
+     crit = 0;
+     avoid = 0;
+     inv = [|Some ntome;None;None;None;None|];
+     eqp = 0;
+     ability = [];
+     supports = [];
+     wlevels = [(Tome,'a',0); (Bow,'a',0)];
+     ai = Norm;
+     behave = Normal;
+     location= loc;
+     movement= [];
+     attackable = [];
+     direction= South;
+   } in Characters.update_character mg
+
+   let make_rangedboss loc =
+     let arch =
+       {
+        name = "Archer Boss";
+        stage= Ready;
+        class' = Paladin;
+        growths = [];
+        caps = [];
+        level = 0;
+        exp = 0;
+        health = (60,60);
+        allegiance = Enemy;
+        str = 10;
+        mag = 5;
+        def = 7;
+        spd = 3;
+        res = 7;
+        skl = 4;
+        lck = 4;
+        mov = 1;
+        con = 0;
+        aid = 0;
+        hit = 0;
+        atk = 0;
+        crit = 0;
+        avoid = 0;
+        inv = [|Some sbow;None;None;None;None|];
+        eqp = 0;
+        ability = [];
+        supports = [];
+        wlevels = [(Sword,'a',0); (Bow,'b',0)];
+        ai = BossStay;
+        behave = Easy;
+        location= loc;
+        movement= [];
+        attackable = [];
+        direction= South;
+      } in Characters.update_character arch
+
+   let make_meleeboss loc =
+    let swd =
+      {
+       name = "Melee Boss";
+       stage= Ready;
+       class' = Paladin;
+       growths = [];
+       caps = [];
+       level = 0;
+       exp = 0;
+       health = (90,90);
+       allegiance = Enemy;
+       str = 10;
+       mag = 0;
+       def = 12;
+       spd = 3;
+       res = 12;
+       skl = 6;
+       lck = 3;
+       mov = 1;
+       con = 0;
+       aid = 0;
+       hit = 0;
+       atk = 0;
+       crit = 0;
+       avoid = 0;
+       inv = [|Some ssword;None;None;None;None|];
+       eqp = 0;
+       ability = [];
+       supports = [];
+       wlevels = [(Sword,'b',0); (Bow,'a',0)];
+       ai = BossHunt;
+       behave = Normal;
+       location= loc;
+       movement= [];
+       attackable = [];
+       direction= South;
+       } in Characters.update_character swd
+
+   let make_mageboss loc =
+     let mg =
+       {
+        name = "Mage Boss";
+        stage= Ready;
+        class' = Paladin;
+        growths = [];
+        caps = [];
+        level = 0;
+        exp = 0;
+        health = (40,40);
+        allegiance = Enemy;
+        str = 3;
+        mag = 10;
+        def = 1;
+        spd = 6;
+        res = 8;
+        skl = 6;
+        lck = 4;
+        mov = 2;
+        con = 0;
+        aid = 0;
+        hit = 0;
+        atk = 0;
+        crit = 0;
+        avoid = 0;
+        inv = [|Some stome;None;None;None;None|];
+        eqp = 0;
+        ability = [];
+        supports = [];
+        wlevels = [(Tome,'b',0); (Bow,'a',0)];
+        ai = BossHunt;
+        behave = Normal;
+        location= loc;
+        movement= [];
+        attackable = [];
+        direction= South;
+      } in Characters.update_character mg

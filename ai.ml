@@ -23,7 +23,6 @@ type path_map =
    |h::t -> if fst h = co then true else check_exist co t
 
  let a_range_add ma i co fl ml sl =
-
    let addon = if i > ma then [] else(
    let nleft = ((fst co) - 1, snd co) in
    let cleft = if (fst co) - 1 < 0 ||
@@ -47,8 +46,6 @@ type path_map =
                check_exist ndown fl then cup else (ndown, i)::cup in
    cdown) in
    fl @ addon
-
-
 
  let rec attack_range_helper mi ma i co fl ml sl =
 
@@ -230,7 +227,7 @@ let rec attack_inrange m (c : character) (lst : character list) =
     |(x,y), (a, b)->
       if c.eqp > -1 then
         (let ar = attack_range c in
-         if List.exists (fun (q, r) -> q = x && r = b) ar = true then
+         if List.exists (fun (q, r) -> q = x && r = y) ar = true then
            ignore (combat c h)
          else
            attack_inrange m c t)

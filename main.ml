@@ -3,6 +3,7 @@ open State
 open Types
 open Room
 open Command
+open Charactermaker
 
 module Html = Dom_html
 let js = Js.string (* partial function, takes in string *)
@@ -45,7 +46,7 @@ let temp_character =
     exp = 0;
     health = (3,10);
     allegiance = Player;
-    str = 3;
+    str = 25;
     mag = 0;
     def = 0;
     spd = 0;
@@ -56,7 +57,7 @@ let temp_character =
     con = 0;
     aid = 0;
     hit = 0;
-    atk = 3;
+    atk = 25;
     crit = 0;
     avoid = 15;
     inv = [|Some temp_item;None;None;None;None|];
@@ -212,18 +213,24 @@ let rec set_init_ch_movement playerlst st =
 (* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
+let temp_enemy = (make_rangedboss (8,5))
+
 let init_state =
   let x =
   {
     player = [temp_character];
     items = [];
-    enemies = [enemy_1];
+    enemies = [temp_enemy];
     lose = false;
     won = false;
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};
     active_unit = None;
     active_item = -1;
+<<<<<<< HEAD
     act_map = add_init_characters [temp_character;enemy_1] Room.map2;
+=======
+    act_map = add_init_characters [temp_character;temp_enemy] Room.map1;
+>>>>>>> 8af7b0ff76d20b210d648b723f98fccfe019c45c
     menus = [];
     current_menu = unit_menu;
     menu_active = false;

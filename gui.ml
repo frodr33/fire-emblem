@@ -97,8 +97,8 @@ let draw_map_9x9 (context: Html.canvasRenderingContext2D Js.t) state =
  * Every 30 "time" units, sync is negated which represents the
  * static movement of the cursor and players *)
 let clock () =
-  clock := if !clock < 25 then !clock + 1 else 1;
-  let x1 = !clock mod 25 in (* bounds *)
+  clock := if !clock < 15 then !clock + 1 else 1;
+  let x1 = !clock mod 15 in (* bounds *)
 (*   let x2 = !clock mod 30 in (* middle for standing *) *)
   match x1 with
   | 0 -> sync := not(!sync)

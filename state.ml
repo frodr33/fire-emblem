@@ -115,7 +115,7 @@ let translate_key st =
               match st.active_tile.c with
               |Some x ->begin
                   match x.stage with
-                  |Ready ->SelectPlayer
+                  |Ready|Done ->SelectPlayer
                   |_ -> Invalid
                 end
               |None -> OpenMenu
@@ -440,7 +440,8 @@ let do' s =
   |CloseMenu -> {s with menu_active = false;menu_cursor = 0}
   |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
   |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
-  |SelectPlayer -> let ch = extract s.active_tile.c in
+  |SelectPlayer -> if (extract s.active_tile.c).stage=Done then {s with last_character=s.active_tile.c} else
+      let ch = extract s.active_tile.c in
     ch.stage<-MoveSelect;
     ch.movement <- dijkstra's ch s.act_map;
     ch.attackable <- red_tiles ch;

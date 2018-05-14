@@ -230,7 +230,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end
-      | Done when character.is_attacking = true ->begin
+            | Done when character.is_attacking = true ->begin
         match ((!sync)) with
         | true->
             let sprite_coordinate = (418., 442.) in
@@ -260,7 +260,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let (x,y) = character.location in
             let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
-      end
+              end
       |Done -> ()
     end
   | North -> begin
@@ -745,6 +745,7 @@ let draw_dijsktra context st =
 
 (* [draw_is_player_done context active_unit] draws a gray square
  * under a player that has just finished its turn  *)
+               (*
 let draw_is_player_done context active_unit =
   match active_unit with
   | Some chr ->
@@ -755,6 +756,16 @@ let draw_is_player_done context active_unit =
         context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.)
       else ()
   | _ -> ()
+*)
+let rec draw_is_player_done context lst =
+  match lst with
+  |[] -> ()
+  |chr::t ->   if chr.stage = Done then
+      let (x,y) = chr.location in
+      let img = Html.createImg document in
+      img##src <- js "Sprites/Gray.png";
+      context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.);draw_is_player_done context t
+    else draw_is_player_done context t
 
 (*********************************************************)
 (****************** Draw Attack Squares  *****************)
@@ -1056,7 +1067,8 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_dijsktra context state;
   draw_attack_squares context state.active_unit;
   context##globalAlpha <- 1.;
-  draw_is_player_done context state.active_unit;
+  (*  draw_is_player_done context state.active_unit;*)
+  draw_is_player_done context state.player;
   draw_player context state.player;
   draw_enemies context state;
   draw_cursor context state.active_tile;

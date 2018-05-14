@@ -5,7 +5,7 @@ open Interactions
 let js = Js.string (* partial function, takes in string *)
 
 let canvas_width = 546. (* 390 *)
-let canvas_height = 390. (* 260 *)
+let canvas_height = 468. (* 260 *)
 
 module Html = Dom_html
 let js = Js.string
@@ -867,8 +867,6 @@ let draw_player_stats context player enemy =
   context##strokeText (js ("Dam: " ^ (string_of_int enemy_damage)), 340., 360.)
 
 
-
-
 let draw_attack_menu context state = 
   match state.active_unit with
   | Some chr -> begin
@@ -888,11 +886,25 @@ let draw_attack_menu context state =
   | None -> ()
 
 
-
-
 (*********************************************************)
 (******************** Draw Inventory *********************)
 (*********************************************************)
+
+let draw_inv_back context = 
+  let x = 0. in
+  let y = 390. in
+  let rec ys x y =
+    if x = 546. then ()
+    else
+      let img = Html.createImg document in
+      img##src <- js "Sprites/sidebarback.png";
+      context##drawImage (img, x,y);
+      if y = 468. then ys (x+.26.) 390. else ys x (y+.26.) in
+  ys x y 
+
+let draw_inventory context state = 
+  draw_inv_back context
+
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
@@ -913,4 +925,5 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_healthbar context state.player;
   draw_sidebar context state;
   draw_attack_menu context state;
+  draw_inventory context state;
   clock ();

@@ -43,7 +43,7 @@ type tile_type =
   | Grass | Tree | Crack | Bridge | Bush | Darkbush | Water1 | Water2 | Water3
   | Water4 | Water5 | Water6 | Water7 | Water8 | Water9 | Wall1 | Wall2
   | Wall3 | Wall4 | Wall5 | Wall6 | Water10 | Castle1 | Castle2 | Castle3
-  | Castle4 | Castle5 | Castle6 | Castle7 | Castle8 | Castle9 | House1 
+  | Castle4 | Castle5 | Castle6 | Castle7 | Castle8 | Castle9 | House1
   | House2 | House3 | House4 | House5 | House6 | Water11 | Water12 | Chesttile
 
 
@@ -111,7 +111,8 @@ type tile = {coordinate : int*int;
              ground : terrain;
              tile_type: tile_type;
             c:character option}
-type map = {width: int;
+type map = {number:int;
+          width: int;
             length: int;
             grid: tile array array}
 

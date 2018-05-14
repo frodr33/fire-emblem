@@ -77,7 +77,6 @@ let enemy_1 =
     name = "Archer";
     stage= Ready;
     class' = Paladin;
-    behave = Normal;
     growths = [];
     caps = [];
     level = 0;

@@ -218,14 +218,14 @@ let init_state =
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};
     active_unit = None;
     active_item = -1;
-    act_map = add_init_characters [temp_character] Room.map1;
+    act_map = add_init_characters [temp_character;enemy_1;enemy_2;enemy_3] Room.map1;
     menus = [];
     current_menu = unit_menu;
     menu_active = false;
     menu_cursor = 0;
     funds = 0;
     last_character = Some temp_character;
-  } in set_init_ch_movement x.player x
+  } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies
 
 let state = ref init_state
 (* [main ()] is begins game execution by first building and designing

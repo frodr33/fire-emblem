@@ -413,6 +413,25 @@ let set_direction c t =
   |x,y when x>0 && y<0 -> c.direction<-South
   |_ -> ()
 
+let rec delete_from_list lst c acc =
+  match lst with
+  |[] -> List.rev acc
+  |h::t -> if h.name = c.name then t else delete_from_list t c (h::acc)
+let remove_if_dead c s =
+  if (fst c.health)>0 then s else
+    match c.allegiance with
+    |Player -> let newlst = delete_from_list s.player c [] in
+      let x = fst c.location in let y = snd c.location in
+      let oldt = s.act_map.grid.(x).(y) in
+      s.act_map.grid.(x).(y)<-{oldt with c=None};
+      {s with player =newlst;}
+    |Enemy -> let newlst = delete_from_list s.enemies c [] in
+      let x = fst c.location in let y = snd c.location in
+      let oldt = s.act_map.grid.(x).(y) in
+      s.act_map.grid.(x).(y)<-{oldt with c=None};
+      {s with enemies =newlst;}
+
+
 let do' s =
   let act = translate_key s in
     let _ = input:=Nothing in
@@ -515,7 +534,7 @@ let do' s =
             combat ch e;
             {s with active_unit = None;
                     menu_active = false;
-                    menu_cursor = 0}
+                    menu_cursor = 0}|>remove_if_dead ch|>remove_if_dead e(*Need one more check to determine if won or lost*)
               end
             |_ -> s
         end

@@ -325,7 +325,7 @@ let move_char_helper st =
     let _ = st.act_map.grid.(fst old_pos).(snd old_pos)<-{old_tile with c=None};
       st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
     in
-    {st with menu_active=true;current_menu=unit_menu;active_tile=st.act_map.grid.(fst new_pos).(snd new_pos)}
+    {st with menu_active=true;current_menu=unit_menu;menu_cursor=0;active_tile=st.act_map.grid.(fst new_pos).(snd new_pos)}
   |None -> st
 
 let move_helper st =
@@ -495,12 +495,7 @@ let do' s =
               end
               |_ -> s
             end
-            |Tile -> begin
-              match s.current_menu.options.(s.menu_cursor) with
-              |" "   -> s
-              |"End" -> reset_ch s.player; Ai.step s.enemies s.player s.act_map;s
-              |_     -> s
-            end
+
             |Confirm->  begin  let _ = attacking := true in
             let ch = extract s.active_unit in ch.stage<-Done;
             let e  = extract s.active_tile.c in
@@ -511,7 +506,15 @@ let do' s =
               end
             |_ -> s
         end
-      |None -> s
+      |None ->
+      match s.current_menu.kind with
+      |Tile -> begin
+          match s.current_menu.options.(s.menu_cursor) with
+          |" "   -> s
+          |"End" -> reset_ch s.player; Ai.step s.enemies s.player s.act_map;{s with menu_active=false}
+          |_     ->s
+        end
+      |_ -> s
     end
 
   |BackMenu -> begin match s.current_menu.kind with

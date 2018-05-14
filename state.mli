@@ -40,7 +40,6 @@ type state = {
   menu_cursor: int;
   funds : int;
   last_character : character option;
-  level : difficulty;
 }
 
 val attack_range : character -> (int * int) list

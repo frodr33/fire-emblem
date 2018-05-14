@@ -97,6 +97,7 @@ type character = {
   mutable supports : (string * char) list;
   mutable wlevels : (wtype * char * int) list;
   mutable ai : ai;
+  mutable behave : difficulty;
   mutable location: int*int;
   mutable movement: (int*int) list;
   mutable attackable : (int * int) list;

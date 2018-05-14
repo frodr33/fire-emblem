@@ -11,7 +11,7 @@ let document = Html.document
 
 let clock = ref 1
 let sync = ref true
-let midattack = ref false
+let transition = ref 1000
 
 (*********************************************************)
 (***************** Map Drawing Functions *****************)
@@ -92,6 +92,7 @@ let draw_map (context: Html.canvasRenderingContext2D Js.t) state =
  * static movement of the cursor and players *)
 let clock () =
   clock := if !clock < 15 then !clock + 1 else 1;
+  transition := if !transition >= 0 then !transition - 2 else -1;
   let x1 = !clock mod 15 in (* bounds *)
   match x1 with
   | 0 -> sync := not(!sync)
@@ -1103,16 +1104,35 @@ let draw_lose_screen context =
 (****************** Draw State Functions *****************)
 (*********************************************************)
 
+let draw_transition_screen context state = 
+  if !transition < 0 then state.round <- false else
+    let timer = !transition / 100 in
+    context##fillStyle <- js "black";
+    context##fillRect (0.,0.,canvas_width,canvas_height);
+    context##strokeStyle <- js "white";
+    context##font <- js "50px Times New Roman";
+    context##strokeText (js "You Beat Round 1!", 90., 180.); 
+    context##strokeText (js "Round one is starting in:", 20., 270.);
+    context##strokeText (js (string_of_int timer), 260., 340.)
+
+
+(*********************************************************)
+(****************** Draw State Functions *****************)
+(*********************************************************)
+
 (* [draw_state] draws the the current [state] on the [context].
  * Also has a side affect of updating the global variable clock *)
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
-  match state.won, state.lose with
-  | true, false->  
+  match state.round, state.won, state.lose with
+  | true, _, _ -> 
+    draw_transition_screen context state;
+    clock ();
+  | false, true, false->  
     draw_win_screen context;
-  | false, true ->
+  | false, false, true ->
     draw_lose_screen context;
-  | _, _ ->
+  | _, _, _->
     draw_map context state;
     draw_dijsktra context state;
     draw_attack_squares context state.active_unit;

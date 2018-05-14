@@ -226,11 +226,7 @@ let init_state =
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};
     active_unit = None;
     active_item = -1;
-<<<<<<< HEAD
     act_map = add_init_characters [temp_character;enemy_1] Room.map2;
-=======
-    act_map = add_init_characters [temp_character;temp_enemy] Room.map1;
->>>>>>> 8af7b0ff76d20b210d648b723f98fccfe019c45c
     menus = [];
     current_menu = unit_menu;
     menu_active = false;

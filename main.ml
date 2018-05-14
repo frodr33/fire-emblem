@@ -220,7 +220,7 @@ let init_state =
   {
     player = [temp_character];
     items = [];
-    enemies = [enemy_1];
+    enemies = [temp_enemy];
     lose = false;
     won = false;
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};

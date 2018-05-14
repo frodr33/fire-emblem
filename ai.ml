@@ -76,9 +76,21 @@ let check_valid d (m : map) loc =
   |South -> snd loc < m.length
   |West  -> fst loc > 0
 
+let check_adjacent (t : tile) (f : tile) (m : map) =
+  match t.coordinate, f.coordinate with
+  |(x,y), (a,b) ->
+    abs (b - y) = 1 && a = x ||
+    abs (a - x) = 1 && b = y
+
+let rec check_settled (s : tile list) (tl : tile) =
+  match s with
+  |[] -> false
+  |h::t ->
+    if h = tl then true else check_settled t tl
+
 (*[check_dir] ensures movement in a certain direction is valid and adds the
 *node to the frontier if it is viable or returns the same frontier if its not*)
-let rec check_dir (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
+let rec check_dir (d:direction) (t:tile) (map:map) (s: tile list) (f:(tile * int) list): ( tile * int) list =
  let mapg = map.grid in
  match t.coordinate with
  |(x, y) ->
@@ -95,10 +107,10 @@ let rec check_dir (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile *
      |Damaged_wall (x) -> f
      |Mountain -> f
      |Ocean -> f
-     |Peaks -> add_f2 next 3 f
-     |Forest -> add_f2 next 2 f
-     |Desert -> add_f2 next 2 f
-     |_ -> add_f2 next 1 f)
+     |Peaks -> if check_settled s next then f else add_f2 next 3 f
+     |Forest -> if check_settled s next then f else add_f2 next 2 f
+     |Desert -> if check_settled s next then f else add_f2 next 2 f
+     |_ -> if check_settled s next then f else add_f2 next 1 f)
    else f
 
 (*[check_surround] checks movement in all directions of a given coordinate
@@ -135,6 +147,26 @@ let rec path_finder coor pmap acc =
    |None -> acc
    |Some t -> path_finder t pmap ((pmap.grid.(x).(y).length, t)::acc)
 
+let rec update_frontier (f : ( tile * int) list) (tl : tile) (m : map) (pmap : path_map) =
+  match f with
+  |[] -> pmap
+  |h::t ->
+    match (fst h).coordinate with
+    |(x,y) ->
+      let cost =
+        match m.grid.(x).(y).ground with
+        |Peaks -> 3
+        |Forest -> 2
+        |Desert -> 2
+        |_ -> 1 in
+      let curr = pmap.grid.(x).(y).length in
+      if check_adjacent tl (fst h) m && curr + cost < pmap.grid.(x).(y).length then
+        let newt : path_tile = {length = (curr + cost); prev= Some tl.coordinate} in
+        let pmap2 = update_map pmap x y newt in
+        update_frontier t tl m pmap2
+      else
+        update_frontier t tl m pmap
+
 (*[path_helper] runs djikstra's algorithm on the given map to find the shortest
 * path from the enemy unit to the player unit it is targeting, and then calls
 *[path_finder] to output a complete path
@@ -143,39 +175,30 @@ let rec path_finder coor pmap acc =
 * t = current tile
 * m = moves left
 * map = map*)
-let rec path_helper dest f s tile (map : map) pmap =
+let rec path_helper (dest : int*int) (f: (tile*int) list) (s : tile list) tile (map : map) pmap =
  let new_f = check_surround s tile map f in
  match new_f with
  |[]   ->
    path_finder dest pmap []
  |h::t ->
-   match tile.coordinate with
-   |(x, y) ->
-     match (fst h).coordinate with
-     |(f, b) ->
-       let cost =
-         match map.grid.(f).(b).ground with
-         |Peaks -> 3
-         |Forest -> 2
-         |Desert -> 2
-         |_ -> 1 in
-       let curr = pmap.grid.(x).(y).length in
-       if curr + cost < pmap.grid.(f).(b).length then
-         let newt : path_tile = {length = (curr + cost); prev=Some (x,y)} in
-         let pmap2 = update_map pmap f b newt in
-         path_helper dest t s (fst h) map pmap2
-       else
-         path_helper dest t s (fst h) map pmap
+   match (fst h).coordinate with
+   |(x,y) ->
+     if (fst h).coordinate = dest then
+       path_finder dest pmap []
+     else
+       let pmap2 = update_frontier f tile map pmap in
+       path_helper dest t ((fst h)::s) (fst h) map pmap2
 
 (*[search_helper] picks the closest player unit to attack and outputs the
 * coordinates of the unit*)
-let rec search_helper (m : map) (c : character) lst pmap target =
+let rec search_helper (m : map) (c : character) (lst : character list) pmap target =
  match lst with
  |[] -> target
  |h::t ->
    match c.location with (x, y) ->
      let check = path_helper h.location [] [] m.grid.(x).(y) m pmap in
-     if fst (List.hd (List.rev check)) < fst (List.hd (List.rev target)) then
+     if fst (List.hd (List.rev check)) < fst (List.hd (List.rev target)) &&
+        (fst h.health) > 0 then
        let pm = {width = pmap.width; length = pmap.width; grid = new_map pmap} in
        search_helper m c t pm check
      else
@@ -225,7 +248,7 @@ let rec attack_inrange m (c : character) (lst : character list) =
   |h::t ->
     match h.location, c.location with
     |(x,y), (a, b)->
-      if c.eqp > -1 then
+      if c.eqp > -1 && (fst h.health) > 0 then
         (let ar = attack_range c in
          if List.exists (fun (q, r) -> q = x && r = y) ar = true then
            combat c h
@@ -256,7 +279,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
      let go = move (search_helper m c t pm init) c.mov c.location attk in
      update_move m c c.location (fst go);
      if snd go then
-       ignore (combat c h))
+       combat c h)
  |Hard ->
    (match lst with
    |[] -> ()
@@ -269,7 +292,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
        let go = move (close) c.mov c.location attk in
          update_move m c c.location (fst go);
        if snd go then
-         ignore (combat c h))
+         combat c h)
  |Normal ->
    (match lst with
     |[] -> ()
@@ -282,7 +305,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
         let go = move (close) c.mov c.location attk in
         update_move m c c.location (fst go);
         if snd go then
-          ignore (combat c h))
+          combat c h)
  |Easy ->
    if c.eqp > -1 then
      let ind = c.eqp in

@@ -923,6 +923,20 @@ let draw_archer context enemy =
     context##drawImage_full (img, 16., 18., 26., 26., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 28.)
   | _ -> ()
 
+let draw_swordsman context enemy = 
+  match ((!sync)) with
+  | true -> 
+    let img = Html.createImg document in
+    let (x,y) = enemy.location in
+    img##src <- js "Sprites/EnemySprites/Enemy_Swordsman_N.png";
+    context##drawImage_full (img, 20., 1., 20., 40., float_of_int x *. 26. +. 6., float_of_int y *. 26. -. 10., 25., 40.)
+  | false ->
+    let img = Html.createImg document in
+    let (x,y) = enemy.location in
+    img##src <- js "Sprites/EnemySprites/Enemy_Swordsman_S.png";
+    context##drawImage_full (img, 17., 21., 20., 20., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 28.)
+  | _ -> ()
+
 
 let rec draw_enemies_helper context enemy_lst = 
   match enemy_lst with
@@ -933,7 +947,9 @@ let rec draw_enemies_helper context enemy_lst =
       draw_archer context enemy;
       draw_enemies_helper context t
     | "Boss" -> ()
-    | "Swordsman" -> ()
+    | "Swordsman" -> 
+      draw_swordsman context enemy;
+      draw_enemies_helper context t
     | _ -> ()
 
 let draw_enemies context state = 

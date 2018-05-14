@@ -12,7 +12,7 @@ type state = {
   items : item list;
   enemies: character list;
   won : bool;
-  lose : bool;
+  lose:bool;
   active_tile: tile;
   active_unit: character option;
   active_item: int;
@@ -395,6 +395,7 @@ let check_surround_inventories s c =
   |(0,y)-> (check_inventory s.act_map.grid.(0).(y-1).c)||  (check_inventory s.act_map.grid.(1).(y).c) ||  (check_inventory s.act_map.grid.(0).(y+1).c)
   |(x,0)-> (check_inventory s.act_map.grid.(x-1).(0).c)||  (check_inventory s.act_map.grid.(x).(1).c) ||  (check_inventory s.act_map.grid.(x+1).(0).c)
   |(x,y)-> (check_inventory s.act_map.grid.(x-1).(y).c)||(check_inventory s.act_map.grid.(x+1).(y).c)||(check_inventory s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
+
 let set_direction c t =
   let dx = (fst t.coordinate)-(fst c.location) in
   let dy = (snd t.coordinate)-(fst c.location) in
@@ -527,13 +528,14 @@ let do' s =
               end
               |_ -> s
             end
-            |Confirm->  begin  let _ = attacking := true in
-                ch.stage<-Done;ch.is_attacking<-true;(set_direction ch s.active_tile);
+            |Confirm->  begin
+                ch.stage<-Done;(set_direction ch s.active_tile);
             let e  = extract s.active_tile.c in
-            combat ch e;
+            combat ch e;(if fst ch.health<=0 then () else attacking:=true;ch.is_attacking<-true );
             {s with active_unit = None;
                     menu_active = false;
-                    menu_cursor = 0}|>remove_if_dead ch|>remove_if_dead e(*Need one more check to determine if won or lost*)
+                    menu_cursor = 0}|>remove_if_dead ch|>remove_if_dead e;
+            (*Need one more check to determine if won or lost*)
               end
             |_ -> s
         end

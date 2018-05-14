@@ -46,7 +46,7 @@ let temp_character =
     exp = 0;
     health = (3,10);
     allegiance = Player;
-    str = 3;
+    str = 25;
     mag = 0;
     def = 0;
     spd = 0;
@@ -57,7 +57,7 @@ let temp_character =
     con = 0;
     aid = 0;
     hit = 0;
-    atk = 3;
+    atk = 25;
     crit = 0;
     avoid = 15;
     inv = [|Some temp_item;None;None;None;None|];
@@ -220,7 +220,7 @@ let init_state =
   {
     player = [temp_character];
     items = [];
-    enemies = [enemy_1];
+    enemies = [temp_enemy];
     lose = false;
     won = false;
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};

@@ -92,8 +92,6 @@ let rec check_dir (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile *
      |South -> mapg.(x).(y + 1)
      |West  -> mapg.(x - 1).(y)
    in
-   if fst next.coordinate >= 0 && fst next.coordinate < map.width
-      && snd next.coordinate >= 0 && snd next.coordinate < map.length then
      match next.ground with
      |Wall -> f
      |Door -> f
@@ -103,8 +101,7 @@ let rec check_dir (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile *
      |Peaks -> add_f2 next 3 f
      |Forest -> add_f2 next 2 f
      |Desert -> add_f2 next 2 f
-     |_ -> add_f2 next 1 f
-   else f)
+     |_ -> add_f2 next 1 f)
    else f
 
 (*[check_surround] checks movement in all directions of a given coordinate

@@ -544,7 +544,7 @@ let map2 = {
       {coordinate = (12, 10); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (12, 11); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (12, 12); ground = Wall; tile_type = House2;c=None};
-      {coordinate = (12, 13); ground = Village (temp_item); tile_type = House5;c=None};
+      {coordinate = (12, 13); ground = Village (Some (temp_item)); tile_type = House5;c=None};
       {coordinate = (12, 14); ground = Plain; tile_type = Grass;c=None};
     |];
     (*14th column*)

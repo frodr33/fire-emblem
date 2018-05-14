@@ -504,7 +504,7 @@ let do' s =
             |Confirm->  begin  let _ = attacking := true in
             let ch = extract s.active_unit in ch.stage<-Done;
             let e  = extract s.active_tile.c in
-            damage = combat ch e;
+            combat ch e;
             {s with active_unit = None;
                     menu_active = false;
                     menu_cursor = 0}

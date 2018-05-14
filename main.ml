@@ -223,6 +223,7 @@ let init_state =
     enemies = [temp_enemy];
     lose = false;
     won = false;
+    round = true;
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};
     active_unit = None;
     active_item = -1;

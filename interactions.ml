@@ -224,9 +224,9 @@ let award_levels t =
 let resolveE a d =
   if (a.eqp = -1) then ()
   else if (get_rng () + get_rng())/2 > a.hit - d.avoid then
-    a.inv.(a.eqp) <- (use (a.inv.(a.eqp)))
-  else (if get_rng () < a.crit - (d.lck * 2) then (update_health d (3 * (damage a d)))
-        else update_health d (damage a d))
+    a.inv.(a.eqp) <- (use (a.inv.(a.eqp)));
+  if get_rng () < a.crit - (d.lck * 2) then (update_health d (3 * (damage a d)))
+        else update_health d (damage a d);
   if fst d.health = 0 || fst a.health = 0 then
     Queue.clear combatQ;
   if fst d.health = 0 && a.allegiance = Player then
@@ -242,7 +242,7 @@ let rec resolveQ () =
     resolveQ ()
 
 let combat a d =
-    let new_a_speed_atk = a.spd + fst (find_penalty a Spd) in
+  let new_a_speed_atk = a.spd + fst (find_penalty a Spd) in
   let new_a_speed_def = a.spd + snd (find_penalty a Spd) in
   let new_d_speed_atk = d.spd + fst (find_penalty d Spd) in
   let new_d_speed_def = d.spd + snd (find_penalty d Spd) in

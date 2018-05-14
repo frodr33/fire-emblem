@@ -17,6 +17,52 @@ type path_map =
    grid: path_tile array array;
  }
 
+ let rec check_exist co lst =
+   match lst with
+   |[]   -> false
+   |h::t -> if fst h = co then true else check_exist co t
+
+ let a_range_add ma i co fl ml sl =
+
+   let addon = if i > ma then [] else(
+   let nleft = ((fst co) - 1, snd co) in
+   let cleft = if (fst co) - 1 < 0 ||
+               List.mem nleft ml ||
+               List.mem nleft sl ||
+               check_exist nleft fl then [] else (nleft, i)::[] in
+   let nright = ((fst co) + 1, snd co) in
+   let cright = if (fst co) + 1 > 14 ||
+               List.mem nright ml ||
+               List.mem nright sl ||
+               check_exist nright fl then cleft else (nright, i)::cleft in
+   let nup = (fst co, snd co - 1) in
+   let cup = if (snd co) - 1 < 0 ||
+               List.mem nup ml ||
+               List.mem nup sl ||
+               check_exist nup fl then cright else (nup, i)::cright in
+   let ndown = (fst co, snd co + 1) in
+   let cdown = if (snd co) + 1 > 14 ||
+               List.mem ndown ml ||
+               List.mem ndown sl ||
+               check_exist ndown fl then cup else (ndown, i)::cup in
+   cdown) in
+   fl @ addon
+
+
+
+ let rec attack_range_helper mi ma i co fl ml sl =
+
+   let nml = (if i < mi  then co::ml else ml) in
+   let nsl = (if i >= mi then co::sl else sl) in
+   let nfl = a_range_add ma (i + 1) co fl ml sl in
+   match nfl with
+   |[]   -> nsl
+   |(h, x)::t -> attack_range_helper mi ma x h t nml nsl
+
+let attack_range c =
+  let w = extract c.inv.(c.eqp) in
+  attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] []
+
 (*[add_f2] is a list of frontier tiles sorted in increasing distance from a
 * a settled node, as this is a grid map we know every frontier node is
 * adjacent to a settled node therefore it's distance is its movement cost*)
@@ -177,7 +223,7 @@ let rec attack_inrange m (c : character) (lst : character list) =
     match h.location, c.location with
     |(x,y), (a, b)->
       if c.eqp > -1 then
-        (let ar = State.attack_range c in
+        (let ar = attack_range c in
          if List.exists (fun (q, r) -> q = x && r = b) ar = true then
            ignore (combat c h)
          else

@@ -168,6 +168,23 @@ let update_move (m : map) (c : character) init loc =
       tile_type = new_tile.tile_type;
       c = Some c}
 
+(*[attack_inrange] will directly attack a player character only if it is standing
+ * directly adjacent or diagonal to an enemy*)
+let rec attack_inrange m (c : character) (lst : character list) =
+  match lst with
+  |[] -> ()
+  |h::t ->
+    match h.location, c.location with
+    |(x,y), (a, b)->
+      if c.eqp > -1 then
+        (let ar = State.attack_range c in
+         if List.exists (fun (q, r) -> q = x && r = b) ar = true then
+           ignore (combat c h)
+         else
+           attack_inrange m c t)
+      else
+        ()
+
 (*[search] finds the nearest enemy, and the moves and attacks for the enemy unit
 * depending on the distance and tendencies of unit of that difficulty level*)
 let search (m : map) (c : character) (lst : character list) pm (attk : int*int) =
@@ -209,36 +226,15 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
         update_move m c c.location (fst go);
         if snd go then
           ignore (combat c h))
- |Easy -> ()
-
-(*[attack_inrange] will directly attack a player character only if it is standing
-* directly adjacent or diagonal to an enemy*)
-let rec attack_inrange m (c : character) (lst : character list) =
- match lst with
- |[] -> ()
- |h::t ->
-   match h.location, c.location with
-   |(x,y), (a, b)->
-     if c.eqp > -1 then
-     (let ar = State.attack_range c in
-      if List.exists (fun (q, r) -> q = x && r = b) ar = true then
-        ignore (combat c h)
-     else
-       attack_inrange m c t)
-     else
+ |Easy ->
+   if c.eqp > -1 then
+     let ind = c.eqp in
+     let item = (c.inv.(ind)) in
+     match item with
+     |None ->
        ()
-
-(*[simple] offers some real simple AI that will half-heartedly attack you if you
-* stand directly in range of an enemy but won't chase*)
-let rec simple m (c : character) plist =
- if c.eqp > -1 then
-   let ind = c.eqp in
-   let item = (c.inv.(ind)) in
-   match item with
-   |None ->
-     ()
-   |Some i ->
-     attack_inrange m c plist
+     |Some i ->
+       attack_inrange m c lst
 
 (*[ai_helper] iterates through enemy units and moves and attacks for them
  * through calls to the helper functions*)
@@ -246,19 +242,15 @@ let rec ai_helper (m : map) (clist : character list) plist =
  match clist with
   |[] -> ()
   |h::t ->
-    match h.behave with
-    |Easy ->
-      (simple m h plist)
-    |_ ->
-      let new_pm =
-        {width = m.width;
-         length = m.length;
-         grid = (fill_map m.length m.width)} in
-        if h.eqp > -1 then
-          (search m h plist new_pm ((extract h.inv.(h.eqp)).range);
-          ai_helper m t plist)
-        else
-          ai_helper m t plist
+    let new_pm =
+      {width = m.width;
+       length = m.length;
+       grid = (fill_map m.length m.width)} in
+      if h.eqp > -1 then
+        (search m h plist new_pm ((extract h.inv.(h.eqp)).range);
+        ai_helper m t plist)
+      else
+        ai_helper m t plist
 
 (*[step] returns unit after all enemy characters have performed
 * their desired actions*)

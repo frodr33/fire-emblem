@@ -245,7 +245,18 @@ let move_to_top a i =
   a.inv.(i) <- temp;
   update_character a
 
-
+(**
+ *  [use i] decrements the number uses on an item option and
+ *  rewraps it.
+ *  requires: 
+ *  - [i] is a valid item option that isn't [None].
+ *  raises: "no uses" if passed None. 
+*)  
+let use i =
+  match i with
+  |None -> failwith "no uses"
+  |Some x -> if x.uses = 1 then None else Some {x with uses = x.uses - 1}
+  
 (**
  *  [] 
 *)

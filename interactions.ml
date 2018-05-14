@@ -257,8 +257,8 @@ let combat a d =
   award_xp a d;
   award_wexp a;
   award_wexp d;
-  a |> level_up |> update_character;
-  d |> level_up |> update_character
+  level_up a; update_character;
+  level_up d; update_character d
 
 let remove_item ilst s =
   List.fold_left (fun a v -> if v = s then a else v::a) [] ilst
@@ -272,7 +272,8 @@ let heal a t i =
   |Some x ->
     let heal_amount = - (a.mag + x.mgt) in
   a.inv.(i) <- use a.inv.(i);
-  level_up (a.exp <- a.exp + 12);
+  a.exp <- a.exp + 12;
+  level_up a;
   update_health t heal_amount
 
 

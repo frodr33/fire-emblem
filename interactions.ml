@@ -225,7 +225,7 @@ let resolveE a d =
   if (a.eqp = -1) then ()
   else if (get_rng () + get_rng())/2 > a.hit - d.avoid then
     a.inv.(a.eqp) <- (use (a.inv.(a.eqp)))
-  else (if get_rng () < a.crit - (d.lck * 2) then (update_health d (3 * (damage !a !d)))
+  else (if get_rng () < a.crit - (d.lck * 2) then (update_health d (3 * (damage a d)))
         else update_health d (damage a d))
   if fst d.health = 0 || fst a.health = 0 then
     Queue.clear combatQ;

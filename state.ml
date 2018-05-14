@@ -449,7 +449,7 @@ let do' s =
                                    menu_active = false;
                                    menu_cursor = 0}
                 |"Visit" -> if village_checker s
-                  (then let _ = village ch s.active_tile.ground;
+                  then (let _ = village ch s.active_tile.ground;
                                ch.stage <- Done in
                   village ch s.active_tile.ground;
                   {s with active_unit = None;

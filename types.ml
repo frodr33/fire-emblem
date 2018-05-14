@@ -4,10 +4,10 @@
 type class' = Paladin | Thief | Mage
 
 (** Represents a weapon type*)
-type wtype = Sword | Tome | Staff | Potion | Key
+type wtype = Sword | Bow | Tome | Staff | Potion | Key
 
 (** Represents the names of possible AI types*)
-type ai = BossStay | BossHunt
+type ai = BossStay | BossHunt | Norm
 type menutype = Inventory|Tile|Unit|Item|AttackInventory|Confirm|Trader1|Trader2
 type menu =  {kind:menutype;size:int;options:string array}
 

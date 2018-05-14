@@ -621,6 +621,7 @@ let rec draw_healthbar context chr_list =
     draw_healthbar context t
 
 
+
 (*********************************************************)
 (****************** Draw Arrow Functions *****************)
 (*********************************************************)
@@ -968,12 +969,13 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##globalAlpha <- 1.;
   draw_is_player_done context state.active_unit;
   draw_player context state.player;
+  draw_enemies context state;
   draw_cursor context state.active_tile;
   menu_manager context state;
   draw_menu_arrow context state;
   draw_healthbar context state.player;
+  draw_healthbar context state.enemies;
   draw_sidebar context state;
   draw_attack_menu context state;
   draw_inventory context state;
-  draw_enemies context state;
   clock ();

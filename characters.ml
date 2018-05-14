@@ -1,15 +1,37 @@
 open Types
 
+
+(** 
+ *  [cap lst s] is a function that finds the cap of a skill, s, in a list of   *  skill caps, lst. If s is not in lst, then it will return a cap of 40.
+ *  requires: 
+ *  - [lst] is a valid list
+ *  - [s] is a valid stat  
+*)
 let rec cap lst s =
   match lst with
-  |[]   -> 100
+  |[]   -> 40
   |h::t -> if fst h = s then snd h else cap t s
 
+(**
+ *  [equipped c] is a fuction that returns an item option that represent the 
+ *  character, c,'s equipped item. If they do not have an equipped item then it
+ *  will return [None].
+ *  requires: 
+ *  - [c] is a valid character 
+*)  
 let equipped c =
   if c.eqp = -1 then None else (c.inv.(c.eqp))
 
+(**
+ *  [lv_to_int a] is a function that converts a weapon level, a, represented by 
+ *  a character to an int.
+ *  requires:
+ *  - [a] is a character that is from a - e or s. 
+ *  raises: "invalid weapon level" if it is not one of the above characters.
+*)  
 let lv_to_int a =
   match a with
+  |'s' -> 5
   |'a' -> 4
   |'b' -> 3
   |'c' -> 2
@@ -17,27 +39,57 @@ let lv_to_int a =
   |'e' -> 0
   |_ -> failwith "invalid weapon level"
 
+(**
+ *  [comp a b] is fuction that returns true if weapon level a is greater than 
+ *  or equal to b. Has unspecified behaviour if a and b are not in a - e or s.
+ *  requires:
+ *  - [a] is a character from a - e or s.
+ *  - [b] is a character from a - e or s. 
+*)    
 let comp a b =
   (lv_to_int a) >= (lv_to_int b)
 
+
+(**
+ *  [prof wlvlst i] is a fuction that checks if the holder of a weapon level 
+ *  list is capable of using an item, i. Returns false if not and true if so.
+ *  requires: 
+ *  - [wlvlst] is a weapon level list of type (wtype * char * int) list.
+ *  - [i] is a valid item. 
+*)  
 let rec prof wlvlst i =
   match wlvlst with
   |[]   -> false
   |(x, y, z)::t -> if i.wtype = x then (if comp y i.level then true else false)
     else prof t i
 
+(**
+ *  [equippable c i] is a fuction that checks if a character, c, can equip an   *  item, i. 
+ *  requires:
+ *  - [c] is a valid character.
+ *  - [i] is a valid item. 
+*)      
 let equippable c i =
   match i.wtype with
   | Staff | Potion | Key -> false
   | x -> prof c.wlevels i
 
+(**
+ *  [equip_id c n] find the index of the first equippable item in a character.
+ *  Returns -1 if they have no equippable items. 
+ *  requires:
+ *  - [c] is a valid character.
+ *  - the initial [n] passed in is 0.
+ *  Has unspecified behaviour if the [n] passed in is not 0 to start with.
+*)    
 let rec equip_id c n =
   match c.inv.(n) with
   |None -> if n = 4 then -1 else equip_id c (n+1)
   |Some x -> if equippable c x then n
     else if n = 4 then -1 else equip_id c (n+1)
 
-(** [stat_up c s i] is a function that returns a character, [c], with the passed
+(** 
+ *  [stat_up c s i] is a function that returns a character, [c], with the passed
  *  stat, [s], changed by [i] points. If increasing a stat would push it past
  *  the cap then cap the stat instead.
  *  requires:
@@ -169,53 +221,31 @@ let rec update_character c =
   c.avoid <- calc_avoid;
   c.eqp <- e
 
+(**
+ *  [remove_item a i] removes an item i from a characters inventory.
+ *  requires:
+ *  - [a] is a valid character
+ *  - [i] is an int from 0 to 4.
+ *  Has unspecified behaviour if passed a number not in that range.
+*)  
 let rec remove_item a i =
   a.inv.(i) <- None
 
+(**
+ *  [move_to_top a i] is a function that takes an index, i, and move the item 
+ *  in that index to the from of a character, a,'s inventory.
+ *  requires:
+ *  - [a] is a valid character
+ *  - [i] is an int from 0 to 4.
+ *  Has unspecified behavious if [i] is not in that range.
+*)    
 let move_to_top a i =
   let temp = a.inv.(0) in
   a.inv.(0) <- a.inv.(i);
   a.inv.(i) <- temp;
   update_character a
 
-let make_char n cl grth cps lv xp hp all str mag def spd res skl lck mov con
-    aid inv abl sup wlv ai be loc =
-  let c = {
-    name = n;
-    stage = Ready;
-    class' = cl;
-    growths = grth;
-    caps = cps;
-    level = lv;
-    exp = xp;
-    health = hp;
-    allegiance = all;
-    str = str;
-    mag = mag;
-    def = def;
-    spd = spd;
-    res = res;
-    skl = skl;
-    lck = lck;
-    mov = mov;
-    con = con;
-    aid = aid;
-    hit = 0;
-    atk = 0;
-    crit = 0;
-    avoid = 0;
-    eqp = -1;
-    inv = Array.make 5 None;
-    ability = abl;
-    supports = sup;
-    wlevels = wlv;
-    ai = ai;
-    behave = be;
-    location = loc;
-    movement = [];
-    attackable = [];
-    direction = North;
-    is_attacking=false;
-  } in
-  update_character c;
-  c
+
+(**
+ *  [] 
+*)

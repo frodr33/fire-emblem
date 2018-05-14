@@ -906,7 +906,7 @@ let draw_sidebar context state =
 (* [draw_attack_back context] draws the background for
  * the attack menu *)
 let draw_attack_back context =
-  let x = 281. in
+  let x = 255. in
   let y = 304. in
   let rec ys x y =
     if x = 385. then ()
@@ -925,12 +925,12 @@ let draw_player_stats context player enemy =
   let hp_enm = (string_of_int (fst (enemy.health))) ^ "/" ^ (string_of_int (snd (enemy.health))) in
   let player_damage = damage player enemy in
   let enemy_damage = damage enemy player in
-  context##strokeText (js (player.name), 286., 320.);
-  context##strokeText (js ("Hp: " ^ hp), 286., 340.);
-  context##strokeText (js ("Dam: " ^ (string_of_int player_damage)), 286., 360.);
-  context##strokeText (js (enemy.name), 320., 320.);
-  context##strokeText (js ("Hp: " ^ hp_enm), 320., 340.);
-  context##strokeText (js ("Dam: " ^ (string_of_int enemy_damage)), 340., 360.)
+  context##strokeText (js (player.name), 260., 320.);
+  context##strokeText (js ("Hp: " ^ hp), 260., 340.);
+  context##strokeText (js ("Dam: " ^ (string_of_int player_damage)), 260., 360.);
+  context##strokeText (js (enemy.name), 330., 320.);
+  context##strokeText (js ("Hp: " ^ hp_enm), 330., 340.);
+  context##strokeText (js ("Dam: " ^ (string_of_int enemy_damage)), 330., 360.)
 
 (* [draw_attack_menu context state] draws the attack menu
  * which shows the user the health of the current player and
@@ -948,7 +948,7 @@ let draw_attack_menu context state =
         begin
         draw_attack_back context;
         context##strokeStyle <- js "white";
-        context##strokeRect (280.,304. ,110.,82.);
+        context##strokeRect (254.,304. ,134.,82.);
         draw_player_stats context chr enemy;
         context##font <- js "12px sans-serif"
       end
@@ -1059,9 +1059,49 @@ let draw_enemies context state =
 (****************** Draw State Functions *****************)
 (*********************************************************)
 
+(* [draw_win_screen context] draws the win screen if 
+ * the player has won *)
+let draw_win_screen context = 
+  context##fillStyle <- js "black";
+  context##fillRect (0.,0.,canvas_width,canvas_height);
+  context##strokeStyle <- js "white";
+  context##font <- js "60px Times New Roman";
+  context##strokeText (js "YOU WIN!", 130., 180.); 
+  context##strokeText (js "Thanks for Playing!", 40., 300.)
+
+
+(*********************************************************)
+(****************** Draw State Functions *****************)
+(*********************************************************)
+
 (* [draw_state] draws the the current [state] on the [context].
  * Also has a side affect of updating the global variable clock *)
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
+  context##clearRect (0., 0., canvas_width, canvas_height);
+  match state.won with
+  | true->  
+    draw_win_screen context;
+  | false ->
+    draw_map context state;
+    draw_dijsktra context state;
+    draw_attack_squares context state.active_unit;
+    context##globalAlpha <- 1.;
+    (*  draw_is_player_done context state.active_unit;*)
+    draw_is_player_done context state.player;
+    draw_player context state.player;
+    draw_enemies context state;
+    draw_cursor context state.active_tile;
+    menu_manager context state;
+    draw_menu_arrow context state;
+    draw_healthbar context state.player;
+    draw_healthbar context state.enemies;
+    draw_sidebar context state;
+    draw_attack_menu context state;
+    draw_inventory context state;
+    clock ();
+
+
+(*  let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
   draw_map context state;
   draw_dijsktra context state;
@@ -1080,3 +1120,4 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_attack_menu context state;
   draw_inventory context state;
   clock ();
+ *)

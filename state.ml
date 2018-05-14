@@ -90,6 +90,9 @@ let in_range_tile a t =
   |Some x -> let l = distance_tile a t in l >= fst x.range && l <= snd x.range
 *)
 
+
+(*[translateA_helper st] translates the "A" input to the appropriate
+  action based on [st]*)
 let translateA_helper st = if st.menu_active = true then SelectMOption else
     begin match st.active_unit with
       |Some c -> begin
@@ -110,6 +113,8 @@ let translateA_helper st = if st.menu_active = true then SelectMOption else
         end
     end
 
+(*[translateB_helper st] translates the "B" input to the appropriate
+  action based on [st]*)
 let translateB_helper st =
   match st.active_unit with
     |Some c -> if st.menu_active then BackMenu else
@@ -122,37 +127,29 @@ let translateB_helper st =
       end
     |None -> if st.menu_active then CloseMenu else Invalid
 
+
+(*[translate_key  st] translates the global variable "input" to  the appropriate
+  action based on [st]*)
 let translate_key st =
   if !attacking= true then Invalid else
     begin
-  let old = !input in let _ = input := Nothing in
-  match old with
-  |Up -> if st.menu_active = false then Tup else Mup
-  |Down -> if st.menu_active = false then Tdown else Mdown
-  |Left -> if st.menu_active = false then Tleft else Invalid
-  |Right ->if st.menu_active = false then Tright else Invalid
-  |A -> translateA_helper st
-  |B -> translateB_helper st
-  |LT->begin match st.active_unit with
-    |None ->FindReady
-    |_ -> Invalid
-    end
-  |_ -> Invalid
+      let old = !input in let _ = input := Nothing in
+        match old with
+          |Up -> if st.menu_active = false then Tup else Mup
+          |Down -> if st.menu_active = false then Tdown else Mdown
+          |Left -> if st.menu_active = false then Tleft else Invalid
+          |Right ->if st.menu_active = false then Tright else Invalid
+          |A -> translateA_helper st
+          |B -> translateB_helper st
+          |LT->begin
+                match st.active_unit with
+                  |None ->FindReady
+                  |_ -> Invalid
+                  end
+          |_ -> Invalid
 end
 
 
-  let new_active_tile act st =
-    let x = fst(st.active_tile.coordinate) in
-    let y = snd (st.active_tile.coordinate) in
-    match act with
-    |Tup -> if y =0  then st.active_tile else
-        st.act_map.grid.(x).(y-1)
-    |Tdown ->if y=(st.act_map.length-1) then st.active_tile else
-        st.act_map.grid.(x).(y+1)
-    |Tleft ->if x = 0 then st.active_tile else   st.act_map.grid.(x-1).(y)
-    |Tright ->if x = (st.act_map.width-1) then st.active_tile else
-        st.act_map.grid.(x+1).(y)
-    |_ -> failwith "placeholder"
 
   let new_menu_cursor act st = match act with
     |Mup -> if st.menu_cursor =0 then 0 else
@@ -279,6 +276,19 @@ attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] []
 
 (*-------------------------------END SPAGHETT---------------------------------*)
 
+
+  let new_active_tile act st =
+    let x = fst(st.active_tile.coordinate) in
+    let y = snd (st.active_tile.coordinate) in
+    match act with
+    |Tup -> if y =0  then st.active_tile else
+        st.act_map.grid.(x).(y-1)
+    |Tdown ->if y=(st.act_map.length-1) then st.active_tile else
+        st.act_map.grid.(x).(y+1)
+    |Tleft ->if x = 0 then st.active_tile else   st.act_map.grid.(x-1).(y)
+    |Tright ->if x = (st.act_map.width-1) then st.active_tile else
+        st.act_map.grid.(x+1).(y)
+    |_ -> failwith "placeholder"
 let create_inventory_menu c =
   let o = Array.map (fun x -> match x with
       |Some i -> i.iname
@@ -516,7 +526,6 @@ let do' s =
               end
               |_ -> s
             end
-
             |Confirm->  begin  let _ = attacking := true in
                 ch.stage<-Done;ch.is_attacking<-true;(set_direction ch s.active_tile);
             let e  = extract s.active_tile.c in

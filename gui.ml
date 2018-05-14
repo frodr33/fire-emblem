@@ -1112,7 +1112,7 @@ let draw_transition_screen context state =
     context##strokeStyle <- js "white";
     context##font <- js "50px Times New Roman";
     context##strokeText (js "You Beat Round 1!", 90., 180.); 
-    context##strokeText (js "Round one is starting in:", 20., 270.);
+    context##strokeText (js "Round two is starting in:", 20., 270.);
     context##strokeText (js (string_of_int timer), 260., 340.)
 
 

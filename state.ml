@@ -13,6 +13,7 @@ type state = {
   enemies: character list;
   won : bool;
   lose:bool;
+  mutable round : bool;
   active_tile: tile;
   active_unit: character option;
   active_item: int;

@@ -103,6 +103,7 @@ let enemy_1 =
     supports = [];
     wlevels = [(Sword,'a',0)];
     ai = BossHunt;
+    behave = Normal;
     location= (8,5);
     movement= [];
     attackable = [];

@@ -24,18 +24,14 @@ type state = {
   last_character : character option;
 }
 
+(*[ctile c map] is the tile in [map] where [c] is located.
+ *requires:
+ *  -[c] is a character
+ *  -[map] is a map
+*)
 let ctile c map =
   map.grid.(fst c.location).(snd c.location)
-(*
-let ctile c map =
-  map.grid.(fst c.location.coordinate).(snd c.location.coordinate)
 
-let check_player_loc st =
-  List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.player
-
-let check_enemy_loc st =
-  List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
-*)
 
 let rec check_exist co lst =
   match lst with
@@ -79,21 +75,55 @@ let rec attack_range_helper mi ma i co fl ml sl =
   |[]   -> nsl
   |(h, x)::t -> attack_range_helper mi ma x h t nml nsl
 
-let check_ally_loc st =
-  List.exists (fun x -> (ctile x st.act_map) = st.active_tile) st.enemies
-
+(*[distance_tile a t] is the number of tiles away [t] is from [a]
+ *requires: -[a] is a character
+ *      -[t] is a tile
+  *)
 let distance_tile a (t:tile) =
   abs (fst a.location - fst t.coordinate) +
   abs (snd a.location- snd t.coordinate)
 
+    (*
 let in_range_tile a t =
   match a.inv.(a.eqp) with
   |None   -> false
   |Some x -> let l = distance_tile a t in l >= fst x.range && l <= snd x.range
+*)
+
+let translateA_helper st = if st.menu_active = true then SelectMOption else
+    begin match st.active_unit with
+      |Some c -> begin
+          match c.stage with
+          |MoveSelect-> if c.allegiance = Player then SelectMoveTile else Invalid
+          |AttackSelect -> SelectAttackTile
+          |TradeSelect -> SelectTradeTile
+          |_ -> Invalid
+        end
+      |None -> begin
+          match st.active_tile.c with
+          |Some x ->begin
+              match x.stage with
+              |Ready|Done ->SelectPlayer
+              |_ -> Invalid
+            end
+          |None -> OpenMenu
+        end
+    end
+
+let translateB_helper st =
+  match st.active_unit with
+    |Some c -> if st.menu_active then BackMenu else
+      begin
+        match c.stage with
+        |AttackSelect->BackAttack
+        |MoveSelect -> DeselectPlayer
+        |TradeSelect->BackTrade
+        |_ ->Invalid
+      end
+    |None -> if st.menu_active then CloseMenu else Invalid
 
 let translate_key st =
   if !attacking= true then Invalid else
-
     begin
   let old = !input in let _ = input := Nothing in
   match old with
@@ -101,61 +131,14 @@ let translate_key st =
   |Down -> if st.menu_active = false then Tdown else Mdown
   |Left -> if st.menu_active = false then Tleft else Invalid
   |Right ->if st.menu_active = false then Tright else Invalid
-  |A -> begin
-      if st.menu_active = true then SelectMOption else
-        begin match st.active_unit with
-          |Some c -> begin
-              match c.stage with
-              |MoveSelect-> if c.allegiance = Player then SelectMoveTile else Invalid
-              |AttackSelect -> SelectAttackTile
-              |TradeSelect -> SelectTradeTile
-              |_ -> Invalid
-            end
-          |None -> begin
-              match st.active_tile.c with
-              |Some x ->begin
-                  match x.stage with
-                  |Ready|Done ->SelectPlayer
-                  |_ -> Invalid
-                end
-              |None -> OpenMenu
-            end
-        end
-    end
-  |B -> begin
-      match st.active_unit with
-      |Some c -> if st.menu_active then BackMenu else
-          begin
-            match c.stage with
-            |AttackSelect->BackAttack
-            |MoveSelect -> DeselectPlayer
-            |TradeSelect->BackTrade
-            |_ ->Invalid
-          end
-      |None -> if st.menu_active then CloseMenu else Invalid
-
+  |A -> translateA_helper st
+  |B -> translateB_helper st
+  |LT->begin match st.active_unit with
+    |None ->FindReady
+    |_ -> Invalid
     end
   |_ -> Invalid
 end
-(* Temp function (Frank) wrote to update the active_unit's
- * stage field *)
- let new_active_unit st =
-    let find_player lst =
-      List.map (fun chr ->
-        match st.active_unit with
-        | None -> chr;
-        | Some x ->
-          (* if x = chr then  *)
-            let chr_stage' = if chr.stage = MoveSelect then Ready else MoveSelect in
-            {chr with stage = chr_stage'}
-          (* else chr *)) lst in
-    find_player st.player
-
-
-let new_active_unit_st st c=
-  let new_player_list = List.filter (fun x -> x<>c) st.player in
-  let new_c = c.stage<-MoveSelect;c  in
-  {st with player=new_player_list;active_unit= Some new_c}
 
 
   let new_active_tile act st =
@@ -417,6 +400,7 @@ let rec delete_from_list lst c acc =
   match lst with
   |[] -> List.rev acc
   |h::t -> if h.name = c.name then t else delete_from_list t c (h::acc)
+
 let remove_if_dead c s =
   if (fst c.health)>0 then s else
     match c.allegiance with
@@ -430,6 +414,13 @@ let remove_if_dead c s =
       let oldt = s.act_map.grid.(x).(y) in
       s.act_map.grid.(x).(y)<-{oldt with c=None};
       {s with enemies =newlst;}
+
+let find_ready_helper st =
+  let newc = List.find_opt (fun ch->ch.stage=Ready) st.player in
+  match newc with
+  |Some c-> let loc = c.location in
+    {st with active_tile=st.act_map.grid.(fst loc).(snd loc)}
+  |None -> st
 
 
 let do' s =
@@ -455,9 +446,6 @@ let do' s =
     if (check_inventory t1)||(check_inventory t2) then
       {s with current_menu=create_trader1_menu (extract t1);menu_cursor=0;menu_active=true}
     else s
-
-
-
   |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
   |SelectMOption ->  begin
       match s.active_unit with
@@ -565,4 +553,5 @@ let do' s =
   |BackAttack->let c = extract s.active_unit in
     let loc = c.location in
     {s with active_tile = s.act_map.grid.(fst loc).(snd loc);current_menu = create_attack_menu c;menu_cursor=0;menu_active=true};
+  |FindReady->find_ready_helper s
   |_-> s

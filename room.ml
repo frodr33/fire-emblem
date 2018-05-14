@@ -1,5 +1,22 @@
 open Types
 
+let temp_item =
+  {
+    iname  = "xd";
+    wtype = Sword;
+    mgt = 0;
+    acc = 0;
+    crit = 0;
+    range = (2,4);
+    uses = 5;
+    cost = 0;
+    sell = 0;
+    level = 'e';
+    users = [];
+    effective = [];
+    penalty = [];
+  }
+
 let map1 = {
   width = 15;
   length = 15;
@@ -527,7 +544,7 @@ let map2 = {
       {coordinate = (12, 10); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (12, 11); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (12, 12); ground = Wall; tile_type = House2;c=None};
-      {coordinate = (12, 13); ground = Wall; tile_type = House5;c=None};
+      {coordinate = (12, 13); ground = Village (temp_item); tile_type = House5;c=None};
       {coordinate = (12, 14); ground = Plain; tile_type = Grass;c=None};
     |];
     (*14th column*)

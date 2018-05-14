@@ -3,10 +3,33 @@ open Interactions
 open Characters
 (*open Ai*)
 
-let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
-let tile_menu = {kind=Tile;size = 2;options = [|" ";"End"|]}
-let item_menu = {kind=Item;size = 2;options = [|"Equip/Use";"Discard"|]}
-let confirm_menu = {kind = Confirm;size=1;options=[|"Attack?"|]}
+(**
+ *   HARD CODED MENUS 
+*)
+let unit_menu = {
+  kind = Unit;
+  size = 6;
+  options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]
+  }
+
+let tile_menu = {
+  kind = Tile;
+  size = 2;
+  options = [|" ";"End"|]
+  }
+
+let item_menu = {
+  kind = Item;
+  size = 2;
+  options = [|"Equip/Use";"Discard"|]
+  }
+  
+let confirm_menu = {
+  kind = Confirm;
+  size=1;
+  options=[|"Attack?"|]
+  }
+  
 type state = {
   player: character list;
   items : item list;
@@ -34,14 +57,19 @@ type state = {
 let ctile c map =
   map.grid.(fst c.location).(snd c.location)
 
-
+(**
+ *  [check exist co lst] checks if an int pair, co, exists in list, lst.
+ *  requires:
+ *  - [co] is of type 'a 
+ *  - [lst] is of type ('a * 'b) list.
+*)
 let rec check_exist co lst =
   match lst with
   |[]   -> false
   |h::t -> if fst h = co then true else check_exist co t
 
-let a_range_add ma i co fl ml sl =
 
+let a_range_add ma i co fl ml sl =
   let addon = if i > ma then [] else(
   let nleft = ((fst co) - 1, snd co) in
   let cleft = if (fst co) - 1 < 0 ||
@@ -69,7 +97,6 @@ let a_range_add ma i co fl ml sl =
 
 
 let rec attack_range_helper mi ma i co fl ml sl =
-
   let nml = (if i < mi  then co::ml else ml) in
   let nsl = (if i >= mi then co::sl else sl) in
   let nfl = a_range_add ma (i + 1) co fl ml sl in
@@ -333,7 +360,7 @@ let move_helper st =
 
 let village_checker st =
   match st.active_tile.ground with
-  |Village _ -> true
+  |Village (Some _) -> true
   |_ -> false
 
 let rec has_key c i =

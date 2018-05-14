@@ -53,3 +53,7 @@ val remove_item : character -> int -> unit
 *)
 val move_to_top : character -> int -> unit
 
+(**
+ *  [use i] decrements the number of uses on an item by 1 
+*)
+val use : item option -> item option

@@ -257,7 +257,7 @@ let combat a d =
   award_xp a d;
   award_wexp a;
   award_wexp d;
-  level_up a; update_character;
+  level_up a; update_character a;
   level_up d; update_character d
 
 let remove_item ilst s =

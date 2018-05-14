@@ -186,7 +186,7 @@ let move_to_top a i =
   update_character a
 
 let make_char n cl grth cps lv xp hp all str mag def spd res skl lck mov con
-    aid inv abl sup wlv ai loc =
+    aid inv abl sup wlv ai be loc =
   let c = {
     name = n;
     stage = Ready;
@@ -217,6 +217,7 @@ let make_char n cl grth cps lv xp hp all str mag def spd res skl lck mov con
     supports = sup;
     wlevels = wlv;
     ai = ai;
+    behave = be;
     location = loc;
     movement = [];
     attackable = [];

@@ -23,7 +23,6 @@ type state = {
   menu_cursor: int;
   funds : int;
   last_character : character option;
-  level : difficulty;
 }
 
 let ctile c map =
@@ -329,7 +328,15 @@ let create_attack_menu c =
   let o = Array.map (fun x -> match x with
       |Some i when equippable c i=true -> i.iname
       |_ -> "") c.inv in {kind = AttackInventory;size=5;options = o}
+let create_trader1_menu c =
+  let o = Array.map (fun x -> match x with
+      |Some i -> i.iname
+      |None -> "") c.inv in {kind=Trader1;size = 5;options=o}
 
+let create_trader2_menu c =
+  let o = Array.map (fun x -> match x with
+      |Some i -> i.iname
+      |None -> "") c.inv in {kind=Trader2;size = 5;options=o}
 let move_char_helper st =
   match st.active_unit with
   |Some x->
@@ -396,6 +403,26 @@ let check_inventory c =
       |None -> false||x) false ch.inv
   |None -> false
 
+let check_if_ally sc =
+  match sc with
+  |Some c -> c.allegiance=Player
+  |None -> false
+
+let check_surround_allies s c =
+  match c.location with
+  |(0,0)-> (check_if_ally s.act_map.grid.(0).(1).c)||(check_if_ally s.act_map.grid.(1).(0).c)
+  |(0,y)-> (check_if_ally s.act_map.grid.(0).(y-1).c)||  (check_if_ally s.act_map.grid.(1).(y).c) ||  (check_if_ally s.act_map.grid.(0).(y+1).c)
+  |(x,0)-> (check_if_ally s.act_map.grid.(x-1).(0).c)||  (check_if_ally s.act_map.grid.(x).(1).c) ||  (check_if_ally s.act_map.grid.(x+1).(0).c)
+  |(x,y)-> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x+1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
+
+let check_surround_inventories s c =
+  match c.location with
+  |(0,0)-> (check_inventory s.act_map.grid.(0).(1).c)||(check_inventory s.act_map.grid.(1).(0).c)
+  |(0,y)-> (check_inventory s.act_map.grid.(0).(y-1).c)||  (check_inventory s.act_map.grid.(1).(y).c) ||  (check_inventory s.act_map.grid.(0).(y+1).c)
+  |(x,0)-> (check_inventory s.act_map.grid.(x-1).(0).c)||  (check_inventory s.act_map.grid.(x).(1).c) ||  (check_inventory s.act_map.grid.(x+1).(0).c)
+  |(x,y)-> (check_inventory s.act_map.grid.(x-1).(y).c)||(check_inventory s.act_map.grid.(x+1).(y).c)||(check_inventory s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
+
+
 let do' s =
   let act = translate_key s in
     let _ = input:=Nothing in
@@ -411,10 +438,12 @@ let do' s =
     {s with active_unit = s.active_tile.c}
   |SelectMoveTile ->move_helper s
   |SelectAttackTile -> {s with current_menu=confirm_menu;menu_cursor=0;menu_active=true}
-  |SelectTradeTile -> let t1 =s.active_unit in
+  |SelectTradeTile ->let t1 =s.active_unit in
     let t2 = s.active_tile.c in
     if (distance_tile (extract t1) s.active_tile)>1 then s else
-    if (check_inventory t1)||(check_inventory t2) then s else s
+    if (check_inventory t1)||(check_inventory t2) then
+      {s with current_menu=create_trader1_menu (extract t1);menu_cursor=0;menu_active=true}
+    else s
 
 
 
@@ -423,10 +452,18 @@ let do' s =
       match s.active_unit with
       |Some ch -> begin
           match s.current_menu.kind with
+          |Trader1->let ch = extract (s.active_tile.c) in
+            {s with active_item=s.menu_cursor;current_menu=create_trader2_menu ch;menu_cursor=0}
+          |Trader2->if s.current_menu.options.(s.menu_cursor)="" then s else
+              let c1 = extract s.active_unit in
+              let c2 = extract (s.active_tile.c) in
+              (trade c1 c2 s.active_item s.menu_cursor);c1.stage<-Done;{s with
+                                                                        active_unit=None;menu_active=false}
             |Unit -> begin
                 match s.current_menu.options.(s.menu_cursor) with
                 |"Attack" -> if ch.eqp = -1 then s else let _ = ch.stage<-AttackSelect in {s with current_menu=create_attack_menu ch;menu_cursor=0}
-                |"Trade"-> let _ = ch.stage<-TradeSelect in s
+                |"Trade"-> if (check_surround_allies s ch)&&((check_inventory (Some ch)||(check_surround_inventories s ch ))) then
+                    let _ = ch.stage<-TradeSelect in s else s
                 |"Item" -> {s with current_menu = create_inventory_menu ch;
                                   menu_cursor = 0}
                 |"Wait" -> ch.stage <- Done;

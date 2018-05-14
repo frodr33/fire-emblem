@@ -58,6 +58,7 @@ let empty_character = {
   supports = [];
   wlevels = [];
   ai = BossStay;
+  behave = Hard;
   location = 0, 0;
   movement = [];
   attackable = [];
@@ -70,19 +71,19 @@ let attacker = ref empty_character
 let defender = ref empty_character
 
 
-(** 
+(**
  *  [survive d] is a function that checks if the character, [d], will survive an attack of [i] damage.
- *  requires: 
+ *  requires:
  *  - d is a valid character
  *  - i is an int
 *)
 let survive (d : character) (i : int) =
   i > fst d.health
 
-(** 
+(**
  *  [penalty_helper p s] is a function that searches a list of penalties, [p], on an item and find the one that corresponds to stat, [s].
  *  requires:
- *  - p is a (stat * (int * int)) list, but 
+ *  - p is a (stat * (int * int)) list, but
 *)
 
 let rec penalty_helper (p: (stat * (int * int)) list) (s:stat) =
@@ -174,8 +175,8 @@ let hit_xp a d =
     |  x -> if x > 4 then {a with exp = a.exp + 1}
       else {a with exp = a.exp + 23}
 
-let wexp_level_up c = 
-  match c with 
+let wexp_level_up c =
+  match c with
   |'e' -> 'd'
   |'d' -> 'c'
   |'c' -> 'b'
@@ -183,19 +184,19 @@ let wexp_level_up c =
   |_ -> failwith "wexp_level_up invalid level"
 
 let rec wexp_helper ty lst =
-  match lst with 
+  match lst with
   |[]              -> failwith "not in weapon type list"
   |(wt, lv, xp)::t -> if wt = ty then
                         (if lv = 's' then (wt, lv, xp)::t
                         else if lv = 'a' && (xp + 5 > 100) then (wt, 's', 0)::t
-                        else if xp + 5 > 100 then (wt, wexp_level_up lv, xp + 5 - 100)::t 
+                        else if xp + 5 > 100 then (wt, wexp_level_up lv, xp + 5 - 100)::t
                         else (wt, lv, xp+ + 5)::t)
                       else wexp_helper ty t
 
 let award_wexp a =
   if a.allegiance = Player then a.wlevels <- wexp_helper (extract a.inv.(a.eqp)).wtype a.wlevels
   else ()
-  
+
 
 let comp_outcome a t =
   match a, t with
@@ -301,8 +302,7 @@ let village c t =
   |Village (None) -> failwith "visited village"
   |_ -> failwith "visiting nonvillage"
 
-let trade c1 c2 i1 i2 = 
+let trade c1 c2 i1 i2 =
   let temp = c1.inv.(i1) in
   c1.inv.(i1) <- c2.inv.(i2);
   c2.inv.(i2) <- temp;
-

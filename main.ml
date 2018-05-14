@@ -65,6 +65,7 @@ let temp_character =
     supports = [];
     wlevels = [(Sword,'a',0)];
     ai = BossHunt;
+    behave = Hard;
     location= (5,5);
     movement= [];
     attackable = [];
@@ -148,7 +149,6 @@ let init_state =
     menu_cursor = 0;
     funds = 0;
     last_character = Some temp_character;
-    level = Normal;
   } in set_init_ch_movement x.player x
 
 let state = ref init_state

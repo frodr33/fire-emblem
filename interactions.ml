@@ -95,7 +95,7 @@ let rec penalty_helper (p: (stat * (int * int)) list) (s:stat) =
 let find_penalty (a: character) (s:stat) :int * int =
   match equipped a with
   |None -> (0, 0)
-  |Some x -> penalty_helper x.penalty s
+  |Some x -> penalty_helper x.penalty 
 
 let damage a d =
   match equipped a with
@@ -134,46 +134,46 @@ let in_range a d =
 let kill_xp a d =
   if d.ai = BossStay || d.ai = BossHunt then
     match a.level - d.level with
-    | 2 -> {a with exp = a.exp + 90}
-    | 3 -> {a with exp = a.exp + 80}
-    | 4 -> {a with exp = a.exp + 70}
-    | x -> if x > 4 then {a with exp = a.exp + 60}
-      else  {a with exp = a.exp + 100}
+    | 2 -> a.exp <- a.exp + 90
+    | 3 -> a.exp <- a.exp + 80
+    | 4 -> a.exp <- a.exp + 70
+    | x -> if x > 4 then a.exp <- a.exp + 60
+      else  a.exp <- a.exp + 100
   else
     match a.level - d.level with
-    | -4 -> {a with exp = a.exp + 60}
-    | -3 -> {a with exp = a.exp + 51}
-    | -2 -> {a with exp = a.exp + 43}
-    | -1 -> {a with exp = a.exp + 36}
-    |  0 -> {a with exp = a.exp + 30}
-    |  1 -> {a with exp = a.exp + 25}
-    |  2 -> {a with exp = a.exp + 19}
-    |  3 -> {a with exp = a.exp + 12}
-    |  4 -> {a with exp = a.exp + 4}
-    |  x -> if x > 4 then {a with exp = a.exp + 1}
-      else {a with exp = a.exp + 70}
+    | -4 -> a.exp <- a.exp + 60
+    | -3 -> a.exp <- a.exp + 51
+    | -2 -> a.exp <- a.exp + 43
+    | -1 -> a.exp <- a.exp + 36
+    |  0 -> a.exp <- a.exp + 30
+    |  1 -> a.exp <- a.exp + 25
+    |  2 -> a.exp <- a.exp + 19
+    |  3 -> a.exp <- a.exp + 12
+    |  4 -> a.exp <- a.exp + 4
+    |  x -> if x > 4 then a.exp <- a.exp + 1
+      else a.exp <- a.exp + 70
 
 let hit_xp a d =
   if d.ai = BossStay || d.ai = BossHunt then
     match a.level - d.level with
-    | 2 -> {a with exp = a.exp + 30}
-    | 3 -> {a with exp = a.exp + 27}
-    | 4 -> {a with exp = a.exp + 24}
-    | x -> if x > 4 then {a with exp = a.exp + 20}
-      else {a with exp = a.exp + 33}
+    | 2 -> a.exp <- a.exp + 30
+    | 3 -> a.exp <- a.exp + 27
+    | 4 -> a.exp <- a.exp + 24
+    | x -> if x > 4 then a.exp <- a.exp + 20
+      else a.exp <- a.exp + 33
   else
     match a.level - d.level with
-    | -4 -> {a with exp = a.exp + 20}
-    | -3 -> {a with exp = a.exp + 17}
-    | -2 -> {a with exp = a.exp + 14}
-    | -1 -> {a with exp = a.exp + 12}
-    |  0 -> {a with exp = a.exp + 10}
-    |  1 -> {a with exp = a.exp + 8}
-    |  2 -> {a with exp = a.exp + 6}
-    |  3 -> {a with exp = a.exp + 4}
-    |  4 -> {a with exp = a.exp + 1}
-    |  x -> if x > 4 then {a with exp = a.exp + 1}
-      else {a with exp = a.exp + 23}
+    | -4 -> a.exp <- a.exp + 20
+    | -3 -> a.exp <- a.exp + 17
+    | -2 -> a.exp <- a.exp + 14
+    | -1 -> a.exp <- a.exp + 12
+    |  0 -> a.exp <- a.exp + 10
+    |  1 -> a.exp <- a.exp + 8
+    |  2 -> a.exp <- a.exp + 6
+    |  3 -> a.exp <- a.exp + 4
+    |  4 -> a.exp <- a.exp + 1
+    |  x -> if x > 4 then a.exp <- a.exp + 1
+      else a.exp <- a.exp + 23
 
 let wexp_level_up c =
   match c with
@@ -209,33 +209,33 @@ let comp_outcome a t =
 let find_player_character t =
   if (fst t).allegiance = Player then fst t else snd t
 
-let award_xp () =
+let award_xp a d =
   let outcome = List.fold_left (fun a v -> comp_outcome a v) Miss !exp in
   let a = attacker in
   let d = defender in
   match outcome with
-  |Kill -> if !a.allegiance = Player then
-      a := kill_xp !a !d else d := kill_xp !d !a
-  |Hit -> if !a.allegiance = Player then
-      a := hit_xp !a !d else d := hit_xp !d !a
+  |Kill -> if a.allegiance = Player then
+    kill_xp a d else kill_xp d a
+  |Hit -> if a.allegiance = Player then
+    hit_xp a d else hit_xp d a
   |Miss -> ()
 
 let award_levels t =
   (level_up (fst t), level_up (snd t))
 
-let resolveE (a : character ref) (d : character ref) =
-  if (!a.eqp = -1) then ()
-  else if (get_rng () + get_rng())/2 > !a.hit - !d.avoid then
-    !a.inv.(!a.eqp) <- (use (!a.inv.(!a.eqp)))
-  else (if get_rng () < !a.crit - (!d.lck * 2) then d := update_health !d (3 * (damage !a !d))
-        else d := update_health !d (damage !a !d));
-  if fst !d.health = 0 || fst !a.health = 0 then
+let resolveE a d =
+  if (a.eqp = -1) then ()
+  else if (get_rng () + get_rng())/2 > a.hit - d.avoid then
+    a.inv.(a.eqp) <- (use (a.inv.(a.eqp)))
+  else (if get_rng () < a.crit - (d.lck * 2) then (update_health d (3 * (damage !a !d)))
+        else update_health d (damage a d))
+  if fst d.health = 0 || fst a.health = 0 then
     Queue.clear combatQ;
-  if fst !d.health = 0 && !a.allegiance = Player then
+  if fst d.health = 0 && a.allegiance = Player then
     exp := (Kill :: !exp);
-  if fst !d.health != 0 && !a.allegiance = Player then
+  if fst d.health != 0 && a.allegiance = Player then
     exp := (Hit :: !exp);
-  !a.inv.(!a.eqp) <- (use (!a.inv.(!a.eqp)))
+  a.inv.(a.eqp) <- (use (a.inv.(a.eqp)))
 
 let rec resolveQ () =
   if Queue.is_empty combatQ then () else
@@ -244,25 +244,23 @@ let rec resolveQ () =
     resolveQ ()
 
 let combat a d =
-  attacker := a;
-  defender := d;
-  let new_a_speed_atk = a.spd + fst (find_penalty a Spd) in
+    let new_a_speed_atk = a.spd + fst (find_penalty a Spd) in
   let new_a_speed_def = a.spd + snd (find_penalty a Spd) in
   let new_d_speed_atk = d.spd + fst (find_penalty d Spd) in
   let new_d_speed_def = d.spd + snd (find_penalty d Spd) in
   let double = new_a_speed_atk > new_d_speed_def + 5 in
   let redouble = new_d_speed_atk > new_a_speed_def + 5 in
-  Queue.add (attacker, defender) combatQ;
+  Queue.add (a, d) combatQ;
   let counter = in_range d a in
-  if counter then Queue.add (defender, attacker) combatQ;
-  if double then Queue.add (attacker, defender) combatQ
-  else if counter && redouble then Queue.add (defender, attacker) combatQ;
+  if counter then Queue.add (d, a) combatQ;
+  if double then Queue.add (a, d) combatQ
+  else if counter && redouble then Queue.add (d, a) combatQ;
   resolveQ ();
-  award_xp ();
+  award_xp a d;
   award_wexp a;
   award_wexp d;
-  (!attacker |> level_up |> update_character,
-   !defender |> level_up |> update_character)
+  a |> level_up |> update_character;
+  d |> level_up |> update_character
 
 let remove_item ilst s =
   List.fold_left (fun a v -> if v = s then a else v::a) [] ilst
@@ -276,7 +274,8 @@ let heal a t i =
   |Some x ->
     let heal_amount = - (a.mag + x.mgt) in
   a.inv.(i) <- use a.inv.(i);
-  (level_up {a with exp = a.exp + 12}, (update_health t heal_amount))
+  level_up (a.exp <- a.exp + 12);
+  update_health t heal_amount
 
 
 let consumable a i =
@@ -295,7 +294,6 @@ let chest c t i =
 let door c t i =
   if t = Door then c.inv.(i) <- use c.inv.(i)
 
-
 let village c t =
   match t with
   |Village (Some x) -> add_item c x
@@ -305,4 +303,4 @@ let village c t =
 let trade c1 c2 i1 i2 =
   let temp = c1.inv.(i1) in
   c1.inv.(i1) <- c2.inv.(i2);
-  c2.inv.(i2) <- temp;
+  c2.inv.(i2) <- temp

@@ -17,26 +17,26 @@ val make_char : string -> class' -> (stat * int) list -> (stat * int) list -> in
   int -> int -> int -> item option list -> string list ->
   (string * char) list -> (wtype * char * int) list -> ai -> difficulty -> int * int -> character
 (** [stat_up] increases a stat by a certain amount*)
-val stat_up : character -> stat -> int -> character
+val stat_up : character -> stat -> int -> unit
 
 (** level_up returns the character with its level increased and stats
  *  incremented.*)
 
-val level_up : character -> character
+val level_up : character -> unit
 
 (**[update_health ch] will return the character [ch] with its health incremented*)
 
-val update_health : character -> int -> character
+val update_health : character -> int -> unit
 
 (** [promote ch] returns the character [ch] after a promotion.*)
 (*val promote : character -> character*)
 
-val update_character : character -> character
+val update_character : character -> unit
 
 val add_item : character -> item -> unit
 
-val remove_item : character -> int -> character
+val remove_item : character -> int -> unit
 
-val move_to_top : character -> int -> character
+val move_to_top : character -> int -> unit
 
 (*val equippable : character -> item -> bool*)

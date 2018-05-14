@@ -2,7 +2,7 @@ open Types
 
 let rec cap lst s =
   match lst with
-  |[]   -> failwith "Nonexistant stat"
+  |[]   -> 100
   |h::t -> if fst h = s then snd h else cap t s
 
 let equipped c =
@@ -49,38 +49,38 @@ let stat_up (c:character) s i =
   match s with
   |Health ->
     let from_cap = 60 - snd c.health in
-    if from_cap < i then {c with health = ((fst c.health) + from_cap,
-                                           (snd c.health) + from_cap)}
+    if from_cap < i then c.health <- ((fst c.health) + from_cap,
+                                      (snd c.health) + from_cap)
     else
-    {c with health = ((fst c.health) + i, (snd c.health) + i)}
+    c.health <- ((fst c.health) + i, (snd c.health) + i)
   |Str ->
     let str = c.str + i in
     let cap_str = cap c.caps Str in
-    if str > cap_str then {c with str = cap_str} else {c with str = str}
+    if str > cap_str then c.str <- cap_str else c.str <- str
   |Mag ->
     let mag = c.mag + i in
     let cap_mag = cap c.caps Mag in
-    if mag > cap_mag then {c with mag = cap_mag} else {c with mag = mag}
+    if mag > cap_mag then c.mag <- cap_mag else c.mag <- mag
   |Def ->
     let def = c.def + i in
     let cap_def = cap c.caps Def in
-    if def > cap_def then {c with def = cap_def} else {c with def = def}
+    if def > cap_def then c.def <- cap_def else c.def <- def
   |Spd ->
     let spd = c.spd + i in
     let cap_spd = cap c.caps Spd in
-    if spd > cap_spd then {c with spd = cap_spd} else {c with spd = spd}
+    if spd > cap_spd then c.spd <- cap_spd else c.spd <- spd
   |Res ->
     let res = c.res + i in
     let cap_res = cap c.caps Res in
-    if res > cap_res then {c with res = cap_res} else {c with res = res}
+    if res > cap_res then c.res <- cap_res else c.res <- res
   |Skl ->
     let skl = c.skl + i in
     let cap_skl = cap c.caps Skl in
-    if skl > cap_skl then {c with skl = cap_skl} else {c with skl = skl}
+    if skl > cap_skl then c.skl <- cap_skl else c.skl <- skl
   |Lck ->
     let lck = c.lck + i in
     let cap_lck = cap c.caps Lck in
-    if lck > cap_lck then {c with lck = cap_lck} else {c with lck = lck}
+    if lck > cap_lck then c.lck <- cap_lck else c.lck <- lck
 
 (**
  *  [level_up_h c g] takes a list of stat growths, [g], and a character, [c] and
@@ -92,7 +92,7 @@ let stat_up (c:character) s i =
 *)
 let rec level_up_h c g =
   match g with
-  |[]   -> c
+  |[]   -> ()
   |h::t ->
     if let rng = Random.int 100 in
       snd h > rng
@@ -105,9 +105,9 @@ let rec level_up_h c g =
  *  requires: [c] is a valid character
 *)
 let level_up c =
-  if c.exp >= 100 then {(level_up_h c c.growths) with exp = c.exp - 100;
-                                                      level = c.level + 1}
-  else c
+  if c.exp >= 100 then (level_up_h c c.growths; c.exp <- c.exp - 100;
+                                                c.level <- c.level + 1)
+  else ()
 
 (** [update_health c i] returns [c] with its health lowered by [i]. If [c]'s
  *  health would have gone over it's max health or under 0 then set it to max
@@ -115,27 +115,23 @@ let level_up c =
  *  requires: [c] and [i] are valid characters and int respectively
 *)
 let update_health (c:character) i =
-  if i >= fst c.health then {c with health = 0, snd c.health}
-  else if fst c.health - i > snd c.health then {c with health = (snd c.health, snd c.health)}
-  else {c with health = (fst c.health - i), snd c.health}
+  if i >= fst c.health then c.health <- (0, snd c.health);
+  if fst c.health - i > snd c.health then c.health <- (snd c.health, snd c.health)
+  else c.health <- (fst c.health - i), snd c.health
 
-
-let discard_item a = failwith "unimplemented"
 (** [add_item c i] adds an item [i] to [c]'s inventory.
  *  requires:
  *  - [c] is a valid character
     - [i] is a valid item
 *)
 let rec add_helper a i n =
-  if n = 5 then discard_item a else
+  if n = 5 then () else
   match a.(n) with
   |Some x -> add_helper a i (n + 1)
   |None -> a.(n) <- Some i
 
 let add_item c i =
   add_helper c.inv i 0
-
-(*let promote = failwith "Unimplemented"*)
 
 (** [update_character c] updates a characters values to be correct. If the
  *  character has > 100 xp, it will level it up. If the character has too
@@ -144,40 +140,37 @@ let add_item c i =
  *  requires: [c] is a character
 *)
 let rec update_character c =
-  if c.exp > 100 then update_character (level_up c)
-  else if fst c.health < 0 then update_character {c with health = (0, snd c.health)}
-  else if fst c.health > snd c.health then update_character {c with health = (snd c.health, snd c.health)}
-  else
-    let e = equip_id c 0 in
-    let calc_hit c =
-      if e = -1 then 0 else
-      match c.inv.(e) with
-      |None -> 0
-      |Some x -> x.acc + 2 * c.skl + c.lck
-    in
-    let calc_atk c =
-      if e = -1 then 0 else
-      match c.inv.(e) with
-      |None -> 0
-      |Some x -> if c.class' = Mage then x.mgt + c.mag else x.mgt + c.str
-    in
-    let calc_crit c =
-      if e = -1 then 0 else
-      match c.inv.(e) with
-      |None -> 0
-      |Some x -> x.crit + (c.lck / 2)
-    in
-    let calc_avoid c = c.spd + c.lck in
-    c.hit <- (calc_hit c);
-    c.atk <- calc_atk c;
-    c.crit <- calc_crit c;
-    c.avoid <- calc_avoid c;
-    c.eqp <- e;
-    c
+  if c.exp > 100 then update_character (level_up c);
+  if fst c.health < 0 then update_character (c.health <- (0, snd c.health));
+  if fst c.health > snd c.health then update_character (c.health <- (snd c.health, snd c.health));
+  let e = equip_id c 0 in
+  let calc_hit =
+    if e = -1 then 0 else
+    match c.inv.(e) with
+    |None -> 0
+    |Some x -> x.acc + 2 * c.skl + c.lck
+  in
+  let calc_atk =
+    if e = -1 then 0 else
+    match c.inv.(e) with
+    |None -> 0
+    |Some x -> if c.class' = Mage then x.mgt + c.mag else x.mgt + c.str
+  in
+  let calc_crit =
+    if e = -1 then 0 else
+    match c.inv.(e) with
+    |None -> 0
+    |Some x -> x.crit + (c.lck / 2)
+  in
+  let calc_avoid = c.spd + c.lck in
+  c.hit <- calc_hit;
+  c.atk <- calc_at;
+  c.crit <- calc_crit;
+  c.avoid <- calc_avoid;
+  c.eqp <- e
 
 let rec remove_item a i =
-  a.inv.(i) <- None;
-  a
+  a.inv.(i) <- None
 
 let move_to_top a i =
   let temp = a.inv.(0) in
@@ -223,4 +216,5 @@ let make_char n cl grth cps lv xp hp all str mag def spd res skl lck mov con
     attackable = [];
     direction = North
   } in
-  update_character c
+  update_character c;
+  c 

@@ -21,16 +21,16 @@ open Types
   * that details how much each player heals. Generally the healer doesnt heal
   * but with some skills maybe both targets will heal. Its just there in case.*)
 
-  val heal : character -> character -> int -> character * character
+  val heal : character -> character -> int -> unit
 
 (** consumable takes a character and returns that character with its stats
  *  accordingly.*)
 
-  val consumable : character -> int -> character
+  val consumable : character -> int -> unit
 
   (** loot a chest.*)
 
-  val chest : character -> terrain -> int -> character
+  val chest : character -> terrain -> int -> unit
 
   (** open a door.*)
 
@@ -38,7 +38,7 @@ open Types
 
   (** visits a village*)
 
-  val village : character -> terrain -> character
+  val village : character -> terrain -> unit
 
 
   val trade : character -> character -> int -> int -> unit

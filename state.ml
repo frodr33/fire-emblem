@@ -449,17 +449,17 @@ let do' s =
                                    menu_active = false;
                                    menu_cursor = 0}
                 |"Visit" -> if village_checker s
-                  then let _ = village ch s.active_tile.ground;
+                  (then let _ = village ch s.active_tile.ground;
                                ch.stage <- Done in
-                  ignore (village ch s.active_tile.ground);
+                  village ch s.active_tile.ground;
                   {s with active_unit = None;
                           menu_active = false;
                           menu_cursor = 0;
-                  }
+                  })
                   else s
                 |"Open" -> let chestable = chest_checker s in
                 if fst chestable then (ch.stage <-Done;
-                  ignore (chest ch s.active_tile.ground (snd chestable));
+                  chest ch s.active_tile.ground (snd chestable);
                                       {s with active_unit = None;
                                               menu_active = false;
                                               menu_cursor = 0
@@ -474,22 +474,22 @@ let do' s =
             |AttackInventory -> begin
                 match s.current_menu.options.(s.menu_cursor) with
                 |"" -> s
-                |_ -> (ignore(move_to_top ch s.menu_cursor));{s with menu_active=false;menu_cursor=0}
+                |_ -> (move_to_top ch s.menu_cursor;{s with menu_active=false;menu_cursor=0})
               end
             |Item -> begin
               match s.current_menu.options.(s.menu_cursor) with
               |"Equip/Use" -> begin
                   let item = extract (ch.inv.(s.active_item)) in
                  match item.wtype with
-                 |Potion-> ignore (consumable ch s.active_item);
+                 |Potion-> consumable ch s.active_item;
                    {s with active_unit = None;
                            menu_active = false;
                            menu_cursor = 0}
-                 |_ -> if equippable ch item then (ignore (move_to_top ch s.active_item); {s with current_menu = create_inventory_menu ch;
+                 |_ -> if equippable ch item then (move_to_top ch s.active_item; {s with current_menu = create_inventory_menu ch;
                                                                                                   menu_cursor = 0;}) else s
               end
               |"Discard" -> begin
-                ignore (remove_item ch s.active_item);
+                remove_item ch s.active_item;
                 {s with current_menu = create_inventory_menu ch;
                         menu_cursor = 0}
               end
@@ -504,11 +504,10 @@ let do' s =
             |Confirm->  begin  let _ = attacking := true in
             let ch = extract s.active_unit in ch.stage<-Done;
             let e  = extract s.active_tile.c in
-            let damage = combat ch e in
+            damage = combat ch e;
             {s with active_unit = None;
                     menu_active = false;
                     menu_cursor = 0}
-            |> replace (fst damage) |> replace (snd damage)
               end
             |_ -> s
         end

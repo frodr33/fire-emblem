@@ -211,8 +211,6 @@ let find_player_character t =
 
 let award_xp a d =
   let outcome = List.fold_left (fun a v -> comp_outcome a v) Miss !exp in
-  let a = attacker in
-  let d = defender in
   match outcome with
   |Kill -> if a.allegiance = Player then
     kill_xp a d else kill_xp d a

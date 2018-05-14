@@ -905,6 +905,39 @@ let draw_inv_back context =
 let draw_inventory context state = 
   draw_inv_back context
 
+(*********************************************************)
+(********************** Draw Enemies *********************)
+(*********************************************************)
+
+let draw_archer context enemy = 
+  match ((!sync)) with
+  | true -> 
+    let img = Html.createImg document in
+    let (x,y) = enemy.location in
+    img##src <- js "Sprites/EnemySprites/Enemy_Archer_NE.png";
+    context##drawImage_full (img, 20., 11., 26., 26., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 22.)
+  | false ->
+    let img = Html.createImg document in
+    let (x,y) = enemy.location in
+    img##src <- js "Sprites/EnemySprites/Enemy_Archer_E.png";
+    context##drawImage_full (img, 16., 18., 26., 26., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 28.)
+  | _ -> ()
+
+
+let rec draw_enemies_helper context enemy_lst = 
+  match enemy_lst with
+  | [] -> ()
+  | enemy::t -> 
+    match enemy.name with
+    | "Archer" -> 
+      draw_archer context enemy;
+      draw_enemies_helper context t
+    | "Boss" -> ()
+    | "Swordsman" -> ()
+    | _ -> ()
+
+let draw_enemies context state = 
+  draw_enemies_helper context state.enemies
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
@@ -926,4 +959,5 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   draw_sidebar context state;
   draw_attack_menu context state;
   draw_inventory context state;
+  draw_enemies context state;
   clock ();

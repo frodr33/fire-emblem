@@ -224,7 +224,7 @@ let make_mage loc =
      is_attacking=false;
    } in Characters.update_character mg
 
-   let make_rangedboss loc =
+let make_rangedboss (loc : int*int) =
      let arch =
        {
         name = "Archer Boss";
@@ -262,7 +262,9 @@ let make_mage loc =
         attackable = [];
         direction= South;
         is_attacking=false;
-      } in Characters.update_character arch
+      } in
+     Characters.update_character arch;
+     arch
 
    let make_meleeboss loc =
     let swd =

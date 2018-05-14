@@ -3,6 +3,7 @@ open State
 open Types
 open Room
 open Command
+open Charactermaker
 
 module Html = Dom_html
 let js = Js.string (* partial function, takes in string *)
@@ -212,6 +213,8 @@ let rec set_init_ch_movement playerlst st =
 (* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
+let temp_enemy = (make_rangedboss (8,5))
+
 let init_state =
   let x =
   {
@@ -223,7 +226,7 @@ let init_state =
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};
     active_unit = None;
     active_item = -1;
-    act_map = add_init_characters [temp_character;enemy_1] Room.map1;
+    act_map = add_init_characters [temp_character;temp_enemy] Room.map1;
     menus = [];
     current_menu = unit_menu;
     menu_active = false;

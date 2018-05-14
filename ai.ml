@@ -227,8 +227,8 @@ let rec attack_inrange m (c : character) (lst : character list) =
     |(x,y), (a, b)->
       if c.eqp > -1 then
         (let ar = attack_range c in
-         if List.exists (fun (q, r) -> q = x && r = b) ar = true then
-           ignore (combat h c)
+         if List.exists (fun (q, r) -> q = x && r = y) ar = true then
+           ignore (combat c h)
          else
            attack_inrange m c t)
       else

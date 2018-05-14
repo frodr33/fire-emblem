@@ -2,8 +2,8 @@ open Types
 open State
 open Interactions
 
-let canvas_width = 546. 
-let canvas_height = 468. 
+let canvas_width = 546.
+let canvas_height = 468.
 
 module Html = Dom_html
 let js = Js.string
@@ -18,7 +18,7 @@ let midattack = ref false
 (*********************************************************)
 
 (* [tile_to_img_mapping obj] returns the image source
- * as a Js.string directiory location of the 
+ * as a Js.string directiory location of the
  * associated tile *)
 let tile_to_img_mapping (tile : tile) =
   match tile.tile_type with
@@ -127,7 +127,7 @@ let draw_sprite img_src context (sx, sy) (sw, sh) (x,y) =
 
 (* [draw_lyn context character] draws the proper sprite configuration
  * for the character lyn based on the character's direction and stage
- * fields. Also accounts for animation by using the sync gloal 
+ * fields. Also accounts for animation by using the sync gloal
  * reference which allows switching between sprites  *)
 let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
   let img = js "Sprites/lynsheet.png" in
@@ -164,7 +164,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end
-      | Done when !attacking=true-> begin
+      | Done when character.is_attacking=true-> begin
         match ((!sync)) with
         | true->
             let sprite_coordinate = (463., 419.) in
@@ -179,9 +179,9 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let (x,y) = character.location in
             let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate;if !moved_forward = true then
-              (moved_forward:=false;attacking:=false) else ()
+              (moved_forward:=false;attacking:=false;character.is_attacking<-false) else ()
       end
-      | Done when !attacking=false -> begin
+      | Done when character.is_attacking=false -> begin
         match ((!sync)) with
         | true ->
             let sprite_coordinate = (417., 400.) in
@@ -230,7 +230,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end
-      | Done when !attacking = true ->begin
+      | Done when character.is_attacking = true ->begin
         match ((!sync)) with
         | true->
             let sprite_coordinate = (418., 442.) in
@@ -244,9 +244,9 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let (x,y) = character.location in
             let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate;if !moved_forward = true then
-              (moved_forward:=false;attacking:=false) else ()
+              (moved_forward:=false;attacking:=false;character.is_attacking<-false) else ()
       end
-      | Done when !attacking = false-> begin
+      | Done when character.is_attacking = false-> begin
         match ((!sync)) with
         | true ->
             let sprite_coordinate = (417., 400.) in
@@ -295,7 +295,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate
         end
-      | Done when !attacking = true-> begin
+      | Done when character.is_attacking = true-> begin
         match ((!sync)) with
         | true->
             let sprite_coordinate = (419., 461.) in
@@ -309,9 +309,9 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
             let (x,y) = character.location in
             let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate;if !moved_forward = true then
-              (moved_forward:=false;attacking:=false) else ()
+              (moved_forward:=false;attacking:=false;character.is_attacking<-false) else ()
         end
-      | Done when !attacking = false-> begin
+      | Done when character.is_attacking = false-> begin
         match ((!sync)) with
         | true ->
             let sprite_coordinate = (417., 400.) in
@@ -346,9 +346,9 @@ let draw_player (context: Html.canvasRenderingContext2D Js.t) character_list =
 (***************** Menu Drawing Functions ****************)
 (*********************************************************)
 
-(* [draw_back_1 context] draws the background for a 
+(* [draw_back_1 context] draws the background for a
  * menu of size 1  *)
-let draw_back_1 context = 
+let draw_back_1 context =
   let x = 281. in
   let y = 26. in
   let rec ys x y =
@@ -358,12 +358,12 @@ let draw_back_1 context =
       img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 26. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y  
-  
-(* [draw_text_1 context str_arr] draws the outer white 
- * rectangle around the menu and text in str_arr 
+  ys x y
+
+(* [draw_text_1 context str_arr] draws the outer white
+ * rectangle around the menu and text in str_arr
  * on a menu of size 1 *)
-let draw_text_1 context str_arr = 
+let draw_text_1 context str_arr =
   context##strokeStyle <- js "white";
   context##font <- js "16px sans-serif";
   context##strokeRect (280., 26. ,110.,30.);
@@ -373,9 +373,9 @@ let draw_text_1 context str_arr =
     position := !position +. 25.
   done
 
-(* [draw_back_2 context] draws the background for a 
+(* [draw_back_2 context] draws the background for a
  * menu of size 2  *)
-let draw_back_2 context = 
+let draw_back_2 context =
   let x = 281. in
   let y = 26. in
   let rec ys x y =
@@ -385,12 +385,12 @@ let draw_back_2 context =
       img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 52. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y  
-  
-(* [draw_text_2 context str_arr] draws the outer white 
- * rectangle around the menu and text in str_arr 
+  ys x y
+
+(* [draw_text_2 context str_arr] draws the outer white
+ * rectangle around the menu and text in str_arr
  * on a menu of size 2 *)
-let draw_text_2 context str_arr = 
+let draw_text_2 context str_arr =
   context##strokeStyle <- js "white";
   context##font <- js "16px sans-serif";
   context##strokeRect (280., 26. ,110.,56.);
@@ -400,9 +400,9 @@ let draw_text_2 context str_arr =
     position := !position +. 25.
   done
 
-(* [draw_back_4 context] draws the background for a 
+(* [draw_back_4 context] draws the background for a
  * menu of size 4  *)
-let draw_back_4 context = 
+let draw_back_4 context =
   let x = 281. in
   let y = 26. in
   let rec ys x y =
@@ -412,12 +412,12 @@ let draw_back_4 context =
       img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 104. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y  
-  
-(* [draw_text_4 context str_arr] draws the outer white 
- * rectangle around the menu and text in str_arr 
+  ys x y
+
+(* [draw_text_4 context str_arr] draws the outer white
+ * rectangle around the menu and text in str_arr
  * on a menu of size 4 *)
-let draw_text_4 context str_arr = 
+let draw_text_4 context str_arr =
   context##strokeStyle <- js "white";
   context##font <- js "16px sans-serif";
   context##strokeRect (280., 26. ,110.,108.);
@@ -427,9 +427,9 @@ let draw_text_4 context str_arr =
     position := !position +. 25.
   done
 
-(* [draw_back_5 context] draws the background for a 
+(* [draw_back_5 context] draws the background for a
  * menu of size 5  *)
-let draw_back_5 context = 
+let draw_back_5 context =
   let x = 281. in
   let y = 26. in
   let rec ys x y =
@@ -439,12 +439,12 @@ let draw_back_5 context =
       img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 130. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y  
-  
-(* [draw_text_5 context str_arr] draws the outer white 
- * rectangle around the menu and text in str_arr 
+  ys x y
+
+(* [draw_text_5 context str_arr] draws the outer white
+ * rectangle around the menu and text in str_arr
  * on a menu of size 5 *)
-let draw_text_5 context str_arr = 
+let draw_text_5 context str_arr =
   context##strokeStyle <- js "white";
   context##font <- js "16px sans-serif";
   context##strokeRect (280., 26. ,110.,134.);
@@ -454,9 +454,9 @@ let draw_text_5 context str_arr =
     position := !position +. 25.
   done
 
-(* [draw_back_6 context] draws the background for a 
+(* [draw_back_6 context] draws the background for a
  * menu of size 6  *)
-let draw_back_6 context = 
+let draw_back_6 context =
   let x = 281. in
   let y = 26. in
   let rec ys x y =
@@ -466,12 +466,12 @@ let draw_back_6 context =
       img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 156. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y  
-  
-(* [draw_text_6 context str_arr] draws the outer white 
- * rectangle around the menu and text in str_arr 
+  ys x y
+
+(* [draw_text_6 context str_arr] draws the outer white
+ * rectangle around the menu and text in str_arr
  * on a menu of size 6 *)
-let draw_text_6 context str_arr = 
+let draw_text_6 context str_arr =
   context##strokeStyle <- js "white";
   context##font <- js "16px sans-serif";
   context##strokeRect (280., 26. ,110.,161.);
@@ -481,9 +481,9 @@ let draw_text_6 context str_arr =
     position := !position +. 25.
   done
 
-(* [draw_back_7 context] draws the background for a 
+(* [draw_back_7 context] draws the background for a
  * menu of size 7  *)
-let draw_back_7 context = 
+let draw_back_7 context =
   let x = 281. in
   let y = 26. in
   let rec ys x y =
@@ -493,12 +493,12 @@ let draw_back_7 context =
       img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 182. then ys (x+.26.) 26. else ys x (y+.26.) in
-  ys x y  
-  
-(* [draw_text_7 context str_arr] draws the outer white 
- * rectangle around the menu and text in str_arr 
+  ys x y
+
+(* [draw_text_7 context str_arr] draws the outer white
+ * rectangle around the menu and text in str_arr
  * on a menu of size 7 *)
-let draw_text_7 context str_arr = 
+let draw_text_7 context str_arr =
   context##strokeStyle <- js "white";
   context##font <- js "16px sans-serif";
   context##strokeRect (280., 26. ,110.,186.);
@@ -508,39 +508,39 @@ let draw_text_7 context str_arr =
     position := !position +. 25.
   done
 
-(* [draw_1_menu context menu] draws the [menu] 
+(* [draw_1_menu context menu] draws the [menu]
  * of size 1 *)
-let draw_1_menu context menu = 
+let draw_1_menu context menu =
   draw_back_1 context;
   draw_text_1 context menu.options
 
-(* [draw_2_menu context menu] draws the [menu] 
+(* [draw_2_menu context menu] draws the [menu]
  * of size 2 *)
-let draw_2_menu context menu = 
+let draw_2_menu context menu =
   draw_back_2 context;
   draw_text_2 context menu.options
 
-(* [draw_4_menu context menu] draws the [menu] 
+(* [draw_4_menu context menu] draws the [menu]
  * of size 4 *)
-let draw_4_menu context menu = 
+let draw_4_menu context menu =
   draw_back_4 context;
   draw_text_4 context menu.options
 
-(* [draw_5_menu context menu] draws the [menu] 
+(* [draw_5_menu context menu] draws the [menu]
  * of size 5 *)
-let draw_5_menu context menu = 
+let draw_5_menu context menu =
   draw_back_5 context;
   draw_text_5 context menu.options
 
-(* [draw_6_menu context menu] draws the [menu] 
+(* [draw_6_menu context menu] draws the [menu]
  * of size 6 *)
-let draw_6_menu context menu = 
+let draw_6_menu context menu =
   draw_back_6 context;
   draw_text_6 context menu.options
 
-(* [draw_7_menu context menu] draws the [menu] 
+(* [draw_7_menu context menu] draws the [menu]
  * of size 7 *)
-let draw_7_menu context menu = 
+let draw_7_menu context menu =
   draw_back_7 context;
   draw_text_7 context menu.options
 
@@ -564,10 +564,10 @@ let menu_manager context state =
 
 (* [draw_health context health max_health x y] is the health bar
  * that apperas under the player. Health bar is calculated using
- * the percentage of health remaining out of max_health. x and y 
+ * the percentage of health remaining out of max_health. x and y
  * are coordinates that health bar will be drawn at *)
-let draw_health context health max_health x y = 
-  let hp = float_of_int health in 
+let draw_health context health max_health x y =
+  let hp = float_of_int health in
   let max_hp = float_of_int max_health in
   if  (hp = 0.) then ()
   else if  (hp <= max_hp *. 0.125) then
@@ -618,16 +618,16 @@ let draw_health context health max_health x y =
     for i = (x + 1) to (x + 24) do
       context##drawImage (img, float_of_int i, float_of_int y +. 1.);
     done
-  
-(* [draw_healthbar context chr_list] draws a health 
+
+(* [draw_healthbar context chr_list] draws a health
  * bar for all the characters inside [chr_list]. The
- * health bar will appear under the player and is 
- * either red, yellow, or green depending on the amount of 
+ * health bar will appear under the player and is
+ * either red, yellow, or green depending on the amount of
  * health left *)
-let rec draw_healthbar context chr_list = 
+let rec draw_healthbar context chr_list =
   match chr_list with
   | [] -> ()
-  | chr::t -> 
+  | chr::t ->
     let (x,y) = chr.location in
     let x' = x * 26 + 3 in
     let y' = y * 26 + 23 in
@@ -644,10 +644,10 @@ let rec draw_healthbar context chr_list =
 (****************** Draw Arrow Functions *****************)
 (*********************************************************)
 
-(* [draw_menu_arrow context state] draws the blue right 
- * facing error pointing to the current selection on a 
+(* [draw_menu_arrow context state] draws the blue right
+ * facing error pointing to the current selection on a
  * menu. Arrow is also animated using sync global reference*)
-let draw_menu_arrow context state = 
+let draw_menu_arrow context state =
   let img = Html.createImg document in
   img##src <- js "Sprites/arrow.png";
   if state.menu_active then
@@ -658,40 +658,40 @@ let draw_menu_arrow context state =
       | false -> context##drawImage (img, 273. ,32.)
     end
     | 1 -> begin
-      match ((!sync)) with 
+      match ((!sync)) with
       | true -> context##drawImage (img, 271. ,58.)
       | false -> context##drawImage (img, 273. ,58.)
-    end 
+    end
     | 2 -> begin
       match ((!sync)) with
       | true -> context##drawImage (img, 271. ,84.)
       | false -> context##drawImage (img, 273. ,84.)
-    end 
+    end
     | 3 -> begin
-      match ((!sync)) with 
+      match ((!sync)) with
       | true -> context##drawImage (img, 271. ,110.)
       | false -> context##drawImage (img, 273. ,110.)
-    end 
+    end
     | 4 -> begin
-      match ((!sync)) with 
+      match ((!sync)) with
       | true -> context##drawImage (img, 271. ,136.)
       | false -> context##drawImage (img, 273. ,136.)
-    end 
+    end
     | 5 -> begin
       match ((!sync)) with
       | true -> context##drawImage (img, 271. ,162.)
       | false -> context##drawImage (img, 273. ,162.)
-    end 
+    end
     | 6 -> begin
-      match ((!sync)) with 
+      match ((!sync)) with
       | true -> context##drawImage (img, 271. ,188.)
       | false -> context##drawImage (img, 273. ,188.)
-    end 
+    end
     | 7 -> begin
-      match ((!sync)) with 
+      match ((!sync)) with
       | true -> context##drawImage (img, 271. ,214.)
       | false -> context##drawImage (img, 273. ,214.)
-    end 
+    end
     | _ -> ()
   else ()
 
@@ -699,11 +699,11 @@ let draw_menu_arrow context state =
 (***************** Draw Dijsktra Squares *****************)
 (*********************************************************)
 
-(* [draw_dijkstra_blue context tile_lst] draws the blue 
+(* [draw_dijkstra_blue context tile_lst] draws the blue
  * moveable squares when in 'MoveSelect'. The blue tiles
- * in [tile_list] are made transparent and dispaly the 
+ * in [tile_list] are made transparent and dispaly the
  * moveable range of the player *)
-let rec draw_dijsktra_blue context tile_lst = 
+let rec draw_dijsktra_blue context tile_lst =
   match tile_lst with
   | [] -> ()
   | (x,y)::t ->
@@ -715,7 +715,7 @@ let rec draw_dijsktra_blue context tile_lst =
 
 (* [draw_dijsktra_red context tile_list] draws the red
  * squares around the blue moveable squares. *)
-let rec draw_dijsktra_red context tile_lst = 
+let rec draw_dijsktra_red context tile_lst =
   match tile_lst with
   | [] -> ()
   | (x,y)::t ->
@@ -731,13 +731,13 @@ let rec draw_dijsktra_red context tile_lst =
 let draw_dijsktra context st =
   match st.active_unit with
   | None -> ()
-  | Some chr -> 
+  | Some chr ->
       match chr.stage with
       | MoveSelect ->
         draw_dijsktra_blue context chr.movement;
         draw_dijsktra_red context chr.attackable
       | _ -> ()
-      
+
 
 (*********************************************************)
 (****************** Draw is player done ******************)
@@ -745,7 +745,7 @@ let draw_dijsktra context st =
 
 (* [draw_is_player_done context active_unit] draws a gray square
  * under a player that has just finished its turn  *)
-let draw_is_player_done context active_unit = 
+let draw_is_player_done context active_unit =
   match active_unit with
   | Some chr ->
       if chr.stage = Done then
@@ -762,10 +762,10 @@ let draw_is_player_done context active_unit =
 
 (* [draw_attack_helper context lst] is draws the attack squares
  * given a list [lst] of squares *)
-let rec draw_attack_helper context lst = 
+let rec draw_attack_helper context lst =
   match lst with
   | [] -> ()
-  | (x,y)::t -> 
+  | (x,y)::t ->
     let img = Html.createImg document in
     img##src <- js "Sprites/red.png";
     context##globalAlpha <- 0.6;
@@ -773,9 +773,9 @@ let rec draw_attack_helper context lst =
     draw_attack_helper context t
 
 (* [draw_attack_sqaures context active_unit] draws the attack
- * squares of the active_unit if the active unit is a player and 
+ * squares of the active_unit if the active unit is a player and
  * if that player is currently in the 'AttackSelect' stage.  *)
-let draw_attack_squares context active_unit= 
+let draw_attack_squares context active_unit=
   match active_unit with
   | Some chr ->
     if chr.stage = AttackSelect then
@@ -790,9 +790,9 @@ let draw_attack_squares context active_unit=
 (*********************************************************)
 
 (* [find_drawpoint_name context name] finds the correct x
- * value to display the string [name]. This allows [name] 
+ * value to display the string [name]. This allows [name]
  * to be centered on the sidebar *)
-let find_drawpoint_name context name = 
+let find_drawpoint_name context name =
   let len = String.length name in
   let x = 455. in (* Default val *)
   if len < 4 then x
@@ -802,7 +802,7 @@ let find_drawpoint_name context name =
   else if len = 7 then x -. 14.
   else if len = 8 then x -. 18.
   else if len = 9 then x -. 22.
-  else if len = 10 then x -. 26.  
+  else if len = 10 then x -. 26.
   else if len = 11 then x -. 30.
   else if len = 12 then x -. 34.
   else if len = 13 then x -. 38.
@@ -810,11 +810,11 @@ let find_drawpoint_name context name =
   else if len = 15 then x -. 46.
   else if len = 16 then x -. 50.
   else if len = 17 then x -. 54.
-  else 390. 
+  else 390.
 
-(* [draw_sidebar_back context]  draws the background for 
+(* [draw_sidebar_back context]  draws the background for
  * the side bar *)
-let draw_sidebar_back context = 
+let draw_sidebar_back context =
   for i = 15 to 20 do
     for j = 0 to 14 do
       let img = Html.createImg document in
@@ -825,25 +825,25 @@ let draw_sidebar_back context =
 
 (* [draw_sidebar_title context state] draws the last characters
  * name on the side bar *)
-let draw_sidebar_title context state = 
+let draw_sidebar_title context state =
   match state.last_character with
-  | Some chr -> 
+  | Some chr ->
     context##strokeStyle <- js "white";
     context##font <- js "16px sans-serif";
     let x = find_drawpoint_name context (chr.name) in
     context##strokeText (js (chr.name), x, 26.);
   | None -> ()
 
-(* [draw_lyn_face context] draws lyn face on the sidebar if 
+(* [draw_lyn_face context] draws lyn face on the sidebar if
  * lyn was the last character *)
-let draw_lyn_face context = 
+let draw_lyn_face context =
   let img = Html.createImg document in
   img##src <- js "Sprites/lyn.png";
   context##drawImage (img, 416., 52.)
 
-(* [draw_sidebar_face context state] draws the face of the 
+(* [draw_sidebar_face context state] draws the face of the
  * last character *)
-let draw_sidebar_face context state = 
+let draw_sidebar_face context state =
   match state.last_character with
   | Some chr ->
     if chr.name = "Lyn" then draw_lyn_face context
@@ -853,7 +853,7 @@ let draw_sidebar_face context state =
 (* [draw_sidebar_stats context state] draws all the stats for last character
  * on the sidebar. The stats drawn are based on the fields of the character
  * type. *)
-let draw_sidebar_stats context state = 
+let draw_sidebar_stats context state =
   match state.last_character with
   | Some chr ->
     let hp = (string_of_int (fst chr.health)) ^ "/" ^ (string_of_int (snd chr.health)) in
@@ -878,10 +878,10 @@ let draw_sidebar_stats context state =
     context##strokeText (js ("avoid : " ^ string_of_int (chr.avoid)) , 475., 315.)
   | None -> ()
 
-(* [draw_sidebar context state] Draws the side bar which 
- * contains information of the last character, such as name, 
+(* [draw_sidebar context state] Draws the side bar which
+ * contains information of the last character, such as name,
  * face, health, and other stats *)
-let draw_sidebar context state = 
+let draw_sidebar context state =
   draw_sidebar_back context;
   draw_sidebar_title context state;
   draw_sidebar_face context state;
@@ -892,9 +892,9 @@ let draw_sidebar context state =
 (******************** Draw Attack Menu *******************)
 (*********************************************************)
 
-(* [draw_attack_back context] draws the background for 
+(* [draw_attack_back context] draws the background for
  * the attack menu *)
-let draw_attack_back context = 
+let draw_attack_back context =
   let x = 281. in
   let y = 304. in
   let rec ys x y =
@@ -904,11 +904,11 @@ let draw_attack_back context =
       img##src <- js "Sprites/databackground.png";
       context##drawImage (img, x,y);
       if y = 356. then ys (x+.26.) 304. else ys x (y+.26.) in
-  ys x y  
+  ys x y
 
-(* [draw_player_stats context player enemy] draws the stats of 
+(* [draw_player_stats context player enemy] draws the stats of
  * the [player] and [enemy] on the attack background *)
-let draw_player_stats context player enemy = 
+let draw_player_stats context player enemy =
   context##font <- js "13px sans-serif";
   let hp = (string_of_int (fst (player.health))) ^ "/" ^ (string_of_int (snd (player.health))) in
   let hp_enm = (string_of_int (fst (enemy.health))) ^ "/" ^ (string_of_int (snd (enemy.health))) in
@@ -921,13 +921,13 @@ let draw_player_stats context player enemy =
   context##strokeText (js ("Hp: " ^ hp_enm), 320., 340.);
   context##strokeText (js ("Dam: " ^ (string_of_int enemy_damage)), 340., 360.)
 
-(* [draw_attack_menu context state] draws the attack menu 
+(* [draw_attack_menu context state] draws the attack menu
  * which shows the user the health of the current player and
  * enemy as well as the damage each will do to each other.
- * The attack 'menu' is only drawn when the active_unit 
- * is in 'AttackSelect' and when the confirm menu is also 
+ * The attack 'menu' is only drawn when the active_unit
+ * is in 'AttackSelect' and when the confirm menu is also
  * up *)
-let draw_attack_menu context state = 
+let draw_attack_menu context state =
   match state.active_unit with
   | Some chr -> begin
     match chr.stage, state.active_tile.c with
@@ -935,7 +935,7 @@ let draw_attack_menu context state =
       if state.current_menu <> confirm_menu then ()
       else
         begin
-        draw_attack_back context; 
+        draw_attack_back context;
         context##strokeStyle <- js "white";
         context##strokeRect (280.,304. ,110.,82.);
         draw_player_stats context chr enemy;
@@ -951,7 +951,7 @@ let draw_attack_menu context state =
 (*********************************************************)
 
 (* [draw_inv_back context] draws the background of the inv *)
-let draw_inv_back context = 
+let draw_inv_back context =
   let x = 0. in
   let y = 390. in
   let rec ys x y =
@@ -961,12 +961,12 @@ let draw_inv_back context =
       img##src <- js "Sprites/sidebarback.png";
       context##drawImage (img, x,y);
       if y = 468. then ys (x+.26.) 390. else ys x (y+.26.) in
-  ys x y 
+  ys x y
 
-(* [draw_inventory context state] draws the inventory 
+(* [draw_inventory context state] draws the inventory
  * on the bottom of the screen with pictures/text associated
  * with each item in the inventory *)
-let draw_inventory context state = 
+let draw_inventory context state =
   draw_inv_back context
 
 (*********************************************************)
@@ -975,9 +975,9 @@ let draw_inventory context state =
 
 (* [draw_arhcer context enemy] draws the archer
  * [enemy] on the gui. Also accounts for animation *)
-let draw_archer context enemy = 
+let draw_archer context enemy =
   match ((!sync)) with
-  | true -> 
+  | true ->
     let img = Html.createImg document in
     let (x,y) = enemy.location in
     img##src <- js "Sprites/EnemySprites/Enemy_Archer_NE.png";
@@ -987,12 +987,12 @@ let draw_archer context enemy =
     let (x,y) = enemy.location in
     img##src <- js "Sprites/EnemySprites/Enemy_Archer_E.png";
     context##drawImage_full (img, 16., 18., 26., 26., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 28.)
-  
+
 (* [draw_boss context enemy] draws the boss
  * [enemy] on the gui. Also accounts for animation *)
 let draw_boss context enemy =
   match ((!sync)) with
-  | true -> 
+  | true ->
     let img = Html.createImg document in
     let (x,y) = enemy.location in
     img##src <- js "Sprites/EnemySprites/Enemy_Boss1_Alert.png";
@@ -1002,12 +1002,12 @@ let draw_boss context enemy =
     let (x,y) = enemy.location in
     img##src <- js "Sprites/EnemySprites/Enemy_Boss1_Passive.png";
     context##drawImage_full (img, 16., 8., 26., 26., float_of_int x *. 26. +. 3., float_of_int y *. 26. -. 3., 25., 28.)
-  
+
 (* [draw_swordsman context enemy] draws the swordsman
  * [enemy] on the gui. Also accounts for animation *)
-let draw_swordsman context enemy = 
+let draw_swordsman context enemy =
   match ((!sync)) with
-  | true -> 
+  | true ->
     let img = Html.createImg document in
     let (x,y) = enemy.location in
     img##src <- js "Sprites/EnemySprites/Enemy_Swordsman_N.png";
@@ -1017,38 +1017,38 @@ let draw_swordsman context enemy =
     let (x,y) = enemy.location in
     img##src <- js "Sprites/EnemySprites/Enemy_Swordsman_S.png";
     context##drawImage_full (img, 17., 21., 20., 20., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 28.)
- 
+
 
 (* [draw_enemies_helper context enemy_lst] takes a
  * list of enemies [enemy_lst] and draws the proper
  * sprite corresponding to the name of all the enemies
  * in the list *)
-let rec draw_enemies_helper context enemy_lst = 
+let rec draw_enemies_helper context enemy_lst =
   match enemy_lst with
   | [] -> ()
-  | enemy::t -> 
+  | enemy::t ->
     match enemy.name with
-    | "Archer" -> 
+    | "Archer" ->
       draw_archer context enemy;
       draw_enemies_helper context t
-    | "Boss" -> 
+    | "Boss" ->
       draw_boss context enemy;
       draw_enemies_helper context t
-    | "Swordsman" -> 
+    | "Swordsman" ->
       draw_swordsman context enemy;
       draw_enemies_helper context t
     | _ -> ()
 
 (* [draw_enemies context state] draws the enemy sprites on
  * the map. *)
-let draw_enemies context state = 
+let draw_enemies context state =
   draw_enemies_helper context state.enemies
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
 (*********************************************************)
 
-(* [draw_state] draws the the current [state] on the [context]. 
+(* [draw_state] draws the the current [state] on the [context].
  * Also has a side affect of updating the global variable clock *)
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);

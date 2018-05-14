@@ -141,6 +141,7 @@ let make_archer loc =
      movement= [];
      attackable = [];
      direction= South;
+     is_attacking=false;
    } in Characters.update_character arch
 
 let make_swordsman loc =
@@ -180,6 +181,7 @@ let make_swordsman loc =
     movement= [];
     attackable = [];
     direction= South;
+    is_attacking=false;
     } in Characters.update_character swd
 
 let make_mage loc =
@@ -219,6 +221,7 @@ let make_mage loc =
      movement= [];
      attackable = [];
      direction= South;
+     is_attacking=false;
    } in Characters.update_character mg
 
    let make_rangedboss loc =
@@ -258,6 +261,7 @@ let make_mage loc =
         movement= [];
         attackable = [];
         direction= South;
+        is_attacking=false;
       } in Characters.update_character arch
 
    let make_meleeboss loc =
@@ -297,6 +301,7 @@ let make_mage loc =
        movement= [];
        attackable = [];
        direction= South;
+       is_attacking=false;
        } in Characters.update_character swd
 
    let make_mageboss loc =
@@ -336,4 +341,5 @@ let make_mage loc =
         movement= [];
         attackable = [];
         direction= South;
+        is_attacking=false;
       } in Characters.update_character mg

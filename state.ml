@@ -329,8 +329,11 @@ let move_char_helper st =
   |None -> st
 
 let move_helper st =
-  if List.mem (st.active_tile.coordinate) (extract st.active_unit).movement && st.active_tile.c =None then
-    move_char_helper st else let old_tile = (extract st.active_unit).location in
+  let ch = extract st.active_unit in
+  if List.mem (st.active_tile.coordinate) ch.movement && st.active_tile.c =None then
+    move_char_helper st else if ch.location=st.active_tile.coordinate then
+    let _ = ch.stage<-MoveDone in {st with menu_active=true;current_menu=unit_menu;menu_cursor=0} else
+    let old_tile = (extract st.active_unit).location in
     {st with active_tile = st.act_map.grid.(fst old_tile).(snd old_tile)}
 
 let village_checker st =
@@ -398,7 +401,17 @@ let check_surround_inventories s c =
   |(0,y)-> (check_inventory s.act_map.grid.(0).(y-1).c)||  (check_inventory s.act_map.grid.(1).(y).c) ||  (check_inventory s.act_map.grid.(0).(y+1).c)
   |(x,0)-> (check_inventory s.act_map.grid.(x-1).(0).c)||  (check_inventory s.act_map.grid.(x).(1).c) ||  (check_inventory s.act_map.grid.(x+1).(0).c)
   |(x,y)-> (check_inventory s.act_map.grid.(x-1).(y).c)||(check_inventory s.act_map.grid.(x+1).(y).c)||(check_inventory s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
-
+let set_direction c t =
+  let dx = (fst t.coordinate)-(fst c.location) in
+  let dy = (snd t.coordinate)-(fst c.location) in
+  match dx,dy with
+  |x,y when (abs x)>(abs y) -> if x>0 then c.direction<-East else c.direction<-West
+  |x,y when (abs x)<(abs y) -> if y>0 then c.direction<-North else c.direction<-South
+  |x,y when x>0 &&y>0 -> c.direction<-East
+  |x,y when x<0 && y>0 -> c.direction<-North
+  |x,y when x<0 && y<0 -> c.direction<- West
+  |x,y when x>0 && y<0 -> c.direction<-South
+  |_ -> ()
 
 let do' s =
   let act = translate_key s in
@@ -430,12 +443,12 @@ let do' s =
       match s.active_unit with
       |Some ch -> begin
           match s.current_menu.kind with
-          |Trader1->let ch = extract (s.active_tile.c) in
-            {s with active_item=s.menu_cursor;current_menu=create_trader2_menu ch;menu_cursor=0}
+          |Trader1->let c = extract (s.active_tile.c) in
+            {s with active_item=s.menu_cursor;current_menu=create_trader2_menu c;menu_cursor=0}
           |Trader2->if s.current_menu.options.(s.menu_cursor)="" then s else
-              let c1 = extract s.active_unit in
-              let c2 = extract (s.active_tile.c) in
-              (trade c1 c2 s.active_item s.menu_cursor);c1.stage<-Done;{s with
+
+              let ac = extract (s.active_tile.c) in
+              (trade ch ac s.active_item s.menu_cursor);ch.stage<-Done;{s with
                                                                         active_unit=None;menu_active=false}
             |Unit -> begin
                 match s.current_menu.options.(s.menu_cursor) with
@@ -497,7 +510,7 @@ let do' s =
             end
 
             |Confirm->  begin  let _ = attacking := true in
-            let ch = extract s.active_unit in ch.stage<-Done;
+                ch.stage<-Done;ch.is_attacking<-true;(set_direction ch s.active_tile);
             let e  = extract s.active_tile.c in
             combat ch e;
             {s with active_unit = None;

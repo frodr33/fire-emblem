@@ -70,6 +70,7 @@ let temp_character =
     movement= [];
     attackable = [];
     direction= South;
+    is_attacking=false;
   }
 
 let enemy_1 =
@@ -97,8 +98,8 @@ let enemy_1 =
     atk = 0;
     crit = 0;
     avoid = 15;
-    inv = [|Some temp_item;None;None;None;None|];
-    eqp = 0;
+    inv = [|None;None;None;None;None|];
+    eqp = -1;
     ability = [];
     supports = [];
     wlevels = [(Sword,'a',0)];
@@ -108,6 +109,7 @@ let enemy_1 =
     movement= [];
     attackable = [];
     direction= South;
+    is_attacking=false
   }
 
 let enemy_2 =
@@ -146,6 +148,7 @@ let enemy_2 =
     movement= [];
     attackable = [];
     direction= South;
+    is_attacking=false
   }
 
 let enemy_3 =
@@ -184,6 +187,7 @@ let enemy_3 =
     movement= [];
     attackable = [];
     direction= South;
+    is_attacking=false;
   }
 
 
@@ -213,12 +217,12 @@ let init_state =
   {
     player = [temp_character];
     items = [];
-    enemies = [enemy_1; enemy_2; enemy_3];
+    enemies = [enemy_1];
     won = false;
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};
     active_unit = None;
     active_item = -1;
-    act_map = add_init_characters [temp_character;enemy_1;enemy_2;enemy_3] Room.map1;
+    act_map = add_init_characters [temp_character;enemy_1] Room.map1;
     menus = [];
     current_menu = unit_menu;
     menu_active = false;

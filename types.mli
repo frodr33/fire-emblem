@@ -21,7 +21,7 @@ type menu =  {
 }
 
 
-type allegiance = Player | Enemy 
+type allegiance = Player | Enemy
 
 (** Represents each stat*)
 type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
@@ -120,6 +120,7 @@ type character = {
   mutable movement: (int*int) list;
   mutable attackable : (int * int) list;
   mutable direction: direction;
+  mutable is_attacking:bool
 }
 type tile = {coordinate : int*int;
              ground : terrain;

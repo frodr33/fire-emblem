@@ -214,7 +214,8 @@ let make_char n cl grth cps lv xp hp all str mag def spd res skl lck mov con
     location = loc;
     movement = [];
     attackable = [];
-    direction = North
+    direction = North;
+    is_attacking=false;
   } in
   update_character c;
-  c 
+  c

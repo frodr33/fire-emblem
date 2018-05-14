@@ -11,7 +11,7 @@ type ai = BossStay | BossHunt | Norm
 type menutype = Inventory|Tile|Unit|Item|AttackInventory|Confirm|Trader1|Trader2
 type menu =  {kind:menutype;size:int;options:string array}
 
-type allegiance = Player | Enemy 
+type allegiance = Player | Enemy
 
 (** Represents each stat*)
 type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck
@@ -102,6 +102,7 @@ type character = {
   mutable movement: (int*int) list;
   mutable attackable : (int * int) list;
   mutable direction: direction;
+  mutable is_attacking:bool;
 }
 (** Represents one tile on a map*)
 type tile = {coordinate : int*int;

@@ -62,7 +62,8 @@ let empty_character = {
   location = 0, 0;
   movement = [];
   attackable = [];
-  direction = North
+  direction = North;
+  is_attacking=false;
 }
 
 

@@ -29,6 +29,7 @@ type state = {
   items : item list;
   enemies: character list;
   won : bool;
+  lose : bool;
   active_tile: tile;
   active_unit: character option;
   active_item: int;

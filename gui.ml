@@ -1069,6 +1069,17 @@ let draw_win_screen context =
   context##strokeText (js "YOU WIN!", 130., 180.); 
   context##strokeText (js "Thanks for Playing!", 40., 300.)
 
+(* [draw_win_screen context] draws the win screen if 
+ * the player has won *)
+let draw_lose_screen context = 
+  context##fillStyle <- js "black";
+  context##fillRect (0.,0.,canvas_width,canvas_height);
+  context##strokeStyle <- js "white";
+  context##font <- js "60px Times New Roman";
+  context##strokeText (js "Sorry, you lost...", 100., 180.); 
+  context##strokeText (js "Thanks for Playing!", 40., 270.);
+  context##font <- js "30px Times New Roman";
+  context##strokeText (js "To play again just refresh the page!", 80., 330.)
 
 (*********************************************************)
 (****************** Draw State Functions *****************)
@@ -1078,10 +1089,12 @@ let draw_win_screen context =
  * Also has a side affect of updating the global variable clock *)
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
-  match state.won with
-  | true->  
+  match state.won, state.lose with
+  | true, false->  
     draw_win_screen context;
-  | false ->
+  | false, true ->
+    draw_lose_screen context;
+  | _, _ ->
     draw_map context state;
     draw_dijsktra context state;
     draw_attack_squares context state.active_unit;

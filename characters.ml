@@ -96,7 +96,7 @@ let rec level_up_h c g =
   |h::t ->
     if let rng = Random.int 100 in
       snd h > rng
-    then level_up_h (stat_up c (fst h) 1) t
+    then (stat_up c (fst h) 1; level_up_h c t)
     else level_up_h c t
 
 (** [level_up c] is a function that returns [c] with its stats rolled for and
@@ -140,9 +140,9 @@ let add_item c i =
  *  requires: [c] is a character
 *)
 let rec update_character c =
-  if c.exp > 100 then update_character (level_up c);
-  if fst c.health < 0 then update_character (c.health <- (0, snd c.health));
-  if fst c.health > snd c.health then update_character (c.health <- (snd c.health, snd c.health));
+  if c.exp > 100 then (level_up c; update_character c);
+  if fst c.health < 0 then (c.health <- (0, snd c.health); update_character c);
+  if fst c.health > snd c.health then (c.health <- (snd c.health, snd c.health); update_character c);
   let e = equip_id c 0 in
   let calc_hit =
     if e = -1 then 0 else
@@ -164,7 +164,7 @@ let rec update_character c =
   in
   let calc_avoid = c.spd + c.lck in
   c.hit <- calc_hit;
-  c.atk <- calc_at;
+  c.atk <- calc_atk;
   c.crit <- calc_crit;
   c.avoid <- calc_avoid;
   c.eqp <- e

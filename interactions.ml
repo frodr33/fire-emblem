@@ -95,7 +95,7 @@ let rec penalty_helper (p: (stat * (int * int)) list) (s:stat) =
 let find_penalty (a: character) (s:stat) :int * int =
   match equipped a with
   |None -> (0, 0)
-  |Some x -> penalty_helper x.penalty 
+  |Some x -> penalty_helper x.penalty s
 
 let damage a d =
   match equipped a with

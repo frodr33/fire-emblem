@@ -207,23 +207,20 @@ let rec search_helper (m : map) (c : character) (lst : character list) pmap targ
 
 (*[move] iterates through the shortest path to a target enemy unit, and moves as
 * far on the path as permitted by its movement stats*)
-let rec move lst range last (attk : int*int) =
+let rec move lst (c : character) range last (attk : int*int) loc =
  match lst with
  |[] -> (last, false)
  |h::t ->
    match h with
    |(a, b) ->
-     if List.length t >= (fst attk) && List.length t <= (snd attk) then
-       (b, true)
-     else
-       if a <= range then
-         move t range b attk
+       if a > range then
+         move t c range b attk b
        else
-         (last, false)
+         (loc, false)
 
 (*[update_move] updates both characters and maps upon a character moving to a different
 * position on the board*)
-let update_move (m : map) (c : character) init loc =
+let update_move (m : map) (c : character) (init : int*int) (loc : int*int) =
  c.location <- loc;
  match init, loc with
  |(x,y),(h, t) ->
@@ -276,7 +273,9 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
      let init =
        match c.location with (x, y) ->
          path_helper h.location [] [] m.grid.(x).(y) m pm in
-     let go = move (search_helper m c t pm init) c.mov c.location attk in
+     let shortestpath = search_helper m c t pm init in
+     let dest = snd (List.hd shortestpath) in
+     let go = move shortestpath c c.mov c.location attk dest in
      update_move m c c.location (fst go);
      if snd go then
        combat c h)
@@ -287,9 +286,10 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
      let init =
        match c.location with (x, y) ->
          path_helper h.location [] [] m.grid.(x).(y) m pm in
-     let close = search_helper m c t pm init in
-     if fst (List.hd (List.rev close)) <= c.mov*4 then
-       let go = move (close) c.mov c.location attk in
+        let close = search_helper m c t pm init in
+     if fst (List.hd close) <= c.mov*4 then
+     let dest = snd (List.hd close) in
+     let go = move close c c.mov c.location attk dest in
          update_move m c c.location (fst go);
        if snd go then
          combat c h)
@@ -302,7 +302,8 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
           path_helper h.location [] [] m.grid.(x).(y) m pm in
       let close = search_helper m c t pm init in
       if fst (List.hd (List.rev close)) <= c.mov*2 then
-        let go = move (close) c.mov c.location attk in
+      let dest = snd (List.hd close) in
+      let go = move close c c.mov c.location attk dest in
         update_move m c c.location (fst go);
         if snd go then
           combat c h)

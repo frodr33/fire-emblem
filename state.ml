@@ -355,15 +355,6 @@ let chest_checker s =
     end
   |None -> false, -1
 
-let rec replace_helper c lst =
-  match lst with
-  |[]   -> if fst c.health = 0 then [] else [c]
-  |h::t -> if h.name = c.name && (fst c.health > 0) then c::t else h::(replace_helper c t)
-
-let replace c st =
-  match c.allegiance with
-  |Player -> {st with player = replace_helper c st.player}
-  |Enemy  -> {st with enemies = replace_helper c st.enemies}
 
 
 let rec reset_ch plst =
@@ -435,6 +426,13 @@ let find_ready_helper st =
     {st with active_tile=st.act_map.grid.(fst loc).(snd loc)}
   |None -> st
 
+let rec check_character_list lst st =
+  match lst with
+  |[]   -> []
+  |h::t -> if fst h.health < 1 then
+      (let ctile = st.act_map.grid.(fst h.location).(snd h.location) in
+      st.act_map.grid.(fst h.location).(snd h.location) <- {ctile with c = None};
+      check_character_list t st) else h::check_character_list t st
 
 let do' s =
   let act = translate_key s in
@@ -545,7 +543,10 @@ let do' s =
       |Tile -> begin
           match s.current_menu.options.(s.menu_cursor) with
           |" "   -> s
-          |"End" -> reset_ch s.player; Ai.step s.enemies s.player s.act_map;{s with menu_active=false}
+          |"End" -> reset_ch s.player; Ai.step s.enemies s.player s.act_map;
+            {s with menu_active = false;
+                    player = check_character_list s.player s;
+                    enemies = check_character_list s.enemies s}
           |_     ->s
         end
       |_ -> s

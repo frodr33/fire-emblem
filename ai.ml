@@ -72,13 +72,21 @@ let rec add_f2 (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
  |h::t -> if fst h = tile then (if i < snd h then (tile, i) :: t
                                 else h :: t) else h :: (add_f2 tile i t)
 
+let check_valid d (m : map) loc =
+  match d with
+  |North -> snd loc > 0
+  |East  -> fst loc < m.width
+  |South -> snd loc < m.length
+  |West  -> fst loc > 0
+
 (*[check_dir] ensures movement in a certain direction is valid and adds the
 *node to the frontier if it is viable or returns the same frontier if its not*)
 let rec check_dir (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
  let mapg = map.grid in
  match t.coordinate with
  |(x, y) ->
-   let next = match d with
+   if (check_valid d map t.coordinate) then
+   (let next = match d with
      |North -> mapg.(x).(y - 1)
      |East  -> mapg.(x + 1).(y)
      |South -> mapg.(x).(y + 1)
@@ -96,6 +104,7 @@ let rec check_dir (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile *
      |Forest -> add_f2 next 2 f
      |Desert -> add_f2 next 2 f
      |_ -> add_f2 next 1 f
+   else f)
    else f
 
 (*[check_surround] checks movement in all directions of a given coordinate

@@ -97,8 +97,8 @@ let draw_map_9x9 (context: Html.canvasRenderingContext2D Js.t) state =
  * Every 30 "time" units, sync is negated which represents the
  * static movement of the cursor and players *)
 let clock () =
-  clock := if !clock < 25 then !clock + 1 else 1;
-  let x1 = !clock mod 25 in (* bounds *)
+  clock := if !clock < 15 then !clock + 1 else 1;
+  let x1 = !clock mod 15 in (* bounds *)
 (*   let x2 = !clock mod 30 in (* middle for standing *) *)
   match x1 with
   | 0 -> sync := not(!sync)
@@ -621,6 +621,7 @@ let rec draw_healthbar context chr_list =
     draw_healthbar context t
 
 
+
 (*********************************************************)
 (****************** Draw Arrow Functions *****************)
 (*********************************************************)
@@ -968,12 +969,13 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##globalAlpha <- 1.;
   draw_is_player_done context state.active_unit;
   draw_player context state.player;
+  draw_enemies context state;
   draw_cursor context state.active_tile;
   menu_manager context state;
   draw_menu_arrow context state;
   draw_healthbar context state.player;
+  draw_healthbar context state.enemies;
   draw_sidebar context state;
   draw_attack_menu context state;
   draw_inventory context state;
-  draw_enemies context state;
   clock ();

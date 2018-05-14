@@ -44,6 +44,24 @@ let tile_to_img_mapping (tile : tile) =
   | Wall4  -> js "Sprites/Wall4.png"
   | Wall5  -> js "Sprites/Wall5.png"
   | Wall6  -> js "Sprites/Wall6.png"
+  | Castle1 -> js "Sprites/Map2/castle1.png"
+  | Castle2 -> js "Sprites/Map2/castle2.png"
+  | Castle3 -> js "Sprites/Map2/castle3.png"
+  | Castle4 -> js "Sprites/Map2/castle4.png"
+  | Castle5 -> js "Sprites/Map2/castle5.png"
+  | Castle6 -> js "Sprites/Map2/castle6.png"
+  | Castle7 -> js "Sprites/Map2/castle7.png"
+  | Castle8 -> js "Sprites/Map2/castle8.png"
+  | Castle9 -> js "Sprites/Map2/castle9.png"
+  | House1 -> js "Sprites/Map2/house1.png"
+  | House2 -> js "Sprites/Map2/house2.png"
+  | House3 -> js "Sprites/Map2/house3.png"
+  | House4 -> js "Sprites/Map2/house4.png"
+  | House5 -> js "Sprites/Map2/house5.png"
+  | House6 -> js "Sprites/Map2/house6.png"
+  | Water11  -> js "Sprites/Map2/Water11.png"
+  | Water12 -> js "Sprites/Map2/Water12.png"
+  | Chesttile -> js "Sprites/Map2/chest.png"
 
 
 (* [draw_tiles map] draws each of the tiles of the state's current
@@ -1069,7 +1087,7 @@ let draw_win_screen context =
   context##strokeText (js "YOU WIN!", 130., 180.); 
   context##strokeText (js "Thanks for Playing!", 40., 300.)
 
-(* [draw_win_screen context] draws the win screen if 
+(* [draw_lose_screen context] draws the lose screen if 
  * the player has won *)
 let draw_lose_screen context = 
   context##fillStyle <- js "black";

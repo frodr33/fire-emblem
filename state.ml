@@ -377,7 +377,7 @@ let chest_checker s =
   match s.active_unit with
   |Some x -> let key = has_key x 0 in
     begin match s.active_tile.ground with
-    |Chest i -> if fst key then true, snd key else false, -1
+    |Chest (Some x) -> if fst key then true, snd key else false, -1
     |_       -> false, -1
     end
   |None -> false, -1

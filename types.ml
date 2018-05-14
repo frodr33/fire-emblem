@@ -11,7 +11,7 @@ type ai = BossStay | BossHunt | Norm
 type menutype = Inventory|Tile|Unit|Item|AttackInventory|Confirm|Trader1|Trader2
 type menu =  {kind:menutype;size:int;options:string array}
 
-type allegiance = Player | Enemy | Allied
+type allegiance = Player | Enemy 
 
 (** Represents each stat*)
 type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck

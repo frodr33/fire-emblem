@@ -21,7 +21,7 @@ type menu =  {
 }
 
 
-type allegiance = Player | Enemy | Allied
+type allegiance = Player | Enemy 
 
 (** Represents each stat*)
 type stat = Health | Str | Mag | Def | Spd | Res | Skl | Lck

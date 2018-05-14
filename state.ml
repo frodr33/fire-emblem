@@ -11,7 +11,6 @@ type state = {
   player: character list;
   items : item list;
   enemies: character list;
-  allies: character list;
   won : bool;
   active_tile: tile;
   active_unit: character option;
@@ -106,9 +105,8 @@ let translate_key st =
       if st.menu_active = true then SelectMOption else
         begin match st.active_unit with
           |Some c -> begin
-              if c.allegiance <>Player then Invalid else
               match c.stage with
-              |MoveSelect-> SelectMoveTile
+              |MoveSelect-> if c.allegiance = Player then SelectMoveTile else Invalid
               |AttackSelect -> SelectAttackTile
               |TradeSelect -> SelectTradeTile
               |_ -> Invalid
@@ -137,12 +135,6 @@ let translate_key st =
       |None -> if st.menu_active then CloseMenu else Invalid
 
     end
-    (*if st.menu_active then begin
-      match st.active_unit with
-      |None -> CloseMenu
-      |_ -> BackMenu
-      end else if st.active_unit <>None then DeselectPlayer else Invalid*)
-
   |_ -> Invalid
 end
 (* Temp function (Frank) wrote to update the active_unit's
@@ -164,21 +156,6 @@ let new_active_unit_st st c=
   let new_player_list = List.filter (fun x -> x<>c) st.player in
   let new_c = c.stage<-MoveSelect;c  in
   {st with player=new_player_list;active_unit= Some new_c}
-
-
-    (*Filler function to allow us to keep testing attack animation*)
-(*let set_next_stage c =
-  match c with
-  |Some x -> begin
-      match x.stage with
-      |Ready -> Some (x.stage<-MoveSelect;x)
-      |MoveSelect -> Some (x.stage<-MoveDone;x)
-      |MoveDone -> Some (x.stage <-Done;x)
-      |AttackSe
-      |Done -> Some x
-      |_ -> Some x
-    end
-  |None -> *)
 
 
   let new_active_tile act st =
@@ -389,7 +366,7 @@ let replace c st =
   match c.allegiance with
   |Player -> {st with player = replace_helper c st.player}
   |Enemy  -> {st with enemies = replace_helper c st.enemies}
-  |Allied -> {st with allies = replace_helper c st.allies}
+
 
 let rec reset_ch plst =
   match plst with
@@ -435,9 +412,10 @@ let do' s =
     ch.stage<-MoveSelect;
     ch.movement <- dijkstra's ch s.act_map;
     ch.attackable <- red_tiles ch;
-    {s with active_unit = s.active_tile.c}
+    {s with active_unit = s.active_tile.c;last_character = s.active_tile.c}
   |SelectMoveTile ->move_helper s
-  |SelectAttackTile -> {s with current_menu=confirm_menu;menu_cursor=0;menu_active=true}
+  |SelectAttackTile -> if (List.mem s.active_tile.coordinate (attack_range (extract s.active_unit)))&&s.active_tile.c<>None then
+      {s with current_menu=confirm_menu;menu_cursor=0;menu_active=true} else s
   |SelectTradeTile ->let t1 =s.active_unit in
     let t2 = s.active_tile.c in
     if (distance_tile (extract t1) s.active_tile)>1 then s else
@@ -520,7 +498,7 @@ let do' s =
             |Tile -> begin
               match s.current_menu.options.(s.menu_cursor) with
               |" "   -> s
-              |"End" -> (*reset_ch s.player; step*) s
+              |"End" -> reset_ch s.player; Ai.step s.enemies s.player s.act_map;s
               |_     -> s
             end
             |Confirm->  begin  let _ = attacking := true in
@@ -538,6 +516,8 @@ let do' s =
     end
 
   |BackMenu -> begin match s.current_menu.kind with
+      |Trader1->{s with menu_active=false}
+      |Trader2->{s with current_menu=create_trader1_menu (extract s.active_unit);menu_cursor=0}
       |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
       |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone;{s with current_menu = unit_menu;menu_cursor=0;}
       |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
@@ -548,6 +528,6 @@ let do' s =
     let loc = c.location in let _ = c.stage<-MoveDone in
     {s with active_tile = s.act_map.grid.(fst loc).(snd loc);current_menu = unit_menu;menu_cursor=0;menu_active=true};
   |BackAttack->let c = extract s.active_unit in
-    let loc = c.location in let _ = c.stage<-MoveDone in
-    {s with active_tile = s.act_map.grid.(fst loc).(snd loc);current_menu = unit_menu;menu_cursor=0;menu_active=true};
+    let loc = c.location in
+    {s with active_tile = s.act_map.grid.(fst loc).(snd loc);current_menu = create_attack_menu c;menu_cursor=0;menu_active=true};
   |_-> s

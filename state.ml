@@ -68,7 +68,19 @@ let rec check_exist co lst =
   |[]   -> false
   |h::t -> if fst h = co then true else check_exist co t
 
-
+(**
+ *  [a_range_add ma i co fl ml sl] is a function that returns a new fl with the
+ *  four tiles adjacent to co, if they are not in ml, sl or if i does not 
+ *  exceed ma, as well as still in map size range.
+ *  See attack_range_helper.
+ *  requires: 
+ *  - [ma] is an int
+ *  - [i] is an int
+ *  - [co] is a coordinate (int * int)
+ *  - [fl] is a list of coordinates
+ *  - [ml] is a list of coordinates
+ *  - [sl] is a list of coordinates
+*)
 let a_range_add ma i co fl ml sl =
   let addon = if i > ma then [] else(
   let nleft = ((fst co) - 1, snd co) in
@@ -95,7 +107,21 @@ let a_range_add ma i co fl ml sl =
   fl @ addon
 
 
-
+(**
+ *  [attack_range_helper mi ma i co fl ml sl] is a function that returns a list
+ *  of tiles that a player can attack from their current location. It does this
+ *  using a modified dijkstra's, where fl stands for frontier list, ml stands
+ *  for minimal list (settled nodes that are under min range) and sl stands for
+ *  settled list.
+ *  requires:
+ *  - [mi] is the minimum range of the weapon, an int
+ *  - [ma] is the maximum range of the weapon, an int
+ *  - [i] is the tiles away from the original co, an int
+ *  - [co] is the current tile, an int * int
+ *  - [fl] is a (int * int) list
+ *  - [ml] is a (int * int) list
+ *  - [sl] is a (int * int) list
+*)
 let rec attack_range_helper mi ma i co fl ml sl =
   let nml = (if i < mi  then co::ml else ml) in
   let nsl = (if i >= mi then co::sl else sl) in
@@ -104,20 +130,15 @@ let rec attack_range_helper mi ma i co fl ml sl =
   |[]   -> nsl
   |(h, x)::t -> attack_range_helper mi ma x h t nml nsl
 
-(*[distance_tile a t] is the number of tiles away [t] is from [a]
- *requires: -[a] is a character
- *      -[t] is a tile
-  *)
+(**
+ *  [distance_tile a t] is the number of tiles away [t] is from [a]
+ *  requires: 
+ *  - [a] is a character
+ *  - [t] is a tile
+*)
 let distance_tile a (t:tile) =
   abs (fst a.location - fst t.coordinate) +
   abs (snd a.location- snd t.coordinate)
-
-    (*
-let in_range_tile a t =
-  match a.inv.(a.eqp) with
-  |None   -> false
-  |Some x -> let l = distance_tile a t in l >= fst x.range && l <= snd x.range
-*)
 
 
 (*[translateA_helper st] translates the "A" input to the appropriate
@@ -195,9 +216,17 @@ let translate_key st =
 
 
 (*-----------------------------SPAGHETT FLOOD FILL----------------------------*)
-(*For the curious*)
-type direction = North | East | South | West
 
+(**
+ *  [not_in_bound x y d dimensions] is a function that checks if the tile in the
+ *  direction, d, of (x, y) still fits on the dimensions.
+ *  requires:
+ *  - [x] is an int > 0 and < (fst dimensions)
+ *  - [y] is an int > 0 and < (snd dimensions)
+ *  - [d] is a direction
+ *  - [dimensions] is a (int * int)
+ *  Has unspecified behaviour if the preconditions are violated.
+*)
 let not_in_bounds (x:int) (y:int) (d:direction) (dimensions:int * int) =
   let width = fst dimensions in
   let height = snd dimensions in
@@ -207,6 +236,16 @@ let not_in_bounds (x:int) (y:int) (d:direction) (dimensions:int * int) =
   |South -> y = height - 1
   |West  -> x = 0
 
+(**
+ *  [movable t d mov map] is a function that checks if the tile in direction, d,
+ *  of tile, t, can be moved on to with the given mov and map.
+ *  requires: 
+ *  - [t] is a valid tile on map
+ *  - [d] is a valid direction
+ *  - [mov] is a valid int
+ *  - [map] is a valid map that contains [t]
+ *  Has unspecified behaviour if preconditions are violated.
+*)
 let movable (t:tile) (d:direction) (mov:int) (map:map)=
   let x = fst t.coordinate in
   let y = snd t.coordinate in
@@ -233,12 +272,34 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
     |_ -> if mov < 1 then (false, -1) else (true, mov - 1)
     else (false, -1)
 
+(**
+ *  [add_f tile i f] is a function that takes tile and int, and adds it to f
+ *  based on how big i is. All the entrys before (tile, i) have i's <= i and
+ *  all the entries after have i's >= i.
+ *  requires:
+ *  - [tile] is a valid tile
+ *  - [i] is a valid int
+ *  - [f] is a valid (tile * int) list. 
+*)    
 let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
   match f with
   |[]   -> [(tile,i)]
   |h::t -> if fst h = tile then (if i > snd h then (tile, i) :: t
                                  else h :: t) else h :: (add_f tile i t)
 
+(**
+ *  [check_dir mov d t map s f] is a function that checks if the tile in
+ *  direction, d, of tile, t, shold be added to the frontier set, and adds it
+ *  if needed.
+ *  requires:
+ *  - [mov] is a valid int
+ *  - [d] is a valid direction
+ *  - [t] is a valid tile
+ *  - [map] is a valid map
+ *  - [s] is a valid settled set
+ *  - [f] is a valid frontier set 
+ *  See dijkstra's_helper for details. 
+*)                                 
 let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
   let mapg = map.grid in
   let mov_dir = movable t d mov map in
@@ -256,10 +317,15 @@ let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list)
       if not (List.mem (x-1, y) s) then add_f new_tile (snd mov_dir) f else f
     else f
 
-(*-----------------------------SPAGHETT DIJKSTRA'S----------------------------*)
-
-
-
+(**
+ *  [check_surround s t m map f] is a function that checks the four tiles
+ *  adjacent to tile, t, to see if they should be added to the frontier set, f.
+ *  - [s] is a valid settled set
+ *  - [t] is a valid map
+ *  - [m] is a valid int
+ *  - [map] is a valid map
+ *  - [f] is a valid frontier set  
+*)
 let rec check_surround s t m map f:(tile * int) list =
   f
   |> check_dir m South t map s
@@ -267,30 +333,53 @@ let rec check_surround s t m map f:(tile * int) list =
   |> check_dir m North t map s
   |> check_dir m West t map s
 
-
-
-(**Name keeping:
- * f = frontier set, tile * int (move) list
- * s = settled set, tile list
- * t = current tile
- * m = moves left
- * map = map
+(**
+ *  [dijkstra's helper f s tile m map] is a function that does dijkstra's to
+ *  find all the traversable tiles of a character from their starting location.
+ *  requires:
+ *  - [f] begins as an empty list, and represents the frontier set. It is type
+ *    (tile * int) list where the int is the amount of move needed to get there.
+ *  - [s] begins as an empty list, and represents the settled set. It is of type
+ *    tile list.
+ *  - [tile] is the current tile that dijkstra's is evaluating.
+ *  - [m] is the move needed to get to that tile
+ *  - [map] is the map dijkstra's was called on.
 *)
-
 let rec dijkstra's_helper f s tile m map =
   let new_f = check_surround s tile m map f in
   match new_f with
   |[]   -> tile.coordinate :: s
   |h::t -> dijkstra's_helper t (tile.coordinate ::s) (fst h) (snd h) map
 
+(**
+ *  [dijkstra's c map] is a function that returns a list of all tiles
+ *  traversable by character c on the map from their current location. 
+*)
 let dijkstra's c map =
   dijkstra's_helper [] [] (ctile c map) c.mov map
 
+(**
+ *  [add_no_dup lst1 lst2 movl] adds lst1 to lst2 as long as the values in lst1
+ *  don't exist in lst2 already or in movl.
+ *  requires:
+ *  - [lst1] is a valid list
+ *  - [lst2] is a valid list
+ *  - [movl] is a valid list 
+*)
 let rec add_no_dup lst1 lst2 movl =
   match lst1 with
   |[]   -> lst2
   |h::t -> if List.mem h lst2 || List.mem h movl then add_no_dup t lst2 movl else add_no_dup t (h::lst2) movl
 
+(**
+ *  [red_tiles_helper mlst alst c] is a function that calls attack_range_helper
+ *  on every tile in movl, and creates a list with no dups of all the tiles
+ *  that aren't in movl.
+ *  requires:
+ *  - [mlst] is a list of not yet checked tiles
+ *  - [alst] is the list of attackable tiles not in the movement range of c
+ *  - [c] is a valid character
+*)
 let rec red_tiles_helper mlst alst c =
   let w = extract c.inv.(c.eqp) in
   match mlst with
@@ -299,13 +388,24 @@ let rec red_tiles_helper mlst alst c =
     let new_alst = add_no_dup range alst c.movement in
     red_tiles_helper t new_alst c
 
+(**
+ *  [red_tile c] returns a list of all the red tiles for a character c
+ *  requires:
+ *  - [c] is a valid character
+*)
 let red_tiles c : (int * int) list =
-if c.eqp = -1 then []
-else red_tiles_helper c.movement [] c
+  if c.eqp = -1 then []
+  else red_tiles_helper c.movement [] c
 
+(**
+ *  [attack_range c] is the attack range of a character c from their present
+ *  location.
+ *  requires:
+ *  - [c] is a valid character 
+*)
 let attack_range c =
-let w = extract c.inv.(c.eqp) in
-attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] []
+  let w = extract c.inv.(c.eqp) in
+  attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] []
 
 
 (*-------------------------------END SPAGHETT---------------------------------*)
@@ -314,8 +414,8 @@ attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] []
 (*[new_active_tile act st] returns the new tile based on if [act] is a valid
  *action to move the active_tile.
  *requires:
- *   -[act] is an action
- *  -[st] is the state
+ *  - [act] is an action
+ *  - [st] is the state
  *)
   let new_active_tile act st =
     let x = fst(st.active_tile.coordinate) in
@@ -329,7 +429,8 @@ attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] []
     |Tright ->if x = (st.act_map.width-1) then st.active_tile else
         st.act_map.grid.(x+1).(y)
     |_ -> failwith "placeholder"
-let create_inventory_menu c =
+
+    let create_inventory_menu c =
   let o = Array.map (fun x -> match x with
       |Some i -> i.iname
       |None -> "") c.inv in {kind=Inventory;size = 5;options=o}
@@ -369,11 +470,23 @@ let move_helper st =
     let old_tile = (extract st.active_unit).location in
     {st with active_tile = st.act_map.grid.(fst old_tile).(snd old_tile)}
 
+(**
+ *  [village_checker st] checks if the village can be visited
+ *  requires:
+ *  -  [st] is the current state of the game 
+*)
 let village_checker st =
   match st.active_tile.ground with
   |Village (Some _) -> true
   |_ -> false
 
+(**
+ *  [has_key c i] checks if character, c, has a key.
+ *  requires:
+ *  - [c] is a valid character
+ *  - [i] is initially passed at 0
+ *  Has unspecified behaviour if preconditions are violated.
+*)
 let rec has_key c i =
   if i = 5 then false, -1
   else
@@ -384,6 +497,11 @@ let rec has_key c i =
       end
     |None  -> has_key c (i + 1)
 
+(**
+ *  [chest_checker s] is a function that checks if a chest is openable
+ *  requires:
+ *  - [s] is a valid state 
+*)
 let chest_checker s =
   match s.active_unit with
   |Some x -> let key = has_key x 0 in
@@ -393,8 +511,12 @@ let chest_checker s =
     end
   |None -> false, -1
 
-
-
+(**
+ *  [reset_ch plst] is a function that returns the stage of all characters in
+ *  the list to [Ready]
+ *  requires:
+ *  - [plst] is a valid character list 
+*)
 let rec reset_ch plst =
   match plst with
   |[]   -> ()
@@ -407,9 +529,14 @@ let check_inventory c =
       |None -> false||x) false ch.inv
   |None -> false
 
+(**
+ *  [check_if_ally sc] checks if a character option is an ally
+ *  requires:
+ *  - sc is a character option 
+*)
 let check_if_ally sc =
   match sc with
-  |Some c -> c.allegiance=Player
+  |Some c -> c.allegiance = Player
   |None -> false
 
 let check_surround_allies s c =
@@ -464,6 +591,14 @@ let find_ready_helper st =
     {st with active_tile=st.act_map.grid.(fst loc).(snd loc)}
   |None -> st
 
+(**
+ *  [check_character_list lst st] is a function that checks if there are any
+ *  characters with hp = 0 in the list, lst. If there are, remove them from
+ *  list and st.
+ *  requires:
+ *  - [lst] is a valid character list
+ *  - [st] is the current state of the game
+*)
 let rec check_character_list lst st =
   match lst with
   |[]   -> []
@@ -472,6 +607,12 @@ let rec check_character_list lst st =
       st.act_map.grid.(fst h.location).(snd h.location) <- {ctile with c = None};
       check_character_list t st) else h::check_character_list t st
 
+(**
+ *  [do' s] is a function that takes a state, checks what the most recent
+ *  command was, and returns a new state based on the command
+ *  requires:
+ *  - [s] is a state 
+*)
 let do' s =
   let act = translate_key s in
     let _ = input:=Nothing in

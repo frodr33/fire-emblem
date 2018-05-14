@@ -169,7 +169,7 @@ let update_move (m : map) (c : character) init loc =
       c = Some c}
 
 (*[attack_inrange] will directly attack a player character only if it is standing
- * directly adjacent or diagonal to an enemy*)
+ * on a space that is within its attack range*)
 let rec attack_inrange m (c : character) (lst : character list) =
   match lst with
   |[] -> ()
@@ -186,7 +186,15 @@ let rec attack_inrange m (c : character) (lst : character list) =
         ()
 
 (*[search] finds the nearest enemy, and the moves and attacks for the enemy unit
-* depending on the distance and tendencies of unit of that difficulty level*)
+ * depending on the distance and tendencies of unit of that difficulty level
+ * AI Difficulty Behavior Detailed Below:
+ * Insane -> Omniscient unit that will track and move towards nearest player
+ * controlled unit no matter where it is on the board
+ * Hard -> Can sense player units within four times its movement zone, and will
+ * move towards players that enter that zone and attack if possible
+ * Normal -> Can sense player units within two times its movement zone and will
+ * move towards players that enter that zone and attack if possible
+ * Easy -> Will never move but will attack if player enters attack range*)
 let search (m : map) (c : character) (lst : character list) pm (attk : int*int) =
  match c.behave with
  |Insane ->
@@ -208,7 +216,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
        match c.location with (x, y) ->
          path_helper h.location [] [] m.grid.(x).(y) m pm in
      let close = search_helper m c t pm init in
-     if fst (List.hd (List.rev close)) <= c.mov*2 then
+     if fst (List.hd (List.rev close)) <= c.mov*4 then
        let go = move (close) c.mov c.location attk in
          update_move m c c.location (fst go);
        if snd go then
@@ -221,7 +229,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
         match c.location with (x, y) ->
           path_helper h.location [] [] m.grid.(x).(y) m pm in
       let close = search_helper m c t pm init in
-      if fst (List.hd (List.rev close)) <= c.mov then
+      if fst (List.hd (List.rev close)) <= c.mov*2 then
         let go = move (close) c.mov c.location attk in
         update_move m c c.location (fst go);
         if snd go then

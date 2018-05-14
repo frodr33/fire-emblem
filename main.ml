@@ -148,6 +148,45 @@ let enemy_2 =
     direction= South;
   }
 
+let enemy_3 =
+  {
+    name = "Boss";
+    stage= Ready;
+    class' = Paladin;
+    growths = [];
+    caps = [];
+    behave = Normal;
+    level = 0;
+    exp = 0;
+    health = (5,10);
+    allegiance = Player;
+    str = 0;
+    mag = 0;
+    def = 0;
+    spd = 0;
+    res = 0;
+    skl = 0;
+    lck = 0;
+    mov = 3;
+    con = 0;
+    aid = 0;
+    hit = 0;
+    atk = 0;
+    crit = 0;
+    avoid = 15;
+    inv = [|Some temp_item;None;None;None;None|];
+    eqp = 0;
+    ability = [];
+    supports = [];
+    wlevels = [(Sword,'a',0)];
+    ai = BossHunt;
+    location= (9,6);
+    movement= [];
+    attackable = [];
+    direction= South;
+  }
+
+
 (*Adds initial characters in player list to map*)
 let rec add_init_characters playerlst map =
 match playerlst with
@@ -174,7 +213,7 @@ let init_state =
   {
     player = [temp_character];
     items = [];
-    enemies = [enemy_1; enemy_2];
+    enemies = [enemy_1; enemy_2; enemy_3];
     allies = [];
     won = false;
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};

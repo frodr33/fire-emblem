@@ -8,7 +8,7 @@ open Items
 type combatResolutions = Kill | Hit | Miss
 
 (**
- *  Used to track what kind of exp should be rewarded after 
+ *  Used to track what kind of exp should be rewarded after
  *  combat.
 *)
 let exp : combatResolutions list ref = ref []
@@ -48,7 +48,7 @@ let rec penalty_helper (p: (stat * (int * int)) list) (s:stat) =
  *  gives.
  *  requires:
  *  - [a] is a valid character.
- *  - [s] is a valid stat. 
+ *  - [s] is a valid stat.
 *)
 let find_penalty (a: character) (s:stat) :int * int =
   match equipped a with
@@ -60,7 +60,7 @@ let find_penalty (a: character) (s:stat) :int * int =
  *  how much damage a does to d.
  *  requires:
  *  - [a] is a valid character
- *  - [d] is a valid character 
+ *  - [d] is a valid character
 *)
 let damage a d =
   match equipped a with
@@ -68,15 +68,15 @@ let damage a d =
   | Some x ->
     match x.wtype with
     |Tome -> if a.atk - d.res < 0 then 0 else a.atk - d.res
-    |_ -> a.atk - d.def < 0 then 0 else a.atk - d.def
+    |_ -> if a.atk - d.def < 0 then 0 else a.atk - d.def
 
 (**
- *  [distance a b] is a function that returns the distance from 
+ *  [distance a b] is a function that returns the distance from
  *  character a to character b
  *  requires:
  *  - [a] is a valid character
  *  - [b] is a valid character
-*)    
+*)
 let distance a b =
   abs (fst a.location - fst b.location) +
   abs (snd a.location - snd b.location)
@@ -86,12 +86,12 @@ let distance a b =
  *  in a's attack range.
  *  requires:
  *  - [a] is a valid character
- *  - [d] is a valid character 
-*)  
+ *  - [d] is a valid character
+*)
 let in_range a d =
   match equipped a with
   |None   -> false
-  |Some x -> let l = distance a d in 
+  |Some x -> let l = distance a d in
     l >= fst x.range && l <= snd x.range
 
 (**
@@ -100,7 +100,7 @@ let in_range a d =
  *  character d.
  *  requires:
  *  - [a] is a valid character
- *  - [d] is a valid character 
+ *  - [d] is a valid character
 *)
 let kill_xp a d =
   if d.ai = BossStay || d.ai = BossHunt then
@@ -127,11 +127,11 @@ let kill_xp a d =
 (**
  *  [hit_xp a d] changes the amount of xp character a has
  *  depending on how much xp they should get from hitting
- *  character d  
+ *  character d
  *  requires:
  *  - [a] is a valid character
- *  - [d] is a valid character 
-*)      
+ *  - [d] is a valid character
+*)
 let hit_xp a d =
   if d.ai = BossStay || d.ai = BossHunt then
     match a.level - d.level with
@@ -156,10 +156,10 @@ let hit_xp a d =
 
 (**
  *  [wexp_level_up c] returns a weapon level 1 higher than c
- *  requires: 
+ *  requires:
  *  - [c] is a character from e to a
  *  raises "wexp_level_up invalid level" if that precondition
- *  is violated.  
+ *  is violated.
 *)
 let wexp_level_up c =
   match c with
@@ -193,7 +193,7 @@ let rec wexp_helper ty lst =
  *  [award_wexp a] is a function that awards a with weapon exp
  *  by calling its helper, wexp_helper.
  *  requires:
- *  - [a] is a valid character 
+ *  - [a] is a valid character
 *)
 let award_wexp a =
   if a.allegiance = Player then a.wlevels <- wexp_helper (extract a.inv.(a.eqp)).wtype a.wlevels
@@ -201,7 +201,7 @@ let award_wexp a =
 
 (**
  *  [comp_outcome a t] is a function that compairs two outcomes,
- *  a and t, and returns the higher order one in the order of 
+ *  a and t, and returns the higher order one in the order of
  *  Kill > Hit > Miss.
  *  requires:
  *  - [a] is a valid outcome
@@ -216,10 +216,10 @@ let comp_outcome a t =
   |_, _ -> a
 
 (**
- *  [award_xp a d] awards experience to characters a and d after 
- *  combat. 
+ *  [award_xp a d] awards experience to characters a and d after
+ *  combat.
  *  requires:
- *  - [a] is a valid character 
+ *  - [a] is a valid character
  *  - [d] is a valid character
 *)
 let award_xp a d =
@@ -255,8 +255,8 @@ let resolveE a d =
 
 (**
  *  [resovleQ ()] resolves the entire combatQ.
- *  requires: Nothing actually 
-*)  
+ *  requires: Nothing actually
+*)
 let rec resolveQ () =
   if Queue.is_empty combatQ then () else
     let round = Queue.pop combatQ in
@@ -265,11 +265,11 @@ let rec resolveQ () =
 
 (**
  *  [combat a d] is a function that completes the entire combat
- *  cycle. First it creates a proper combatQ, then resolves 
+ *  cycle. First it creates a proper combatQ, then resolves
  *  rounds one at a time until the queue is empty or someone
  *  dies. Finally it awards exp, then level ups and updates the
  *  characters.
- *  requires: 
+ *  requires:
  *  - [a] is a valid character
  *  - [d] is a valid character
 *)
@@ -294,11 +294,11 @@ let combat a d =
 
 (**
  *  [heal a t i] is a function that heals a character, t, and
- *  awards exp to a accordingly. 
+ *  awards exp to a accordingly.
  *  requires:
  *  - [a] is a valid character
  *  - [t] is a valid character
- *  - [i] is the index of the staff that is being used. 
+ *  - [i] is the index of the staff that is being used.
  *  raises: "No staff" if the inventory slot is empty
 *)
 let heal a t i =
@@ -313,11 +313,11 @@ let heal a t i =
 
 (**
  *  [consumable a i] is a function that uses a potion to heal
- *  character, a, a certain amount of hp. 
+ *  character, a, a certain amount of hp.
  *  requires:
  *  - [a] is a valid character
  *  - [i] is the index of the potion that is being used
- *  raises: "No item" if the inventory slot is empty 
+ *  raises: "No item" if the inventory slot is empty
 *)
 let consumable a i =
   match a.inv.(i) with
@@ -328,14 +328,14 @@ let consumable a i =
 
 (**
  *  [chest c t i] is a fuction that takes an item from a chest.
- *  requires: 
+ *  requires:
  *  - [c] is a valid character
  *  - [t] is a tile with a non empty chest on it.
  *  - [i] is the index of the key used to open the chest
  *  raises:
  *  - "empty chest" if the chest in question is empty
- *  - "Opening nonchest" if the tile doesn't hold a chest  
-*)   
+ *  - "Opening nonchest" if the tile doesn't hold a chest
+*)
 let chest c t i =
   match t with
   |Chest (Some x) -> c.inv.(i) <- use c.inv.(i); add_item c x
@@ -347,19 +347,19 @@ let chest c t i =
  *  requires:
  *  - [c] is a valid character
  *  - [t] is a valid tile with a door on it
- *  - [i] is a the index of the key used to open the door 
+ *  - [i] is a the index of the key used to open the door
 *)
 let door c t i =
   if t = Door then c.inv.(i) <- use c.inv.(i)
 
 (**
  *  [village c t] is a function that visits a village
- *  requires: 
+ *  requires:
  *  - [c] is a valid character
  *  - [t] is a tile that contains a non empty village
  *  raises:
  *  - "visited village" if the village is empty
- *  - "visiting nonvillage" if the tile is not a village 
+ *  - "visiting nonvillage" if the tile is not a village
 *)
 let village c t =
   match t with
@@ -378,7 +378,7 @@ let village c t =
  *  - [i1] is an int from 0 to 4
  *  - [i2] is an int from 0 to 4
  *  Has unspecified behaviour if the preconditions are violated.
-*)  
+*)
 let trade c1 c2 i1 i2 =
   let temp = c1.inv.(i1) in
   c1.inv.(i1) <- c2.inv.(i2);

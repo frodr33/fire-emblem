@@ -142,7 +142,8 @@ let make_archer loc =
      attackable = [];
      direction= South;
      is_attacking=false;
-   } in Characters.update_character arch
+   } in Characters.update_character arch;
+   arch
 
 let make_swordsman loc =
  let swd =
@@ -182,7 +183,8 @@ let make_swordsman loc =
     attackable = [];
     direction= South;
     is_attacking=false;
-    } in Characters.update_character swd
+    } in Characters.update_character swd;
+ swd
 
 let make_mage loc =
   let mg =
@@ -222,7 +224,8 @@ let make_mage loc =
      attackable = [];
      direction= South;
      is_attacking=false;
-   } in Characters.update_character mg
+   } in Characters.update_character mg;
+   mg
 
 let make_rangedboss (loc : int*int) =
      let arch =
@@ -304,7 +307,8 @@ let make_rangedboss (loc : int*int) =
        attackable = [];
        direction= South;
        is_attacking=false;
-       } in Characters.update_character swd
+       } in Characters.update_character swd;
+       swd
 
    let make_mageboss loc =
      let mg =
@@ -344,4 +348,5 @@ let make_rangedboss (loc : int*int) =
         attackable = [];
         direction= South;
         is_attacking=false;
-      } in Characters.update_character mg
+      } in Characters.update_character mg;
+      mg

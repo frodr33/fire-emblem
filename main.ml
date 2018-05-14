@@ -213,7 +213,7 @@ let rec set_init_ch_movement playerlst st =
 (* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
-let temp_enemy = (make_rangedboss (8,5))
+let temp_enemy = (make_archer (8,5))
 
 let init_state =
   let x =

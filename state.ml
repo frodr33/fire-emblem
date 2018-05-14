@@ -176,16 +176,21 @@ let translate_key st =
                   |_ -> Invalid
                   end
           |_ -> Invalid
-end
+  end
 
 
-
+(*[new_menu_cursor] returns the position of the new menu cursor based on
+ *the input [act] and [st].
+ *requires:
+ *    -[act] is an action
+ *    -[st] is a state
+ *)
   let new_menu_cursor act st = match act with
     |Mup -> if st.menu_cursor =0 then 0 else
         st.menu_cursor -1
     |Mdown ->if st.menu_cursor = st.current_menu.size-1 then st.current_menu.size-1 else
         st.menu_cursor +1
-    | _ -> failwith "placeholder"
+    | _ -> 0
 
 
 
@@ -306,6 +311,12 @@ attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] []
 (*-------------------------------END SPAGHETT---------------------------------*)
 
 
+(*[new_active_tile act st] returns the new tile based on if [act] is a valid
+ *action to move the active_tile.
+ *requires:
+ *   -[act] is an action
+ *  -[st] is the state
+ *)
   let new_active_tile act st =
     let x = fst(st.active_tile.coordinate) in
     let y = snd (st.active_tile.coordinate) in

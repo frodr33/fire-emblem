@@ -1822,9 +1822,20 @@ let draw_welcome_screen context =
   let img = Html.createImg document in
   img##src <- js "Sprites/FireEmblem.png";
   context##drawImage (img, 80.,70.);
-  context##font <- js "25px Times New Roman";
-  context##fillText (js "How To Play:", 10., 160.);
-  context##fillText (js "Controls:", 10., 280.);
+  context##font <- js "20px Times New Roman";
+  context##fillText (js "How To Play:", 10., 140.);
+  context##font <- js "15px Times New Roman";
+  context##fillText (js "The goal of the game is to move your players (in blue) to the enemies using the", 30., 160.);
+  context##fillText (js "'Z' key to select the player. When a player is selected, blue and red tiles will appear", 30., 175.);
+  context##fillText (js "on the screen. Blue tiles are moveable tiles. After you moved you can either attack", 30., 190.);
+  context##fillText (js "which will show more red tiles that represent attack range, use an item, visit a ", 30., 205.);
+  context##fillText (js "a village, open a chest, trade with a another player, or wait which will end that ", 30., 220.);
+  context##fillText (js "players turn. To deselect press 'X'. 'A' teleports the cursor to the current active", 30., 235.);
+  context##fillText (js "player. Once all players finish their turns, click on an empty square and click 'END' ", 30., 250.);
+  context##fillText (js "to end the players turn. Then the AI will attack, which will end the AI turn", 30., 265.);
+  context##font <- js "20px Times New Roman";
+  context##fillText (js "Controls:", 10., 285.);
+  context##font <- js "15px Times New Roman";
   let img = Html.createImg document in
   img##src <- js "Sprites/ArrowKeys.png";
   context##drawImage (img, 10.,280.);

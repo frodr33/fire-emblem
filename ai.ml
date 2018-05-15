@@ -291,7 +291,7 @@ let rec move lst (c : character) range last (attk : int*int) loc =
    |(a, b) ->
      print_string ("Distance"^(string_of_int a));
      print_string ("Range"^(string_of_int range));
-       if a <= range then
+     if a <= range && List.length t > (fst attk) then
          move t c range b attk b
        else
          (loc)

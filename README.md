@@ -3,10 +3,10 @@
 ![screenshot](Sprites/screenshot.PNG)
 
 ## Description
-Fire-Emblem is a clone of the real game boy game Fire Emblem. Fire-Emblem is a turn based game where the user controlls several blue-colored 'Players'. The goal of the game is to kill the enemies without dying. 
+Fire-Emblem is a clone of the real game boy game Fire Emblem. Fire-Emblem is a turn based game where the user controlls several blue-colored 'Players'. The goal of the game is to kill the enemies without dying.
 
 ## How to install
-OCaml and Opam must be installed prior to installing this project. If OCaml and Opam are not installed then follow the 
+OCaml and Opam must be installed prior to installing this project. If OCaml and Opam are not installed then follow the
 tutorial at `http://www.cs.cornell.edu/courses/cs3110/2018sp/install.html`
 
 If Ocaml and Opam are installed, then do the following steps:
@@ -32,5 +32,5 @@ Oscigen's js_of_ocaml library was used to build the GUI. The library translates 
 ## Authors
 - Frank Rodriguez [@frodr33](https://github.com/frodr33)
 - Albert Tsao
-- Darren Tsai 
+- Darren Tsai
 - Ray Gu

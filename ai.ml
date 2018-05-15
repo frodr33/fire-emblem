@@ -130,7 +130,13 @@ let fill_map len wid =
 (*[new_map] refreshes the map for a new target destination*)
 let new_map (pmap : path_map) =
  let (t : path_tile) = {length = 1000;prev = None} in
- Array.make_matrix pmap.length pmap.width t
+ let pmap2 =
+   {
+     length = pmap.length;
+     width = pmap.width;
+     grid = Array.make_matrix pmap.length pmap.width t
+   }
+ in pmap2
 
 (*[update_map] takes a [path_map] and updates its values if a shorter path is
 * found by the algorithm*)
@@ -196,16 +202,13 @@ let rec search_helper (m : map) (c : character) (lst : character list) pmap targ
    |[] ->
      target
    |h::t ->
-
      match c.location with (x, y) ->
-       let check = path_helper h.location [] [] m.grid.(x).(y) m pmap in
+       let check = path_helper h.location [] [] m.grid.(x).(y) m (new_map pmap) in
        if fst (List.hd (List.rev check)) < fst (List.hd (List.rev target)) &&
           (fst h.health) > 0 then
-         let pm = {width = pmap.width; length = pmap.width; grid = new_map pmap} in
-         search_helper m c t pm check
+         search_helper m c t (new_map pmap) check
        else
-         let pm = {width = pmap.width; length = pmap.width; grid = new_map pmap} in
-         search_helper m c t pm target
+         search_helper m c t (new_map pmap) target
 
 (*[move] iterates through the shortest path to a target enemy unit, and moves as
 * far on the path as permitted by its movement stats*)

@@ -4,7 +4,7 @@ open Characters
 (*open Ai*)
 
 (**
- *   HARD CODED MENUS 
+ *   HARD CODED MENUS
 *)
 let unit_menu = {
   kind = Unit;
@@ -23,13 +23,13 @@ let item_menu = {
   size = 2;
   options = [|"Equip/Use";"Discard"|]
   }
-  
+
 let confirm_menu = {
   kind = Confirm;
   size=1;
   options=[|"Attack?"|]
   }
-  
+
 type state = {
   player: character list;
   items : item list;
@@ -60,7 +60,7 @@ let ctile c map =
 (**
  *  [check exist co lst] checks if an int pair, co, exists in list, lst.
  *  requires:
- *  - [co] is of type 'a 
+ *  - [co] is of type 'a
  *  - [lst] is of type ('a * 'b) list.
 *)
 let rec check_exist co lst =
@@ -70,10 +70,10 @@ let rec check_exist co lst =
 
 (**
  *  [a_range_add ma i co fl ml sl] is a function that returns a new fl with the
- *  four tiles adjacent to co, if they are not in ml, sl or if i does not 
+ *  four tiles adjacent to co, if they are not in ml, sl or if i does not
  *  exceed ma, as well as still in map size range.
  *  See attack_range_helper.
- *  requires: 
+ *  requires:
  *  - [ma] is an int
  *  - [i] is an int
  *  - [co] is a coordinate (int * int)
@@ -132,7 +132,7 @@ let rec attack_range_helper mi ma i co fl ml sl =
 
 (**
  *  [distance_tile a t] is the number of tiles away [t] is from [a]
- *  requires: 
+ *  requires:
  *  - [a] is a character
  *  - [t] is a tile
 *)
@@ -239,7 +239,7 @@ let not_in_bounds (x:int) (y:int) (d:direction) (dimensions:int * int) =
 (**
  *  [movable t d mov map] is a function that checks if the tile in direction, d,
  *  of tile, t, can be moved on to with the given mov and map.
- *  requires: 
+ *  requires:
  *  - [t] is a valid tile on map
  *  - [d] is a valid direction
  *  - [mov] is a valid int
@@ -279,8 +279,8 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
  *  requires:
  *  - [tile] is a valid tile
  *  - [i] is a valid int
- *  - [f] is a valid (tile * int) list. 
-*)    
+ *  - [f] is a valid (tile * int) list.
+*)
 let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
   match f with
   |[]   -> [(tile,i)]
@@ -297,9 +297,9 @@ let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
  *  - [t] is a valid tile
  *  - [map] is a valid map
  *  - [s] is a valid settled set
- *  - [f] is a valid frontier set 
- *  See dijkstra's_helper for details. 
-*)                                 
+ *  - [f] is a valid frontier set
+ *  See dijkstra's_helper for details.
+*)
 let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
   let mapg = map.grid in
   let mov_dir = movable t d mov map in
@@ -324,7 +324,7 @@ let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list)
  *  - [t] is a valid map
  *  - [m] is a valid int
  *  - [map] is a valid map
- *  - [f] is a valid frontier set  
+ *  - [f] is a valid frontier set
 *)
 let rec check_surround s t m map f:(tile * int) list =
   f
@@ -353,7 +353,7 @@ let rec dijkstra's_helper f s tile m map =
 
 (**
  *  [dijkstra's c map] is a function that returns a list of all tiles
- *  traversable by character c on the map from their current location. 
+ *  traversable by character c on the map from their current location.
 *)
 let dijkstra's c map =
   dijkstra's_helper [] [] (ctile c map) c.mov map
@@ -364,7 +364,7 @@ let dijkstra's c map =
  *  requires:
  *  - [lst1] is a valid list
  *  - [lst2] is a valid list
- *  - [movl] is a valid list 
+ *  - [movl] is a valid list
 *)
 let rec add_no_dup lst1 lst2 movl =
   match lst1 with
@@ -401,7 +401,7 @@ let red_tiles c : (int * int) list =
  *  [attack_range c] is the attack range of a character c from their present
  *  location.
  *  requires:
- *  - [c] is a valid character 
+ *  - [c] is a valid character
 *)
 let attack_range c =
   let w = extract c.inv.(c.eqp) in
@@ -473,7 +473,7 @@ let move_helper st =
 (**
  *  [village_checker st] checks if the village can be visited
  *  requires:
- *  -  [st] is the current state of the game 
+ *  -  [st] is the current state of the game
 *)
 let village_checker st =
   match st.active_tile.ground with
@@ -500,7 +500,7 @@ let rec has_key c i =
 (**
  *  [chest_checker s] is a function that checks if a chest is openable
  *  requires:
- *  - [s] is a valid state 
+ *  - [s] is a valid state
 *)
 let chest_checker s =
   match s.active_unit with
@@ -515,7 +515,7 @@ let chest_checker s =
  *  [reset_ch plst] is a function that returns the stage of all characters in
  *  the list to [Ready]
  *  requires:
- *  - [plst] is a valid character list 
+ *  - [plst] is a valid character list
 *)
 let rec reset_ch plst =
   match plst with
@@ -532,7 +532,7 @@ let check_inventory c =
 (**
  *  [check_if_ally sc] checks if a character option is an ally
  *  requires:
- *  - sc is a character option 
+ *  - sc is a character option
 *)
 let check_if_ally sc =
   match sc with
@@ -611,7 +611,7 @@ let rec check_character_list lst st =
  *  [do' s] is a function that takes a state, checks what the most recent
  *  command was, and returns a new state based on the command
  *  requires:
- *  - [s] is a state 
+ *  - [s] is a state
 *)
 let do' s =
   if s.player=[] then {s with lose=true} else
@@ -652,10 +652,11 @@ let do' s =
       |Some ch -> begin
           match s.current_menu.kind with
           |Trader1->let c = extract (s.active_tile.c) in
-            {s with active_item=s.menu_cursor;current_menu=create_trader2_menu c;menu_cursor=0}
-            |Trader2->
+            if (check_inventory (Some c) = false && s.current_menu.options.(s.menu_cursor)="") then s else
 
+              {s with active_item=s.menu_cursor;current_menu=create_trader2_menu c;menu_cursor=0}
 
+          |Trader2->
             if s.current_menu.options.(s.menu_cursor)="" && (extract s.active_unit).inv.(s.active_item)=None then s else
 
               let ac = extract (s.active_tile.c) in

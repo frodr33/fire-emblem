@@ -778,7 +778,9 @@ let do' s =
                 combat ch e;(if fst ch.health<=0 then () else attacking:=true;ch.is_attacking<-true );
                 {s with active_unit = None;
                         menu_active = false;
-                        menu_cursor = 0}|>remove_if_dead ch|>remove_if_dead e;
+                        menu_cursor = 0;
+                        player = check_character_list s.player s;
+                        enemies = check_character_list s.enemies s}
                 (*Need one more check to determine if won or lost*)
               end
             |_ -> s

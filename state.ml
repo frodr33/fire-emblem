@@ -707,7 +707,7 @@ let rec check_character_list lst st =
    *)
 let rec transition_players plst clst acc =
   match plst,clst with
-  |h1::t1, h2::t2 -> let new_hp = (fst h1.health, fst h1.health) in
+  |h1::t1, h2::t2 -> let new_hp = (snd h1.health, snd h1.health) in
     h1.location <- h2;h1.health<-new_hp;
     transition_players t1 t2 (h1::acc)
   |_, _ -> List.rev acc
@@ -781,7 +781,6 @@ let transition_map2 st =
       funds = 0;
       last_character = None;
     } in x |> set_init_ch_movement x.player |> set_init_ch_movement x.enemies |> set_act_tile
-
 
 (**
  *  [do' s] is a function that takes a state, checks what the most recent

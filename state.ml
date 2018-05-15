@@ -531,7 +531,9 @@ let chest_checker s =
 let rec reset_ch plst =
   match plst with
   |[]   -> ()
-  |h::t -> h.stage <- Ready
+  |h::t -> h.stage <- Ready; reset_ch t
+
+  
 let check_inventory c =
   match c with
   |Some ch ->

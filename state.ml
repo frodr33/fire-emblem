@@ -559,9 +559,14 @@ let check_if_ally sc =
 let check_surround_allies s c =
   match c.location with
   |(0,0)-> (check_if_ally s.act_map.grid.(0).(1).c)||(check_if_ally s.act_map.grid.(1).(0).c)
-  |(0,y)-> (check_if_ally s.act_map.grid.(0).(y-1).c)||  (check_if_ally s.act_map.grid.(1).(y).c) ||  (check_if_ally s.act_map.grid.(0).(y+1).c)
-  |(x,0)-> (check_if_ally s.act_map.grid.(x-1).(0).c)||  (check_if_ally s.act_map.grid.(x).(1).c) ||  (check_if_ally s.act_map.grid.(x+1).(0).c)
-  |(x,y)-> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x+1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
+  |(0,y)-> if y <> 14 then (check_if_ally s.act_map.grid.(0).(y-1).c)||  (check_if_ally s.act_map.grid.(1).(y).c) || (check_if_ally s.act_map.grid.(0).(y+1).c)
+    else (check_if_ally s.act_map.grid.(0).(y-1).c)||  (check_if_ally s.act_map.grid.(1).(y).c)
+  |(x,0)-> if x<>14 then (check_if_ally s.act_map.grid.(x-1).(0).c)||  (check_if_ally s.act_map.grid.(x).(1).c) ||  (check_if_ally s.act_map.grid.(x+1).(0).c)
+    else (check_if_ally s.act_map.grid.(x-1).(0).c)||  (check_if_ally s.act_map.grid.(x).(1).c)
+  |(x,y) when x<>14 &&y<>14-> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x+1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
+  |(x,y) when x=14 && y<>14 -> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
+  |(x,y) when x<>14&&y=14-> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x+1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)
+  |(x,y) ->(check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)
 
 (**[check_surround_inventories s c] checks the inventories of the characters on the tiles
   *directly adjacent to [c] on the map and returns [true] if any inventory is non-empty.
@@ -766,9 +771,9 @@ let do' s =
                           menu_active = false;
                           menu_cursor = 0}
                 |"Visit" -> if village_checker s
-                  then begin let _ = village ch s.active_tile.ground;
-                               ch.stage <- Done in
+                  then begin let _ =
                     village ch s.active_tile.ground;
+                    ch.stage <- Done in
                     let x = fst s.active_tile.coordinate in
                     let y = snd s.active_tile.coordinate in
                     s.act_map.grid.(x).(y) <- {s.active_tile with ground = Village (None)};

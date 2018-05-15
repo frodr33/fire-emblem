@@ -278,10 +278,9 @@ let temp_enemy = (make_archer (8,5))
 
 let init_state =
 
-  let p = [make_lyn (4, 14);make_hector (3, 13); make_erk (2, 12)] in
-  (*let e = [make_archer (3, 5); make_archer (2, 7); make_swordsman (5, 8); make_mage (3, 10); make_meleeboss (1, 13)] in*)
-  let e = [make_archer (3, 14)] in 
-
+  let p = [make_lyn (14, 4);make_hector (13, 3); make_erk (12, 2)] in
+  let e = [make_archer (3, 5); make_archer (2, 7); make_swordsman (5, 8); make_mage (3, 10); make_meleeboss (1, 13)] in
+ 
   let x =
     {
       (*let lyn = make_lyn (4,14) in

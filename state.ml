@@ -768,7 +768,7 @@ let transition_map2 st =
       enemies = newe;
       lose = false;
       won = false;
-      round = false;
+      round = true;
       welcome = false;
       active_tile = {coordinate = (5,3); ground = Plain; tile_type = Grass;c=None};
       active_unit = None;

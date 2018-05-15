@@ -3,7 +3,7 @@ open State
 open Interactions
 
 let canvas_width = 546.
-let canvas_height = 468.
+let canvas_height = 390.
 
 module Html = Dom_html
 let js = Js.string
@@ -1495,18 +1495,49 @@ let draw_sidebar_title context state =
 
 (* [draw_lyn_face context] draws lyn face on the sidebar if
  * lyn was the last character *)
-let draw_lyn_face context =
+let draw_face context img_src =
   let img = Html.createImg document in
-  img##src <- js "Sprites/lyn.png";
+  img##src <- img_src;
   context##drawImage (img, 416., 52.)
+
+(* [draw_lyn_face context] draws lyn face on the sidebar if
+ * lyn was the last character *)
+let draw_face_archer context img_src =
+  let img = Html.createImg document in
+  img##src <- img_src;
+  context##drawImage (img, 400., 52.)
+
+(* [draw_lyn_face context] draws lyn face on the sidebar if
+ * lyn was the last character *)
+let draw_face_mage context img_src =
+  let img = Html.createImg document in
+  img##src <- img_src;
+  context##drawImage (img, 440., 52.)
+
+(* [draw_lyn_face context] draws lyn face on the sidebar if
+ * lyn was the last character *)
+let draw_face_boss context img_src =
+  let img = Html.createImg document in
+  img##src <- img_src;
+  context##drawImage (img, 403., 52.)
+
 
 (* [draw_sidebar_face context state] draws the face of the
  * last character *)
 let draw_sidebar_face context state =
   match state.last_character with
-  | Some chr ->
-    if chr.name = "Lyn" then draw_lyn_face context
-    else ()
+  | Some chr -> begin
+    match chr.name with
+    | "Lyn" -> draw_face context (js "Sprites/lyn.png")
+    | "Hector" -> draw_face context (js "Sprites/Hector.png")
+    | "Erk" -> draw_face context (js "Sprites/Erk.png")
+    | "Mage" -> draw_face_mage context (js "Sprites/Mage.png")
+    | "Mage Boss" -> draw_face_boss context (js "Sprites/MageBoss.png")
+    | "Archer" -> draw_face_archer context (js "Sprites/Archer.png")
+    | "Melee" -> draw_face_archer context (js "Sprites/Melee.png")
+    | "Melee Boss" ->  draw_face_boss context (js "Sprites/MeleeBoss.png")
+    | _ -> ()
+  end
   | None -> ()
 
 (* [draw_sidebar_stats context state] draws all the stats for last character
@@ -1811,27 +1842,11 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
     draw_healthbar context state.enemies;
     draw_sidebar context state;
     draw_attack_menu context state;
-    draw_inventory context state;
+    (* draw_inventory context state; *)
     clock ();
 
-
-(*  let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
-  context##clearRect (0., 0., canvas_width, canvas_height);
-  draw_map context state;
-  draw_dijsktra context state;
-  draw_attack_squares context state.active_unit;
-  context##globalAlpha <- 1.;
-  (*  draw_is_player_done context state.active_unit;*)
-  draw_is_player_done context state.player;
-  draw_player context state.player;
-  draw_enemies context state;
-  draw_cursor context state.active_tile;
-  menu_manager context state;
-  draw_menu_arrow context state;
-  draw_healthbar context state.player;
-  draw_healthbar context state.enemies;
-  draw_sidebar context state;
-  draw_attack_menu context state;
-  draw_inventory context state;
-  clock ();
- *)
+(* TODO: 
+ * 1. Face on side bar
+ * 2. Get rid of inv---
+ * 3. Fix attack menu
+ * 4. welcome screen *)

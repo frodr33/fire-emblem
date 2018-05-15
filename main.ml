@@ -297,7 +297,7 @@ let init_state =
   {
     player = [make_lyn (4, 14);make_hector (3, 13); make_erk (2, 12)];
     items = [];
-    enemies = [make_archer (3, 5); make_marcher (2, 7); make_swordsman (5, 8); make_mage (3, 10); make_meleeboss (1, 13)];
+    enemies = [make_archer (3, 5); make_archer (2, 7); make_swordsman (5, 8); make_mage (3, 10); make_meleeboss (1, 13)];
     lose = false;
     won = false;
     round = false;

@@ -12,6 +12,7 @@ let document = Html.document
 let clock = ref 1
 let sync = ref true
 let transition = ref 1000
+let transition_start = ref false
 
 (*********************************************************)
 (***************** Map Drawing Functions *****************)
@@ -92,7 +93,7 @@ let draw_map (context: Html.canvasRenderingContext2D Js.t) state =
  * static movement of the cursor and players *)
 let clock () =
   clock := if !clock < 12 then !clock + 1 else 1;
-  transition := if !transition >= 0 then !transition - 2 else -1;
+  transition := if (!transition >= 0) && (!transition_start) = true then !transition - 2 else !transition;
   let x1 = !clock mod 12 in (* bounds *)
   match x1 with
   | 0 -> sync := not(!sync)
@@ -1585,7 +1586,7 @@ let draw_sidebar context state =
 (* [draw_attack_back context] draws the background for
  * the attack menu *)
 let draw_attack_back context =
-  let x = 255. in
+  let x = 229. in
   let y = 304. in
   let rec ys x y =
     if x = 385. then ()
@@ -1604,12 +1605,12 @@ let draw_player_stats context player enemy =
   let hp_enm = (string_of_int (fst (enemy.health))) ^ "/" ^ (string_of_int (snd (enemy.health))) in
   let player_damage = damage player enemy in
   let enemy_damage = damage enemy player in
-  context##strokeText (js (player.name), 260., 320.);
-  context##strokeText (js ("Hp: " ^ hp), 260., 340.);
-  context##strokeText (js ("Dam: " ^ (string_of_int player_damage)), 260., 360.);
-  context##strokeText (js (enemy.name), 330., 320.);
-  context##strokeText (js ("Hp: " ^ hp_enm), 330., 340.);
-  context##strokeText (js ("Dam: " ^ (string_of_int enemy_damage)), 330., 360.)
+  context##strokeText (js (player.name), 235., 320.);
+  context##strokeText (js ("Hp: " ^ hp), 235., 340.);
+  context##strokeText (js ("Dam: " ^ (string_of_int player_damage)), 235., 360.);
+  context##strokeText (js (enemy.name), 320., 320.);
+  context##strokeText (js ("Hp: " ^ hp_enm), 320., 340.);
+  context##strokeText (js ("Dam: " ^ (string_of_int enemy_damage)), 320., 360.)
 
 (* [draw_attack_menu context state] draws the attack menu
  * which shows the user the health of the current player and
@@ -1627,7 +1628,7 @@ let draw_attack_menu context state =
         begin
         draw_attack_back context;
         context##strokeStyle <- js "white";
-        context##strokeRect (254.,304. ,134.,82.);
+        context##strokeRect (229.,304. ,160.,82.);
         draw_player_stats context chr enemy;
         context##font <- js "12px sans-serif"
       end
@@ -1820,8 +1821,10 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
   match state.round, state.won, state.lose with
   | true, _, _ ->
+    transition_start:= true;
     draw_transition_screen context state;
     clock ();
+    transition_start:= false;
   | false, true, false->
     draw_win_screen context;
   | false, false, true ->
@@ -1846,7 +1849,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
     clock ();
 
 (* TODO: 
- * 1. Face on side bar
+ * 1. Face on side bar--
  * 2. Get rid of inv---
  * 3. Fix attack menu
  * 4. welcome screen *)

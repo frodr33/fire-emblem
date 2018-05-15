@@ -768,7 +768,7 @@ let transition_map2 st =
       enemies = newe;
       lose = false;
       won = false;
-      round = true;
+      round = false;
       welcome = false;
       active_tile = {coordinate = (5,3); ground = Plain; tile_type = Grass;c=None};
       active_unit = None;
@@ -790,13 +790,13 @@ let transition_map2 st =
  *  - [s] is a state
 *)
 let do' s =
-  if s.round then s else
-  if s.player = [] then {s with lose = true} else
+   if s.round then s else
+      if s.player = [] then {s with lose = true} else
   if s.enemies = [] then begin
     match s.act_map.number with
-    |1 -> transition_map2 s
+    |1 -> attacking:=false;transition_map2 s
     |2 -> {s with won = true}
-    |_ -> s
+    |_ ->  s
   end
   else
     let act = translate_key s in

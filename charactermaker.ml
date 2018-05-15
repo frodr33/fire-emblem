@@ -406,7 +406,7 @@ let make_lyn loc =
      attackable = [];
      direction= South;
      is_attacking=false;
-   } in Characters.update_character mg;
+   } in Characters.update_character lyn;
    lyn
 
 let wolf = 
@@ -465,7 +465,7 @@ let make_hector loc =
       attackable = [];
       direction= South;
       is_attacking=false;
-    } in Characters.update_character mg;
+    } in Characters.update_character hector;
   hector
 
   let make_erk loc = 
@@ -507,7 +507,7 @@ let make_hector loc =
         attackable = [];
         direction= South;
         is_attacking=false;
-      } in Characters.update_character mg;
+      } in Characters.update_character erk;
       erk
 
 let ilance = 
@@ -566,6 +566,6 @@ let florina =
     attackable = [];
     direction= South;
     is_attacking=false;
-  } in Characters.update_character mg;
-  hector
+  } in Characters.update_character florina;
+  florina
 

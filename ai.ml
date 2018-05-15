@@ -155,6 +155,14 @@ let update_map (pmap : path_map) x y (ptile : path_tile) : path_map =
  pmap.grid.(x).(y) <- ptile;
  pmap
 
+let rec path_adjust (lst : (int*(int*int)) list) acc sub =
+  match lst with
+  |[] -> acc
+  |h::t ->
+    match h with
+    |(x,y) ->
+      path_adjust t ((x - sub, y)::acc) sub
+
 (*[path_finder] searches a completed [path_map] to output a list of coordinates
 * from the ally unit to the original enemy unit's coordinates*)
 let rec path_finder coor pmap acc =
@@ -163,7 +171,10 @@ let rec path_finder coor pmap acc =
    match pmap.grid.(x).(y).prev with
    |None ->
      print_string ("Working"^(string_of_int (List.length acc)));
-     acc
+     if List.length acc > 0 then
+       List.rev (path_adjust acc [] (fst (List.hd acc)))
+     else
+       acc
    |Some t ->
      print_string ("Next Path:"^(string_of_int (fst t))^" "^(string_of_int (snd t)));
      print_string ("Cost"^(string_of_int pmap.grid.(x).(y).length));
@@ -352,7 +363,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
       let go = move shortestpath c c.mov c.location attk dest in
        update_move m c c.location (fst go);
       if snd go then
-        print_string "eh";
+        print_string "Fighting?";
        combat c h))
  |Hard ->
    (match lst with
@@ -367,7 +378,8 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
      let go = move close c c.mov c.location attk dest in
                print_string "Almost";
          update_move m c c.location (fst go);
-       if snd go then
+               if snd go then
+                 print_string "Fighting?";
          combat c h)
  |Normal ->
    (match lst with
@@ -384,7 +396,8 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
       let go = move close c c.mov c.location attk dest in
                      print_string "Almost";
         update_move m c c.location (fst go);
-        if snd go then
+                     if snd go then
+                       print_string "Fighting?";
           combat c h)
  |Easy ->
    if c.eqp > -1 then

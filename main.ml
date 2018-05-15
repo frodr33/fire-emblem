@@ -295,9 +295,9 @@ let temp_enemy = (make_archer (8,5))
 let init_state =
   let x =
   {
-    player = [temp_character2];
+    player = [make_lyn (4, 14);make_hector (3, 13); make_erk (2, 12)];
     items = [];
-    enemies = [temp_enemy; enemy_1];
+    enemies = [make_archer (3, 5); make_archer (2, 7); make_swordsman (5, 8); make_mage (3, 10); make_meleeboss (1, 13)];
     lose = false;
     won = false;
     round = false;

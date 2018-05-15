@@ -37,7 +37,7 @@ val attack_range : character -> (int * int) list
 (**
  *   Finds the tiles of a character
 *)
-val dijkstra's_helper : (tile * int) list -> (int*int) list -> tile -> int -> map -> character -> (int*int) list
+val dijkstra's_helper : (tile * int) list -> (int*int) list -> tile -> int -> map -> (int*int) list
 
 (**
  *  Finds the movable tiles of a character

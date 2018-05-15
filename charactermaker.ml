@@ -431,15 +431,15 @@ let elixer = {
   effective = [];
   penalty = [];
 }
-}
 
-let make_lyn loc = 
+
+let make_lyn loc =
   let lyn =
     {
      name = "Lyn";
      stage = Ready;
      class' = Lord;
-     growths = [(Spd, 80); (Str, 60); (Def, 40); (Skl, 75); 
+     growths = [(Spd, 80); (Str, 60); (Def, 40); (Skl, 75);
                 (Mag, 10); (Health, 55); (Res, 45); (Lck, 50)];
      caps = [];
      level = 1;
@@ -475,8 +475,8 @@ let make_lyn loc =
    } in Characters.update_character lyn;
    lyn
 
-let wolf = 
-  { 
+let wolf =
+  {
    iname = "Wolf Beil";
    wtype = Axe;
    mgt = 10;
@@ -492,13 +492,13 @@ let wolf =
    penalty = [];
   }
 
-let make_hector loc = 
+let make_hector loc =
   let hector =
     {
       name = "Hector";
       stage = Ready;
       class' = Lord;
-      growths = [(Spd, 60); (Str, 80); (Def, 75); (Skl, 55); 
+      growths = [(Spd, 60); (Str, 80); (Def, 75); (Skl, 55);
                 (Mag, 5); (Health, 70); (Res, 20); (Lck, 60)];
       caps = [];
       level = 1;
@@ -534,13 +534,13 @@ let make_hector loc =
     } in Characters.update_character hector;
   hector
 
-  let make_erk loc = 
+  let make_erk loc =
     let erk =
       {
         name = "Erk";
         stage = Ready;
         class' = Mage;
-        growths = [(Spd, 70); (Str, 20); (Def, 40); (Skl, 60); 
+        growths = [(Spd, 70); (Str, 20); (Def, 40); (Skl, 60);
                   (Mag, 80); (Health, 40); (Res, 60); (Lck, 30)];
         caps = [];
         level = 1;
@@ -576,8 +576,8 @@ let make_hector loc =
       } in Characters.update_character erk;
       erk
 
-let ilance = 
-  { 
+let ilance =
+  {
     iname = "Iron Lance";
     wtype = Lance;
     mgt = 8;
@@ -592,14 +592,14 @@ let ilance =
     effective = [];
     penalty = [];
   }
-      
-let make_florina loc = 
+
+let make_florina loc =
 let florina =
   {
     name = "Florina";
     stage = Ready;
     class' = PRider;
-    growths = [(Spd, 85); (Str, 55); (Def, 40); (Skl, 80); 
+    growths = [(Spd, 85); (Str, 55); (Def, 40); (Skl, 80);
               (Mag, 30); (Health, 50); (Res, 75); (Lck, 85)];
     caps = [];
     level = 1;
@@ -634,4 +634,3 @@ let florina =
     is_attacking=false;
   } in Characters.update_character florina;
   florina
-

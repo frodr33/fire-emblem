@@ -7,7 +7,7 @@ val item_menu : menu
 val confirm_menu : menu
 
 (**
- *  The type of the state of the game 
+ *  The type of the state of the game
 *)
 type state = {
   player : character list;
@@ -30,12 +30,12 @@ type state = {
 }
 
 (**
- *  Finds the attack range of a character 
+ *  Finds the attack range of a character
 *)
 val attack_range : character -> (int * int) list
 
 (**
- *   Finds the tiles of a character 
+ *   Finds the tiles of a character
 *)
 val dijkstra's_helper : (tile * int) list -> (int*int) list -> tile -> int -> map -> (int*int) list
 
@@ -48,6 +48,9 @@ val dijkstra's : character -> map -> (int*int) list
  *  Finds the red tiles of a character
 *)
 val red_tiles : character -> (int * int) list
+val add_init_characters: character list -> map -> map
+
+val set_init_ch_movement: character list -> state -> state
 
 
 (**[do' act st] returns the state after an input action [act]*)

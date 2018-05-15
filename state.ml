@@ -1,7 +1,7 @@
 open Types
 open Interactions
 open Characters
-(*open Ai*)
+open Charactermaker
 
 (**
  *   HARD CODED MENUS
@@ -531,9 +531,7 @@ let chest_checker s =
 let rec reset_ch plst =
   match plst with
   |[]   -> ()
-  |h::t -> h.stage <- Ready; reset_ch t
-
-  
+  |h::t -> h.stage <- Ready;reset_ch t
 let check_inventory c =
   match c with
   |Some ch ->
@@ -653,7 +651,52 @@ let rec check_character_list lst st =
       (let ctile = st.act_map.grid.(fst h.location).(snd h.location) in
        st.act_map.grid.(fst h.location).(snd h.location) <- {ctile with c = None};
        check_character_list t st) else h::check_character_list t st
+let rec transition_players plst clst acc =
+  match plst,clst with
+  |h1::t1,h2::t2->h1.location<-h2;transition_players t1 t2 (h1::acc)
+  |_,_ -> List.rev acc
+(*Adds initial characters in player list to map*)
+let rec add_init_characters playerlst map =
+  match playerlst with
+  |[] -> map
+  |h::t ->
+    let cloc = h.location in
+    let tile_to_change = map.grid.(fst cloc).(snd cloc) in
+    let new_tile = {tile_to_change with c = Some h} in
+    let _ = map.grid.(fst cloc).(snd cloc) <-new_tile in
+    add_init_characters t map
 
+(*Sets movement for characters*)
+let rec set_init_ch_movement playerlst st =
+  match playerlst with
+  |[] -> st
+  |h::t ->let _ =  h.movement <- dijkstra's h st.act_map;
+            h.attackable <- red_tiles h in set_init_ch_movement t st
+
+let transition_map2 st =
+  let newp = transition_players st.player  [(5,8); (6,9); (7,8)] [] in
+  let newe = [make_archer (0,10);make_swordsman (2,13);make_swordsman (13,10);make_swordsman (14,9);
+              make_swordsman (12,9);make_mage (13,8);make_rangedboss (10,13)] in
+  let x =
+    {
+      player = newp;
+      items = [];
+      enemies = newe;
+      lose = false;
+      won = false;
+      round = true;
+      welcome = false;
+      active_tile = {coordinate = (5,3); ground = Plain; tile_type = Grass;c=None};
+      active_unit = None;
+      active_item = -1;
+      act_map = add_init_characters (List.rev_append newp newe) Room.map2;
+      menus = [];
+      current_menu = unit_menu;
+      menu_active = false;
+      menu_cursor = 0;
+      funds = 0;
+      last_character = None;
+    } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies
 (**
  *  [do' s] is a function that takes a state, checks what the most recent
  *  command was, and returns a new state based on the command
@@ -661,15 +704,16 @@ let rec check_character_list lst st =
  *  - [s] is a state
 *)
 let do' s =
+  if s.round then s else
   if s.player=[] then {s with lose=true} else
-    (*if s.enemies=[] then begin
-      match s.act_map.number with
-      |1->s
-      |2->{s with won=true}
-      |_-> s
+  if s.enemies=[] then begin
+    match s.act_map.number with
+    |1->transition_map2 s
+    |2->{s with won=true}
+    |_-> s
 
-      end
-      else*)
+  end
+  else
     let act = translate_key s in
     let _ = input := Nothing in
     match act with
@@ -722,23 +766,23 @@ let do' s =
                           menu_cursor = 0}
                 |"Visit" -> if village_checker s
                   then begin let _ = village ch s.active_tile.ground;
-                          ch.stage <- Done in
-                        village ch s.active_tile.ground;
-                        let x = fst s.active_tile.coordinate in
-                        let y = snd s.active_tile.coordinate in
-                        s.act_map.grid.(x).(y) <- {s.active_tile with ground = Village (None)};
-                        {s with active_unit = None;
-                                menu_active = false;
-                                menu_cursor = 0;
-                        }
+                               ch.stage <- Done in
+                    village ch s.active_tile.ground;
+                    let x = fst s.active_tile.coordinate in
+                    let y = snd s.active_tile.coordinate in
+                    s.act_map.grid.(x).(y) <- {s.active_tile with ground = Village (None)};
+                    {s with active_unit = None;
+                            menu_active = false;
+                            menu_cursor = 0;
+                    }
                   end
                   else s
                 |"Open" -> let chestable = chest_checker s in
                   if fst chestable then (ch.stage <-Done;
                                          chest ch s.active_tile.ground (snd chestable);
                                          let x = fst s.active_tile.coordinate in
-                        let y = snd s.active_tile.coordinate in 
-                        s.act_map.grid.(x).(y) <- {s.active_tile with ground = Chest (None)};
+                                         let y = snd s.active_tile.coordinate in
+                                         s.act_map.grid.(x).(y) <- {s.active_tile with ground = Chest (None)};
                                          {s with active_unit = None;
                                                  menu_active = false;
                                                  menu_cursor = 0

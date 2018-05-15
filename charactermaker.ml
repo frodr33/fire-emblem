@@ -136,7 +136,7 @@ let make_archer loc =
      supports = [];
      wlevels = [(Bow,'d',0)];
      ai = Norm;
-     behave = Normal; (*should be normal*)
+     behave = Normal; 
      location = loc;
      movement = [];
      attackable = [];
@@ -592,45 +592,3 @@ let ilance =
     effective = [];
     penalty = [];
   }
-
-let make_florina loc =
-let florina =
-  {
-    name = "Florina";
-    stage = Ready;
-    class' = PRider;
-    growths = [(Spd, 85); (Str, 55); (Def, 40); (Skl, 80);
-              (Mag, 30); (Health, 50); (Res, 75); (Lck, 85)];
-    caps = [];
-    level = 1;
-    exp = 0;
-    health = (18, 18);
-    allegiance = Player;
-    str = 4;
-    mag = 3;
-    def = 3;
-    spd = 11;
-    res = 11;
-    skl = 10;
-    lck = 6;
-    mov = 5;
-    con = 0;
-    aid = 0;
-    hit = 0;
-    atk = 0;
-    crit = 0;
-    avoid = 0;
-    inv = [|Some (wolf);None;None;None;None|];
-    eqp = 0;
-    ability = [];
-    supports = [];
-    wlevels = [(Lance,'d',0)];
-    ai = BossHunt;
-    behave = Normal;
-    location = loc;
-    movement = [];
-    attackable = [];
-    direction= South;
-    is_attacking=false;
-  } in Characters.update_character florina;
-  florina

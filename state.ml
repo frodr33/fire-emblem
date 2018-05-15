@@ -444,7 +444,10 @@ let new_active_tile act st =
       st.act_map.grid.(x+1).(y)
   |_ -> failwith "placeholder"
 
-(**[create_attack_menu]
+(**[create_attack_menu c] creates a menu with the equippable items
+    in [c]'s inventory.
+  *requires:
+  *-[c] is a character.
 *)
 let create_attack_menu c =
   let o = Array.map (fun x -> match x with
@@ -631,11 +634,22 @@ let check_surround_inventories s c =
     (check_inventory s.act_map.grid.(x-1).(0).c) ||
     (check_inventory s.act_map.grid.(x).(1).c)   ||
     (check_inventory s.act_map.grid.(x+1).(0).c)
-  |(x,y) ->
+  |(x,y) when x<> 14 && y <> 14->
     (check_inventory s.act_map.grid.(x-1).(y).c) ||
     (check_inventory s.act_map.grid.(x+1).(y).c) ||
     (check_inventory s.act_map.grid.(x).(y-1).c) ||
-    (check_if_ally s.act_map.grid.(x).(y+1).c)
+    (check_inventory s.act_map.grid.(x).(y+1).c)
+  |(x,y) when x = 14 && y <> 14 ->
+    (check_inventory s.act_map.grid.(x-1).(y).c) ||
+    (check_inventory s.act_map.grid.(x).(y-1).c) ||
+    (check_inventory s.act_map.grid.(x).(y+1).c)
+  |(x,y) when x <> 14 && y = 14 ->
+    (check_inventory s.act_map.grid.(x-1).(y).c) ||
+    (check_inventory s.act_map.grid.(x+1).(y).c) ||
+    (check_inventory s.act_map.grid.(x).(y-1).c)
+  |(x,y) -> (
+      check_inventory s.act_map.grid.(x-1).(y).c)  ||
+      (check_inventory s.act_map.grid.(x).(y-1).c)
 
 (**[set_direction c t] sets the direction of [c] to face [t].
   *requires:
@@ -655,37 +669,6 @@ let set_direction c t =
   |x,y when x < 0 && y > 0 -> c.direction<-West
   |x,y when x > 0 && y > 0 -> c.direction<-South
   |_ -> ()
-
-(*[delete_from_list lst c acc] returns [lst] with [c] removed.
- *requires:
- * -[lst] is the list of players or enemies
- * -[c] is a player or enemy
- * -[acc] is a list of player or enemies.
-*)
-let rec delete_from_list lst c acc =
-  match lst with
-  |[] ->  acc
-  |h::t -> if h.name = c.name then List.rev_append acc t else delete_from_list t c (h::acc)
-
-(*[remove_if_dead] removes [c] from [s] is [c] is dead (hp<=0). If [c] is not dead
- *[st] is unchanged.
- *requires:
- * -[c] is a player or enemy.
- * -[st] is the current state of the game.
-*)
-let remove_if_dead c s =
-  if (fst c.health)>0 then s else
-    match c.allegiance with
-    |Player -> let newlst = delete_from_list s.player c [] in
-      let x = fst c.location in let y = snd c.location in
-      let oldt = s.act_map.grid.(x).(y) in
-      s.act_map.grid.(x).(y) <- {oldt with c=None};
-      {s with player = newlst;}
-    |Enemy -> let newlst = delete_from_list s.enemies c [] in
-      let x = fst c.location in let y = snd c.location in
-      let oldt = s.act_map.grid.(x).(y) in
-      s.act_map.grid.(x).(y) <- {oldt with c=None};
-      {s with enemies =newlst;}
 
 (**[find_ready_helper st] finds the next ready player in [st]. If there are
   *are no ready players, [st] is unchanged.
@@ -715,15 +698,27 @@ let rec check_character_list lst st =
        st.act_map.grid.(fst h.location).(snd h.location) <- {ctile with c = None};
        check_character_list t st) else h::check_character_list t st
 
+(**[transition_players plst clst acc] sets the players in [plst] to their
+  *new locations in [clst]. Their hp are reset to max.
+  *requires:
+  * -[plst] is a list of players
+  * -[clst] is a list of locations
+  * -[acc] is a list of players
+   *)
 let rec transition_players plst clst acc =
   match plst,clst with
-  |h1::t1, h2::t2 -> h1.location <- h2;
+  |h1::t1, h2::t2 -> let new_hp = (fst h1.health, fst h1.health) in
+    h1.location <- h2;h1.health<-new_hp;
     transition_players t1 t2 (h1::acc)
   |_, _ -> List.rev acc
 
-(*Adds initial characters in player list to map*)
-let rec add_init_characters playerlst map =
-  match playerlst with
+(**[add_init_characters plst map] adds the characters in [plst] to [map].
+  *requires:
+  * -[plst] is a list of characters
+  * -[map] is the current map
+  *)
+let rec add_init_characters plst map =
+  match plst with
   |[] -> map
   |h::t ->
     let cloc = h.location in
@@ -732,19 +727,35 @@ let rec add_init_characters playerlst map =
     let _ = map.grid.(fst cloc).(snd cloc) <- new_tile in
     add_init_characters t map
 
-(*Sets movement for characters*)
-let rec set_init_ch_movement playerlst st =
-  match playerlst with
+(**[set_init_ch_movement plst st] sets the movement field appropriately for
+  *each character in [plst].
+  *requires:
+  * -[plst] is a list of characters
+  * -[st] is the current state
+   *)
+let rec set_init_ch_movement plst st =
+  match plst with
   |[] -> st
   |h::t ->let _ =  h.movement <- dijkstra's h st.act_map;
             h.attackable <- red_tiles h in set_init_ch_movement t st
 
+(**[sea_act_tile st] sets the active_tile field of [st] to be
+  *on one of the players in the player list in [st]. Also, sets
+  *the last_character field to be that player.
+  *requires:
+  * -[st] is the current state
+  *)
 let set_act_tile st =
   match st.player with
   |[]-> st
   |h::t -> let x = fst h.location in let y  =snd h.location in
     let t = st.act_map.grid.(x).(y) in
     {st with active_tile = t;last_character=t.c}
+
+(**[transition_map2 st] creates the new state for the second map of the game.
+  *requires:
+  * -[st] is the current state.
+   *)
 let transition_map2 st =
   reset_ch st.player;
   let newp = transition_players st.player  [(5,8); (6,9); (7,8)] [] in

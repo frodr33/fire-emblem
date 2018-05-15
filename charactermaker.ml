@@ -108,7 +108,7 @@ let make_archer loc =
   let arch =
     {
      name = "Archer";
-     stage= Ready;
+     stage = Ready;
      class' = Archer;
      growths = [];
      caps = [];
@@ -227,7 +227,7 @@ let make_mage loc =
    } in Characters.update_character mg;
    mg
 
-let make_rangedboss (loc : int*int) s =
+let make_rangedboss (loc : int*int)  =
      let arch =
        {
         name = "Archer";
@@ -350,3 +350,222 @@ let make_rangedboss (loc : int*int) s =
         is_attacking=false;
       } in Characters.update_character mg;
       mg
+
+let mk = {
+  iname = "Mani Katti";
+  wtype = Sword;
+  mgt = 6;
+  acc = 90;
+  crit = 20;
+  range = (1, 1);
+  uses = 30;
+  cost = 960;
+  sell = 20;
+  level = 'd';
+  users =  [];
+  effective = [];
+  penalty = [];
+}
+
+let make_lyn loc = 
+  let lyn =
+    {
+     name = "Lyn";
+     stage = Ready;
+     class' = Lord;
+     growths = [(Spd, 80); (Str, 60); (Def, 40); (Skl, 75); 
+                (Mag, 10); (Health, 55); (Res, 45); (Lck, 50)];
+     caps = [];
+     level = 1;
+     exp = 0;
+     health = (21, 21);
+     allegiance = Player;
+     str = 5;
+     mag = 0;
+     def = 3;
+     spd = 9;
+     res = 3;
+     skl = 7;
+     lck = 5;
+     mov = 4;
+     con = 0;
+     aid = 0;
+     hit = 0;
+     atk = 0;
+     crit = 0;
+     avoid = 0;
+     inv = [|Some (mk);None;None;None;None|];
+     eqp = 0;
+     ability = [];
+     supports = [];
+     wlevels = [(Sword,'d',0)];
+     ai = BossHunt;
+     behave = Normal;
+     location = loc;
+     movement = [];
+     attackable = [];
+     direction= South;
+     is_attacking=false;
+   } in Characters.update_character mg;
+   lyn
+
+let wolf = 
+  { 
+   iname = "Wolf Beil";
+   wtype = Axe;
+   mgt = 10;
+   acc = 75;
+   crit = 10;
+   range = (1, 1);
+   uses = 30;
+   cost = 960;
+   sell = 20;
+   level = 'd';
+   users =  [];
+   effective = [];
+   penalty = [];
+  }
+
+let make_hector loc = 
+  let hector =
+    {
+      name = "Hector";
+      stage = Ready;
+      class' = Lord;
+      growths = [(Spd, 60); (Str, 80); (Def, 75); (Skl, 55); 
+                (Mag, 5); (Health, 70); (Res, 20); (Lck, 60)];
+      caps = [];
+      level = 1;
+      exp = 0;
+      health = (25, 25);
+      allegiance = Player;
+      str = 9;
+      mag = 0;
+      def = 7;
+      spd = 3;
+      res = 1;
+      skl = 5;
+      lck = 4;
+      mov = 3;
+      con = 0;
+      aid = 0;
+      hit = 0;
+      atk = 0;
+      crit = 0;
+      avoid = 0;
+      inv = [|Some (wolf);None;None;None;None|];
+      eqp = 0;
+      ability = [];
+      supports = [];
+      wlevels = [(Axe,'d',0)];
+      ai = BossHunt;
+      behave = Normal;
+      location = loc;
+      movement = [];
+      attackable = [];
+      direction= South;
+      is_attacking=false;
+    } in Characters.update_character mg;
+  hector
+
+  let make_erk loc = 
+    let erk =
+      {
+        name = "Erk";
+        stage = Ready;
+        class' = Mage;
+        growths = [(Spd, 70); (Str, 20); (Def, 40); (Skl, 60); 
+                  (Mag, 80); (Health, 40); (Res, 60); (Lck, 30)];
+        caps = [];
+        level = 1;
+        exp = 0;
+        health = (20, 20);
+        allegiance = Player;
+        str = 1;
+        mag = 7;
+        def = 2;
+        spd = 5;
+        res = 5;
+        skl = 5;
+        lck = 4;
+        mov = 4;
+        con = 0;
+        aid = 0;
+        hit = 0;
+        atk = 0;
+        crit = 0;
+        avoid = 0;
+        inv = [|Some (fire);None;None;None;None|];
+        eqp = 0;
+        ability = [];
+        supports = [];
+        wlevels = [(Tome,'d',0)];
+        ai = BossHunt;
+        behave = Normal;
+        location = loc;
+        movement = [];
+        attackable = [];
+        direction= South;
+        is_attacking=false;
+      } in Characters.update_character mg;
+      erk
+
+let ilance = 
+  { 
+    iname = "Iron Lance";
+    wtype = Lance;
+    mgt = 8;
+    acc = 85;
+    crit = 5;
+    range = (1, 1);
+    uses = 30;
+    cost = 960;
+    sell = 20;
+    level = 'd';
+    users =  [];
+    effective = [];
+    penalty = [];
+  }
+      
+let make_florina loc = 
+let florina =
+  {
+    name = "Florina";
+    stage = Ready;
+    class' = PRider;
+    growths = [(Spd, 85); (Str, 55); (Def, 40); (Skl, 80); 
+              (Mag, 30); (Health, 50); (Res, 75); (Lck, 85)];
+    caps = [];
+    level = 1;
+    exp = 0;
+    health = (18, 18);
+    allegiance = Player;
+    str = 4;
+    mag = 3;
+    def = 3;
+    spd = 11;
+    res = 11;
+    skl = 10;
+    lck = 6;
+    mov = 5;
+    con = 0;
+    aid = 0;
+    hit = 0;
+    atk = 0;
+    crit = 0;
+    avoid = 0;
+    inv = [|Some (wolf);None;None;None;None|];
+    eqp = 0;
+    ability = [];
+    supports = [];
+    wlevels = [(Lance,'d',0)];
+    ai = BossHunt;
+    behave = Normal;
+    location = loc;
+    movement = [];
+    attackable = [];
+    direction= South;
+    is_attacking=false;
+  } in Characters.update_character mg;
+  hector
+

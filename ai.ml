@@ -295,7 +295,7 @@ let rec run (lst : (int*int) list) (m : map) (loc : int*int) =
       else
         run t m loc
 
-let rec near_enemy (lst : (int*int) list) (m : map) (c : int*int) loc =
+let rec near_enemy (lst : (int*int) list) (m : map) (c : int*int) loc acc =
   match lst with
   |[] -> loc
   |h::t ->
@@ -304,54 +304,17 @@ let rec near_enemy (lst : (int*int) list) (m : map) (c : int*int) loc =
       if x >= 0 && x < m.width && y >= 0 && y < m.length then
         match m.grid.(x).(y).c with
         |Some k ->
-          if not (k.allegiance = Enemy) then run t m loc
-          else near_enemy t m c loc
+          if not (k.allegiance = Enemy) then run (acc@t) m loc
+          else near_enemy t m c loc (h::acc)
         |None ->
-          near_enemy t m c loc
+          near_enemy t m c loc (h::acc)
       else
-        near_enemy t m c loc
-
-
-  (*match c with
-    |(x, y) ->
-    if check_valid South m c then
-      match m.grid.(x).(y + 1).c with
-      |Some k ->
-        k.location
-      |None ->
-        if check_valid West m c then
-          match m.grid.(x - 1).(y).c with
-          |Some k ->
-            k.location
-          |None ->
-            if check_valid North m c then
-              match m.grid.(x).(y - 1).c with
-              |Some k ->
-                k.location
-              |None ->
-                if check_valid East m c then
-                  match m.grid.(x + 1).(y).c with
-                  |Some k ->
-                    k.location
-                  |None ->
-                    c*)
+        near_enemy t m c loc acc
 
 let step_back (m : map) (c : int*int) loc =
   match c with
   |(x, y) ->
-    near_enemy [(x, y - 1) ; (x + 1,y) ; (x, y + 1) ; (x - 1,y)] m c loc
-  (*match c, h with
-  |(x, y),(a, b) ->
-    match ((a - x),(b - y)) with
-    |(0, -1) ->
-      if check_valid South m c then (x, (y + 1)) else c
-    |(1, 0) ->
-      if check_valid West m c then ((x - 1), y) else c
-    |(0, 1) ->
-      if check_valid North m c then (x, (y - 1)) else c
-    |(-1, 0) ->
-      if check_valid East m c then ((x + 1), y) else c
-    |_ -> c*)
+    near_enemy [(x, y - 1) ; (x + 1,y) ; (x, y + 1) ; (x - 1,y)] m c loc []
 
 
 (*[move] iterates through the shortest path to a target enemy unit, and moves as
@@ -421,6 +384,7 @@ let rec attack_inrange m (c : character) (lst : character list) =
  * move towards players that enter that zone and attack if possible
  * Easy -> Will never move but will attack if player enters attack range*)
 let search (m : map) (c : character) (lst : character list) pm (attk : int*int) =
+ if fst c.health = 0 then () else
  match c.behave with
  |Insane ->
   ( match lst with

@@ -242,13 +242,14 @@ let is_ally a d =
   |Enemy -> d.allegiance = Enemy
 
 (**
- *  [movable t d mov map] is a function that checks if the tile in direction, d,
+ *  [movable t d mov map c] is a function that checks if the tile in direction, d,
  *  of tile, t, can be moved on to with the given mov and map.
  *  requires:
  *  - [t] is a valid tile on map
  *  - [d] is a valid direction
  *  - [mov] is a valid int
  *  - [map] is a valid map that contains [t]
+ *  - [c] is a valid character.
  *  Has unspecified behaviour if preconditions are violated.
 *)
 let movable t d mov map c =
@@ -298,7 +299,7 @@ let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
                                  else h :: t) else h :: (add_f tile i t)
 
 (**
- *  [check_dir mov d t map s f] is a function that checks if the tile in
+ *  [check_dir mov d t map s c f] is a function that checks if the tile in
  *  direction, d, of tile, t, shold be added to the frontier set, and adds it
  *  if needed.
  *  requires:
@@ -307,6 +308,7 @@ let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
  *  - [t] is a valid tile
  *  - [map] is a valid map
  *  - [s] is a valid settled set
+ *  - [c] is a valid character.
  *  - [f] is a valid frontier set
  *  See dijkstra's_helper for details.
 *)
@@ -328,13 +330,14 @@ let rec check_dir mov d t map s c f =
   else f
 
 (**
- *  [check_surround s t m map f] is a function that checks the four tiles
+ *  [check_surround s t m map f c] is a function that checks the four tiles
  *  adjacent to tile, t, to see if they should be added to the frontier set, f.
  *  - [s] is a valid settled set
  *  - [t] is a valid map
  *  - [m] is a valid int
  *  - [map] is a valid map
  *  - [f] is a valid frontier set
+ *  - [c] is a valid character.
 *)
 let rec check_surround s t m map f c =
   f
@@ -344,7 +347,7 @@ let rec check_surround s t m map f c =
   |> check_dir m West t map s c
 
 (**
- *  [dijkstra's helper f s tile m map] is a function that does dijkstra's to
+ *  [dijkstra's helper f s tile m map c] is a function that does dijkstra's to
  *  find all the traversable tiles of a character from their starting location.
  *  requires:
  *  - [f] begins as an empty list, and represents the frontier set. It is type
@@ -354,6 +357,7 @@ let rec check_surround s t m map f c =
  *  - [tile] is the current tile that dijkstra's is evaluating.
  *  - [m] is the move needed to get to that tile
  *  - [map] is the map dijkstra's was called on.
+ *  - [c] is a valid character.
 *)
 let rec dijkstra's_helper f s tile m map c =
   let new_f = check_surround s tile m map f c in

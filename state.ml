@@ -268,7 +268,7 @@ let movable (t:tile) (d:direction) (mov:int) (map:map) c =
   let opposite = 
     match next_tile.c with 
     |None -> true
-    |Some (x) -> steam c next_tile.c 
+    |Some (x) -> steam c x 
     in if opposite then 
       match next_tile.ground with
       |Wall -> (false, -1)

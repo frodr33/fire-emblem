@@ -170,7 +170,7 @@ let enemy_1 =
 
 let enemy_2 =
   {
-    name = "Swordsman";
+    name = "Archer";
     stage= Ready;
     class' = Paladin;
     growths = [];
@@ -179,7 +179,7 @@ let enemy_2 =
     level = 0;
     exp = 0;
     health = (7,10);
-    allegiance = Enemy;
+    allegiance = Player;
     str = 0;
     mag = 0;
     def = 0;
@@ -194,7 +194,7 @@ let enemy_2 =
     atk = 0;
     crit = 0;
     avoid = 15;
-    inv = [|Some temp_item;None;None;None;None|];
+    inv = [|Some temp_item2;None;None;None;None|];
     eqp = 0;
     ability = [];
     supports = [];
@@ -273,16 +273,16 @@ let temp_enemy = (make_archer (8,5))
 (* let init_state =
   let x =
   {
-    player = [temp_character];
+    player = (*[temp_character;enemy_2];*)[];
     items = [];
-    enemies = [temp_enemy; enemy_1];
+    enemies = (*[temp_enemy; enemy_1];*)[];
     lose = false;
     won = false;
     round = false;
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character};
     active_unit = None;
     active_item = -1;
-    act_map = add_init_characters [temp_character;temp_enemy;enemy_1] Room.map1;
+    act_map = (*add_init_characters [temp_character;temp_enemy;enemy_1;enemy_2] *)Room.map2;
     menus = [];
     current_menu = unit_menu;
     menu_active = false;

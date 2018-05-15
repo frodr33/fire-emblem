@@ -112,17 +112,17 @@ let kill_xp a d =
       else  a.exp <- a.exp + 100
   else
     match a.level - d.level with
-    | -4 -> a.exp <- a.exp + 60
-    | -3 -> a.exp <- a.exp + 51
-    | -2 -> a.exp <- a.exp + 43
-    | -1 -> a.exp <- a.exp + 36
-    |  0 -> a.exp <- a.exp + 30
-    |  1 -> a.exp <- a.exp + 25
-    |  2 -> a.exp <- a.exp + 19
-    |  3 -> a.exp <- a.exp + 12
-    |  4 -> a.exp <- a.exp + 4
+    | -4 -> a.exp <- a.exp + 69
+    | -3 -> a.exp <- a.exp + 59
+    | -2 -> a.exp <- a.exp + 50
+    | -1 -> a.exp <- a.exp + 42
+    |  0 -> a.exp <- a.exp + 35
+    |  1 -> a.exp <- a.exp + 29
+    |  2 -> a.exp <- a.exp + 22
+    |  3 -> a.exp <- a.exp + 14
+    |  4 -> a.exp <- a.exp + 5
     |  x -> if x > 4 then a.exp <- a.exp + 1
-      else a.exp <- a.exp + 70
+      else a.exp <- a.exp + 80
 
 (**
  *  [hit_xp a d] changes the amount of xp character a has
@@ -135,24 +135,24 @@ let kill_xp a d =
 let hit_xp a d =
   if d.ai = BossStay || d.ai = BossHunt then
     match a.level - d.level with
-    | 2 -> a.exp <- a.exp + 30
-    | 3 -> a.exp <- a.exp + 27
-    | 4 -> a.exp <- a.exp + 24
-    | x -> if x > 4 then a.exp <- a.exp + 20
-      else a.exp <- a.exp + 33
+    | 2 -> a.exp <- a.exp + 36
+    | 3 -> a.exp <- a.exp + 32
+    | 4 -> a.exp <- a.exp + 28
+    | x -> if x > 4 then a.exp <- a.exp + 24
+      else a.exp <- a.exp + 40
   else
     match a.level - d.level with
-    | -4 -> a.exp <- a.exp + 20
-    | -3 -> a.exp <- a.exp + 17
-    | -2 -> a.exp <- a.exp + 14
-    | -1 -> a.exp <- a.exp + 12
-    |  0 -> a.exp <- a.exp + 10
-    |  1 -> a.exp <- a.exp + 8
-    |  2 -> a.exp <- a.exp + 6
-    |  3 -> a.exp <- a.exp + 4
+    | -4 -> a.exp <- a.exp + 33
+    | -3 -> a.exp <- a.exp + 29
+    | -2 -> a.exp <- a.exp + 25
+    | -1 -> a.exp <- a.exp + 21
+    |  0 -> a.exp <- a.exp + 17
+    |  1 -> a.exp <- a.exp + 13
+    |  2 -> a.exp <- a.exp + 9
+    |  3 -> a.exp <- a.exp + 5
     |  4 -> a.exp <- a.exp + 1
     |  x -> if x > 4 then a.exp <- a.exp + 1
-      else a.exp <- a.exp + 23
+      else a.exp <- a.exp + 37
 
 (**
  *  [wexp_level_up c] returns a weapon level 1 higher than c

@@ -422,7 +422,7 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
     end
 
 
-(* [draw_lyn context character] draws the proper sprite configuration
+(* [draw_hector context character] draws the proper sprite configuration
  * for the character lyn based on the character's direction and stage
  * fields. Also accounts for animation by using the sync gloal
  * reference which allows switching between sprites  *)
@@ -691,7 +691,7 @@ let draw_hector (context: Html.canvasRenderingContext2D Js.t) character =
       |Done -> ()
     end
 
-(* [draw_lyn context character] draws the proper sprite configuration
+(* [draw_erk context character] draws the proper sprite configuration
  * for the character lyn based on the character's direction and stage
  * fields. Also accounts for animation by using the sync gloal
  * reference which allows switching between sprites  *)
@@ -961,7 +961,8 @@ let draw_erk (context: Html.canvasRenderingContext2D Js.t) character =
     end
 
 
-
+(* [draw_archer context enemy] draws the archer
+ * [eenmy] on the [context] *)
 let draw_archer context enemy =
   match ((!sync)) with
   | true ->
@@ -1400,18 +1401,6 @@ let draw_dijsktra context st =
 
 (* [draw_is_player_done context active_unit] draws a gray square
  * under a player that has just finished its turn  *)
-               (*
-let draw_is_player_done context active_unit =
-  match active_unit with
-  | Some chr ->
-      if chr.stage = Done then
-        let (x,y) = chr.location in
-        let img = Html.createImg document in
-        img##src <- js "Sprites/Gray.png";
-        context##drawImage (img, float_of_int x *. 26., float_of_int y *. 26.)
-      else ()
-  | _ -> ()
-*)
 let rec draw_is_player_done context lst =
   match lst with
   |[] -> ()
@@ -1673,22 +1662,6 @@ let draw_inventory context state =
 (********************** Draw Enemies *********************)
 (*********************************************************)
 
-(* [draw_arhcer context enemy] draws the archer
- * [enemy] on the gui. Also accounts for animation *)
-    (*
-let draw_archer context enemy =
-  match ((!sync)) with
-  | true ->
-    let img = Html.createImg document in
-    let (x,y) = enemy.location in
-    img##src <- js "Sprites/EnemySprites/Enemy_Archer_NE.png";
-    context##drawImage_full (img, 20., 11., 26., 26., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 22.)
-  | false ->
-    let img = Html.createImg document in
-    let (x,y) = enemy.location in
-    img##src <- js "Sprites/EnemySprites/Enemy_Archer_E.png";
-    context##drawImage_full (img, 16., 18., 26., 26., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 28.)
-*)
 (* [draw_boss context enemy] draws the boss
  * [enemy] on the gui. Also accounts for animation *)
 let draw_boss context enemy =
@@ -1719,6 +1692,9 @@ let draw_swordsman context enemy =
     img##src <- js "Sprites/EnemySprites/Enemy_Swordsman_S.png";
     context##drawImage_full (img, 17., 21., 20., 20., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 28.)
 
+
+(* [draw_mage context enemy] draws the mage sprite
+ * [enemy] on the [context] *)
 let draw_mage context enemy = 
   match ((!sync)) with
   | true ->
@@ -1732,7 +1708,8 @@ let draw_mage context enemy =
     img##src <- js "Sprites/EnemySprites/Enemy_Mage2.png";
     context##drawImage_full (img, 21., 11., 26., 36., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 26.)
 
-
+(* [draw_mage_boss context enemy] draws the mage boss sprite
+ * [enemy] on the [context] *)
 let draw_mage_boss context enemy = 
   match ((!sync)) with
   | true ->
@@ -1809,7 +1786,10 @@ let draw_lose_screen context =
 (***************** Draw transition screen ****************)
 (*********************************************************)
 
-(* [draw_transition_screen context state] *)
+(* [draw_transition_screen context state] draws the transition 
+ * screen on the [context]. The transitions screen occurs
+ * between rounds when switching between Map1 and Map2. It 
+ * also features a timer that counts down from 10 *)
 let draw_transition_screen context state = 
   if !transition < 0 then state.round <- false else
     let timer = !transition / 100 in
@@ -1827,6 +1807,10 @@ let draw_transition_screen context state =
 (****************** Draw Welcome Screen ******************)
 (*********************************************************)
 
+(* [draw_welcome_screen context] draws the welcome screen
+ * that will be displayed at the beginning of the game when 
+ * the html window is first loaded. This window will display
+ * information about the game and directions *)
 let draw_welcome_screen context = 
   context##fillStyle <- js "black";
   context##fillRect (0.,0.,canvas_width,canvas_height);
@@ -1872,7 +1856,8 @@ let draw_welcome_screen context =
 (*********************************************************)
 
 (* [draw_state] draws the the current [state] on the [context].
- * Also has a side affect of updating the global variable clock *)
+ * Also has a side affect of updating the global variable clock, 
+ * transition, and transition start *)
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
   match state.welcome, state.round, state.won, state.lose with

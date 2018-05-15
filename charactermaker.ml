@@ -431,7 +431,7 @@ let elixer = {
   effective = [];
   penalty = [];
 }
-}
+
 
 let make_lyn loc = 
   let lyn =

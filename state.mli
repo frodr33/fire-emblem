@@ -16,6 +16,7 @@ type state = {
   won : bool;
   lose : bool;
   mutable round : bool;
+  mutable welcome : bool;
   active_tile : tile;
   active_unit : character option;
   active_item : int;

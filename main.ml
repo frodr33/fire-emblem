@@ -314,6 +314,7 @@ let init_state =
     lose = false;
     won = false;
     round = false;
+    welcome = false;
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character2};
     active_unit = None;
     active_item = -1;

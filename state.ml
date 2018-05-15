@@ -736,7 +736,7 @@ let rec add_init_characters playerlst map =
 let rec set_init_ch_movement playerlst st =
   match playerlst with
   |[] -> st
-  |h::t ->let _ =  h.movement <- dijkstra's h st.act_map h;
+  |h::t ->let _ =  h.movement <- dijkstra's h st.act_map;
             h.attackable <- red_tiles h in set_init_ch_movement t st
 
 let set_act_tile st =
@@ -799,7 +799,7 @@ let do' s =
     |SelectPlayer -> if (extract s.active_tile.c).stage = Done then {s with last_character = s.active_tile.c} else
         let ch = extract s.active_tile.c in
         ch.stage <- MoveSelect;
-        ch.movement <- dijkstra's ch s.act_map ch;
+        ch.movement <- dijkstra's ch s.act_map;
         ch.attackable <- red_tiles ch;
         {s with active_unit = s.active_tile.c;last_character = s.active_tile.c}
     |SelectMoveTile -> move_helper s

@@ -273,7 +273,7 @@ let rec search_helper (m : map) (c : character) (lst : character list) pmap targ
    |h::t ->
      match c.location with (x, y) ->
        let check = path_helper h.location [] [(m.grid.(x).(y))] m.grid.(x).(y) m (new_map c pmap) in
-       if fst (List.hd (check)) < fst (List.hd (target)) &&
+       if List.length check > 0 && fst (List.hd (List.rev check)) < fst (List.hd (List.rev target)) &&
           (fst h.health) > 0 then
          (print_string "Fuckity";
           search_helper m c t (new_map c pmap) check)

@@ -719,22 +719,23 @@ let do' s =
                           menu_active = false;
                           menu_cursor = 0}
                 |"Visit" -> if village_checker s
-                  then (let _ = village ch s.active_tile.ground;
+                  then begin let _ = village ch s.active_tile.ground;
                           ch.stage <- Done in
                         village ch s.active_tile.ground;
-                        let x = fst s.active_tile.coordinate;
-                        let y = snd s.active_tile.coordinate;
+                        let x = fst s.active_tile.coordinate in
+                        let y = snd s.active_tile.coordinate in
                         s.act_map.grid.(x).(y) <- {s.active_tile with ground = Village (None)};
                         {s with active_unit = None;
                                 menu_active = false;
                                 menu_cursor = 0;
-                        })
+                        }
+                  end
                   else s
                 |"Open" -> let chestable = chest_checker s in
                   if fst chestable then (ch.stage <-Done;
                                          chest ch s.active_tile.ground (snd chestable);
-                                         let x = fst s.active_tile.coordinate;
-                        let y = snd s.active_tile.coordinate;
+                                         let x = fst s.active_tile.coordinate in
+                        let y = snd s.active_tile.coordinate in 
                         s.act_map.grid.(x).(y) <- {s.active_tile with ground = Chest (None)};
                                          {s with active_unit = None;
                                                  menu_active = false;

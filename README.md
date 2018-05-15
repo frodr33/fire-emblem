@@ -1,14 +1,13 @@
-# Final-project
+# Fire-Emblem
 
-Change your username and email in the cmd in the VM so we know who did the commits.
+![screenshot](https://github.com/awt46/fire-emblem/Sprites/screenshot.PNG)
 
-Just do the two commands below and change my netid to yours. 
-
-Username:
-git config --global user.name "awt46"
-
-Email:
-git config --global user.email "awt46@cornell.edu"
+## Description
+## How to install
+## How to Play
+## System Design
+## Division of Labor
+## Authors
 
 How to play:
 

@@ -37,7 +37,6 @@ let init_state =
     active_unit = None;
     active_item = -1;
     act_map = add_init_characters (List.rev_append p e) Room.map1;
-    menus = [];
     current_menu = unit_menu;
     menu_active = false;
     menu_cursor = 0;

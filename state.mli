@@ -18,7 +18,6 @@ type state = {
   active_unit : character option;
   active_item : int;
   act_map : map;
-  menus : (string * menu) list;
   current_menu : menu;
   menu_active : bool;
   menu_cursor : int;

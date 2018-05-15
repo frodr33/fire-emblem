@@ -41,7 +41,6 @@ type state = {
   active_unit: character option;
   active_item: int;
   act_map: map;
-  menus:(string * menu) list;
   current_menu : menu;
   menu_active: bool;
   menu_cursor: int;
@@ -655,7 +654,7 @@ let check_surround_inventories s c =
     (check_inventory s.act_map.grid.(x-1).(y).c) ||
     (check_inventory s.act_map.grid.(x+1).(y).c) ||
     (check_inventory s.act_map.grid.(x).(y-1).c)
-  |(x,y) -> 
+  |(x,y) ->
     (check_inventory s.act_map.grid.(x-1).(y).c) ||
     (check_inventory s.act_map.grid.(x).(y-1).c)
 
@@ -781,7 +780,6 @@ let transition_map2 st =
       active_unit = None;
       active_item = -1;
       act_map = add_init_characters (List.rev_append newp newe) Room.map2;
-      menus = [];
       current_menu = unit_menu;
       menu_active = false;
       menu_cursor = 0;

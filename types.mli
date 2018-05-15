@@ -5,7 +5,7 @@
 type class' = Swordsman | Archer | Mage | Paladin | Lord | PRider
 
 (** Represents a weapon type*)
-type wtype = Sword | Bow | Tome | Staff | Potion | Key | Axe | Lance 
+type wtype = Sword | Bow | Tome | Staff | Potion | Key | Axe | Lance
 
 (** Represents the names of possible AI types*)
 type ai = BossStay | BossHunt | Norm
@@ -56,7 +56,7 @@ type direction = North | West | South | East
 
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectTradeTile|SelectPlayer|DeselectPlayer|FindReady|
-              Invalid|BackMenu|BackAttack|BackTrade
+              Invalid|BackMenu|BackAttack|BackTrade|EndWelcome
 type difficulty = Easy|Normal|Hard|Insane
 (*
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|

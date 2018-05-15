@@ -155,6 +155,14 @@ let update_map (pmap : path_map) x y (ptile : path_tile) : path_map =
  pmap.grid.(x).(y) <- ptile;
  pmap
 
+let rec path_adjust (lst : (int*(int*int)) list) acc sub =
+  match lst with
+  |[] -> acc
+  |h::t ->
+    match h with
+    |(x,y) ->
+      path_adjust t ((x - sub, y)::acc) sub
+
 (*[path_finder] searches a completed [path_map] to output a list of coordinates
 * from the ally unit to the original enemy unit's coordinates*)
 let rec path_finder coor pmap acc =
@@ -163,7 +171,10 @@ let rec path_finder coor pmap acc =
    match pmap.grid.(x).(y).prev with
    |None ->
      print_string ("Working"^(string_of_int (List.length acc)));
-     acc
+     if List.length acc > 0 then
+       List.rev (path_adjust acc [] (fst (List.hd acc)))
+     else
+       acc
    |Some t ->
      print_string ("Next Path:"^(string_of_int (fst t))^" "^(string_of_int (snd t)));
      print_string ("Cost"^(string_of_int pmap.grid.(x).(y).length));
@@ -262,7 +273,7 @@ let rec search_helper (m : map) (c : character) (lst : character list) pmap targ
    |h::t ->
      match c.location with (x, y) ->
        let check = path_helper h.location [] [(m.grid.(x).(y))] m.grid.(x).(y) m (new_map c pmap) in
-       if fst (List.hd (check)) < fst (List.hd (target)) &&
+       if List.length check > 0 && fst (List.hd (List.rev check)) < fst (List.hd (List.rev target)) &&
           (fst h.health) > 0 then
          (print_string "Fuckity";
           search_helper m c t (new_map c pmap) check)
@@ -274,19 +285,16 @@ let rec search_helper (m : map) (c : character) (lst : character list) pmap targ
 let rec move lst (c : character) range last (attk : int*int) loc =
   print_string "Moving";
  match lst with
- |[] -> (last, false)
+ |[] -> (last)
  |h::t ->
    match h with
    |(a, b) ->
      print_string ("Distance"^(string_of_int a));
      print_string ("Range"^(string_of_int range));
-       if a <= range then
+     if a <= range && List.length t > (fst attk) then
          move t c range b attk b
        else
-       if List.length t <= snd attk then
-         (loc, true)
-       else
-         (loc, false)
+         (loc)
 
 (*[update_move] updates both characters and maps upon a character moving to a different
 * position on the board*)
@@ -348,12 +356,10 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
      let shortestpath = search_helper m c t pm init in
      print_int (List.length shortestpath);
      if List.length shortestpath > 0 then
-     (let dest = snd (List.hd shortestpath) in
+     let dest = snd (List.hd shortestpath) in
       let go = move shortestpath c c.mov c.location attk dest in
-       update_move m c c.location (fst go);
-      if snd go then
-        print_string "eh";
-       combat c h))
+      update_move m c c.location (go);
+      attack_inrange m c lst)
  |Hard ->
    (match lst with
    |[] -> ()
@@ -362,13 +368,11 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
        match c.location with (x, y) ->
          path_helper h.location [] [(m.grid.(x).(y))] m.grid.(x).(y) m (new_map c pm) in
         let close = search_helper m c t pm init in
-     if List.length close > 0 && fst (List.hd close) <= c.mov*4 then
+     if List.length close > 0 && fst (List.hd (List.rev close)) <= c.mov*4 then
      let dest = snd (List.hd close) in
      let go = move close c c.mov c.location attk dest in
-               print_string "Almost";
-         update_move m c c.location (fst go);
-       if snd go then
-         combat c h)
+     update_move m c c.location (go);
+     attack_inrange m c lst)
  |Normal ->
    (match lst with
     |[] -> ()
@@ -379,13 +383,11 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
       print_string "a";
       let close = search_helper m c t pm init in
       print_string "b";
-      if List.length close > 0 && fst (List.hd (close)) <= c.mov*2 then
+      if List.length close > 0 && fst (List.hd (List.rev close)) <= c.mov*2 then
       let dest = snd (List.hd close) in
       let go = move close c c.mov c.location attk dest in
-                     print_string "Almost";
-        update_move m c c.location (fst go);
-        if snd go then
-          combat c h)
+      update_move m c c.location (go);
+      attack_inrange m c lst)
  |Easy ->
    if c.eqp > -1 then
      let ind = c.eqp in

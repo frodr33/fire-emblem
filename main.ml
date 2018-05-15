@@ -280,7 +280,7 @@ let init_state =
 
   let p = [make_lyn (14, 4);make_hector (13, 3); make_erk (12, 2)] in
   let e = [make_archer (3, 5); make_archer (2, 7); make_swordsman (5, 8); make_mage (3, 10); make_meleeboss (1, 13)] in
- 
+
   let x =
     {
       (*let lyn = make_lyn (4,14) in
@@ -298,8 +298,8 @@ let init_state =
     lose = false;
     won = false;
     round = false;
-    welcome = false;
-    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character2};
+    welcome = true;
+    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=None};
     active_unit = None;
     active_item = -1;
     act_map = add_init_characters (List.rev_append p e) Room.map1;
@@ -308,8 +308,8 @@ let init_state =
     menu_active = false;
     menu_cursor = 0;
     funds = 0;
-    last_character = Some temp_character2;
-  } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies
+    last_character = None;
+  } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies|>set_act_tile
 
 let state = ref init_state
 (* [main ()] is begins game execution by first building and designing

@@ -185,6 +185,7 @@ let translate_key st =
   if !attacking= true then Invalid else
     begin
       let old = !input in let _ = input := Nothing in
+      if old<>Nothing &&st.welcome=true then EndWelcome else
       match old with
       |Up -> if st.menu_active = false then Tup else Mup
       |Down -> if st.menu_active = false then Tdown else Mdown
@@ -738,6 +739,12 @@ let rec set_init_ch_movement playerlst st =
   |h::t ->let _ =  h.movement <- dijkstra's h st.act_map;
             h.attackable <- red_tiles h in set_init_ch_movement t st
 
+let set_act_tile st =
+  match st.player with
+  |[]-> st
+  |h::t -> let x = fst h.location in let y  =snd h.location in
+    let t = st.act_map.grid.(x).(y) in
+    {st with active_tile = t;last_character=t.c}
 let transition_map2 st =
   reset_ch st.player;
   let newp = transition_players st.player  [(5,8); (6,9); (7,8)] [] in
@@ -762,7 +769,13 @@ let transition_map2 st =
       menu_cursor = 0;
       funds = 0;
       last_character = None;
+<<<<<<< HEAD
     } in x |> set_init_ch_movement x.player |> set_init_ch_movement x.enemies
+=======
+    } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies|>set_act_tile
+
+
+>>>>>>> cff0bde5cbcccf747fa070cf22a12f1065d26e42
 (**
  *  [do' s] is a function that takes a state, checks what the most recent
  *  command was, and returns a new state based on the command
@@ -774,18 +787,31 @@ let do' s =
   if s.player = [] then {s with lose = true} else
   if s.enemies = [] then begin
     match s.act_map.number with
+<<<<<<< HEAD
     |1 -> transition_map2 s
     |2 -> {s with won=true}
     |_ -> s
 
+=======
+    |1->transition_map2 s
+    |2->{s with won=true}
+    |_-> s
+>>>>>>> cff0bde5cbcccf747fa070cf22a12f1065d26e42
   end
   else
     let act = translate_key s in
     let _ = input := Nothing in
     match act with
+<<<<<<< HEAD
     |OpenMenu -> {s with menu_active=true; current_menu = tile_menu}
     |CloseMenu -> {s with menu_active = false; menu_cursor = 0}
     |Tdown|Tright|Tleft|Tup -> {s with active_tile = new_active_tile act s}
+=======
+    |EndWelcome->{s with welcome=false}
+    |OpenMenu -> {s with menu_active=true;current_menu = tile_menu}
+    |CloseMenu -> {s with menu_active = false;menu_cursor = 0}
+    |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
+>>>>>>> cff0bde5cbcccf747fa070cf22a12f1065d26e42
     |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
     |SelectPlayer -> if (extract s.active_tile.c).stage = Done then {s with last_character = s.active_tile.c} else
         let ch = extract s.active_tile.c in

@@ -57,7 +57,9 @@ type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
 
 type difficulty = Easy|Normal|Hard|Insane
 
-let extract (Some c) = c
+let extract = function
+  |(Some c) ->c
+  |None -> failwith "Impossible"
 let seed = 10
 
 let init_rng = Random.init 10

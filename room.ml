@@ -1,21 +1,39 @@
 open Types
 
-let temp_item =
+let bigfreakingsword =
   {
-    iname  = "xd";
+    iname  = "B. F. Sword";
     wtype = Sword;
-    mgt = 0;
-    acc = 0;
-    crit = 0;
-    range = (2,4);
-    uses = 5;
+    mgt = 12;
+    acc = 85;
+    crit = 15;
+    range = (1,1);
+    uses = 40;
     cost = 0;
     sell = 0;
-    level = 'e';
+    level = 'd';
     users = [];
     effective = [];
     penalty = [];
   }
+
+let temp_item = 
+  {
+    iname  = "Armads";
+    wtype = Axe;
+    mgt = 16;
+    acc = 70;
+    crit = 5;
+    range = (1,2);
+    uses = 40;
+    cost = 0;
+    sell = 0;
+    level = 'd';
+    users = [];
+    effective = [];
+    penalty = [];
+  }  
+
 
 let map1 = {
   number=1;
@@ -570,7 +588,7 @@ let map2 = {
 
     (*15th column*)
     [|
-      {coordinate = (  14,   0); ground = Wall; tile_type = Chesttile;c=None};
+      {coordinate = (  14,   0); ground = Chest (Some bigfreakingsword); tile_type = Chesttile;c=None};
       {coordinate = (  14,   1); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  14,   2); ground = Plain; tile_type = Grass;c=None};
       {coordinate = (  14,   3); ground = Plain; tile_type = Grass;c=None};

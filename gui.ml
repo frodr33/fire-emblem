@@ -348,17 +348,31 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
       |Done -> ()
     end
   | West -> ()
-
+let draw_archer context enemy =
+  match ((!sync)) with
+  | true ->
+    let img = Html.createImg document in
+    let (x,y) = enemy.location in
+    img##src <- js "Sprites/EnemySprites/Enemy_Archer_NE.png";
+    context##drawImage_full (img, 20., 11., 26., 26., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 22.)
+  | false ->
+    let img = Html.createImg document in
+    let (x,y) = enemy.location in
+    img##src <- js "Sprites/EnemySprites/Enemy_Archer_E.png";
+    context##drawImage_full (img, 16., 18., 26., 26., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 28.)
 
 (* [draw_player context character_list] draws all the characters inside
  * the character_list. [character_list] is a general list of characters
  * which may be players, allies, or enemies *)
-let draw_player (context: Html.canvasRenderingContext2D Js.t) character_list =
+let rec draw_player (context: Html.canvasRenderingContext2D Js.t) character_list =
   match character_list with
   | [] -> ()
   | h::t ->
     match h.name with
-    | "Lyn" -> draw_lyn context h
+    | "Lyn" -> draw_lyn context h;draw_player context t
+    |  "Archer" ->
+        draw_archer context h;
+        draw_player context t
     | _ -> ()
 
 (*********************************************************)
@@ -1005,6 +1019,7 @@ let draw_inventory context state =
 
 (* [draw_arhcer context enemy] draws the archer
  * [enemy] on the gui. Also accounts for animation *)
+    (*
 let draw_archer context enemy =
   match ((!sync)) with
   | true ->
@@ -1017,7 +1032,7 @@ let draw_archer context enemy =
     let (x,y) = enemy.location in
     img##src <- js "Sprites/EnemySprites/Enemy_Archer_E.png";
     context##drawImage_full (img, 16., 18., 26., 26., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 28.)
-
+*)
 (* [draw_boss context enemy] draws the boss
  * [enemy] on the gui. Also accounts for animation *)
 let draw_boss context enemy =
@@ -1097,24 +1112,24 @@ let draw_enemies context state =
 (****************** Draw win/loose screen ****************)
 (*********************************************************)
 
-(* [draw_win_screen context] draws the win screen if 
+(* [draw_win_screen context] draws the win screen if
  * the player has won *)
-let draw_win_screen context = 
+let draw_win_screen context =
   context##fillStyle <- js "black";
   context##fillRect (0.,0.,canvas_width,canvas_height);
   context##strokeStyle <- js "white";
   context##font <- js "60px Times New Roman";
-  context##strokeText (js "YOU WIN!", 130., 180.); 
+  context##strokeText (js "YOU WIN!", 130., 180.);
   context##strokeText (js "Thanks for Playing!", 40., 300.)
 
-(* [draw_lose_screen context] draws the lose screen if 
+(* [draw_lose_screen context] draws the lose screen if
  * the player has won *)
-let draw_lose_screen context = 
+let draw_lose_screen context =
   context##fillStyle <- js "black";
   context##fillRect (0.,0.,canvas_width,canvas_height);
   context##strokeStyle <- js "white";
   context##font <- js "60px Times New Roman";
-  context##strokeText (js "Sorry, you lost...", 100., 180.); 
+  context##strokeText (js "Sorry, you lost...", 100., 180.);
   context##strokeText (js "Thanks for Playing!", 40., 270.);
   context##font <- js "30px Times New Roman";
   context##strokeText (js "To play again just refresh the page!", 80., 330.)
@@ -1131,7 +1146,7 @@ let draw_transition_screen context state =
     context##fillRect (0.,0.,canvas_width,canvas_height);
     context##strokeStyle <- js "white";
     context##font <- js "50px Times New Roman";
-    context##strokeText (js "You Beat Round 1!", 90., 180.); 
+    context##strokeText (js "You Beat Round 1!", 90., 180.);
     context##strokeText (js "Round two is starting in:", 20., 270.);
     context##strokeText (js (string_of_int timer), 260., 340.)
 
@@ -1145,10 +1160,10 @@ let draw_transition_screen context state =
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
   match state.round, state.won, state.lose with
-  | true, _, _ -> 
+  | true, _, _ ->
     draw_transition_screen context state;
     clock ();
-  | false, true, false->  
+  | false, true, false->
     draw_win_screen context;
   | false, false, true ->
     draw_lose_screen context;

@@ -3,33 +3,10 @@ open Interactions
 open Characters
 (*open Ai*)
 
-(**
- *   HARD CODED MENUS 
-*)
-let unit_menu = {
-  kind = Unit;
-  size = 6;
-  options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]
-  }
-
-let tile_menu = {
-  kind = Tile;
-  size = 2;
-  options = [|" ";"End"|]
-  }
-
-let item_menu = {
-  kind = Item;
-  size = 2;
-  options = [|"Equip/Use";"Discard"|]
-  }
-  
-let confirm_menu = {
-  kind = Confirm;
-  size=1;
-  options=[|"Attack?"|]
-  }
-  
+let unit_menu = {kind=Unit;size = 6;options = [|"Attack";"Item";"Visit";"Open";"Trade";"Wait"|]}
+let tile_menu = {kind=Tile;size = 2;options = [|" ";"End"|]}
+let item_menu = {kind=Item;size = 2;options = [|"Equip/Use";"Discard"|]}
+let confirm_menu = {kind = Confirm;size=1;options=[|"Attack?"|]}
 type state = {
   player: character list;
   items : item list;
@@ -57,19 +34,14 @@ type state = {
 let ctile c map =
   map.grid.(fst c.location).(snd c.location)
 
-(**
- *  [check exist co lst] checks if an int pair, co, exists in list, lst.
- *  requires:
- *  - [co] is of type 'a 
- *  - [lst] is of type ('a * 'b) list.
-*)
+
 let rec check_exist co lst =
   match lst with
   |[]   -> false
   |h::t -> if fst h = co then true else check_exist co t
 
-
 let a_range_add ma i co fl ml sl =
+
   let addon = if i > ma then [] else(
   let nleft = ((fst co) - 1, snd co) in
   let cleft = if (fst co) - 1 < 0 ||
@@ -97,6 +69,7 @@ let a_range_add ma i co fl ml sl =
 
 
 let rec attack_range_helper mi ma i co fl ml sl =
+
   let nml = (if i < mi  then co::ml else ml) in
   let nsl = (if i >= mi then co::sl else sl) in
   let nfl = a_range_add ma (i + 1) co fl ml sl in
@@ -329,6 +302,8 @@ attack_range_helper (fst w.range) (snd w.range) 0 c.location [] [] []
     |Tright ->if x = (st.act_map.width-1) then st.active_tile else
         st.act_map.grid.(x+1).(y)
     |_ -> failwith "placeholder"
+
+
 let create_inventory_menu c =
   let o = Array.map (fun x -> match x with
       |Some i -> i.iname
@@ -371,7 +346,7 @@ let move_helper st =
 
 let village_checker st =
   match st.active_tile.ground with
-  |Village (Some _) -> true
+  |Village _ -> true
   |_ -> false
 
 let rec has_key c i =
@@ -388,7 +363,7 @@ let chest_checker s =
   match s.active_unit with
   |Some x -> let key = has_key x 0 in
     begin match s.active_tile.ground with
-    |Chest (Some x) -> if fst key then true, snd key else false, -1
+    |Chest i -> if fst key then true, snd key else false, -1
     |_       -> false, -1
     end
   |None -> false, -1
@@ -473,6 +448,15 @@ let rec check_character_list lst st =
       check_character_list t st) else h::check_character_list t st
 
 let do' s =
+  if s.player=[] then {s with lose=true} else
+  (*if s.enemies=[] then begin
+    match s.act_map.number with
+    |1->s
+    |2->{s with won=true}
+    |_-> s
+
+    end
+    else*)
   let act = translate_key s in
     let _ = input:=Nothing in
   match act with
@@ -491,18 +475,25 @@ let do' s =
       {s with current_menu=confirm_menu;menu_cursor=0;menu_active=true} else s
   |SelectTradeTile ->let t1 =s.active_unit in
     let t2 = s.active_tile.c in
-    if (distance_tile (extract t1) s.active_tile)>1 then s else
-    if (check_inventory t1)||(check_inventory t2) then
+    if t2=None ||t1=t2 then s else
+      if ((distance_tile (extract t1) s.active_tile)>1)||t1=t2 then s else
+    if (check_inventory t1)||(check_inventory  t2) then
       {s with current_menu=create_trader1_menu (extract t1);menu_cursor=0;menu_active=true}
     else s
+
+
   |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
   |SelectMOption ->  begin
       match s.active_unit with
       |Some ch -> begin
           match s.current_menu.kind with
           |Trader1->let c = extract (s.active_tile.c) in
-            {s with active_item=s.menu_cursor;current_menu=create_trader2_menu c;menu_cursor=0}
-          |Trader2->if s.current_menu.options.(s.menu_cursor)="" then s else
+              {s with active_item=s.menu_cursor;current_menu=create_trader2_menu c;menu_cursor=0}
+
+          |Trader2->
+
+
+            if s.current_menu.options.(s.menu_cursor)="" && (extract s.active_unit).inv.(s.active_item)=None then s else
 
               let ac = extract (s.active_tile.c) in
               (trade ch ac s.active_item s.menu_cursor);ch.stage<-Done;{s with
@@ -511,7 +502,7 @@ let do' s =
                 match s.current_menu.options.(s.menu_cursor) with
                 |"Attack" -> if ch.eqp = -1 then s else let _ = ch.stage<-AttackSelect in {s with current_menu=create_attack_menu ch;menu_cursor=0}
                 |"Trade"-> if (check_surround_allies s ch)&&((check_inventory (Some ch)||(check_surround_inventories s ch ))) then
-                    let _ = ch.stage<-TradeSelect in s else s
+                    let _ = ch.stage<-TradeSelect in {s with menu_active=false} else s
                 |"Item" -> {s with current_menu = create_inventory_menu ch;
                                   menu_cursor = 0}
                 |"Wait" -> ch.stage <- Done;

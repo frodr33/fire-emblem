@@ -18,6 +18,7 @@ let temp_item =
   }
 
 let map1 = {
+  number=1;
   width = 15;
   length = 15;
   grid = [|
@@ -303,6 +304,7 @@ let map1 = {
 }
 
 let map2 = {
+  number=2;
   width = 15;
   length = 15;
   grid = [|
@@ -588,6 +590,7 @@ let map2 = {
 }
 let test =
   {
+    number=3;
     width = 3;
     length = 3;
     grid =

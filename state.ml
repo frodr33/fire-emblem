@@ -252,7 +252,7 @@ let steam a d =
  *  - [map] is a valid map that contains [t]
  *  Has unspecified behaviour if preconditions are violated.
 *)
-let movable (t:tile) (d:direction) (mov:int) (map:map) c=
+let movable (t:tile) (d:direction) (mov:int) (map:map) c =
   let x = fst t.coordinate in
   let y = snd t.coordinate in
   let dimensions = (map.width, map.length) in
@@ -269,7 +269,7 @@ let movable (t:tile) (d:direction) (mov:int) (map:map) c=
     match next_tile.c with 
     |None -> true
     |Some (x) -> steam c next_tile.c 
-    in
+    in if opposite then 
       match next_tile.ground with
       |Wall -> (false, -1)
       |Door -> (false, -1)
@@ -356,7 +356,7 @@ let rec check_surround s t m map f c:(tile * int) list =
  *  - [map] is the map dijkstra's was called on.
 *)
 let rec dijkstra's_helper f s tile m map c =
-  let new_f = check_surround s tile m map f c n
+  let new_f = check_surround s tile m map f c
   match new_f with
   |[]   -> tile.coordinate :: s
   |h::t -> dijkstra's_helper t (tile.coordinate ::s) (fst h) (snd h) map c
@@ -372,7 +372,7 @@ let dijkstra's c map =
  *  [add_no_dup lst1 lst2 movl] adds lst1 to lst2 as long as the values in lst1
  *  don't exist in lst2 already or in movl.
  *  requires:
- *  - [lst1] is a valid list
+ *  - [lst1] is a valid list  
  *  - [lst2] is a valid list
  *  - [movl] is a valid list
 *)

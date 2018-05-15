@@ -1155,7 +1155,7 @@ let draw_lose_screen context =
 (***************** Draw transition screen ****************)
 (*********************************************************)
 
-(* [d] *)
+(* [draw_transition_screen context state] *)
 let draw_transition_screen context state = 
   if !transition < 0 then state.round <- false else
     let timer = !transition / 100 in

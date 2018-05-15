@@ -92,7 +92,7 @@ let temp_character =
 
 let enemy_1 =
   {
-    name = "Mage";
+    name = "Mage Boss";
     stage= Ready;
     class' = Paladin;
     growths = [];

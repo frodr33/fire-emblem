@@ -348,6 +348,8 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
       |Done -> ()
     end
   | West -> ()
+
+
 let draw_archer context enemy =
   match ((!sync)) with
   | true ->
@@ -370,7 +372,9 @@ let rec draw_player (context: Html.canvasRenderingContext2D Js.t) character_list
   | h::t ->
     match h.name with
     | "Lyn" -> draw_lyn context h;draw_player context t
-    |  "Archer" ->
+    | "Erk" -> ()
+    | "Hector" -> ()
+    | "Archer" -> 
         draw_archer context h;
         draw_player context t
     | _ -> ()
@@ -1077,6 +1081,19 @@ let draw_mage context enemy =
     context##drawImage_full (img, 21., 11., 26., 36., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 26.)
 
 
+let draw_mage_boss context enemy = 
+  match ((!sync)) with
+  | true ->
+    let img = Html.createImg document in
+    let (x,y) = enemy.location in
+    img##src <- js "Sprites/EnemySprites/Mage_Boss.png";
+    context##drawImage_full (img, 7., 8., 32., 36., float_of_int x *. 26., float_of_int y *. 26., 25., 28.)
+  | false ->
+    let img = Html.createImg document in
+    let (x,y) = enemy.location in
+    img##src <- js "Sprites/EnemySprites/Mage_Boss2.png";
+    context##drawImage_full (img, 15., 8., 32., 36., float_of_int x *. 26., float_of_int y *. 26., 25., 26.)
+
 (* [draw_enemies_helper context enemy_lst] takes a
  * list of enemies [enemy_lst] and draws the proper
  * sprite corresponding to the name of all the enemies
@@ -1089,7 +1106,7 @@ let rec draw_enemies_helper context enemy_lst =
     | "Archer" ->
       draw_archer context enemy;
       draw_enemies_helper context t
-    | "Boss" ->
+    | "Melee Boss" ->
       draw_boss context enemy;
       draw_enemies_helper context t
     | "Melee" ->
@@ -1098,9 +1115,9 @@ let rec draw_enemies_helper context enemy_lst =
     | "Mage" -> 
       draw_mage context enemy;
       draw_enemies_helper context t
-    | "Archer Boss" -> ()
-    | "Melee Boss" -> ()
-    | "Mage Boss" -> ()
+    | "Mage Boss" -> 
+      draw_mage_boss context enemy;
+      draw_enemies_helper context t
     | _ -> ()
 
 (* [draw_enemies context state] draws the enemy sprites on

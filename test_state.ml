@@ -51,7 +51,7 @@ let temp_item2 =
     mgt = 0;
     acc = 0;
     crit = 0;
-    range = (2,4);
+    range = (1,1);
     uses = 5;
     cost = 0;
     sell = 0;
@@ -132,7 +132,7 @@ let enemy_1 =
     wlevels = [(Sword,'e',0)];
     ai = BossHunt;
     behave = Insane;
-    location= (1,2);
+    location= (2,2);
     movement= [];
     attackable = [];
     direction= South;
@@ -167,7 +167,13 @@ let tests = [
   "not_win">:: (fun _ -> assert_equal false st.won);
   "not_transition">:: (fun _ -> assert_equal false st.round);
   "menu_cursor 0">:: (fun _ -> assert_equal 0 st.menu_cursor);
-  "test_player">:: (fun _ -> assert_equal None (st.active_unit))
+  "test_player">:: (fun _ -> assert_equal None (st.active_unit));
+  "enemy_move">:: (fun _ -> assert_equal false ((1, 2) =
+                                                (step st.enemies st.player st.act_map;
+                                                 enemy_1.location)));
+  "enemy_move">:: (fun _ -> assert_equal false (step st.enemies st.player st.act_map;
+                                                fst enemy_1.health = snd enemy_1.health));
+  "step_test">:: (fun _ -> assert_equal () (step st.enemies st.player st.act_map))
 ]
 let suite =
   "FE state test suite">::: tests

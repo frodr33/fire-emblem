@@ -736,7 +736,7 @@ let rec add_init_characters playerlst map =
 let rec set_init_ch_movement playerlst st =
   match playerlst with
   |[] -> st
-  |h::t ->let _ =  h.movement <- dijkstra's h st.act_map;
+  |h::t ->let _ =  h.movement <- dijkstra's h st.act_map h;
             h.attackable <- red_tiles h in set_init_ch_movement t st
 
 let set_act_tile st =
@@ -769,13 +769,9 @@ let transition_map2 st =
       menu_cursor = 0;
       funds = 0;
       last_character = None;
-<<<<<<< HEAD
-    } in x |> set_init_ch_movement x.player |> set_init_ch_movement x.enemies
-=======
-    } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies|>set_act_tile
+    } in x |> set_init_ch_movement x.player |> set_init_ch_movement x.enemies |> set_act_tile
 
 
->>>>>>> cff0bde5cbcccf747fa070cf22a12f1065d26e42
 (**
  *  [do' s] is a function that takes a state, checks what the most recent
  *  command was, and returns a new state based on the command
@@ -787,36 +783,23 @@ let do' s =
   if s.player = [] then {s with lose = true} else
   if s.enemies = [] then begin
     match s.act_map.number with
-<<<<<<< HEAD
     |1 -> transition_map2 s
-    |2 -> {s with won=true}
+    |2 -> {s with won = true}
     |_ -> s
-
-=======
-    |1->transition_map2 s
-    |2->{s with won=true}
-    |_-> s
->>>>>>> cff0bde5cbcccf747fa070cf22a12f1065d26e42
   end
   else
     let act = translate_key s in
     let _ = input := Nothing in
     match act with
-<<<<<<< HEAD
-    |OpenMenu -> {s with menu_active=true; current_menu = tile_menu}
+    |EndWelcome->{s with welcome = false}
+    |OpenMenu -> {s with menu_active = true; current_menu = tile_menu}
     |CloseMenu -> {s with menu_active = false; menu_cursor = 0}
     |Tdown|Tright|Tleft|Tup -> {s with active_tile = new_active_tile act s}
-=======
-    |EndWelcome->{s with welcome=false}
-    |OpenMenu -> {s with menu_active=true;current_menu = tile_menu}
-    |CloseMenu -> {s with menu_active = false;menu_cursor = 0}
-    |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
->>>>>>> cff0bde5cbcccf747fa070cf22a12f1065d26e42
     |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
     |SelectPlayer -> if (extract s.active_tile.c).stage = Done then {s with last_character = s.active_tile.c} else
         let ch = extract s.active_tile.c in
         ch.stage <- MoveSelect;
-        ch.movement <- dijkstra's ch s.act_map;
+        ch.movement <- dijkstra's ch s.act_map ch;
         ch.attackable <- red_tiles ch;
         {s with active_unit = s.active_tile.c;last_character = s.active_tile.c}
     |SelectMoveTile -> move_helper s

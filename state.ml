@@ -85,24 +85,24 @@ let rec check_exist co lst =
 let a_range_add ma i co fl ml sl =
   let addon = if i > ma then [] else(
       let nleft = ((fst co) - 1, snd co) in
-      let cleft = if (fst co) - 1 < 0 ||
-                     List.mem nleft ml ||
-                     List.mem nleft sl ||
+      let cleft = if (fst co) - 1 < 0    ||
+                     List.mem nleft ml   ||
+                     List.mem nleft sl   ||
                      check_exist nleft fl then [] else (nleft, i)::[] in
       let nright = ((fst co) + 1, snd co) in
-      let cright = if (fst co) + 1 > 14 ||
+      let cright = if (fst co) + 1 > 14  ||
                       List.mem nright ml ||
                       List.mem nright sl ||
                       check_exist nright fl then cleft else (nright, i)::cleft in
       let nup = (fst co, snd co - 1) in
-      let cup = if (snd co) - 1 < 0 ||
-                   List.mem nup ml ||
-                   List.mem nup sl ||
+      let cup = if (snd co) - 1 < 0      ||
+                   List.mem nup ml       ||
+                   List.mem nup sl       ||
                    check_exist nup fl then cright else (nup, i)::cright in
       let ndown = (fst co, snd co + 1) in
-      let cdown = if (snd co) + 1 > 14 ||
-                     List.mem ndown ml ||
-                     List.mem ndown sl ||
+      let cdown = if (snd co) + 1 > 14   ||
+                     List.mem ndown ml   ||
+                     List.mem ndown sl   ||
                      check_exist ndown fl then cup else (ndown, i)::cup in
       cdown) in
   fl @ addon
@@ -217,7 +217,7 @@ let new_menu_cursor act st = match act with
 
 
 
-(*-----------------------------SPAGHETT FLOOD FILL----------------------------*)
+(*-----------------------------SPAGHETT DIJKSTRA's----------------------------*)
 
 (**
  *  [not_in_bound x y d dimensions] is a function that checks if the tile in the
@@ -653,9 +653,9 @@ let check_surround_inventories s c =
     (check_inventory s.act_map.grid.(x-1).(y).c) ||
     (check_inventory s.act_map.grid.(x+1).(y).c) ||
     (check_inventory s.act_map.grid.(x).(y-1).c)
-  |(x,y) -> (
-      check_inventory s.act_map.grid.(x-1).(y).c)  ||
-      (check_inventory s.act_map.grid.(x).(y-1).c)
+  |(x,y) -> 
+    (check_inventory s.act_map.grid.(x-1).(y).c) ||
+    (check_inventory s.act_map.grid.(x).(y-1).c)
 
 (**[set_direction c t] sets the direction of [c] to face [t].
   *requires:

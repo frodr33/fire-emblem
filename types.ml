@@ -48,7 +48,7 @@ type tile_type =
 
 
 
-type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
+type key = A|B|LT|Up|Down|Left|Right|Nothing
 type status =  Ready|MoveSelect|MoveDone|AttackSelect|TradeSelect|Done
 type direction = North | West | South | East
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
@@ -57,7 +57,9 @@ type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
 
 type difficulty = Easy|Normal|Hard|Insane
 
-let extract (Some c) = c
+let extract = function
+  |(Some c) ->c
+  |None -> failwith "Impossible"
 let seed = 10
 
 let init_rng = Random.init 10

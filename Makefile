@@ -9,7 +9,8 @@ clean:
 	ocamlbuild -clean
 
 test:
-	ocamlbuild -use-ocamlfind test2.byte && ./test2.byte
+	ocamlbuild -use-ocamlfind -pkg oUnit test_state.cmo -r
+
 # compile:
 # 	ocamlc -c types.mli
 # 	ocamlc -c room.mli

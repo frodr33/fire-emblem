@@ -1,6 +1,8 @@
 open Types
 open Interactions
 
+(*[Charactermaker] is a module designed to easily create character instances
+ * at a given coordinate*)
 val make_archer : int*int -> character
 val make_swordsman : int*int -> character
 val make_mage : int*int -> character

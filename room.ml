@@ -17,7 +17,7 @@ let bigfreakingsword =
     penalty = [];
   }
 
-let temp_item = 
+let temp_item =
   {
     iname  = "Armads";
     wtype = Axe;
@@ -32,7 +32,7 @@ let temp_item =
     users = [];
     effective = [];
     penalty = [];
-  }  
+  }
 
 
 let map1 = {
@@ -606,28 +606,3 @@ let map2 = {
     |]
   |]
 }
-let test =
-  {
-    number=3;
-    width = 3;
-    length = 3;
-    grid =
-      [|
-        [|
-          {coordinate = ( 0,  0); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = ( 1,  0); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = ( 2,  0); ground = Plain; tile_type = Grass;c=None};
-        |];
-        [|
-          {coordinate = ( 0,  1); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = ( 1,  1); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = ( 2,  1); ground = Plain; tile_type = Grass;c=None};
-        |];
-        [|
-          {coordinate = ( 0,  2); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = ( 1,  2); ground = Plain; tile_type = Grass;c=None};
-          {coordinate = ( 2,  2); ground = Plain; tile_type = Grass;c=None};
-        |]
-
-      |]
-  }

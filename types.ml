@@ -48,7 +48,7 @@ type tile_type =
 
 
 
-type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
+type key = A|B|LT|Up|Down|Left|Right|Nothing
 type status =  Ready|MoveSelect|MoveDone|AttackSelect|TradeSelect|Done
 type direction = North | West | South | East
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|

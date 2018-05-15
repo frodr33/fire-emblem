@@ -139,7 +139,7 @@ let rec attack_range_helper mi ma i co fl ml sl =
 *)
 let distance_tile a (t:tile) =
   abs (fst a.location - fst t.coordinate) +
-  abs (snd a.location- snd t.coordinate)
+  abs (snd a.location - snd t.coordinate)
 
 
 (*[translateA_helper st] translates the "A" input to the appropriate
@@ -148,16 +148,16 @@ let translateA_helper st = if st.menu_active = true then SelectMOption else
     begin match st.active_unit with
       |Some c -> begin
           match c.stage with
-          |MoveSelect-> if c.allegiance = Player then SelectMoveTile else Invalid
+          |MoveSelect -> if c.allegiance = Player then SelectMoveTile else Invalid
           |AttackSelect -> SelectAttackTile
           |TradeSelect -> SelectTradeTile
           |_ -> Invalid
         end
       |None -> begin
           match st.active_tile.c with
-          |Some x ->begin
+          |Some x -> begin
               match x.stage with
-              |Ready|Done ->SelectPlayer
+              |Ready |Done ->SelectPlayer
               |_ -> Invalid
             end
           |None -> OpenMenu
@@ -171,10 +171,10 @@ let translateB_helper st =
   |Some c -> if st.menu_active then BackMenu else
       begin
         match c.stage with
-        |AttackSelect->BackAttack
+        |AttackSelect -> BackAttack
         |MoveSelect -> DeselectPlayer
-        |TradeSelect->BackTrade
-        |_ ->Invalid
+        |TradeSelect -> BackTrade
+        |_ -> Invalid
       end
   |None -> if st.menu_active then CloseMenu else Invalid
 
@@ -189,12 +189,12 @@ let translate_key st =
       |Up -> if st.menu_active = false then Tup else Mup
       |Down -> if st.menu_active = false then Tdown else Mdown
       |Left -> if st.menu_active = false then Tleft else Invalid
-      |Right ->if st.menu_active = false then Tright else Invalid
-      |A -> translateA_helper st
-      |B -> translateB_helper st
-      |LT->begin
+      |Right -> if st.menu_active = false then Tright else Invalid
+      |A  -> translateA_helper st
+      |B  -> translateB_helper st
+      |LT -> begin
           match st.active_unit with
-          |None ->FindReady
+          |None -> FindReady
           |_ -> Invalid
         end
       |_ -> Invalid
@@ -208,10 +208,10 @@ let translate_key st =
  *    -[st] is a state
 *)
 let new_menu_cursor act st = match act with
-  |Mup -> if st.menu_cursor =0 then 0 else
-      st.menu_cursor -1
-  |Mdown ->if st.menu_cursor = st.current_menu.size-1 then st.current_menu.size-1 else
-      st.menu_cursor +1
+  |Mup -> if st.menu_cursor = 0 then 0 
+    else st.menu_cursor -1
+  |Mdown -> if st.menu_cursor = st.current_menu.size - 1 then st.current_menu.size - 1 
+    else st.menu_cursor +1
   | _ -> 0
 
 
@@ -237,6 +237,11 @@ let not_in_bounds (x:int) (y:int) (d:direction) (dimensions:int * int) =
   |South -> y = height - 1
   |West  -> x = 0
 
+let is_ally a d = 
+  match a.allegiance with
+  |Player -> d.allegiance = Player
+  |Enemy -> d.allegiance = Enemy
+
 (**
  *  [movable t d mov map] is a function that checks if the tile in direction, d,
  *  of tile, t, can be moved on to with the given mov and map.
@@ -247,7 +252,7 @@ let not_in_bounds (x:int) (y:int) (d:direction) (dimensions:int * int) =
  *  - [map] is a valid map that contains [t]
  *  Has unspecified behaviour if preconditions are violated.
 *)
-let movable (t:tile) (d:direction) (mov:int) (map:map)=
+let movable t d mov map c =
   let x = fst t.coordinate in
   let y = snd t.coordinate in
   let dimensions = (map.width, map.length) in
@@ -260,7 +265,12 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
          |South -> mapg.(x).(y + 1)
          |West  -> mapg.(x - 1).(y)
     in
-    if next_tile.c = None then
+    let ally = 
+      match next_tile.c with
+      |None     -> true
+      |Some (x) -> is_ally x c 
+    in
+    if ally then
       match next_tile.ground with
       |Wall -> (false, -1)
       |Door -> (false, -1)
@@ -301,7 +311,7 @@ let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
  *  - [f] is a valid frontier set
  *  See dijkstra's_helper for details.
 *)
-let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
+let rec check_dir mov d t map s c f =
   let mapg = map.grid in
   let mov_dir = movable t d mov map in
   let x = fst t.coordinate in
@@ -327,12 +337,12 @@ let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list)
  *  - [map] is a valid map
  *  - [f] is a valid frontier set
 *)
-let rec check_surround s t m map f:(tile * int) list =
+let rec check_surround s t m map f c =
   f
-  |> check_dir m South t map s
-  |> check_dir m East t map s
-  |> check_dir m North t map s
-  |> check_dir m West t map s
+  |> check_dir m South t map s c
+  |> check_dir m East t map s c
+  |> check_dir m North t map s c
+  |> check_dir m West t map s c
 
 (**
  *  [dijkstra's helper f s tile m map] is a function that does dijkstra's to
@@ -346,11 +356,11 @@ let rec check_surround s t m map f:(tile * int) list =
  *  - [m] is the move needed to get to that tile
  *  - [map] is the map dijkstra's was called on.
 *)
-let rec dijkstra's_helper f s tile m map =
-  let new_f = check_surround s tile m map f in
+let rec dijkstra's_helper f s tile m map c =
+  let new_f = check_surround s tile m map f c in
   match new_f with
   |[]   -> tile.coordinate :: s
-  |h::t -> dijkstra's_helper t (tile.coordinate ::s) (fst h) (snd h) map
+  |h::t -> dijkstra's_helper t (tile.coordinate ::s) (fst h) (snd h) map c
 
 (**
  *  [dijkstra's c map] is a function that returns a list of all tiles
@@ -370,7 +380,9 @@ let dijkstra's c map =
 let rec add_no_dup lst1 lst2 movl =
   match lst1 with
   |[]   -> lst2
-  |h::t -> if List.mem h lst2 || List.mem h movl then add_no_dup t lst2 movl else add_no_dup t (h::lst2) movl
+  |h::t -> if List.mem h lst2 ||List.mem h movl 
+    then add_no_dup t lst2 movl 
+    else add_no_dup t (h::lst2) movl
 
 (**
  *  [red_tiles_helper mlst alst c] is a function that calls attack_range_helper
@@ -419,7 +431,7 @@ let attack_range c =
  *  - [st] is the state
 *)
 let new_active_tile act st =
-  let x = fst(st.active_tile.coordinate) in
+  let x = fst (st.active_tile.coordinate) in
   let y = snd (st.active_tile.coordinate) in
   match act with
   |Tup -> if y =0  then st.active_tile else
@@ -436,7 +448,7 @@ let new_active_tile act st =
 let create_attack_menu c =
   let o = Array.map (fun x -> match x with
       |Some i when equippable c i=true -> i.iname
-      |_ -> "") c.inv in {kind = AttackInventory;size=5;options = o}
+      |_ -> "") c.inv in {kind = AttackInventory; size = 5; options = o}
 
 (**[grab_items c] returns a list of the names of the items in [c]'s inventory.
   *-[c] is a character
@@ -449,25 +461,28 @@ let grab_items c =
 (**All 3 functions convert [c]'s inventory into a menu and sets the menu
    kind appropriately.
 *)
-let create_inventory_menu c ={kind=Inventory;size = 5;options=grab_items c}
-let create_trader1_menu c = {kind=Trader1;size = 5;options=grab_items c}
-let create_trader2_menu c = {kind=Trader2;size = 5;options=grab_items c}
+let create_inventory_menu c ={kind=Inventory; size = 5; options=grab_items c}
+let create_trader1_menu c = {kind=Trader1; size = 5; options=grab_items c}
+let create_trader2_menu c = {kind=Trader2; size = 5; options=grab_items c}
 
 (**[move_char_helper st] modifies the map to reflect the movement of the active_unit.
   *[st] is the current state.
 *)
 let move_char_helper st =
   match st.active_unit with
-  |Some x->
+  |Some x ->
     let old_pos = x.location in
     let new_pos = st.active_tile.coordinate in
     let old_tile = st.act_map.grid.(fst old_pos).(snd old_pos) in
     let new_tile = st.act_map.grid.(fst new_pos).(snd new_pos) in
-    let _ = x.location<-new_pos;x.stage<-MoveDone; in
-    let _ = st.act_map.grid.(fst old_pos).(snd old_pos)<-{old_tile with c=None};
-      st.act_map.grid.(fst new_pos).(snd new_pos)<-{new_tile with c = Some x}
+    let _ = x.location<-new_pos;x.stage <- MoveDone; in
+    let _ = st.act_map.grid.(fst old_pos).(snd old_pos) <- {old_tile with c=None};
+      st.act_map.grid.(fst new_pos).(snd new_pos) <- {new_tile with c = Some x}
     in
-    {st with menu_active=true;current_menu=unit_menu;menu_cursor=0;active_tile=st.act_map.grid.(fst new_pos).(snd new_pos)}
+    {st with menu_active = true; 
+             current_menu = unit_menu;
+             menu_cursor = 0;
+             active_tile = st.act_map.grid.(fst new_pos).(snd new_pos)}
   |None -> st
 
 (*[move_helper st] moves the active_unit to the active_tile and modifies the state appropriately.
@@ -475,9 +490,13 @@ let move_char_helper st =
 *)
 let move_helper st =
   let ch = extract st.active_unit in
-  if List.mem (st.active_tile.coordinate) ch.movement && st.active_tile.c =None then
-    move_char_helper st else if ch.location=st.active_tile.coordinate then
-    let _ = ch.stage<-MoveDone in {st with menu_active=true;current_menu=unit_menu;menu_cursor=0} else
+  if List.mem (st.active_tile.coordinate) ch.movement && st.active_tile.c = None then
+    move_char_helper st else if ch.location = st.active_tile.coordinate then
+    let _ = ch.stage<-MoveDone in 
+      {st with menu_active = true;
+               current_menu = unit_menu;
+               menu_cursor=0} 
+  else
     let old_tile = (extract st.active_unit).location in
     {st with active_tile = st.act_map.grid.(fst old_tile).(snd old_tile)}
 
@@ -537,7 +556,7 @@ let check_inventory c =
   |Some ch ->
     Array.fold_left (fun x y -> match y with
         |Some i -> true
-        |None -> false||x) false ch.inv
+        |None -> false || x) false ch.inv
   |None -> false
 
 (**
@@ -558,15 +577,39 @@ let check_if_ally sc =
 *)
 let check_surround_allies s c =
   match c.location with
-  |(0,0)-> (check_if_ally s.act_map.grid.(0).(1).c)||(check_if_ally s.act_map.grid.(1).(0).c)
-  |(0,y)-> if y <> 14 then (check_if_ally s.act_map.grid.(0).(y-1).c)||  (check_if_ally s.act_map.grid.(1).(y).c) || (check_if_ally s.act_map.grid.(0).(y+1).c)
-    else (check_if_ally s.act_map.grid.(0).(y-1).c)||  (check_if_ally s.act_map.grid.(1).(y).c)
-  |(x,0)-> if x<>14 then (check_if_ally s.act_map.grid.(x-1).(0).c)||  (check_if_ally s.act_map.grid.(x).(1).c) ||  (check_if_ally s.act_map.grid.(x+1).(0).c)
-    else (check_if_ally s.act_map.grid.(x-1).(0).c)||  (check_if_ally s.act_map.grid.(x).(1).c)
-  |(x,y) when x<>14 &&y<>14-> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x+1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
-  |(x,y) when x=14 && y<>14 -> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
-  |(x,y) when x<>14&&y=14-> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x+1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)
-  |(x,y) ->(check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)
+  |(0,0) -> 
+    (check_if_ally s.act_map.grid.(0).(1).c)   || 
+    (check_if_ally s.act_map.grid.(1).(0).c)
+  |(0,y) -> if y <> 14 then 
+    (check_if_ally s.act_map.grid.(0).(y-1).c) ||
+    (check_if_ally s.act_map.grid.(1).(y).c)   || 
+    (check_if_ally s.act_map.grid.(0).(y+1).c)
+    else 
+    (check_if_ally s.act_map.grid.(0).(y-1).c) || 
+    (check_if_ally s.act_map.grid.(1).(y).c)
+  |(x,0) -> if x <> 14 then 
+    (check_if_ally s.act_map.grid.(x-1).(0).c) ||
+    (check_if_ally s.act_map.grid.(x).(1).c)   ||  
+    (check_if_ally s.act_map.grid.(x+1).(0).c)
+    else 
+    (check_if_ally s.act_map.grid.(x-1).(0).c) || 
+    (check_if_ally s.act_map.grid.(x).(1).c)
+  |(x,y) when x <> 14 && y <> 14 -> 
+    (check_if_ally s.act_map.grid.(x-1).(y).c) ||
+    (check_if_ally s.act_map.grid.(x+1).(y).c) ||
+    (check_if_ally s.act_map.grid.(x).(y-1).c) ||
+    (check_if_ally s.act_map.grid.(x).(y+1).c)
+  |(x,y) when x = 14 && y <> 14 -> 
+    (check_if_ally s.act_map.grid.(x-1).(y).c) ||
+    (check_if_ally s.act_map.grid.(x).(y-1).c) ||
+    (check_if_ally s.act_map.grid.(x).(y+1).c)
+  |(x,y) when x <> 14 && y = 14 -> 
+    (check_if_ally s.act_map.grid.(x-1).(y).c) ||
+    (check_if_ally s.act_map.grid.(x+1).(y).c) ||
+    (check_if_ally s.act_map.grid.(x).(y-1).c)
+  |(x,y) -> (
+    check_if_ally s.act_map.grid.(x-1).(y).c)  ||
+    (check_if_ally s.act_map.grid.(x).(y-1).c)
 
 (**[check_surround_inventories s c] checks the inventories of the characters on the tiles
   *directly adjacent to [c] on the map and returns [true] if any inventory is non-empty.
@@ -576,10 +619,22 @@ let check_surround_allies s c =
 *)
 let check_surround_inventories s c =
   match c.location with
-  |(0,0)-> (check_inventory s.act_map.grid.(0).(1).c)||(check_inventory s.act_map.grid.(1).(0).c)
-  |(0,y)-> (check_inventory s.act_map.grid.(0).(y-1).c)||  (check_inventory s.act_map.grid.(1).(y).c) ||  (check_inventory s.act_map.grid.(0).(y+1).c)
-  |(x,0)-> (check_inventory s.act_map.grid.(x-1).(0).c)||  (check_inventory s.act_map.grid.(x).(1).c) ||  (check_inventory s.act_map.grid.(x+1).(0).c)
-  |(x,y)-> (check_inventory s.act_map.grid.(x-1).(y).c)||(check_inventory s.act_map.grid.(x+1).(y).c)||(check_inventory s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
+  |(0,0) -> 
+    (check_inventory s.act_map.grid.(0).(1).c)   ||
+    (check_inventory s.act_map.grid.(1).(0).c)
+  |(0,y) -> 
+    (check_inventory s.act_map.grid.(0).(y-1).c) ||
+    (check_inventory s.act_map.grid.(1).(y).c)   || 
+    (check_inventory s.act_map.grid.(0).(y+1).c)
+  |(x,0) -> 
+    (check_inventory s.act_map.grid.(x-1).(0).c) || 
+    (check_inventory s.act_map.grid.(x).(1).c)   ||
+    (check_inventory s.act_map.grid.(x+1).(0).c)
+  |(x,y) -> 
+    (check_inventory s.act_map.grid.(x-1).(y).c) ||
+    (check_inventory s.act_map.grid.(x+1).(y).c) ||
+    (check_inventory s.act_map.grid.(x).(y-1).c) ||
+    (check_if_ally s.act_map.grid.(x).(y+1).c)
 
 (**[set_direction c t] sets the direction of [c] to face [t].
   *requires:
@@ -590,12 +645,14 @@ let set_direction c t =
   let dx = (fst t.coordinate)-(fst c.location) in
   let dy = (snd t.coordinate)-(fst c.location) in
   match dx,dy with
-  |x,y when (abs x)>(abs y) -> if x>0 then c.direction<-East else c.direction<-West
-  |x,y when (abs x)<(abs y) -> if y>0 then c.direction<-South else c.direction<-North
-  |x,y when x>0 &&y<0 -> c.direction<-East
-  |x,y when x<0 && y<0 -> c.direction<-North
-  |x,y when x<0 && y>0 -> c.direction<-West
-  |x,y when x>0 && y>0 -> c.direction<-South
+  |x,y when (abs x)>(abs y) -> if x > 0 then c.direction<-East 
+    else c.direction<-West
+  |x,y when (abs x)<(abs y) -> if y > 0 then c.direction<-South 
+    else c.direction<-North
+  |x,y when x > 0 && y < 0 -> c.direction<-East
+  |x,y when x < 0 && y < 0 -> c.direction<-North
+  |x,y when x < 0 && y > 0 -> c.direction<-West
+  |x,y when x > 0 && y > 0 -> c.direction<-South
   |_ -> ()
 
 (*[delete_from_list lst c acc] returns [lst] with [c] removed.
@@ -621,12 +678,12 @@ let remove_if_dead c s =
     |Player -> let newlst = delete_from_list s.player c [] in
       let x = fst c.location in let y = snd c.location in
       let oldt = s.act_map.grid.(x).(y) in
-      s.act_map.grid.(x).(y)<-{oldt with c=None};
-      {s with player =newlst;}
+      s.act_map.grid.(x).(y) <- {oldt with c=None};
+      {s with player = newlst;}
     |Enemy -> let newlst = delete_from_list s.enemies c [] in
       let x = fst c.location in let y = snd c.location in
       let oldt = s.act_map.grid.(x).(y) in
-      s.act_map.grid.(x).(y)<-{oldt with c=None};
+      s.act_map.grid.(x).(y) <- {oldt with c=None};
       {s with enemies =newlst;}
 
 (**[find_ready_helper st] finds the next ready player in [st]. If there are
@@ -635,10 +692,10 @@ let remove_if_dead c s =
   * -[st] is the current state
 *)
 let find_ready_helper st =
-  let newc = List.find_opt (fun ch->ch.stage=Ready) st.player in
+  let newc = List.find_opt (fun ch -> ch.stage = Ready) st.player in
   match newc with
-  |Some c-> let loc = c.location in
-    {st with active_tile=st.act_map.grid.(fst loc).(snd loc)}
+  |Some c -> let loc = c.location in
+    {st with active_tile = st.act_map.grid.(fst loc).(snd loc)}
   |None -> st
 
 (**
@@ -656,10 +713,13 @@ let rec check_character_list lst st =
       (let ctile = st.act_map.grid.(fst h.location).(snd h.location) in
        st.act_map.grid.(fst h.location).(snd h.location) <- {ctile with c = None};
        check_character_list t st) else h::check_character_list t st
+
 let rec transition_players plst clst acc =
   match plst,clst with
-  |h1::t1,h2::t2->h1.location<-h2;transition_players t1 t2 (h1::acc)
-  |_,_ -> List.rev acc
+  |h1::t1, h2::t2 -> h1.location <- h2;
+    transition_players t1 t2 (h1::acc)
+  |_, _ -> List.rev acc
+
 (*Adds initial characters in player list to map*)
 let rec add_init_characters playerlst map =
   match playerlst with
@@ -668,7 +728,7 @@ let rec add_init_characters playerlst map =
     let cloc = h.location in
     let tile_to_change = map.grid.(fst cloc).(snd cloc) in
     let new_tile = {tile_to_change with c = Some h} in
-    let _ = map.grid.(fst cloc).(snd cloc) <-new_tile in
+    let _ = map.grid.(fst cloc).(snd cloc) <- new_tile in
     add_init_characters t map
 
 (*Sets movement for characters*)
@@ -702,7 +762,7 @@ let transition_map2 st =
       menu_cursor = 0;
       funds = 0;
       last_character = None;
-    } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies
+    } in x |> set_init_ch_movement x.player |> set_init_ch_movement x.enemies
 (**
  *  [do' s] is a function that takes a state, checks what the most recent
  *  command was, and returns a new state based on the command
@@ -711,66 +771,74 @@ let transition_map2 st =
 *)
 let do' s =
   if s.round then s else
-  if s.player=[] then {s with lose=true} else
-  if s.enemies=[] then begin
+  if s.player = [] then {s with lose = true} else
+  if s.enemies = [] then begin
     match s.act_map.number with
-    |1->transition_map2 s
-    |2->{s with won=true}
-    |_-> s
+    |1 -> transition_map2 s
+    |2 -> {s with won=true}
+    |_ -> s
 
   end
   else
     let act = translate_key s in
     let _ = input := Nothing in
     match act with
-    |OpenMenu -> {s with menu_active=true;current_menu = tile_menu}
-    |CloseMenu -> {s with menu_active = false;menu_cursor = 0}
-    |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
+    |OpenMenu -> {s with menu_active=true; current_menu = tile_menu}
+    |CloseMenu -> {s with menu_active = false; menu_cursor = 0}
+    |Tdown|Tright|Tleft|Tup -> {s with active_tile = new_active_tile act s}
     |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
-    |SelectPlayer -> if (extract s.active_tile.c).stage=Done then {s with last_character=s.active_tile.c} else
+    |SelectPlayer -> if (extract s.active_tile.c).stage = Done then {s with last_character = s.active_tile.c} else
         let ch = extract s.active_tile.c in
-        ch.stage<-MoveSelect;
+        ch.stage <- MoveSelect;
         ch.movement <- dijkstra's ch s.act_map;
         ch.attackable <- red_tiles ch;
         {s with active_unit = s.active_tile.c;last_character = s.active_tile.c}
-    |SelectMoveTile ->move_helper s
-    |SelectAttackTile -> if (List.mem s.active_tile.coordinate (attack_range (extract s.active_unit)))&&s.active_tile.c<>None then
-        {s with current_menu=confirm_menu;menu_cursor=0;menu_active=true} else s
+    |SelectMoveTile -> move_helper s
+    |SelectAttackTile -> 
+      if (List.mem s.active_tile.coordinate (attack_range (extract s.active_unit))) 
+        && s.active_tile.c <> None
+      then {s with current_menu = confirm_menu; menu_cursor = 0 ; menu_active = true} 
+      else s
     |SelectTradeTile ->let t1 =s.active_unit in
       let t2 = s.active_tile.c in
-      if t2=None ||t1=t2 then s else
-      if ((distance_tile (extract t1) s.active_tile)>1)||t1=t2 then s else
-      if (check_inventory t1)||(check_inventory  t2) then
-        {s with current_menu=create_trader1_menu (extract t1);menu_cursor=0;menu_active=true}
+      if t2 = None || t1 = t2 then s else
+      if ((distance_tile (extract t1) s.active_tile) > 1) || t1 = t2 then s else
+      if (check_inventory t1) || (check_inventory  t2) then
+        {s with current_menu = create_trader1_menu (extract t1); menu_cursor = 0; menu_active = true}
       else s
-    |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
-    |SelectMOption ->  begin
+    |DeselectPlayer -> 
+      let ch = extract s.active_unit in ch.stage <- Ready;
+      {s with active_unit = None}
+    |SelectMOption -> begin
         match s.active_unit with
         |Some ch -> begin
             match s.current_menu.kind with
             |Trader1->let c = extract (s.active_tile.c) in
-              if (check_inventory (Some c) = false && s.current_menu.options.(s.menu_cursor)="") then s else
-
-                {s with active_item=s.menu_cursor;current_menu=create_trader2_menu c;menu_cursor=0}
-
+              if (check_inventory (Some c) = false && s.current_menu.options.(s.menu_cursor)="") then s 
+              else {s with active_item = s.menu_cursor;current_menu=create_trader2_menu c; menu_cursor = 0}
             |Trader2->
-              if s.current_menu.options.(s.menu_cursor)="" && (extract s.active_unit).inv.(s.active_item)=None then s else
-
+              if s.current_menu.options.(s.menu_cursor) = "" && (extract s.active_unit).inv.(s.active_item) = None then s else
                 let ac = extract (s.active_tile.c) in
-                (trade ch ac s.active_item s.menu_cursor);ch.stage<-Done;{s with
-                                                                          active_unit=None;menu_active=false}
+                (trade ch ac s.active_item s.menu_cursor);
+                ch.stage <- Done;
+                {s with active_unit = None; menu_active = false}
             |Unit -> begin
                 match s.current_menu.options.(s.menu_cursor) with
-                |"Attack" -> if ch.eqp = -1 then s else let _ = ch.stage<-AttackSelect in {s with current_menu=create_attack_menu ch;menu_cursor=0}
-                |"Trade"-> if (check_surround_allies s ch)&&((check_inventory (Some ch)||(check_surround_inventories s ch ))) then
-                    let _ = ch.stage<-TradeSelect in {s with menu_active=false} else s
+                |"Attack" -> 
+                  if ch.eqp = -1 then s 
+                  else let _ = ch.stage <- AttackSelect in {s with current_menu = create_attack_menu ch; menu_cursor = 0}
+                |"Trade" -> if (check_surround_allies s ch) &&
+                  ((check_inventory (Some ch) || (check_surround_inventories s ch))) then
+                    let _ = ch.stage <- TradeSelect in {s with menu_active = false} else s
                 |"Item" -> {s with current_menu = create_inventory_menu ch;
                                    menu_cursor = 0}
-                |"Wait" -> ch.stage <- Done;
+                |"Wait" -> 
+                  ch.stage <- Done;
                   {s with active_unit = None;
                           menu_active = false;
                           menu_cursor = 0}
-                |"Visit" -> if village_checker s
+                |"Visit" -> 
+                  if village_checker s
                   then begin let _ =
                     village ch s.active_tile.ground;
                     ch.stage <- Done in
@@ -783,7 +851,8 @@ let do' s =
                     }
                   end
                   else s
-                |"Open" -> let chestable = chest_checker s in
+                |"Open" -> 
+                  let chestable = chest_checker s in
                   if fst chestable then (ch.stage <-Done;
                                          chest ch s.active_tile.ground (snd chestable);
                                          let x = fst s.active_tile.coordinate in
@@ -803,19 +872,24 @@ let do' s =
             |AttackInventory -> begin
                 match s.current_menu.options.(s.menu_cursor) with
                 |"" -> s
-                |_ -> (move_to_top ch s.menu_cursor;{s with menu_active=false;menu_cursor=0})
+                |_ -> (move_to_top ch s.menu_cursor; {s with menu_active=false;
+                                                     menu_cursor=0})
               end
             |Item -> begin
                 match s.current_menu.options.(s.menu_cursor) with
                 |"Equip/Use" -> begin
                     let item = extract (ch.inv.(s.active_item)) in
                     match item.wtype with
-                    |Potion-> consumable ch s.active_item;
+                    |Potion -> consumable ch s.active_item;
                       {s with active_unit = None;
                               menu_active = false;
                               menu_cursor = 0}
-                    |_ -> if equippable ch item then (move_to_top ch s.active_item; {s with current_menu = create_inventory_menu ch;
-                                                                                            menu_cursor = 0;}) else s
+                    |_ -> 
+                      if equippable ch item 
+                      then (move_to_top ch s.active_item; 
+                        {s with current_menu = create_inventory_menu ch;
+                        menu_cursor = 0;}) 
+                      else s
                   end
                 |"Discard" -> begin
                     remove_item ch s.active_item;
@@ -824,10 +898,12 @@ let do' s =
                   end
                 |_ -> s
               end
-            |Confirm->  begin
-                ch.stage<-Done;(set_direction ch s.active_tile);
-                let e  = extract s.active_tile.c in
-                combat ch e;(if fst ch.health<=0 then () else attacking:=true;ch.is_attacking<-true );
+            |Confirm -> begin
+                ch.stage <- Done;
+                (set_direction ch s.active_tile);
+                let e = extract s.active_tile.c in
+                combat ch e;
+                (if fst ch.health <= 0 then () else attacking := true; ch.is_attacking <- true );
                 {s with active_unit = None;
                         menu_active = false;
                         menu_cursor = 0;
@@ -846,25 +922,25 @@ let do' s =
                 {s with menu_active = false;
                         player = check_character_list s.player s;
                         enemies = check_character_list s.enemies s}
-              |_     ->s
+              |_ -> s
             end
           |_ -> s
       end
 
     |BackMenu -> begin match s.current_menu.kind with
-        |Trader1->{s with menu_active=false}
-        |Trader2->{s with current_menu=create_trader1_menu (extract s.active_unit);menu_cursor=0}
-        |Inventory->{s with current_menu = unit_menu;menu_cursor=0}
-        |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone;{s with current_menu = unit_menu;menu_cursor=0;}
-        |Item -> let ch  = extract s.active_unit in {s with current_menu = create_inventory_menu ch;menu_cursor = 0}
-        |Confirm -> {s with menu_active=false;menu_cursor=0}
+        |Trader1 -> {s with menu_active=false}
+        |Trader2 -> {s with current_menu = create_trader1_menu (extract s.active_unit); menu_cursor=0}
+        |Inventory -> {s with current_menu = unit_menu; menu_cursor = 0}
+        |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone; {s with current_menu = unit_menu;menu_cursor=0;}
+        |Item -> let ch = extract s.active_unit in {s with current_menu = create_inventory_menu ch; menu_cursor = 0}
+        |Confirm -> {s with menu_active = false; menu_cursor = 0}
         |_ -> s
       end
     |BackTrade -> let c = extract s.active_unit in
-      let loc = c.location in let _ = c.stage<-MoveDone in
-      {s with active_tile = s.act_map.grid.(fst loc).(snd loc);current_menu = unit_menu;menu_cursor=0;menu_active=true};
-    |BackAttack->let c = extract s.active_unit in
+      let loc = c.location in let _ = c.stage <- MoveDone in
+      {s with active_tile = s.act_map.grid.(fst loc).(snd loc);current_menu = unit_menu;menu_cursor = 0;menu_active = true};
+    |BackAttack-> let c = extract s.active_unit in
       let loc = c.location in
-      {s with active_tile = s.act_map.grid.(fst loc).(snd loc);current_menu = create_attack_menu c;menu_cursor=0;menu_active=true};
+      {s with active_tile = s.act_map.grid.(fst loc).(snd loc);current_menu = create_attack_menu c;menu_cursor = 0;menu_active = true};
     |FindReady->find_ready_helper s
     |_-> s

@@ -4,7 +4,7 @@
 type class' = Swordsman | Archer | Mage | Paladin | Lord | PRider
 
 (** Represents a weapon type*)
-type wtype = Sword | Bow | Tome | Staff | Potion | Key
+type wtype = Sword | Bow | Tome | Staff | Potion | Key | Axe | Lance
 
 (** Represents the names of possible AI types*)
 type ai = BossStay | BossHunt | Norm

@@ -92,7 +92,7 @@ let temp_character =
 
 let temp_character2 =
   {
-    name = "Hector";
+    name = "Lyn";
     stage= Ready;
     class' = Paladin;
     growths = [];
@@ -247,23 +247,7 @@ let enemy_3 =
   }
 
 
-(*Adds initial characters in player list to map*)
-let rec add_init_characters playerlst map =
-match playerlst with
-|[] -> map
-|h::t ->
-  let cloc = h.location in
-  let tile_to_change = map.grid.(fst cloc).(snd cloc) in
-  let new_tile = {tile_to_change with c = Some h} in
-  let _ = map.grid.(fst cloc).(snd cloc) <-new_tile in
-  add_init_characters t map
 
-    (*Sets movement for characters*)
-let rec set_init_ch_movement playerlst st =
-  match playerlst with
-  |[] -> st
-  |h::t ->let _ =  h.movement <- dijkstra's h st.act_map;
-                   h.attackable <- red_tiles h in set_init_ch_movement t st
 
 (* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
@@ -293,18 +277,33 @@ let temp_enemy = (make_archer (8,5))
  *)
 
 let init_state =
+
+  let p = [make_lyn (4, 14);make_hector (3, 13); make_erk (2, 12)] in
+  (*let e = [make_archer (3, 5); make_archer (2, 7); make_swordsman (5, 8); make_mage (3, 10); make_meleeboss (1, 13)] in*)
+  let e = [make_archer (3, 14)] in 
+
   let x =
-  {
-    player = [temp_character2];
+    {
+      (*let lyn = make_lyn (4,14) in
+      let hector=make_hector (3,13) in
+      let erk=make_erk (2,12) in
+      let a1 = make_archer (3,5) in
+      let a2 = make_archer (2,7) in
+      let s1 = make_swordsman (5,8) in
+      let m1 = make_mage (3,10) in
+        let b1 = make_meleebos (1,13) in *)
+
+    player = p;
     items = [];
-    enemies = [temp_enemy; enemy_1];
+    enemies = e;
     lose = false;
     won = false;
     round = false;
+    welcome = false;
     active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character2};
     active_unit = None;
     active_item = -1;
-    act_map = add_init_characters [temp_character2;temp_enemy;enemy_1] Room.map1;
+    act_map = add_init_characters (List.rev_append p e) Room.map1;
     menus = [];
     current_menu = unit_menu;
     menu_active = false;

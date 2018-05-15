@@ -1574,7 +1574,7 @@ let draw_sidebar_stats context state =
     context##fillText (js ("hit : " ^ string_of_int (chr.hit)) , 475., 255.);
     context##fillText (js ("atk : " ^ string_of_int (chr.atk)) , 475., 275.);
     context##fillText (js ("crit : " ^ string_of_int (chr.crit)) , 475., 295.);
-    context##fillText (js ("avoid : " ^ string_of_int (chr.avoid)) , 475., 315.)
+    context##fillText (js ("avd : " ^ string_of_int (chr.avoid)) , 475., 315.)
   | None -> ()
 
 (* [draw_sidebar context state] Draws the side bar which
@@ -1789,8 +1789,8 @@ let draw_win_screen context =
   context##strokeStyle <- js "white";
   context##fillStyle <- js "white";
   context##font <- js "60px Times New Roman";
-  context##fillText (js "YOU WIN!", 130., 180.);
-  context##fillText (js "Thanks for Playing!", 40., 300.)
+  context##fillText (js "YOU WIN!", 130., 120.);
+  context##fillText (js "Thanks for Playing!", 40., 200.)
 
 (* [draw_lose_screen context] draws the lose screen if
  * the player has won *)
@@ -1800,10 +1800,10 @@ let draw_lose_screen context =
   context##strokeStyle <- js "white";
   context##fillStyle <- js "white";
   context##font <- js "60px Times New Roman";
-  context##fillText (js "Sorry, you lost...", 100., 180.);
-  context##fillText (js "Thanks for Playing!", 40., 270.);
+  context##fillText (js "Sorry, you lost...", 90., 100.);
+  context##fillText (js "Thanks for Playing!", 40., 170.);
   context##font <- js "30px Times New Roman";
-  context##fillText (js "To play again just refresh the page!", 80., 330.)
+  context##fillText (js "To play again just refresh the page!", 70., 230.)
 
 (*********************************************************)
 (***************** Draw transition screen ****************)
@@ -1818,9 +1818,9 @@ let draw_transition_screen context state =
     context##strokeStyle <- js "white";
     context##fillStyle <- js "white";
     context##font <- js "50px Times New Roman";
-    context##fillText (js "You Beat Round 1!", 90., 180.);
-    context##fillText (js "Round two is starting in:", 20., 270.);
-    context##fillText (js (string_of_int timer), 260., 340.)
+    context##fillText (js "You Beat Round 1!", 90., 120.);
+    context##fillText (js "Round two is starting in:", 22., 200.);
+    context##fillText (js (string_of_int timer), 260., 270.)
 
 
 (*********************************************************)

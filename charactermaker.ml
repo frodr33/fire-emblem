@@ -367,6 +367,72 @@ let mk = {
   penalty = [];
 }
 
+
+let mk = {
+  iname = "Mani Katti";
+  wtype = Sword;
+  mgt = 6;
+  acc = 90;
+  crit = 20;
+  range = (1, 1);
+  uses = 30;
+  cost = 960;
+  sell = 20;
+  level = 'd';
+  users =  [];
+  effective = [];
+  penalty = [];
+}
+
+let key = {
+  iname = "Key";
+  wtype = Key;
+  mgt = 0;
+  acc = 0;
+  crit = 0;
+  range = (0, 0);
+  uses = 3;
+  cost = 0;
+  sell = 0;
+  level = 'd';
+  users =  [];
+  effective = [];
+  penalty = [];
+}
+
+let vul = {
+  iname = "Vulnerary";
+  wtype = Potion;
+  mgt = -10;
+  acc = 0;
+  crit = 0;
+  range = (0, 0);
+  uses = 3;
+  cost = 0;
+  sell = 0;
+  level = 'd';
+  users =  [];
+  effective = [];
+  penalty = [];
+}
+
+let elixer = {
+  iname = "Elixer";
+  wtype = Potion;
+  mgt = -20;
+  acc = 0;
+  crit = 0;
+  range = (0, 0);
+  uses = 3;
+  cost = 0;
+  sell = 0;
+  level = 'd';
+  users =  [];
+  effective = [];
+  penalty = [];
+}
+}
+
 let make_lyn loc = 
   let lyn =
     {
@@ -394,7 +460,7 @@ let make_lyn loc =
      atk = 0;
      crit = 0;
      avoid = 0;
-     inv = [|Some (mk);None;None;None;None|];
+     inv = [|Some (mk);Some (key);Some (vul);None;None|];
      eqp = 0;
      ability = [];
      supports = [];
@@ -453,7 +519,7 @@ let make_hector loc =
       atk = 0;
       crit = 0;
       avoid = 0;
-      inv = [|Some (wolf);None;None;None;None|];
+      inv = [|Some (wolf);Some (elixer);None;None;None|];
       eqp = 0;
       ability = [];
       supports = [];
@@ -495,7 +561,7 @@ let make_hector loc =
         atk = 0;
         crit = 0;
         avoid = 0;
-        inv = [|Some (ntome);None;None;None;None|];
+        inv = [|Some (ntome);Some (elixer);None;None;None|];
         eqp = 0;
         ability = [];
         supports = [];

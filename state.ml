@@ -185,6 +185,7 @@ let translate_key st =
   if !attacking= true then Invalid else
     begin
       let old = !input in let _ = input := Nothing in
+      if old<>Nothing &&st.welcome=true then EndWelcome else
       match old with
       |Up -> if st.menu_active = false then Tup else Mup
       |Down -> if st.menu_active = false then Tdown else Mdown
@@ -559,9 +560,14 @@ let check_if_ally sc =
 let check_surround_allies s c =
   match c.location with
   |(0,0)-> (check_if_ally s.act_map.grid.(0).(1).c)||(check_if_ally s.act_map.grid.(1).(0).c)
-  |(0,y)-> (check_if_ally s.act_map.grid.(0).(y-1).c)||  (check_if_ally s.act_map.grid.(1).(y).c) ||  (check_if_ally s.act_map.grid.(0).(y+1).c)
-  |(x,0)-> (check_if_ally s.act_map.grid.(x-1).(0).c)||  (check_if_ally s.act_map.grid.(x).(1).c) ||  (check_if_ally s.act_map.grid.(x+1).(0).c)
-  |(x,y)-> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x+1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
+  |(0,y)-> if y <> 14 then (check_if_ally s.act_map.grid.(0).(y-1).c)||  (check_if_ally s.act_map.grid.(1).(y).c) || (check_if_ally s.act_map.grid.(0).(y+1).c)
+    else (check_if_ally s.act_map.grid.(0).(y-1).c)||  (check_if_ally s.act_map.grid.(1).(y).c)
+  |(x,0)-> if x<>14 then (check_if_ally s.act_map.grid.(x-1).(0).c)||  (check_if_ally s.act_map.grid.(x).(1).c) ||  (check_if_ally s.act_map.grid.(x+1).(0).c)
+    else (check_if_ally s.act_map.grid.(x-1).(0).c)||  (check_if_ally s.act_map.grid.(x).(1).c)
+  |(x,y) when x<>14 &&y<>14-> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x+1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
+  |(x,y) when x=14 && y<>14 -> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)||(check_if_ally s.act_map.grid.(x).(y+1).c)
+  |(x,y) when x<>14&&y=14-> (check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x+1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)
+  |(x,y) ->(check_if_ally s.act_map.grid.(x-1).(y).c)||(check_if_ally s.act_map.grid.(x).(y-1).c)
 
 (**[check_surround_inventories s c] checks the inventories of the characters on the tiles
   *directly adjacent to [c] on the map and returns [true] if any inventory is non-empty.
@@ -712,12 +718,12 @@ let do' s =
     |1->transition_map2 s
     |2->{s with won=true}
     |_-> s
-
   end
   else
     let act = translate_key s in
     let _ = input := Nothing in
     match act with
+    |EndWelcome->{s with welcome=false}
     |OpenMenu -> {s with menu_active=true;current_menu = tile_menu}
     |CloseMenu -> {s with menu_active = false;menu_cursor = 0}
     |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}
@@ -766,9 +772,9 @@ let do' s =
                           menu_active = false;
                           menu_cursor = 0}
                 |"Visit" -> if village_checker s
-                  then begin let _ = village ch s.active_tile.ground;
-                               ch.stage <- Done in
+                  then begin let _ =
                     village ch s.active_tile.ground;
+                    ch.stage <- Done in
                     let x = fst s.active_tile.coordinate in
                     let y = snd s.active_tile.coordinate in
                     s.act_map.grid.(x).(y) <- {s.active_tile with ground = Village (None)};

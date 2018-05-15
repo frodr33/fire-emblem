@@ -567,8 +567,8 @@ let set_direction c t =
 
 let rec delete_from_list lst c acc =
   match lst with
-  |[] -> List.rev acc
-  |h::t -> if h.name = c.name then t else delete_from_list t c (h::acc)
+  |[] ->  acc
+  |h::t -> if h.name = c.name then List.rev_append acc t else delete_from_list t c (h::acc)
 
 let remove_if_dead c s =
   if (fst c.health)>0 then s else
@@ -614,8 +614,17 @@ let rec check_character_list lst st =
  *  - [s] is a state 
 *)
 let do' s =
+  if s.player=[] then {s with lose=true} else
+  (*if s.enemies=[] then begin
+    match s.act_map.number with
+    |1->s
+    |2->{s with won=true}
+    |_-> s
+
+    end
+    else*)
   let act = translate_key s in
-    let _ = input:=Nothing in
+  let _ = input := Nothing in
   match act with
   |OpenMenu -> {s with menu_active=true;current_menu = tile_menu}
   |CloseMenu -> {s with menu_active = false;menu_cursor = 0}
@@ -632,8 +641,9 @@ let do' s =
       {s with current_menu=confirm_menu;menu_cursor=0;menu_active=true} else s
   |SelectTradeTile ->let t1 =s.active_unit in
     let t2 = s.active_tile.c in
-    if (distance_tile (extract t1) s.active_tile)>1 then s else
-    if (check_inventory t1)||(check_inventory t2) then
+    if t2=None ||t1=t2 then s else
+    if ((distance_tile (extract t1) s.active_tile)>1)||t1=t2 then s else
+    if (check_inventory t1)||(check_inventory  t2) then
       {s with current_menu=create_trader1_menu (extract t1);menu_cursor=0;menu_active=true}
     else s
   |DeselectPlayer -> let ch = extract s.active_unit in ch.stage<-Ready;{s with active_unit = None}
@@ -643,7 +653,10 @@ let do' s =
           match s.current_menu.kind with
           |Trader1->let c = extract (s.active_tile.c) in
             {s with active_item=s.menu_cursor;current_menu=create_trader2_menu c;menu_cursor=0}
-          |Trader2->if s.current_menu.options.(s.menu_cursor)="" then s else
+            |Trader2->
+
+
+            if s.current_menu.options.(s.menu_cursor)="" && (extract s.active_unit).inv.(s.active_item)=None then s else
 
               let ac = extract (s.active_tile.c) in
               (trade ch ac s.active_item s.menu_cursor);ch.stage<-Done;{s with
@@ -652,7 +665,7 @@ let do' s =
                 match s.current_menu.options.(s.menu_cursor) with
                 |"Attack" -> if ch.eqp = -1 then s else let _ = ch.stage<-AttackSelect in {s with current_menu=create_attack_menu ch;menu_cursor=0}
                 |"Trade"-> if (check_surround_allies s ch)&&((check_inventory (Some ch)||(check_surround_inventories s ch ))) then
-                    let _ = ch.stage<-TradeSelect in s else s
+                    let _ = ch.stage<-TradeSelect in {s with menu_active=false} else s
                 |"Item" -> {s with current_menu = create_inventory_menu ch;
                                   menu_cursor = 0}
                 |"Wait" -> ch.stage <- Done;

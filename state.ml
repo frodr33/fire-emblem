@@ -766,9 +766,9 @@ let do' s =
                           menu_active = false;
                           menu_cursor = 0}
                 |"Visit" -> if village_checker s
-                  then begin let _ = village ch s.active_tile.ground;
-                               ch.stage <- Done in
+                  then begin let _ = 
                     village ch s.active_tile.ground;
+                    ch.stage <- Done in
                     let x = fst s.active_tile.coordinate in
                     let y = snd s.active_tile.coordinate in
                     s.act_map.grid.(x).(y) <- {s.active_tile with ground = Village (None)};

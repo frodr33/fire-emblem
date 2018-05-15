@@ -626,14 +626,20 @@ let check_surround_inventories s c =
   |(0,0) ->
     (check_inventory s.act_map.grid.(0).(1).c)   ||
     (check_inventory s.act_map.grid.(1).(0).c)
-  |(0,y) ->
+  |(0,y) -> if y <> 14 then
     (check_inventory s.act_map.grid.(0).(y-1).c) ||
     (check_inventory s.act_map.grid.(1).(y).c)   ||
     (check_inventory s.act_map.grid.(0).(y+1).c)
-  |(x,0) ->
+    else
+    (check_inventory s.act_map.grid.(0).(y-1).c) ||
+    (check_inventory s.act_map.grid.(1).(y).c)
+  |(x,0) -> if x<>14 then
     (check_inventory s.act_map.grid.(x-1).(0).c) ||
     (check_inventory s.act_map.grid.(x).(1).c)   ||
     (check_inventory s.act_map.grid.(x+1).(0).c)
+    else
+    (check_inventory s.act_map.grid.(x-1).(0).c) ||
+    (check_inventory s.act_map.grid.(x).(1).c)
   |(x,y) when x<> 14 && y <> 14->
     (check_inventory s.act_map.grid.(x-1).(y).c) ||
     (check_inventory s.act_map.grid.(x+1).(y).c) ||

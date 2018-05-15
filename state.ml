@@ -449,14 +449,14 @@ let rec check_character_list lst st =
 
 let do' s =
   if s.player=[] then {s with lose=true} else
-  if s.enemies=[] then begin
+  (*if s.enemies=[] then begin
     match s.act_map.number with
     |1->s
     |2->{s with won=true}
     |_-> s
 
-  end
-  else
+    end
+    else*)
   let act = translate_key s in
     let _ = input:=Nothing in
   match act with

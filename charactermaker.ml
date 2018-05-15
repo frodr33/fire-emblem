@@ -227,7 +227,7 @@ let make_mage loc =
    } in Characters.update_character mg;
    mg
 
-let make_rangedboss (loc : int*int) s =
+let make_rangedboss (loc : int*int)  =
      let arch =
        {
         name = "Archer";

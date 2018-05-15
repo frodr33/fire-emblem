@@ -32,7 +32,6 @@ let confirm_menu = {
 
 type state = {
   player: character list;
-  items : item list;
   enemies: character list;
   won : bool;
   lose:bool;
@@ -46,7 +45,6 @@ type state = {
   current_menu : menu;
   menu_active: bool;
   menu_cursor: int;
-  funds : int;
   last_character : character option;
 }
 
@@ -761,7 +759,7 @@ let set_act_tile st =
 (**[transition_map2 st] creates the new state for the second map of the game.
   *requires:
   * -[st] is the current state.
-   *)
+  *)
 let transition_map2 st =
   reset_ch st.player;
   let newp = transition_players st.player  [(5,8); (6,9); (7,8)] [] in
@@ -770,7 +768,6 @@ let transition_map2 st =
   let x =
     {
       player = newp;
-      items = [];
       enemies = newe;
       lose = false;
       won = false;
@@ -784,7 +781,6 @@ let transition_map2 st =
       current_menu = unit_menu;
       menu_active = false;
       menu_cursor = 0;
-      funds = 0;
       last_character = None;
     } in x |> set_init_ch_movement x.player |> set_init_ch_movement x.enemies |> set_act_tile
 
@@ -812,12 +808,15 @@ let do' s =
     |CloseMenu -> {s with menu_active = false; menu_cursor = 0}
     |Tdown|Tright|Tleft|Tup -> {s with active_tile = new_active_tile act s}
     |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
-    |SelectPlayer -> if (extract s.active_tile.c).stage = Done then {s with last_character = s.active_tile.c} else
-        let ch = extract s.active_tile.c in
+    |SelectPlayer -> let ch = extract s.active_tile.c in
+      if ch.stage = Done then {s with last_character = s.active_tile.c;menu_active=true;
+                                      current_menu=create_inventory_menu ch;menu_cursor=0}
+      else begin
         ch.stage <- MoveSelect;
         ch.movement <- dijkstra's ch s.act_map;
         ch.attackable <- red_tiles ch;
         {s with active_unit = s.active_tile.c;last_character = s.active_tile.c}
+      end
     |SelectMoveTile -> move_helper s
     |SelectAttackTile ->
       if (List.mem s.active_tile.coordinate (attack_range (extract s.active_unit)))
@@ -890,7 +889,8 @@ let do' s =
                   else s
                 |_ -> s
               end
-            |Inventory -> if s.current_menu.options.(s.menu_cursor) = "" then s else
+            |Inventory -> if s.current_menu.options.(s.menu_cursor) = ""
+                          ||(extract s.active_tile.c).stage=Done then s else
                 {s with active_item = s.menu_cursor;
                         current_menu = item_menu;
                         menu_cursor = 0}
@@ -934,7 +934,6 @@ let do' s =
                         menu_cursor = 0;
                         player = check_character_list s.player s;
                         enemies = check_character_list s.enemies s}
-                (*Need one more check to determine if won or lost*)
               end
             |_ -> s
           end
@@ -951,11 +950,12 @@ let do' s =
             end
           |_ -> s
       end
-
     |BackMenu -> begin match s.current_menu.kind with
         |Trader1 -> {s with menu_active=false}
         |Trader2 -> {s with current_menu = create_trader1_menu (extract s.active_unit); menu_cursor=0}
-        |Inventory -> {s with current_menu = unit_menu; menu_cursor = 0}
+        |Inventory -> let ch = extract s.active_unit in
+          if ch.stage<>Done then {s with current_menu = unit_menu; menu_cursor = 0}
+          else {s with menu_active=false}
         |AttackInventory -> let c = extract s.active_unit in c.stage<-MoveDone; {s with current_menu = unit_menu;menu_cursor=0;}
         |Item -> let ch = extract s.active_unit in {s with current_menu = create_inventory_menu ch; menu_cursor = 0}
         |Confirm -> {s with menu_active = false; menu_cursor = 0}

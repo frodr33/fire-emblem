@@ -1,9 +1,7 @@
 open Types
 open Interactions
 
-val unit_menu : menu
-val tile_menu : menu
-val item_menu : menu
+val unit_menu: menu
 val confirm_menu : menu
 
 (**
@@ -11,7 +9,6 @@ val confirm_menu : menu
 *)
 type state = {
   player : character list;
-  items : item list;
   enemies: character list;
   won : bool;
   lose : bool;
@@ -25,7 +22,6 @@ type state = {
   current_menu : menu;
   menu_active : bool;
   menu_cursor : int;
-  funds : int;
   last_character : character option;
 }
 
@@ -34,17 +30,30 @@ type state = {
 *)
 val attack_range : character -> (int * int) list
 
-(**
- *  Finds the movable tiles of a character
-*)
-val dijkstra's : character -> map -> (int*int) list
 
-(**
- *  Finds the red tiles of a character
+(**[add_init_characters plst map] adds the characters in [plst] to [map].
+  *requires:
+  * -[plst] is a list of characters
+  * -[map] is the current map
 *)
-val red_tiles : character -> (int * int) list
 val add_init_characters: character list -> map -> map
-val set_act_tile: state -> state 
+
+
+(**[sea_act_tile st] sets the active_tile field of [st] to be
+  *on one of the players in the player list in [st]. Also, sets
+  *the last_character field to be that player.
+  *requires:
+  * -[st] is the current state
+*)
+val set_act_tile: state -> state
+
+
+(**[set_init_ch_movement plst st] sets the movement field appropriately for
+  *each character in [plst].
+  *requires:
+  * -[plst] is a list of characters
+  * -[st] is the current state
+*)
 val set_init_ch_movement: character list -> state -> state
 
 

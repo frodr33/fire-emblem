@@ -10,16 +10,15 @@ type wtype = Sword | Bow | Tome | Staff | Potion | Key | Axe | Lance
 (** Represents the names of possible AI types*)
 type ai = BossStay | BossHunt | Norm
 
+(**Represents the possible types of menus*)
 type menutype = Inventory|Tile|Unit|Item|AttackInventory|Confirm|Trader1|Trader2
-(* Old Menu...didnt match ml *)
-(* type menu = string list *)
 
+(**Menu type*)
 type menu =  {
   kind : menutype;
   size : int;
   options : string array
 }
-
 
 type allegiance = Player | Enemy
 
@@ -49,8 +48,8 @@ type terrain = Plain | Wall | Throne | Door | Chest of item option | Defence | F
                Damaged_wall of int | Mountain | Ocean | Desert | Despawn | Peaks
 
 
-
-type key = A|B|Start|LT|RT|Up|Down|Left|Right|Nothing
+(***)
+type key = A|B|LT|Up|Down|Left|Right|Nothing
 type status = Ready|MoveSelect|MoveDone|AttackSelect|TradeSelect|Done
 type direction = North | West | South | East
 
@@ -137,6 +136,9 @@ type map = {number:int;
   width: int;
             length: int;
             grid: tile array array}
+
+
+
 (** Represents a list of all player unit locations*)
 type player_locations = (character * tile) list
 (** Representns a list of all enemy unit locations*)

@@ -13,7 +13,7 @@ If Ocaml and Opam are installed, then do the following steps:
 	1. Clone the repository
 	2. Enter `opam install js_of_ocaml js_of_ocaml-ocamlbuild js_of_ocaml-camlp4 js_of_ocaml-lwt` in terminal/command line
 	3. In the terminal/command line enter `make`
-	4. Click on `index.html`
+	4. Click on `index.html` inside the repository directory
 	5. A window in your default browser should open and fire-emblem should play automatically! (Click on the screen if nothing is happening)
 
 ## How to Play

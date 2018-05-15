@@ -209,9 +209,9 @@ let translate_key st =
  *    -[st] is a state
 *)
 let new_menu_cursor act st = match act with
-  |Mup -> if st.menu_cursor = 0 then 0 
+  |Mup -> if st.menu_cursor = 0 then 0
     else st.menu_cursor -1
-  |Mdown -> if st.menu_cursor = st.current_menu.size - 1 then st.current_menu.size - 1 
+  |Mdown -> if st.menu_cursor = st.current_menu.size - 1 then st.current_menu.size - 1
     else st.menu_cursor +1
   | _ -> 0
 
@@ -238,7 +238,7 @@ let not_in_bounds (x:int) (y:int) (d:direction) (dimensions:int * int) =
   |South -> y = height - 1
   |West  -> x = 0
 
-let is_ally a d = 
+let is_ally a d =
   match a.allegiance with
   |Player -> d.allegiance = Player
   |Enemy -> d.allegiance = Enemy
@@ -266,10 +266,10 @@ let movable t d mov map c =
          |South -> mapg.(x).(y + 1)
          |West  -> mapg.(x - 1).(y)
     in
-    let ally = 
+    let ally =
       match next_tile.c with
       |None     -> true
-      |Some (x) -> is_ally x c 
+      |Some (x) -> is_ally x c
     in
     if ally then
       match next_tile.ground with
@@ -314,7 +314,7 @@ let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
 *)
 let rec check_dir mov d t map s c f =
   let mapg = map.grid in
-  let mov_dir = movable t d mov map in
+  let mov_dir = movable t d mov map c in
   let x = fst t.coordinate in
   let y = snd t.coordinate in
   if fst mov_dir then
@@ -368,7 +368,7 @@ let rec dijkstra's_helper f s tile m map c =
  *  traversable by character c on the map from their current location.
 *)
 let dijkstra's c map =
-  dijkstra's_helper [] [] (ctile c map) c.mov map
+  dijkstra's_helper [] [] (ctile c map) c.mov map c
 
 (**
  *  [add_no_dup lst1 lst2 movl] adds lst1 to lst2 as long as the values in lst1
@@ -381,8 +381,8 @@ let dijkstra's c map =
 let rec add_no_dup lst1 lst2 movl =
   match lst1 with
   |[]   -> lst2
-  |h::t -> if List.mem h lst2 ||List.mem h movl 
-    then add_no_dup t lst2 movl 
+  |h::t -> if List.mem h lst2 ||List.mem h movl
+    then add_no_dup t lst2 movl
     else add_no_dup t (h::lst2) movl
 
 (**
@@ -480,7 +480,7 @@ let move_char_helper st =
     let _ = st.act_map.grid.(fst old_pos).(snd old_pos) <- {old_tile with c=None};
       st.act_map.grid.(fst new_pos).(snd new_pos) <- {new_tile with c = Some x}
     in
-    {st with menu_active = true; 
+    {st with menu_active = true;
              current_menu = unit_menu;
              menu_cursor = 0;
              active_tile = st.act_map.grid.(fst new_pos).(snd new_pos)}
@@ -493,10 +493,10 @@ let move_helper st =
   let ch = extract st.active_unit in
   if List.mem (st.active_tile.coordinate) ch.movement && st.active_tile.c = None then
     move_char_helper st else if ch.location = st.active_tile.coordinate then
-    let _ = ch.stage<-MoveDone in 
+    let _ = ch.stage<-MoveDone in
       {st with menu_active = true;
                current_menu = unit_menu;
-               menu_cursor=0} 
+               menu_cursor=0}
   else
     let old_tile = (extract st.active_unit).location in
     {st with active_tile = st.act_map.grid.(fst old_tile).(snd old_tile)}
@@ -578,33 +578,33 @@ let check_if_ally sc =
 *)
 let check_surround_allies s c =
   match c.location with
-  |(0,0) -> 
-    (check_if_ally s.act_map.grid.(0).(1).c)   || 
+  |(0,0) ->
+    (check_if_ally s.act_map.grid.(0).(1).c)   ||
     (check_if_ally s.act_map.grid.(1).(0).c)
-  |(0,y) -> if y <> 14 then 
+  |(0,y) -> if y <> 14 then
     (check_if_ally s.act_map.grid.(0).(y-1).c) ||
-    (check_if_ally s.act_map.grid.(1).(y).c)   || 
+    (check_if_ally s.act_map.grid.(1).(y).c)   ||
     (check_if_ally s.act_map.grid.(0).(y+1).c)
-    else 
-    (check_if_ally s.act_map.grid.(0).(y-1).c) || 
+    else
+    (check_if_ally s.act_map.grid.(0).(y-1).c) ||
     (check_if_ally s.act_map.grid.(1).(y).c)
-  |(x,0) -> if x <> 14 then 
+  |(x,0) -> if x <> 14 then
     (check_if_ally s.act_map.grid.(x-1).(0).c) ||
-    (check_if_ally s.act_map.grid.(x).(1).c)   ||  
+    (check_if_ally s.act_map.grid.(x).(1).c)   ||
     (check_if_ally s.act_map.grid.(x+1).(0).c)
-    else 
-    (check_if_ally s.act_map.grid.(x-1).(0).c) || 
+    else
+    (check_if_ally s.act_map.grid.(x-1).(0).c) ||
     (check_if_ally s.act_map.grid.(x).(1).c)
-  |(x,y) when x <> 14 && y <> 14 -> 
+  |(x,y) when x <> 14 && y <> 14 ->
     (check_if_ally s.act_map.grid.(x-1).(y).c) ||
     (check_if_ally s.act_map.grid.(x+1).(y).c) ||
     (check_if_ally s.act_map.grid.(x).(y-1).c) ||
     (check_if_ally s.act_map.grid.(x).(y+1).c)
-  |(x,y) when x = 14 && y <> 14 -> 
+  |(x,y) when x = 14 && y <> 14 ->
     (check_if_ally s.act_map.grid.(x-1).(y).c) ||
     (check_if_ally s.act_map.grid.(x).(y-1).c) ||
     (check_if_ally s.act_map.grid.(x).(y+1).c)
-  |(x,y) when x <> 14 && y = 14 -> 
+  |(x,y) when x <> 14 && y = 14 ->
     (check_if_ally s.act_map.grid.(x-1).(y).c) ||
     (check_if_ally s.act_map.grid.(x+1).(y).c) ||
     (check_if_ally s.act_map.grid.(x).(y-1).c)
@@ -620,18 +620,18 @@ let check_surround_allies s c =
 *)
 let check_surround_inventories s c =
   match c.location with
-  |(0,0) -> 
+  |(0,0) ->
     (check_inventory s.act_map.grid.(0).(1).c)   ||
     (check_inventory s.act_map.grid.(1).(0).c)
-  |(0,y) -> 
+  |(0,y) ->
     (check_inventory s.act_map.grid.(0).(y-1).c) ||
-    (check_inventory s.act_map.grid.(1).(y).c)   || 
+    (check_inventory s.act_map.grid.(1).(y).c)   ||
     (check_inventory s.act_map.grid.(0).(y+1).c)
-  |(x,0) -> 
-    (check_inventory s.act_map.grid.(x-1).(0).c) || 
+  |(x,0) ->
+    (check_inventory s.act_map.grid.(x-1).(0).c) ||
     (check_inventory s.act_map.grid.(x).(1).c)   ||
     (check_inventory s.act_map.grid.(x+1).(0).c)
-  |(x,y) -> 
+  |(x,y) ->
     (check_inventory s.act_map.grid.(x-1).(y).c) ||
     (check_inventory s.act_map.grid.(x+1).(y).c) ||
     (check_inventory s.act_map.grid.(x).(y-1).c) ||
@@ -646,9 +646,9 @@ let set_direction c t =
   let dx = (fst t.coordinate)-(fst c.location) in
   let dy = (snd t.coordinate)-(fst c.location) in
   match dx,dy with
-  |x,y when (abs x)>(abs y) -> if x > 0 then c.direction<-East 
+  |x,y when (abs x)>(abs y) -> if x > 0 then c.direction<-East
     else c.direction<-West
-  |x,y when (abs x)<(abs y) -> if y > 0 then c.direction<-South 
+  |x,y when (abs x)<(abs y) -> if y > 0 then c.direction<-South
     else c.direction<-North
   |x,y when x > 0 && y < 0 -> c.direction<-East
   |x,y when x < 0 && y < 0 -> c.direction<-North
@@ -803,10 +803,10 @@ let do' s =
         ch.attackable <- red_tiles ch;
         {s with active_unit = s.active_tile.c;last_character = s.active_tile.c}
     |SelectMoveTile -> move_helper s
-    |SelectAttackTile -> 
-      if (List.mem s.active_tile.coordinate (attack_range (extract s.active_unit))) 
+    |SelectAttackTile ->
+      if (List.mem s.active_tile.coordinate (attack_range (extract s.active_unit)))
         && s.active_tile.c <> None
-      then {s with current_menu = confirm_menu; menu_cursor = 0 ; menu_active = true} 
+      then {s with current_menu = confirm_menu; menu_cursor = 0 ; menu_active = true}
       else s
     |SelectTradeTile ->let t1 =s.active_unit in
       let t2 = s.active_tile.c in
@@ -815,7 +815,7 @@ let do' s =
       if (check_inventory t1) || (check_inventory  t2) then
         {s with current_menu = create_trader1_menu (extract t1); menu_cursor = 0; menu_active = true}
       else s
-    |DeselectPlayer -> 
+    |DeselectPlayer ->
       let ch = extract s.active_unit in ch.stage <- Ready;
       {s with active_unit = None}
     |SelectMOption -> begin
@@ -823,7 +823,7 @@ let do' s =
         |Some ch -> begin
             match s.current_menu.kind with
             |Trader1->let c = extract (s.active_tile.c) in
-              if (check_inventory (Some c) = false && s.current_menu.options.(s.menu_cursor)="") then s 
+              if (check_inventory (Some c) = false && s.current_menu.options.(s.menu_cursor)="") then s
               else {s with active_item = s.menu_cursor;current_menu=create_trader2_menu c; menu_cursor = 0}
             |Trader2->
               if s.current_menu.options.(s.menu_cursor) = "" && (extract s.active_unit).inv.(s.active_item) = None then s else
@@ -833,20 +833,20 @@ let do' s =
                 {s with active_unit = None; menu_active = false}
             |Unit -> begin
                 match s.current_menu.options.(s.menu_cursor) with
-                |"Attack" -> 
-                  if ch.eqp = -1 then s 
+                |"Attack" ->
+                  if ch.eqp = -1 then s
                   else let _ = ch.stage <- AttackSelect in {s with current_menu = create_attack_menu ch; menu_cursor = 0}
                 |"Trade" -> if (check_surround_allies s ch) &&
                   ((check_inventory (Some ch) || (check_surround_inventories s ch))) then
                     let _ = ch.stage <- TradeSelect in {s with menu_active = false} else s
                 |"Item" -> {s with current_menu = create_inventory_menu ch;
                                    menu_cursor = 0}
-                |"Wait" -> 
+                |"Wait" ->
                   ch.stage <- Done;
                   {s with active_unit = None;
                           menu_active = false;
                           menu_cursor = 0}
-                |"Visit" -> 
+                |"Visit" ->
                   if village_checker s
                   then begin let _ =
                     village ch s.active_tile.ground;
@@ -860,7 +860,7 @@ let do' s =
                     }
                   end
                   else s
-                |"Open" -> 
+                |"Open" ->
                   let chestable = chest_checker s in
                   if fst chestable then (ch.stage <-Done;
                                          chest ch s.active_tile.ground (snd chestable);
@@ -893,11 +893,11 @@ let do' s =
                       {s with active_unit = None;
                               menu_active = false;
                               menu_cursor = 0}
-                    |_ -> 
-                      if equippable ch item 
-                      then (move_to_top ch s.active_item; 
+                    |_ ->
+                      if equippable ch item
+                      then (move_to_top ch s.active_item;
                         {s with current_menu = create_inventory_menu ch;
-                        menu_cursor = 0;}) 
+                        menu_cursor = 0;})
                       else s
                   end
                 |"Discard" -> begin

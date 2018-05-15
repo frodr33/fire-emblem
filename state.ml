@@ -32,7 +32,6 @@ let confirm_menu = {
 
 type state = {
   player: character list;
-  items : item list;
   enemies: character list;
   won : bool;
   lose:bool;
@@ -46,7 +45,6 @@ type state = {
   current_menu : menu;
   menu_active: bool;
   menu_cursor: int;
-  funds : int;
   last_character : character option;
 }
 
@@ -85,24 +83,24 @@ let rec check_exist co lst =
 let a_range_add ma i co fl ml sl =
   let addon = if i > ma then [] else(
       let nleft = ((fst co) - 1, snd co) in
-      let cleft = if (fst co) - 1 < 0 ||
-                     List.mem nleft ml ||
-                     List.mem nleft sl ||
+      let cleft = if (fst co) - 1 < 0    ||
+                     List.mem nleft ml   ||
+                     List.mem nleft sl   ||
                      check_exist nleft fl then [] else (nleft, i)::[] in
       let nright = ((fst co) + 1, snd co) in
-      let cright = if (fst co) + 1 > 14 ||
+      let cright = if (fst co) + 1 > 14  ||
                       List.mem nright ml ||
                       List.mem nright sl ||
                       check_exist nright fl then cleft else (nright, i)::cleft in
       let nup = (fst co, snd co - 1) in
-      let cup = if (snd co) - 1 < 0 ||
-                   List.mem nup ml ||
-                   List.mem nup sl ||
+      let cup = if (snd co) - 1 < 0      ||
+                   List.mem nup ml       ||
+                   List.mem nup sl       ||
                    check_exist nup fl then cright else (nup, i)::cright in
       let ndown = (fst co, snd co + 1) in
-      let cdown = if (snd co) + 1 > 14 ||
-                     List.mem ndown ml ||
-                     List.mem ndown sl ||
+      let cdown = if (snd co) + 1 > 14   ||
+                     List.mem ndown ml   ||
+                     List.mem ndown sl   ||
                      check_exist ndown fl then cup else (ndown, i)::cup in
       cdown) in
   fl @ addon
@@ -217,7 +215,7 @@ let new_menu_cursor act st = match act with
 
 
 
-(*-----------------------------SPAGHETT FLOOD FILL----------------------------*)
+(*-----------------------------SPAGHETT DIJKSTRA's----------------------------*)
 
 (**
  *  [not_in_bound x y d dimensions] is a function that checks if the tile in the
@@ -244,13 +242,14 @@ let is_ally a d =
   |Enemy -> d.allegiance = Enemy
 
 (**
- *  [movable t d mov map] is a function that checks if the tile in direction, d,
+ *  [movable t d mov map c] is a function that checks if the tile in direction, d,
  *  of tile, t, can be moved on to with the given mov and map.
  *  requires:
  *  - [t] is a valid tile on map
  *  - [d] is a valid direction
  *  - [mov] is a valid int
  *  - [map] is a valid map that contains [t]
+ *  - [c] is a valid character.
  *  Has unspecified behaviour if preconditions are violated.
 *)
 let movable t d mov map c =
@@ -300,7 +299,7 @@ let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
                                  else h :: t) else h :: (add_f tile i t)
 
 (**
- *  [check_dir mov d t map s f] is a function that checks if the tile in
+ *  [check_dir mov d t map s c f] is a function that checks if the tile in
  *  direction, d, of tile, t, shold be added to the frontier set, and adds it
  *  if needed.
  *  requires:
@@ -309,6 +308,7 @@ let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
  *  - [t] is a valid tile
  *  - [map] is a valid map
  *  - [s] is a valid settled set
+ *  - [c] is a valid character.
  *  - [f] is a valid frontier set
  *  See dijkstra's_helper for details.
 *)
@@ -330,13 +330,14 @@ let rec check_dir mov d t map s c f =
   else f
 
 (**
- *  [check_surround s t m map f] is a function that checks the four tiles
+ *  [check_surround s t m map f c] is a function that checks the four tiles
  *  adjacent to tile, t, to see if they should be added to the frontier set, f.
  *  - [s] is a valid settled set
  *  - [t] is a valid map
  *  - [m] is a valid int
  *  - [map] is a valid map
  *  - [f] is a valid frontier set
+ *  - [c] is a valid character.
 *)
 let rec check_surround s t m map f c =
   f
@@ -346,7 +347,7 @@ let rec check_surround s t m map f c =
   |> check_dir m West t map s c
 
 (**
- *  [dijkstra's helper f s tile m map] is a function that does dijkstra's to
+ *  [dijkstra's helper f s tile m map c] is a function that does dijkstra's to
  *  find all the traversable tiles of a character from their starting location.
  *  requires:
  *  - [f] begins as an empty list, and represents the frontier set. It is type
@@ -356,6 +357,7 @@ let rec check_surround s t m map f c =
  *  - [tile] is the current tile that dijkstra's is evaluating.
  *  - [m] is the move needed to get to that tile
  *  - [map] is the map dijkstra's was called on.
+ *  - [c] is a valid character.
 *)
 let rec dijkstra's_helper f s tile m map c =
   let new_f = check_surround s tile m map f c in
@@ -653,9 +655,9 @@ let check_surround_inventories s c =
     (check_inventory s.act_map.grid.(x-1).(y).c) ||
     (check_inventory s.act_map.grid.(x+1).(y).c) ||
     (check_inventory s.act_map.grid.(x).(y-1).c)
-  |(x,y) -> (
-      check_inventory s.act_map.grid.(x-1).(y).c)  ||
-      (check_inventory s.act_map.grid.(x).(y-1).c)
+  |(x,y) -> 
+    (check_inventory s.act_map.grid.(x-1).(y).c) ||
+    (check_inventory s.act_map.grid.(x).(y-1).c)
 
 (**[set_direction c t] sets the direction of [c] to face [t].
   *requires:
@@ -761,7 +763,7 @@ let set_act_tile st =
 (**[transition_map2 st] creates the new state for the second map of the game.
   *requires:
   * -[st] is the current state.
-   *)
+  *)
 let transition_map2 st =
   reset_ch st.player;
   let newp = transition_players st.player  [(5,8); (6,9); (7,8)] [] in
@@ -770,7 +772,6 @@ let transition_map2 st =
   let x =
     {
       player = newp;
-      items = [];
       enemies = newe;
       lose = false;
       won = false;
@@ -784,7 +785,6 @@ let transition_map2 st =
       current_menu = unit_menu;
       menu_active = false;
       menu_cursor = 0;
-      funds = 0;
       last_character = None;
     } in x |> set_init_ch_movement x.player |> set_init_ch_movement x.enemies |> set_act_tile
 
@@ -814,8 +814,8 @@ let do' s =
     |Mup|Mdown -> {s with menu_cursor = new_menu_cursor act s }
     |SelectPlayer -> let ch = extract s.active_tile.c in
       if ch.stage = Done then {s with last_character = s.active_tile.c;menu_active=true;
-                              current_menu=create_inventory_menu ch;menu_cursor=0} else begin
-
+                                      current_menu=create_inventory_menu ch;menu_cursor=0}
+      else begin
         ch.stage <- MoveSelect;
         ch.movement <- dijkstra's ch s.act_map;
         ch.attackable <- red_tiles ch;
@@ -938,7 +938,6 @@ let do' s =
                         menu_cursor = 0;
                         player = check_character_list s.player s;
                         enemies = check_character_list s.enemies s}
-                (*Need one more check to determine if won or lost*)
               end
             |_ -> s
           end
@@ -955,7 +954,6 @@ let do' s =
             end
           |_ -> s
       end
-
     |BackMenu -> begin match s.current_menu.kind with
         |Trader1 -> {s with menu_active=false}
         |Trader2 -> {s with current_menu = create_trader1_menu (extract s.active_unit); menu_cursor=0}

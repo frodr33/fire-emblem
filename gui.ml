@@ -1778,9 +1778,10 @@ let draw_win_screen context =
   context##fillStyle <- js "black";
   context##fillRect (0.,0.,canvas_width,canvas_height);
   context##strokeStyle <- js "white";
+  context##fillStyle <- js "white";
   context##font <- js "60px Times New Roman";
-  context##strokeText (js "YOU WIN!", 130., 180.);
-  context##strokeText (js "Thanks for Playing!", 40., 300.)
+  context##fillText (js "YOU WIN!", 130., 180.);
+  context##fillText (js "Thanks for Playing!", 40., 300.)
 
 (* [draw_lose_screen context] draws the lose screen if
  * the player has won *)
@@ -1788,11 +1789,12 @@ let draw_lose_screen context =
   context##fillStyle <- js "black";
   context##fillRect (0.,0.,canvas_width,canvas_height);
   context##strokeStyle <- js "white";
+  context##fillStyle <- js "white";
   context##font <- js "60px Times New Roman";
-  context##strokeText (js "Sorry, you lost...", 100., 180.);
-  context##strokeText (js "Thanks for Playing!", 40., 270.);
+  context##fillText (js "Sorry, you lost...", 100., 180.);
+  context##fillText (js "Thanks for Playing!", 40., 270.);
   context##font <- js "30px Times New Roman";
-  context##strokeText (js "To play again just refresh the page!", 80., 330.)
+  context##fillText (js "To play again just refresh the page!", 80., 330.)
 
 (*********************************************************)
 (***************** Draw transition screen ****************)
@@ -1805,10 +1807,54 @@ let draw_transition_screen context state =
     context##fillStyle <- js "black";
     context##fillRect (0.,0.,canvas_width,canvas_height);
     context##strokeStyle <- js "white";
+    context##fillStyle <- js "white";
     context##font <- js "50px Times New Roman";
-    context##strokeText (js "You Beat Round 1!", 90., 180.);
-    context##strokeText (js "Round two is starting in:", 20., 270.);
-    context##strokeText (js (string_of_int timer), 260., 340.)
+    context##fillText (js "You Beat Round 1!", 90., 180.);
+    context##fillText (js "Round two is starting in:", 20., 270.);
+    context##fillText (js (string_of_int timer), 260., 340.)
+
+
+(*********************************************************)
+(****************** Draw Welcome Screen ******************)
+(*********************************************************)
+
+let draw_welcome_screen context = 
+  context##fillStyle <- js "black";
+  context##fillRect (0.,0.,canvas_width,canvas_height);
+  context##fillStyle <- js "white";
+  context##strokeStyle <- js "white";
+  context##font <- js "50px Times New Roman";
+  context##fillStyle <- js "Solid";
+  context##fillText (js "WELCOME TO", 90., 50.);
+  let img = Html.createImg document in
+  img##src <- js "Sprites/FireEmblem.png";
+  context##drawImage (img, 80.,70.);
+  context##font <- js "25px Times New Roman";
+  context##fillText (js "How To Play:", 10., 160.);
+  context##fillText (js "Controls:", 10., 280.);
+  let img = Html.createImg document in
+  img##src <- js "Sprites/ArrowKeys.png";
+  context##drawImage (img, 10.,280.);
+  let img = Html.createImg document in
+  context##font <- js "15px Times New Roman";
+  context##fillText (js "The Arrow Keys move the", 95., 310.);
+  context##fillText (js "cursor around the map", 95., 325.);
+  context##fillText (js "and menu", 95., 340.);
+  img##src <- js "Sprites/Z.png";
+  context##drawImage (img, 40.,340.);
+  context##fillText (js "The Z Key selects units", 95., 360.);
+  context##fillText (js "and options on the menus", 95., 375.);
+  let img = Html.createImg document in
+  img##src <- js "Sprites/X.png";
+  context##drawImage (img, 270.,300.);
+  context##fillText (js "The X Keys deselects units", 330., 310.);
+  context##fillText (js "and options on the menus", 330., 325.);
+  let img = Html.createImg document in
+  img##src <- js "Sprites/A.png";
+  context##drawImage (img, 270.,340.);
+  context##fillText (js "The A Keys moves the cursor", 330., 350.);
+  context##fillText (js "to the player whose turn it", 330., 365.);
+  context##fillText (js "currently is", 330., 380.)
 
 
 (*********************************************************)
@@ -1819,17 +1865,19 @@ let draw_transition_screen context state =
  * Also has a side affect of updating the global variable clock *)
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   context##clearRect (0., 0., canvas_width, canvas_height);
-  match state.round, state.won, state.lose with
-  | true, _, _ ->
+  match state.welcome, state.round, state.won, state.lose with
+  | true, _, _, _ -> 
+    draw_welcome_screen context;
+  | false, true, _, _ ->
     transition_start:= true;
     draw_transition_screen context state;
     clock ();
     transition_start:= false;
-  | false, true, false->
+  | false, false, true, false->
     draw_win_screen context;
-  | false, false, true ->
+  | false, false, false, true ->
     draw_lose_screen context;
-  | _, _, _->
+  | _, _, _, _->
     draw_map context state;
     draw_dijsktra context state;
     draw_attack_squares context state.active_unit;
@@ -1847,9 +1895,3 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
     draw_attack_menu context state;
     (* draw_inventory context state; *)
     clock ();
-
-(* TODO: 
- * 1. Face on side bar--
- * 2. Get rid of inv---
- * 3. Fix attack menu
- * 4. welcome screen *)

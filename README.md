@@ -1,6 +1,6 @@
 # Fire-Emblem
 
-![screenshot](https://github.com/awt46/fire-emblem/Sprites/screenshot.PNG)
+![screenshot](https://github.coecis.cornell.edu/awt46/fire-emblem/Sprites/screenshot.PNG)
 
 ## Description
 ## How to install

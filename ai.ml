@@ -4,8 +4,8 @@ open Interactions
 *path algorithm*)
 type path_tile =
  {
-   mutable length: int;
-   mutable prev: (int*int) option;
+   length: int;
+   prev: (int*int) option;
  }
 
 (*[path_map] is a data type to mirror our ingame map but store the paths to
@@ -66,26 +66,32 @@ let attack_range c =
 let rec add_f2 (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
  match f with
  |[]   -> [(tile,i)]
- |h::t -> if fst h = tile then (if i < snd h then (tile, i) :: t
-                                else h :: t) else h :: (add_f2 tile i t)
+ |h::t ->
+   (*print_string ("Adding x:"^(string_of_int (fst tile.coordinate))^" y:"^(string_of_int (snd tile.coordinate)));
+     print_string (" Adding New?"^(string_of_bool (fst h = tile)));*)
+   if fst h = tile then (if i < snd h then (tile, i) :: t
+                                  else h :: t) else h :: (add_f2 tile i t)
 
 let check_valid d (m : map) loc =
   match d with
-  |North -> snd loc -1 > 0
+  |North -> snd loc - 1 > 0
   |East  -> fst loc + 1 < m.width
   |South -> snd loc + 1 < m.length
-  |West  -> fst loc -1 > 0
+  |West  -> fst loc - 1 > 0
 
 let check_adjacent (t : tile) (f : tile) (m : map) =
   match t.coordinate, f.coordinate with
   |(x,y), (a,b) ->
-    abs (b - y) = 1 && a = x ||
-    abs (a - x) = 1 && b = y
+    (*print_string ("Adjacenct? "^(string_of_int x)^" "^(string_of_int y));
+      print_string ("By "^(string_of_int a)^" "^(string_of_int b));*)
+    ((abs (b - y)) = 1 && a = x) ||
+    ((abs (a - x)) = 1 && b = y)
 
 let rec check_settled (s : tile list) (tl : tile) =
   match s with
   |[] -> false
   |h::t ->
+    (*print_string (string_of_bool (h = tl));*)
     if h = tl then true else check_settled t tl
 
 (*[check_dir] ensures movement in a certain direction is valid and adds the
@@ -137,7 +143,10 @@ let new_map (c : character)(pmap : path_map) =
      grid = Array.make_matrix pmap.length pmap.width t
    }
  in
- pmap2.grid.(fst c.location).(snd c.location).length <- 0;
+ pmap2.grid.(fst c.location).(snd c.location) <- {length= 0; prev= None};
+ (*print_string ("Hell"^(string_of_int pmap2.grid.(fst c.location).(snd c.location).length));
+ print_string ("Freezeth"^(string_of_int pmap2.grid.(0).(0).length));
+ print_string ("Over"^(string_of_int pmap2.grid.(14).(14).length));*)
  pmap2
 
 (*[update_map] takes a [path_map] and updates its values if a shorter path is
@@ -152,8 +161,13 @@ let rec path_finder coor pmap acc =
  match coor with
  |(x, y) ->
    match pmap.grid.(x).(y).prev with
-   |None -> acc
-   |Some t -> path_finder t pmap ((pmap.grid.(x).(y).length, t)::acc)
+   |None ->
+     print_string ("Working"^(string_of_int (List.length acc)));
+     acc
+   |Some t ->
+     print_string ("Next Path:"^(string_of_int (fst t))^" "^(string_of_int (snd t)));
+     print_string ("Cost"^(string_of_int pmap.grid.(x).(y).length));
+     path_finder t pmap ((pmap.grid.(x).(y).length, t)::acc)
 
 let rec update_frontier (f : ( tile * int) list) (tl : tile) (m : map) (pmap : path_map) =
   match f with
@@ -167,13 +181,49 @@ let rec update_frontier (f : ( tile * int) list) (tl : tile) (m : map) (pmap : p
         |Forest -> 2
         |Desert -> 2
         |_ -> 1 in
-      let curr = pmap.grid.(x).(y).length in
+      let curr = pmap.grid.(fst tl.coordinate).(snd tl.coordinate).length in
+      (*print_string (" Cost"^(string_of_int (cost + curr)));
+        print_string (" Prev"^(string_of_int (pmap.grid.(x).(y).length)));*)
       if check_adjacent tl (fst h) m && curr + cost < pmap.grid.(x).(y).length then
         let newt : path_tile = {length = (curr + cost); prev= Some tl.coordinate} in
         let pmap2 = update_map pmap x y newt in
+        (*print_string "kill me";*)
         update_frontier t tl m pmap2
       else
         update_frontier t tl m pmap
+
+let rec found_frontier (s : tile list) (tile : tile) (map : map) (pmap : path_map) =
+  match s with
+  |[] ->
+    if pmap.grid.(fst tile.coordinate).(snd tile.coordinate).length = 0 then
+      pmap
+    else
+      (print_string "Empty Frontier";
+       pmap)
+  |h::t ->
+    if check_adjacent h tile map then
+      let cost = match map.grid.(fst h.coordinate).(snd h.coordinate).ground with
+      |Peaks -> 3
+      |Forest -> 2
+      |Desert -> 2
+      |_ -> 1 in
+      let new_length = pmap.grid.(fst h.coordinate).(snd h.coordinate).length +
+                       cost in
+      let pre = Some h.coordinate in
+      print_string "Found";
+      print_string ("Previous:"^(string_of_int (fst (extract pre)))^" "^(string_of_int (snd (extract pre))));
+      update_map pmap (fst tile.coordinate) (snd tile.coordinate) {length = new_length; prev = pre}
+    else
+      (print_string "Missing";
+       found_frontier t tile map pmap)
+
+let rec print_frontier lst =
+  match lst with
+  |[]->()
+  |h::t ->
+    print_string ("Frontier Entry:"^(string_of_int (fst (fst h).coordinate))^" "^(string_of_int (snd (fst h).coordinate)));
+    print_frontier t
+
 
 (*[path_helper] runs djikstra's algorithm on the given map to find the shortest
 * path from the enemy unit to the player unit it is targeting, and then calls
@@ -185,6 +235,8 @@ let rec update_frontier (f : ( tile * int) list) (tl : tile) (m : map) (pmap : p
 * map = map*)
 let rec path_helper (dest : int*int) (f: (tile*int) list) (s : tile list) tile (map : map) pmap =
   let new_f = check_surround s tile map f in
+  (*print_frontier new_f;
+    print_string ("Tile Coordinate:"^(string_of_int (fst tile.coordinate))^" "^(string_of_int (snd tile.coordinate)));*)
  match new_f with
  |[]   ->
    path_finder dest pmap []
@@ -192,9 +244,13 @@ let rec path_helper (dest : int*int) (f: (tile*int) list) (s : tile list) tile (
    match (fst h).coordinate with
    |(x,y) ->
      if (fst h).coordinate = dest then
-       path_finder dest pmap []
+       (print_string "Nono";
+       let pmap2 = found_frontier s tile map pmap in
+        path_finder dest pmap2 [])
      else
-       (let pmap2 = update_frontier f tile map pmap in
+       (let pmap2 = update_frontier new_f tile map pmap in
+        (*print_string ("  Frontier Size:"^(string_of_int (List.length new_f)));
+          print_string ("  Settled Size:"^(string_of_int (List.length s)));*)
        path_helper dest t ((fst h)::s) (fst h) map pmap2)
 
 (*[search_helper] picks the closest player unit to attack and outputs the
@@ -205,29 +261,38 @@ let rec search_helper (m : map) (c : character) (lst : character list) pmap targ
      target
    |h::t ->
      match c.location with (x, y) ->
-       let check = path_helper h.location [] [] m.grid.(x).(y) m (new_map c pmap) in
-       if fst (List.hd (List.rev check)) < fst (List.hd (List.rev target)) &&
+       let check = path_helper h.location [] [(m.grid.(x).(y))] m.grid.(x).(y) m (new_map c pmap) in
+       if fst (List.hd (check)) < fst (List.hd (target)) &&
           (fst h.health) > 0 then
-         search_helper m c t (new_map c pmap) check
+         (print_string "Fuckity";
+          search_helper m c t (new_map c pmap) check)
        else
          search_helper m c t (new_map c pmap) target
 
 (*[move] iterates through the shortest path to a target enemy unit, and moves as
 * far on the path as permitted by its movement stats*)
 let rec move lst (c : character) range last (attk : int*int) loc =
+  print_string "Moving";
  match lst with
  |[] -> (last, false)
  |h::t ->
    match h with
    |(a, b) ->
-       if a > range then
+     print_string ("Distance"^(string_of_int a));
+     print_string ("Range"^(string_of_int range));
+       if a <= range then
          move t c range b attk b
+       else
+       if List.length t <= snd attk then
+         (loc, true)
        else
          (loc, false)
 
 (*[update_move] updates both characters and maps upon a character moving to a different
 * position on the board*)
 let update_move (m : map) (c : character) (init : int*int) (loc : int*int) =
+  print_string ("Original "^(string_of_int (fst init))^" "^(string_of_int (snd init)));
+  print_string ("New "^(string_of_int (fst loc))^" "^(string_of_int (snd loc)));
   c.location <- loc;
  match init, loc with
    |(x,y),(h, t) ->
@@ -279,13 +344,15 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
    |h::t ->
      let init =
        match c.location with (x, y) ->
-         path_helper h.location [] [] m.grid.(x).(y) m (new_map c pm) in
+         path_helper h.location [] [(m.grid.(x).(y))] m.grid.(x).(y) m (new_map c pm) in
      let shortestpath = search_helper m c t pm init in
+     print_int (List.length shortestpath);
      if List.length shortestpath > 0 then
      (let dest = snd (List.hd shortestpath) in
-     let go = move shortestpath c c.mov c.location attk dest in
+      let go = move shortestpath c c.mov c.location attk dest in
        update_move m c c.location (fst go);
-     if snd go then
+      if snd go then
+        print_string "eh";
        combat c h))
  |Hard ->
    (match lst with
@@ -293,11 +360,12 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
    |h::t ->
      let init =
        match c.location with (x, y) ->
-         path_helper h.location [] [] m.grid.(x).(y) m (new_map c pm) in
+         path_helper h.location [] [(m.grid.(x).(y))] m.grid.(x).(y) m (new_map c pm) in
         let close = search_helper m c t pm init in
      if List.length close > 0 && fst (List.hd close) <= c.mov*4 then
      let dest = snd (List.hd close) in
      let go = move close c c.mov c.location attk dest in
+               print_string "Almost";
          update_move m c c.location (fst go);
        if snd go then
          combat c h)
@@ -307,11 +375,14 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
     |h::t ->
       let init =
         match c.location with (x, y) ->
-         path_helper h.location [] [] m.grid.(x).(y) m (new_map c pm) in
+          path_helper h.location [] [(m.grid.(x).(y))] m.grid.(x).(y) m (new_map c pm) in
+      print_string "a";
       let close = search_helper m c t pm init in
-      if List.length close > 0 && fst (List.hd (List.rev close)) <= c.mov*2 then
+      print_string "b";
+      if List.length close > 0 && fst (List.hd (close)) <= c.mov*2 then
       let dest = snd (List.hd close) in
       let go = move close c c.mov c.location attk dest in
+                     print_string "Almost";
         update_move m c c.location (fst go);
         if snd go then
           combat c h)

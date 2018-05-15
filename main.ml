@@ -76,7 +76,7 @@ let temp_character =
 
 let enemy_1 =
   {
-    name = "Archer";
+    name = "Mage";
     stage= Ready;
     class' = Paladin;
     growths = [];
@@ -220,7 +220,7 @@ let init_state =
   {
     player = [temp_character];
     items = [];
-    enemies = [temp_enemy];
+    enemies = [temp_enemy; enemy_1];
     lose = false;
     won = false;
     round = true;

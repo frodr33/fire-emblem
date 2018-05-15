@@ -91,9 +91,9 @@ let draw_map (context: Html.canvasRenderingContext2D Js.t) state =
  * Every 15 "time" units, sync is negated which represents the
  * static movement of the cursor and players *)
 let clock () =
-  clock := if !clock < 15 then !clock + 1 else 1;
+  clock := if !clock < 12 then !clock + 1 else 1;
   transition := if !transition >= 0 then !transition - 2 else -1;
-  let x1 = !clock mod 15 in (* bounds *)
+  let x1 = !clock mod 12 in (* bounds *)
   match x1 with
   | 0 -> sync := not(!sync)
   | _ -> ()
@@ -1048,6 +1048,19 @@ let draw_swordsman context enemy =
     img##src <- js "Sprites/EnemySprites/Enemy_Swordsman_S.png";
     context##drawImage_full (img, 17., 21., 20., 20., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 28.)
 
+let draw_mage context enemy = 
+  match ((!sync)) with
+  | true ->
+    let img = Html.createImg document in
+    let (x,y) = enemy.location in
+    img##src <- js "Sprites/EnemySprites/Enemy_Mage.png";
+    context##drawImage_full (img, 21., 10., 26., 36., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 28.)
+  | false ->
+    let img = Html.createImg document in
+    let (x,y) = enemy.location in
+    img##src <- js "Sprites/EnemySprites/Enemy_Mage2.png";
+    context##drawImage_full (img, 21., 11., 26., 36., float_of_int x *. 26. +. 6., float_of_int y *. 26., 25., 26.)
+
 
 (* [draw_enemies_helper context enemy_lst] takes a
  * list of enemies [enemy_lst] and draws the proper
@@ -1064,9 +1077,15 @@ let rec draw_enemies_helper context enemy_lst =
     | "Boss" ->
       draw_boss context enemy;
       draw_enemies_helper context t
-    | "Swordsman" ->
+    | "Melee" ->
       draw_swordsman context enemy;
       draw_enemies_helper context t
+    | "Mage" -> 
+      draw_mage context enemy;
+      draw_enemies_helper context t
+    | "Archer Boss" -> ()
+    | "Melee Boss" -> ()
+    | "Mage Boss" -> ()
     | _ -> ()
 
 (* [draw_enemies context state] draws the enemy sprites on
@@ -1075,7 +1094,7 @@ let draw_enemies context state =
   draw_enemies_helper context state.enemies
 
 (*********************************************************)
-(****************** Draw State Functions *****************)
+(****************** Draw win/loose screen ****************)
 (*********************************************************)
 
 (* [draw_win_screen context] draws the win screen if 
@@ -1101,9 +1120,10 @@ let draw_lose_screen context =
   context##strokeText (js "To play again just refresh the page!", 80., 330.)
 
 (*********************************************************)
-(****************** Draw State Functions *****************)
+(***************** Draw transition screen ****************)
 (*********************************************************)
 
+(* [d] *)
 let draw_transition_screen context state = 
   if !transition < 0 then state.round <- false else
     let timer = !transition / 100 in

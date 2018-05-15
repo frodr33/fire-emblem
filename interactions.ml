@@ -245,7 +245,7 @@ let resolveE a d =
     a.inv.(a.eqp) <- (use (a.inv.(a.eqp)));
   if get_rng () < a.crit - (d.lck * 2) then (update_health d (3 * (damage a d)))
         else update_health d (damage a d);
-  if fst d.health = 0 || fst a.health = 0 then
+  if fst d.health <= 0 || fst a.health <= 0 then
     Queue.clear combatQ;
   if fst d.health = 0 && a.allegiance = Player then
     exp := (Kill :: !exp);

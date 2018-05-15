@@ -280,9 +280,83 @@ let rec search_helper (m : map) (c : character) (lst : character list) pmap targ
        else
          search_helper m c t (new_map c pmap) target
 
+let rec run (lst : (int*int) list) (m : map) (loc : int*int) =
+  match lst with
+  |[] -> loc
+  |h::t ->
+    match h with
+    |(x, y) ->
+      if x >= 0 && x < m.width && y >= 0 && y < m.length then
+        match m.grid.(x).(y).c with
+        |Some k ->
+          run t m loc
+        |None ->
+          (x, y)
+      else
+        run t m loc
+
+let rec near_enemy (lst : (int*int) list) (m : map) (c : int*int) loc =
+  match lst with
+  |[] -> loc
+  |h::t ->
+    match h with
+    |(x, y) ->
+      if x >= 0 && x < m.width && y >= 0 && y < m.length then
+        match m.grid.(x).(y).c with
+        |Some k ->
+          if not (k.allegiance = Enemy) then run t m loc
+          else near_enemy t m c loc
+        |None ->
+          near_enemy t m c loc
+      else
+        near_enemy t m c loc
+
+
+  (*match c with
+    |(x, y) ->
+    if check_valid South m c then
+      match m.grid.(x).(y + 1).c with
+      |Some k ->
+        k.location
+      |None ->
+        if check_valid West m c then
+          match m.grid.(x - 1).(y).c with
+          |Some k ->
+            k.location
+          |None ->
+            if check_valid North m c then
+              match m.grid.(x).(y - 1).c with
+              |Some k ->
+                k.location
+              |None ->
+                if check_valid East m c then
+                  match m.grid.(x + 1).(y).c with
+                  |Some k ->
+                    k.location
+                  |None ->
+                    c*)
+
+let step_back (m : map) (c : int*int) loc =
+  match c with
+  |(x, y) ->
+    near_enemy [(x, y - 1) ; (x + 1,y) ; (x, y + 1) ; (x - 1,y)] m c loc
+  (*match c, h with
+  |(x, y),(a, b) ->
+    match ((a - x),(b - y)) with
+    |(0, -1) ->
+      if check_valid South m c then (x, (y + 1)) else c
+    |(1, 0) ->
+      if check_valid West m c then ((x - 1), y) else c
+    |(0, 1) ->
+      if check_valid North m c then (x, (y - 1)) else c
+    |(-1, 0) ->
+      if check_valid East m c then ((x + 1), y) else c
+    |_ -> c*)
+
+
 (*[move] iterates through the shortest path to a target enemy unit, and moves as
 * far on the path as permitted by its movement stats*)
-let rec move lst (c : character) range last (attk : int*int) loc =
+let rec move (m : map) lst (c : character) range last (attk : int*int) loc =
   print_string "Moving";
  match lst with
  |[] -> (last)
@@ -292,9 +366,11 @@ let rec move lst (c : character) range last (attk : int*int) loc =
      print_string ("Distance"^(string_of_int a));
      print_string ("Range"^(string_of_int range));
      if a <= range && List.length t > (fst attk) then
-         move t c range b attk b
-       else
-         (loc)
+        move m t c range b attk b
+     else if (List.length t) + 1 < (fst attk) then
+        step_back m c.location loc
+     else
+        (loc)
 
 (*[update_move] updates both characters and maps upon a character moving to a different
 * position on the board*)
@@ -357,7 +433,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
      print_int (List.length shortestpath);
      if List.length shortestpath > 0 then
      let dest = snd (List.hd shortestpath) in
-      let go = move shortestpath c c.mov c.location attk dest in
+     let go = move m shortestpath c c.mov c.location attk dest in
       update_move m c c.location (go);
       attack_inrange m c lst)
  |Hard ->
@@ -370,7 +446,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
         let close = search_helper m c t pm init in
      if List.length close > 0 && fst (List.hd (List.rev close)) <= c.mov*4 then
      let dest = snd (List.hd close) in
-     let go = move close c c.mov c.location attk dest in
+     let go = move m close c c.mov c.location attk dest in
      update_move m c c.location (go);
      attack_inrange m c lst)
  |Normal ->
@@ -385,7 +461,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
       print_string "b";
       if List.length close > 0 && fst (List.hd (List.rev close)) <= c.mov*2 then
       let dest = snd (List.hd close) in
-      let go = move close c c.mov c.location attk dest in
+      let go = move m close c c.mov c.location attk dest in
       update_move m c c.location (go);
       attack_inrange m c lst)
  |Easy ->

@@ -309,7 +309,7 @@ let init_state =
     menu_cursor = 0;
     funds = 0;
     last_character = None;
-  } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies
+  } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies|>set_act_tile
 
 let state = ref init_state
 (* [main ()] is begins game execution by first building and designing

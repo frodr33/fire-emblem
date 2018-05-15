@@ -679,6 +679,12 @@ let rec set_init_ch_movement playerlst st =
   |h::t ->let _ =  h.movement <- dijkstra's h st.act_map;
             h.attackable <- red_tiles h in set_init_ch_movement t st
 
+let set_act_tile st =
+  match st.player with
+  |[]-> st
+  |h::t -> let x = fst h.location in let y  =snd h.location in
+    let t = st.act_map.grid.(x).(y) in
+    {st with active_tile = t;last_character=t.c}
 let transition_map2 st =
   reset_ch st.player;
   let newp = transition_players st.player  [(5,8); (6,9); (7,8)] [] in
@@ -703,7 +709,9 @@ let transition_map2 st =
       menu_cursor = 0;
       funds = 0;
       last_character = None;
-    } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies
+    } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies|>set_act_tile
+
+
 (**
  *  [do' s] is a function that takes a state, checks what the most recent
  *  command was, and returns a new state based on the command

@@ -237,6 +237,11 @@ let not_in_bounds (x:int) (y:int) (d:direction) (dimensions:int * int) =
   |South -> y = height - 1
   |West  -> x = 0
 
+let steam a d = 
+  match a.allegiance with 
+  |Player -> d.allegiance = Player
+  |Enemy  -> d.allegiance = Enemy
+
 (**
  *  [movable t d mov map] is a function that checks if the tile in direction, d,
  *  of tile, t, can be moved on to with the given mov and map.
@@ -247,7 +252,7 @@ let not_in_bounds (x:int) (y:int) (d:direction) (dimensions:int * int) =
  *  - [map] is a valid map that contains [t]
  *  Has unspecified behaviour if preconditions are violated.
 *)
-let movable (t:tile) (d:direction) (mov:int) (map:map)=
+let movable (t:tile) (d:direction) (mov:int) (map:map) c=
   let x = fst t.coordinate in
   let y = snd t.coordinate in
   let dimensions = (map.width, map.length) in
@@ -260,7 +265,11 @@ let movable (t:tile) (d:direction) (mov:int) (map:map)=
          |South -> mapg.(x).(y + 1)
          |West  -> mapg.(x - 1).(y)
     in
-    if next_tile.c = None then
+  let opposite = 
+    match next_tile.c with 
+    |None -> true
+    |Some (x) -> steam c next_tile.c 
+    in
       match next_tile.ground with
       |Wall -> (false, -1)
       |Door -> (false, -1)
@@ -301,9 +310,9 @@ let rec add_f (tile:tile) (i:int) (f :( tile * int) list) : (tile * int) list=
  *  - [f] is a valid frontier set
  *  See dijkstra's_helper for details.
 *)
-let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list) (f:(tile * int) list): (tile * int) list =
+let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list) c (f:(tile * int) list): (tile * int) list =
   let mapg = map.grid in
-  let mov_dir = movable t d mov map in
+  let mov_dir = movable t d mov map c in
   let x = fst t.coordinate in
   let y = snd t.coordinate in
   if fst mov_dir then
@@ -327,12 +336,12 @@ let rec check_dir (mov :int) (d:direction) (t:tile) (map:map) (s:(int*int) list)
  *  - [map] is a valid map
  *  - [f] is a valid frontier set
 *)
-let rec check_surround s t m map f:(tile * int) list =
+let rec check_surround s t m map f c:(tile * int) list =
   f
-  |> check_dir m South t map s
-  |> check_dir m East t map s
-  |> check_dir m North t map s
-  |> check_dir m West t map s
+  |> check_dir m South t map s c
+  |> check_dir m East t map s c
+  |> check_dir m North t map s c
+  |> check_dir m West t map s c
 
 (**
  *  [dijkstra's helper f s tile m map] is a function that does dijkstra's to
@@ -346,18 +355,18 @@ let rec check_surround s t m map f:(tile * int) list =
  *  - [m] is the move needed to get to that tile
  *  - [map] is the map dijkstra's was called on.
 *)
-let rec dijkstra's_helper f s tile m map =
-  let new_f = check_surround s tile m map f in
+let rec dijkstra's_helper f s tile m map c =
+  let new_f = check_surround s tile m map f c n
   match new_f with
   |[]   -> tile.coordinate :: s
-  |h::t -> dijkstra's_helper t (tile.coordinate ::s) (fst h) (snd h) map
+  |h::t -> dijkstra's_helper t (tile.coordinate ::s) (fst h) (snd h) map c
 
 (**
  *  [dijkstra's c map] is a function that returns a list of all tiles
  *  traversable by character c on the map from their current location.
 *)
 let dijkstra's c map =
-  dijkstra's_helper [] [] (ctile c map) c.mov map
+  dijkstra's_helper [] [] (ctile c map) c.mov map c
 
 (**
  *  [add_no_dup lst1 lst2 movl] adds lst1 to lst2 as long as the values in lst1

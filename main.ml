@@ -90,6 +90,45 @@ let temp_character =
     is_attacking=false;
   }
 
+let temp_character2 =
+  {
+    name = "Hector";
+    stage= Ready;
+    class' = Paladin;
+    growths = [];
+    caps = [];
+    level = 0;
+    exp = 0;
+    health = (3,10);
+    allegiance = Player;
+    str = 25;
+    mag = 0;
+    def = 0;
+    spd = 0;
+    res = 0;
+    skl = 0;
+    lck = 0;
+    mov = 3;
+    con = 0;
+    aid = 0;
+    hit = 0;
+    atk = 25;
+    crit = 0;
+    avoid = 15;
+    inv = [|Some temp_item;None;None;None;None|];
+    eqp = 0;
+    ability = [];
+    supports = [];
+    wlevels = [(Sword,'a',0)];
+    ai = BossHunt;
+    behave = Hard;
+    location= (5,5);
+    movement= [];
+    attackable = [];
+    direction= South;
+    is_attacking=false;
+  }
+
 let enemy_1 =
   {
     name = "Mage Boss";
@@ -231,7 +270,7 @@ let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
 let temp_enemy = (make_archer (8,5))
 
-let init_state =
+(* let init_state =
   let x =
   {
     player = (*[temp_character;enemy_2];*)[];
@@ -250,6 +289,28 @@ let init_state =
     menu_cursor = 0;
     funds = 0;
     last_character = Some temp_character;
+  } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies
+ *)
+
+let init_state =
+  let x =
+  {
+    player = [temp_character2];
+    items = [];
+    enemies = [temp_enemy; enemy_1];
+    lose = false;
+    won = false;
+    round = false;
+    active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=Some temp_character2};
+    active_unit = None;
+    active_item = -1;
+    act_map = add_init_characters [temp_character2;temp_enemy;enemy_1] Room.map1;
+    menus = [];
+    current_menu = unit_menu;
+    menu_active = false;
+    menu_cursor = 0;
+    funds = 0;
+    last_character = Some temp_character2;
   } in x|>set_init_ch_movement x.player|>set_init_ch_movement x.enemies
 
 let state = ref init_state

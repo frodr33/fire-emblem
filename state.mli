@@ -35,11 +35,6 @@ type state = {
 val attack_range : character -> (int * int) list
 
 (**
- *   Finds the tiles of a character
-*)
-val dijkstra's_helper : (tile * int) list -> (int*int) list -> tile -> int -> map -> (int*int) list
-
-(**
  *  Finds the movable tiles of a character
 *)
 val dijkstra's : character -> map -> (int*int) list
@@ -49,7 +44,7 @@ val dijkstra's : character -> map -> (int*int) list
 *)
 val red_tiles : character -> (int * int) list
 val add_init_characters: character list -> map -> map
-
+val set_act_tile: state -> state 
 val set_init_ch_movement: character list -> state -> state
 
 

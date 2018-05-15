@@ -323,13 +323,13 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
         end
       | Done when character.is_attacking = true-> begin
         match ((!sync)) with
-        | true->
+        | false->
             let sprite_coordinate = (419., 461.) in
             let sprite_wxl = (16., 16.) in
             let (x,y) = character.location in
             let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y) -. 6.) in
             draw_sprite img context sprite_coordinate sprite_wxl coordinate;moved_forward:=true
-        | false ->
+        | true->
             let sprite_coordinate = (442., 461.) in
             let sprite_wxl = (16., 16.) in
             let (x,y) = character.location in
@@ -354,7 +354,72 @@ let draw_lyn (context: Html.canvasRenderingContext2D Js.t) character =
       end
       |Done -> ()
     end
-  | West -> ()
+  | West -> begin
+      match character.stage with
+      | Ready|MoveDone|AttackSelect|TradeSelect -> begin
+        match ((!sync)) with
+        | true ->
+            let sprite_coordinate = (417., 400.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false ->
+            let sprite_coordinate = (457., 399.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end
+      | MoveSelect -> begin
+        match ((!sync)) with
+        | true->
+            let sprite_coordinate = (419., 461.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false ->
+            let sprite_coordinate = (442., 461.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end
+      | Done when character.is_attacking = true-> begin
+        match ((!sync)) with
+        | false->
+            let sprite_coordinate = (419., 461.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y) -. 6.) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;moved_forward:=true
+        | true->
+            let sprite_coordinate = (442., 461.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) -. 6.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;if !moved_forward = true then
+              (moved_forward:=false;attacking:=false;character.is_attacking<-false) else ()
+        end
+      | Done when character.is_attacking = false-> begin
+        match ((!sync)) with
+        | true ->
+            let sprite_coordinate = (417., 400.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false ->
+            let sprite_coordinate = (457., 399.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+      end
+      |Done -> ()
+    end
+
 
 (* [draw_lyn context character] draws the proper sprite configuration
  * for the character lyn based on the character's direction and stage
@@ -559,7 +624,71 @@ let draw_hector (context: Html.canvasRenderingContext2D Js.t) character =
         end
       |Done -> ()
     end
-  | West -> ()
+  | West -> begin
+      match character.stage with
+      | Ready|MoveDone|AttackSelect|TradeSelect -> begin
+        match ((!sync)) with
+        | true ->
+            let sprite_coordinate = (224., 280.) in
+            let sprite_wxl = (22., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) -. 3.,26. *. (float_of_int y)) in
+            draw_sprite_hector img context sprite_coordinate sprite_wxl coordinate
+        | false ->
+            let sprite_coordinate = (224., 312.) in
+            let sprite_wxl = (22., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) -. 3.,26. *. (float_of_int y)) in
+            draw_sprite_hector img context sprite_coordinate sprite_wxl coordinate
+        end
+      | MoveSelect -> begin
+        match ((!sync)) with
+        | true->
+            let sprite_coordinate = (258., 345.) in
+            let sprite_wxl = (22., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) -. 3.,26. *. (float_of_int y)) in
+            draw_sprite_hector img context sprite_coordinate sprite_wxl coordinate
+        | false ->
+            let sprite_coordinate = (258., 281.) in
+            let sprite_wxl = (22., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) -. 3.,26. *. (float_of_int y)) in
+            draw_sprite_hector img context sprite_coordinate sprite_wxl coordinate
+        end
+      | Done when character.is_attacking = true-> begin
+        match ((!sync)) with
+        | true->
+            let sprite_coordinate = (224., 280.) in
+            let sprite_wxl = (22., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) -. 9.,26. *. (float_of_int y) -. 6.) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;moved_forward:=true
+        | false ->
+            let sprite_coordinate = (329., 339.) in
+            let sprite_wxl = (22., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) -. 3.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;if !moved_forward = true then
+              (moved_forward:=false;attacking:=false;character.is_attacking<-false) else ()
+        end
+      | Done when character.is_attacking = false-> begin
+        match ((!sync)) with
+        | true ->
+            let sprite_coordinate = (224., 280.) in
+            let sprite_wxl = (22., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) -. 3.,26. *. (float_of_int y)) in
+            draw_sprite_hector img context sprite_coordinate sprite_wxl coordinate
+        | false ->
+            let sprite_coordinate = (224., 312.) in
+            let sprite_wxl = (22., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) -. 3.,26. *. (float_of_int y)) in
+            draw_sprite_hector img context sprite_coordinate sprite_wxl coordinate
+        end
+      |Done -> ()
+    end
 
 (* [draw_lyn context character] draws the proper sprite configuration
  * for the character lyn based on the character's direction and stage
@@ -764,7 +893,71 @@ let draw_erk (context: Html.canvasRenderingContext2D Js.t) character =
         end
       |Done -> ()
     end
-  | West -> ()
+  | West -> begin
+      match character.stage with
+      | Ready|MoveDone|AttackSelect|TradeSelect -> begin
+        match ((!sync)) with
+        | true ->
+            let sprite_coordinate = (197., 1907.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false ->
+            let sprite_coordinate = (198., 1939.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end
+      | MoveSelect -> begin
+        match ((!sync)) with
+        | true->
+            let sprite_coordinate = (262., 1874.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false ->
+            let sprite_coordinate = (263., 1938.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 6.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end
+      | Done when character.is_attacking = true-> begin
+        match ((!sync)) with
+        | true->
+            let sprite_coordinate = (325., 1908.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) -. 6.,26. *. (float_of_int y) -. 6.) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;moved_forward:=true
+        | false ->
+            let sprite_coordinate = (198., 1939.) in
+            let sprite_wxl = (16., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x) +. 0.,26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate;if !moved_forward = true then
+              (moved_forward:=false;attacking:=false;character.is_attacking<-false) else ()
+        end
+      | Done when character.is_attacking = false-> begin
+        match ((!sync)) with
+        | true ->
+            let sprite_coordinate = (197., 1907.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        | false ->
+            let sprite_coordinate = (198., 1939.) in
+            let sprite_wxl = (15., 16.) in
+            let (x,y) = character.location in
+            let coordinate = (26. *. (float_of_int x),26. *. (float_of_int y)) in
+            draw_sprite img context sprite_coordinate sprite_wxl coordinate
+        end
+      |Done -> ()
+    end
 
 
 

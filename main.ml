@@ -92,7 +92,7 @@ let temp_character =
 
 let temp_character2 =
   {
-    name = "Hector";
+    name = "Lyn";
     stage= Ready;
     class' = Paladin;
     growths = [];

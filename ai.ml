@@ -176,9 +176,7 @@ let rec update_frontier (f : ( tile * int) list) (tl : tile) (m : map) (pmap : p
 * m = moves left
 * map = map*)
 let rec path_helper (dest : int*int) (f: (tile*int) list) (s : tile list) tile (map : map) pmap =
-  print_string "1o";
   let new_f = check_surround s tile map f in
-  print_string "1a";
  match new_f with
  |[]   ->
    path_finder dest pmap []
@@ -188,14 +186,7 @@ let rec path_helper (dest : int*int) (f: (tile*int) list) (s : tile list) tile (
      if (fst h).coordinate = dest then
        path_finder dest pmap []
      else
-       (print_string "1b";
-        let pmap2 = update_frontier f tile map pmap in
-        let x_cor = (string_of_int (fst (fst h).coordinate)) in
-        let y_cor = (string_of_int (snd (fst h).coordinate)) in
-       print_string "1c";
-       print_string ("x"^x_cor);
-       print_string ("y"^y_cor);
-       print_string ("lenf"^(string_of_int (List.length f)));
+       (let pmap2 = update_frontier f tile map pmap in
        path_helper dest t ((fst h)::s) (fst h) map pmap2)
 
 (*[search_helper] picks the closest player unit to attack and outputs the
@@ -203,7 +194,6 @@ let rec path_helper (dest : int*int) (f: (tile*int) list) (s : tile list) tile (
 let rec search_helper (m : map) (c : character) (lst : character list) pmap target =
  match lst with
    |[] ->
-     print_string ("ShortestPath"^(string_of_int (List.length target)));
      target
    |h::t ->
 
@@ -282,13 +272,10 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
   ( match lst with
    |[] -> ()
    |h::t ->
-     print_string "1b";
      let init =
        match c.location with (x, y) ->
          path_helper h.location [] [] m.grid.(x).(y) m pm in
-     print_string "2b";
      let shortestpath = search_helper m c t pm init in
-     print_string "3b";
      if List.length shortestpath > 0 then
      (let dest = snd (List.hd shortestpath) in
      let go = move shortestpath c c.mov c.location attk dest in

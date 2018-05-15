@@ -4,8 +4,8 @@ open Interactions
 *path algorithm*)
 type path_tile =
  {
-   length: int;
-   prev: (int*int) option;
+   mutable length: int;
+   mutable prev: (int*int) option;
  }
 
 (*[path_map] is a data type to mirror our ingame map but store the paths to
@@ -128,7 +128,7 @@ let fill_map len wid =
  Array.make_matrix len wid t
 
 (*[new_map] refreshes the map for a new target destination*)
-let new_map (pmap : path_map) =
+let new_map (c : character)(pmap : path_map) =
  let (t : path_tile) = {length = 1000;prev = None} in
  let pmap2 =
    {
@@ -136,7 +136,9 @@ let new_map (pmap : path_map) =
      width = pmap.width;
      grid = Array.make_matrix pmap.length pmap.width t
    }
- in pmap2
+ in
+ pmap2.grid.(fst c.location).(snd c.location).length <- 0;
+ pmap2
 
 (*[update_map] takes a [path_map] and updates its values if a shorter path is
 * found by the algorithm*)
@@ -203,12 +205,12 @@ let rec search_helper (m : map) (c : character) (lst : character list) pmap targ
      target
    |h::t ->
      match c.location with (x, y) ->
-       let check = path_helper h.location [] [] m.grid.(x).(y) m (new_map pmap) in
+       let check = path_helper h.location [] [] m.grid.(x).(y) m (new_map c pmap) in
        if fst (List.hd (List.rev check)) < fst (List.hd (List.rev target)) &&
           (fst h.health) > 0 then
-         search_helper m c t (new_map pmap) check
+         search_helper m c t (new_map c pmap) check
        else
-         search_helper m c t (new_map pmap) target
+         search_helper m c t (new_map c pmap) target
 
 (*[move] iterates through the shortest path to a target enemy unit, and moves as
 * far on the path as permitted by its movement stats*)
@@ -277,7 +279,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
    |h::t ->
      let init =
        match c.location with (x, y) ->
-         path_helper h.location [] [] m.grid.(x).(y) m pm in
+         path_helper h.location [] [] m.grid.(x).(y) m (new_map c pm) in
      let shortestpath = search_helper m c t pm init in
      if List.length shortestpath > 0 then
      (let dest = snd (List.hd shortestpath) in
@@ -291,7 +293,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
    |h::t ->
      let init =
        match c.location with (x, y) ->
-         path_helper h.location [] [] m.grid.(x).(y) m pm in
+         path_helper h.location [] [] m.grid.(x).(y) m (new_map c pm) in
         let close = search_helper m c t pm init in
      if List.length close > 0 && fst (List.hd close) <= c.mov*4 then
      let dest = snd (List.hd close) in
@@ -305,7 +307,7 @@ let search (m : map) (c : character) (lst : character list) pm (attk : int*int) 
     |h::t ->
       let init =
         match c.location with (x, y) ->
-          path_helper h.location [] [] m.grid.(x).(y) m pm in
+         path_helper h.location [] [] m.grid.(x).(y) m (new_map c pm) in
       let close = search_helper m c t pm init in
       if List.length close > 0 && fst (List.hd (List.rev close)) <= c.mov*2 then
       let dest = snd (List.hd close) in

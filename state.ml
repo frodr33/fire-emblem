@@ -185,6 +185,7 @@ let translate_key st =
   if !attacking= true then Invalid else
     begin
       let old = !input in let _ = input := Nothing in
+      if old<>Nothing &&st.welcome=true then EndWelcome else
       match old with
       |Up -> if st.menu_active = false then Tup else Mup
       |Down -> if st.menu_active = false then Tdown else Mdown
@@ -717,12 +718,12 @@ let do' s =
     |1->transition_map2 s
     |2->{s with won=true}
     |_-> s
-
   end
   else
     let act = translate_key s in
     let _ = input := Nothing in
     match act with
+    |EndWelcome->{s with welcome=false}
     |OpenMenu -> {s with menu_active=true;current_menu = tile_menu}
     |CloseMenu -> {s with menu_active = false;menu_cursor = 0}
     |Tdown|Tright|Tleft|Tup ->{s with active_tile = new_active_tile act s}

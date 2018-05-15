@@ -53,7 +53,7 @@ type status =  Ready|MoveSelect|MoveDone|AttackSelect|TradeSelect|Done
 type direction = North | West | South | East
 type action = Tup|Tdown|Tleft|Tright|Mup|Mdown|OpenMenu|CloseMenu|
               SelectMOption|Undo|SelectMoveTile|SelectAttackTile|SelectTradeTile|SelectPlayer|DeselectPlayer|FindReady|
-              Invalid|BackMenu|BackAttack|BackTrade
+              Invalid|BackMenu|BackAttack|BackTrade|EndWelcome
 
 type difficulty = Easy|Normal|Hard|Insane
 

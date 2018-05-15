@@ -626,14 +626,20 @@ let check_surround_inventories s c =
   |(0,0) ->
     (check_inventory s.act_map.grid.(0).(1).c)   ||
     (check_inventory s.act_map.grid.(1).(0).c)
-  |(0,y) ->
+  |(0,y) -> if y <> 14 then
     (check_inventory s.act_map.grid.(0).(y-1).c) ||
     (check_inventory s.act_map.grid.(1).(y).c)   ||
     (check_inventory s.act_map.grid.(0).(y+1).c)
-  |(x,0) ->
+    else
+    (check_inventory s.act_map.grid.(0).(y-1).c) ||
+    (check_inventory s.act_map.grid.(1).(y).c)
+  |(x,0) -> if x<>14 then
     (check_inventory s.act_map.grid.(x-1).(0).c) ||
     (check_inventory s.act_map.grid.(x).(1).c)   ||
     (check_inventory s.act_map.grid.(x+1).(0).c)
+    else
+    (check_inventory s.act_map.grid.(x-1).(0).c) ||
+    (check_inventory s.act_map.grid.(x).(1).c)
   |(x,y) when x<> 14 && y <> 14->
     (check_inventory s.act_map.grid.(x-1).(y).c) ||
     (check_inventory s.act_map.grid.(x+1).(y).c) ||
@@ -707,7 +713,7 @@ let rec check_character_list lst st =
    *)
 let rec transition_players plst clst acc =
   match plst,clst with
-  |h1::t1, h2::t2 -> let new_hp = (fst h1.health, fst h1.health) in
+  |h1::t1, h2::t2 -> let new_hp = (snd h1.health, snd h1.health) in
     h1.location <- h2;h1.health<-new_hp;
     transition_players t1 t2 (h1::acc)
   |_, _ -> List.rev acc
@@ -781,7 +787,6 @@ let transition_map2 st =
       funds = 0;
       last_character = None;
     } in x |> set_init_ch_movement x.player |> set_init_ch_movement x.enemies |> set_act_tile
-
 
 (**
  *  [do' s] is a function that takes a state, checks what the most recent

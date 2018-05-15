@@ -2,7 +2,7 @@
 
 
 (** This module handles all of the types that we need for this project*)
-type class' = Paladin | Thief | Mage
+type class' = Swordsman | Archer | Mage | Paladin | Lord | PRider
 
 (** Represents a weapon type*)
 type wtype = Sword | Bow | Tome | Staff | Potion | Key | Axe | Lance 

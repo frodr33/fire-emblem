@@ -1,6 +1,7 @@
 open OUnit2
 open Types
 open State
+open Ai
 
 let test =
   {
@@ -92,7 +93,7 @@ let temp_character =
        wlevels = [(Sword,'a',0)];
        ai = BossHunt;
        behave = Hard;
-       location= (5,5);
+       location= (0,2);
        movement= [];
        attackable = [];
        direction= South;
@@ -131,7 +132,7 @@ let enemy_1 =
     wlevels = [(Sword,'e',0)];
     ai = BossHunt;
     behave = Insane;
-    location= (6,5);
+    location= (1,2);
     movement= [];
     attackable = [];
     direction= South;
@@ -149,7 +150,7 @@ let init_state =
       won = false;
       round = false;
       welcome = true;
-      active_tile = {coordinate = (5,5); ground = Plain; tile_type = Grass;c=None};
+      active_tile = {coordinate = (1,1); ground = Plain; tile_type = Grass;c=None};
       active_unit = None;
       active_item = -1;
       act_map = add_init_characters (List.rev_append p e) test;
@@ -166,7 +167,7 @@ let tests = [
   "not_win">:: (fun _ -> assert_equal false st.won);
   "not_transition">:: (fun _ -> assert_equal false st.round);
   "menu_cursor 0">:: (fun _ -> assert_equal 0 st.menu_cursor);
-  "test_player">:: (fun _ -> assert_equal "lyn" (extract st.active_unit).name)
+  "test_player">:: (fun _ -> assert_equal None (st.active_unit))
 ]
 let suite =
   "FE state test suite">::: tests

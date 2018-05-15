@@ -674,6 +674,7 @@ let rec set_init_ch_movement playerlst st =
             h.attackable <- red_tiles h in set_init_ch_movement t st
 
 let transition_map2 st =
+  reset_ch st.player;
   let newp = transition_players st.player  [(5,8); (6,9); (7,8)] [] in
   let newe = [make_archer (0,10);make_swordsman (2,13);make_swordsman (13,10);make_swordsman (14,9);
               make_swordsman (12,9);make_mage (13,8);make_rangedboss (10,13)] in

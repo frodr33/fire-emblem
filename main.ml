@@ -100,7 +100,7 @@ let enemy_1 =
     level = 0;
     exp = 0;
     health = (7,10);
-    allegiance = Player;
+    allegiance = Enemy;
     str = 0;
     mag = 0;
     def = 0;
@@ -234,7 +234,7 @@ let temp_enemy = (make_archer (8,5))
 let init_state =
   let x =
   {
-    player = [temp_character;enemy_1];
+    player = [temp_character];
     items = [];
     enemies = [temp_enemy; enemy_1];
     lose = false;

@@ -415,8 +415,8 @@ let set_direction c t =
 
 let rec delete_from_list lst c acc =
   match lst with
-  |[] -> List.rev acc
-  |h::t -> if h.name = c.name then t else delete_from_list t c (h::acc)
+  |[] ->  acc
+  |h::t -> if h.name = c.name then List.rev_append acc t else delete_from_list t c (h::acc)
 
 let remove_if_dead c s =
   if (fst c.health)>0 then s else

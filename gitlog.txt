@@ -1,0 +1,5131 @@
+commit b040f9dc35ff513f1425b10d3efa49b0487f39d3
+Merge: 984433e 3918f4b
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 16:00:19 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 984433ea68f3117e4c23c9589f3b27d712716c61
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 16:00:08 2018 -0400
+
+    Fixed audio and cleaned gui.mli
+
+ gui.ml     |  4 ++--
+ gui.mli    |  4 ----
+ index.html | 11 +++++------
+ main.ml    |  4 ----
+ 4 files changed, 7 insertions(+), 16 deletions(-)
+
+commit 3918f4bd795f81dae5b43a8ae06d58d2c71b3242
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 15:58:47 2018 -0400
+
+    Test suite fixes
+
+ test_state.ml | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+commit d4d3addc2af542669c62b2867b3a1c524c9dbba8
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 15:33:06 2018 -0400
+
+    sphagett
+
+ state.ml | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+commit e60ab139cf0a98f8ef866c13190d183d61f86e4b
+Merge: 0458fd0 d7c2d9b
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 15:30:39 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 0458fd0e70d3a4733c1d6aef15149b0750ab7621
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 15:30:31 2018 -0400
+
+    sphagett
+
+ state.ml | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+commit d7c2d9bc08d29f9f616c68e130bd503751c62086
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 15:24:21 2018 -0400
+
+    Testing
+
+ Makefile      |   3 +-
+ test_state.ml | 173 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ types.ml      |   4 +-
+ 3 files changed, 178 insertions(+), 2 deletions(-)
+
+commit f7424238f5c5e6715d735148088af9549337678c
+Merge: ce40764 0a94555
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 15:09:58 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit ce40764dc88d00f00d1c24d4fe58c77a24bef80b
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 15:09:52 2018 -0400
+
+    Tried to fix some bugs and documentation
+
+ ai.ml              | 118 +++++++++++++++++++++++++++++++----------------------
+ ai.mli             |  12 ++++++
+ charactermaker.mli |   4 +-
+ 3 files changed, 85 insertions(+), 49 deletions(-)
+
+commit 0a94555b8d88fe784ecf0b910e4e8de8e50d4bfa
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 14:57:16 2018 -0400
+
+    more cleanup
+
+ room.ml   | 29 ++---------------------------
+ room.mli  |  3 +--
+ state.mli | 31 +++++++++++++++++++++----------
+ 3 files changed, 24 insertions(+), 39 deletions(-)
+
+commit 4bd0cddee6a2e83b186aa062f51c0f97f6fc2e40
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 14:37:37 2018 -0400
+
+    Starting to clean up files
+
+ command.ml |   2 -
+ main.ml    | 276 -------------------------------------------------------------
+ state.ml   |  12 +--
+ state.mli  |   4 +-
+ types.ml   |   2 +-
+ types.mli  |  12 +--
+ 6 files changed, 12 insertions(+), 296 deletions(-)
+
+commit c798b3b9ab9c45a3532027d7fcaaf7ed7f378e37
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 14:07:21 2018 -0400
+
+    balance changes
+
+ charactermaker.ml | 48 ++++++++++++++++++++++++------------------------
+ 1 file changed, 24 insertions(+), 24 deletions(-)
+
+commit 3d96cc282589a8d2fb9d8689e4181113025d82ec
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 14:01:34 2018 -0400
+
+    Can select done character to see inventory
+
+ state.ml | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+commit c9605bb49129725f2e85a694fe62d6afe1937a73
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 13:50:02 2018 -0400
+
+    finished welcome screen
+
+ README.md |  2 +-
+ gui.ml    | 17 ++++++++++++++---
+ 2 files changed, 15 insertions(+), 4 deletions(-)
+
+commit 9b68a985588a63a62b9fcf43f48299f8ecc98477
+Merge: 2a111aa 6bf6c60
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 13:35:56 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 2a111aaa70552ffed87b6544f882091369e393f2
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 13:35:46 2018 -0400
+
+    Fixed run bug
+
+ ai.ml | 50 +++++++-------------------------------------------
+ 1 file changed, 7 insertions(+), 43 deletions(-)
+
+commit 6bf6c600b5df57d6d0cb39732aeb6d63b75e61ad
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 13:29:23 2018 -0400
+
+    Fixed bug with trade checking
+
+ state.ml | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+commit 8c77907f47e3333a4a3d2ceed6c32acb768899d7
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 13:21:55 2018 -0400
+
+    Fixed refresh player hp on transition
+
+ state.ml | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit 610d3b3f35e354e8baa614ee8d08f919e034964d
+Merge: ce97fa6 9a0dae8
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 13:17:20 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit ce97fa66c1ff84fbe564912027e7a52954067f55
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 13:17:08 2018 -0400
+
+    Implemented AI run
+
+ ai.ml           | 90 ++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ interactions.ml |  2 +-
+ 2 files changed, 84 insertions(+), 8 deletions(-)
+
+commit 9a0dae8eb2864175767ba27911e0d7246e4703de
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 13:08:24 2018 -0400
+
+    transition
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a2c713ca9109f52696d5e915490ef5262d40b736
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 12:48:57 2018 -0400
+
+    Fixed cursor bug
+
+ state.ml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit 542ab04e292b13a28998d86672d6428b9ce74725
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 08:55:01 2018 -0400
+
+    Comments
+
+ state.ml | 93 ++++++++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 52 insertions(+), 41 deletions(-)
+
+commit 0b94c8d78f2a70b034a7a89a21f69f24cdd36d25
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 08:18:10 2018 -0400
+
+    Fixed syntax
+
+ state.ml | 94 ++++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 47 insertions(+), 47 deletions(-)
+
+commit 1056d0bc814a5577a5fd173e8d854c7486f00a4b
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 08:15:27 2018 -0400
+
+    haha fuck you darren
+
+ state.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 8ccb7b6c95451c2f707e1e887ca348db266cf5a5
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 08:13:31 2018 -0400
+
+    haha fuck you darren
+
+ state.mli | 5 -----
+ 1 file changed, 5 deletions(-)
+
+commit 342000a49df2d9d90072c511ea1953c93c7045fc
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 08:11:38 2018 -0400
+
+    haha fuck you darren
+
+ state.ml  | 29 ++++++-----------------------
+ state.mli |  2 +-
+ 2 files changed, 7 insertions(+), 24 deletions(-)
+
+commit 8d4888ed4fc58b40064ae84c55b04d0983d0c790
+Merge: 3a64dbd cff0bde
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 08:02:01 2018 -0400
+
+    haha fuck you darren
+
+commit 3a64dbd0f5da8fcbb1bf615f425f9b3c4ace7dff
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 08:00:03 2018 -0400
+
+    haha fuck you darren
+
+ charactermaker.ml |   4 +-
+ state.ml          | 322 +++++++++++++++++++++++++++++++++---------------------
+ 2 files changed, 201 insertions(+), 125 deletions(-)
+
+commit cff0bde5cbcccf747fa070cf22a12f1065d26e42
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 07:27:56 2018 -0400
+
+    Still fixing readme
+
+ README.md | 34 +++++++++++++++++++++++++---------
+ 1 file changed, 25 insertions(+), 9 deletions(-)
+
+commit c57b9608210522c2cde1f041b46a1c16239cce19
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 07:01:36 2018 -0400
+
+    Still trying to get this screenshot to show up on github
+
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ab89ae68756432c9055c973a3192bb950181117d
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 06:58:49 2018 -0400
+
+    Fixing screenshot in readme
+
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 6fc58fb9473f04f6efc7bd6075bc2ed2d5e8a400
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 06:58:12 2018 -0400
+
+    Active tile starts on player
+
+ main.ml   |  2 +-
+ state.ml  | 10 +++++++++-
+ state.mli |  2 +-
+ 3 files changed, 11 insertions(+), 3 deletions(-)
+
+commit 4a865d18970a4d0101abef5659b9b53403bf3fb8
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 06:56:52 2018 -0400
+
+    Added screenshot and working on readme
+
+ README.md              |  17 ++++++++---------
+ Sprites/screenshot.PNG | Bin 0 -> 532560 bytes
+ 2 files changed, 8 insertions(+), 9 deletions(-)
+
+commit 2b2b43977bcb0a0ddf616eedaaff3ffba6451fe5
+Merge: 31b3eb3 e77c1d7
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 06:42:44 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit e77c1d71908d0b0ba26810abc0093034daa386c8
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 06:41:38 2018 -0400
+
+    Added specs and removed sprites ml/mli
+
+ Makefile    |  2 +-
+ desktop.ini |  2 --
+ gui.ml      | 53 +++++++++++++++++++----------------------------------
+ sprites.ml  |  0
+ sprites.mli |  0
+ 5 files changed, 20 insertions(+), 37 deletions(-)
+
+commit 31b3eb3da9579e7561ca56e107effb045f2f1034
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 06:40:38 2018 -0400
+
+    Fixed kamikaze error
+
+ ai.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit be971d65f7ff378712510011cdc4776740fa9319
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 06:27:40 2018 -0400
+
+    Fixed character chase sequence bug
+
+ ai.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 96d7aca8f003aa63501c2b7b683b824e8b117c98
+Merge: f5e441c 5fed476
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 06:22:48 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit f5e441c1fc7dd4fbc7b12cc88b1394fb9eca871e
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 06:22:37 2018 -0400
+
+    Fixed cross map griefing
+
+ ai.ml             | 33 +++++++++++----------------------
+ charactermaker.ml |  2 +-
+ 2 files changed, 12 insertions(+), 23 deletions(-)
+
+commit 5fed47686bec019dddafeb6380086d0513270dd6
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 06:20:48 2018 -0400
+
+    gui bug fixes
+
+ gui.ml  | 18 +++++++++---------
+ main.ml |  2 +-
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+commit 0f8292f0379f44dd65552e32226f6e275a56f1c5
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 06:05:54 2018 -0400
+
+    gui bug fixes
+
+ gui.ml  | 75 ++++++++++++++++++++++++++++++++++++-----------------------------
+ main.ml |  2 +-
+ 2 files changed, 43 insertions(+), 34 deletions(-)
+
+commit 345ca55705e25dcd9b9cfed86fa81c4a9671425f
+Merge: 0d71331 b47574e
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 05:47:13 2018 -0400
+
+    merge conflicts
+
+commit 0d71331806e12710e3fedf1476a1fe5b5ec83891
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 05:45:53 2018 -0400
+
+    Welcome screen
+
+ Sprites/A.png          | Bin 0 -> 1551 bytes
+ Sprites/ArrowKeys.png  | Bin 0 -> 2402 bytes
+ Sprites/FireEmblem.png | Bin 0 -> 11477 bytes
+ Sprites/X.png          | Bin 0 -> 860 bytes
+ Sprites/Z.png          | Bin 0 -> 784 bytes
+ gui.ml                 |  80 +++++++++++++++++++++++++++++++++++++------------
+ main.ml                |   2 +-
+ 7 files changed, 62 insertions(+), 20 deletions(-)
+
+commit b47574e2d06a39c4585cba804f4c25548c98752f
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 05:45:24 2018 -0400
+
+    lol rip florina
+
+ charactermaker.ml | 44 +-------------------------------------------
+ 1 file changed, 1 insertion(+), 43 deletions(-)
+
+commit 796f3320e24bdcd3baac476bc9805c0fa96b9e4f
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 05:41:58 2018 -0400
+
+    Implementing welcome
+
+ main.ml   | 6 +++---
+ state.ml  | 3 ++-
+ types.ml  | 2 +-
+ types.mli | 4 ++--
+ 4 files changed, 8 insertions(+), 7 deletions(-)
+
+commit 42aed65f4516a2c2689cd2a18666e31a282837c2
+Merge: 1a785ed 1131c34
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 05:40:03 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 1a785edceb1b4e2333d593c1608aca6cfe0d6bc0
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 05:39:40 2018 -0400
+
+    Fixed distance calculation bug
+
+ ai.ml | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
+
+commit 1131c34d1b1f8e2a8fec98be7d9aecf17dd0ec56
+Merge: 7d928a8 29e5f66
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 05:39:31 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 7d928a8a09f3c455c35ec1787a40ce7803ff6a75
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 05:39:08 2018 -0400
+
+    fixed things..?
+
+ README.md         | 10 ++++++++++
+ charactermaker.ml |  8 ++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
+
+commit 29e5f663b265b520c852601e72380cf246c083e2
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 05:33:44 2018 -0400
+
+    FIxed trading bugg
+
+ state.ml | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+commit 3d48d367a3b8c70b0bb07686577c4530df3d0bbb
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 05:21:08 2018 -0400
+
+    village bugfix
+
+ main.ml  | 7 +++----
+ state.ml | 4 ++--
+ 2 files changed, 5 insertions(+), 6 deletions(-)
+
+commit cca1802b8dce843f557e0b7adb2f321f89eec3a0
+Merge: c440a9e 7807ad2
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 05:15:39 2018 -0400
+
+    Help
+
+commit c440a9e071cfc322026bb7e43d5e6b72a41f5047
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 05:10:43 2018 -0400
+
+    FINALLY AI MOVEMENT WORKING, ATTACK, NOT SO MUCH
+
+ ai.ml             | 119 ++++++++++---
+ charactermaker.ml |   4 +-
+ test2.ml          | 523 +++++++++++++++++++++++++++++++++++++++++++-----------
+ 3 files changed, 515 insertions(+), 131 deletions(-)
+
+commit 7807ad2a99118ece80b2fda3c1df0baf6ef0c123
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 05:04:34 2018 -0400
+
+    ?????????
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d6da7be6496ffed6571f0e4a878ff74714c89405
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 05:03:42 2018 -0400
+
+    ?????????
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a0105890910ed507eeead64b6fcc491c8afc913f
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 04:57:30 2018 -0400
+
+    ?????????
+
+ state.ml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 8c5ea7241a1da5593bb0ff8b9d323c045b889457
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 04:03:39 2018 -0400
+
+    added lenient collision
+
+ state.ml  | 38 ++++++++++++++------------------------
+ state.mli |  2 +-
+ 2 files changed, 15 insertions(+), 25 deletions(-)
+
+commit 61b963355dd6ab3ae95ddcad1df5a6fa00ccac5d
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 03:59:53 2018 -0400
+
+    added lenient collision
+
+ state.mli | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 781f9359b627c803e00c60d5234a561e2fb7f1c6
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 03:57:53 2018 -0400
+
+    added lenient collision
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit af49bc35f2d60fcb1fc106added05f7e81a58d78
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 03:55:51 2018 -0400
+
+    added lenient collision
+
+ state.ml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit f809f18639fb79e328aa8b9038a2d79d438485e3
+Merge: fcd2fc5 992e305
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 03:52:26 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit fcd2fc5ca1308e4539fb7fdc74a969abd0e85a17
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 03:52:20 2018 -0400
+
+    added lenient collision
+
+ state.ml | 35 ++++++++++++++++++++++-------------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
+
+commit 992e305493ef7f93bcee14aede8d3f892abec4f4
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 03:40:52 2018 -0400
+
+    fixed transition bug
+
+ gui.ml | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
+
+commit f75bd6e98c99b00ec093eef4be239d1196cdfee3
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 03:34:24 2018 -0400
+
+    Reset players when transitioning
+
+ state.ml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 451a82a2fb069d364059faf1678a6908596caca5
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 03:29:13 2018 -0400
+
+    transition
+
+ charactermaker.ml |  2 +-
+ main.ml           | 19 ++----------
+ state.ml          | 90 +++++++++++++++++++++++++++++++++++++++++--------------
+ state.mli         |  9 ++++--
+ 4 files changed, 76 insertions(+), 44 deletions(-)
+
+commit ad43ce0cdcec3eaa03fca47d398cad2e09f685a3
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 03:21:15 2018 -0400
+
+    fixed combat but idk what really happened
+
+ state.ml | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 217a86f5cf28bdb82469fd525d1c044b60d38ad3
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 03:17:33 2018 -0400
+
+    Finished side bar faces
+
+ Sprites/Archer.png    | Bin 0 -> 11754 bytes
+ Sprites/Erk.png       | Bin 0 -> 17424 bytes
+ Sprites/Hector.png    | Bin 0 -> 18060 bytes
+ Sprites/Mage.png      | Bin 0 -> 6718 bytes
+ Sprites/MageBoss.png  | Bin 0 -> 10357 bytes
+ Sprites/Melee.png     | Bin 0 -> 3801 bytes
+ Sprites/MeleeBoss.png | Bin 0 -> 12239 bytes
+ Sprites/asf.png       | Bin 0 -> 6621 bytes
+ desktop.ini           |   2 ++
+ gui.ml                |  71 ++++++++++++++++++++++++++++++--------------------
+ 10 files changed, 45 insertions(+), 28 deletions(-)
+
+commit b2221b08f940bbf1f7190ffe2042521a9823d87b
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 03:08:09 2018 -0400
+
+    fixed combat but idk what really happened
+
+ state.ml | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 6a62d8f5913230f40d1a1d3f2c1ed2f6489eea9b
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 02:43:31 2018 -0400
+
+    fixed combat but idk what really happened
+
+ room.ml | 36 +++++++++++++++++++++++++++---------
+ 1 file changed, 27 insertions(+), 9 deletions(-)
+
+commit 539ef79313f22304bfc7363585eec6c6c17684a5
+Merge: cafab12 981dc16
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 01:48:11 2018 -0400
+
+    Fixed merge conflcits
+
+commit cafab123de070dbd0ed44404e0343d3d43a189f8
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 01:45:29 2018 -0400
+
+    Added field to state
+
+ charactermaker.ml | 2 +-
+ main.ml           | 1 +
+ state.ml          | 1 +
+ state.mli         | 1 +
+ 4 files changed, 4 insertions(+), 1 deletion(-)
+
+commit 981dc16e5194780839d4983423249e9c7cc1c4ac
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 01:44:24 2018 -0400
+
+    Fixed syntax errors
+
+ charactermaker.ml | 29 ++++++++++++++---------------
+ state.ml          | 13 +++++++------
+ 2 files changed, 21 insertions(+), 21 deletions(-)
+
+commit cae356ec84bd2d277ba5b367efe156f48519bd73
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 01:34:51 2018 -0400
+
+    finished charactermake
+
+ state.ml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+commit 7bb50201b52c369037b09491c3ee0cd19c31e238
+Merge: b5e425c fc21dda
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 01:29:20 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit b5e425caddb0d08bd0b0985a9415b0d3a4e8871c
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 01:29:05 2018 -0400
+
+    finished charactermake
+
+ charactermaker.ml | 72 ++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 69 insertions(+), 3 deletions(-)
+
+commit fc21dda30c032a4e245f4b3cc81821e8785f82f1
+Merge: b8b013b e292a38
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 01:27:59 2018 -0400
+
+    sdMerge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit b8b013b720576772b0c4787a2ddacba884ca3f3e
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 01:27:41 2018 -0400
+
+    Fixed active characters
+
+ main.ml | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
+
+commit e292a38d554960ae722ae29e603f561889f2b476
+Merge: ef21a66 15f6369
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 01:17:07 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit ef21a66b9b7ebec74d0de8eea0e01938340a51f8
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 01:16:59 2018 -0400
+
+    Finished lyn, hector, and erk
+
+ Sprites/PlayerSprites.png | Bin 196478 -> 196466 bytes
+ Sprites/asdf.png          | Bin 0 -> 196478 bytes
+ gui.ml                    | 201 +++++++++++++++++++++++++++++++++++++++++++++-
+ main.ml                   |   2 +-
+ 4 files changed, 198 insertions(+), 5 deletions(-)
+
+commit 15f6369d943a2d17abef458251fccfe1875ca3da
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 01:16:10 2018 -0400
+
+    fking merge
+
+ main.ml  |   2 +-
+ state.ml | 492 ++++++++++++++++++++++++++++++++++-----------------------------
+ 2 files changed, 269 insertions(+), 225 deletions(-)
+
+commit 2e2e6e93c4f7590a5a7e306a7ca4ad9962a6d41a
+Merge: 5244c1e da184cc
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 01:06:22 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 5244c1ee29b8b1edd963b4fec9582f85cf989fb4
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 01:06:12 2018 -0400
+
+    finished charactermake
+
+ charactermaker.mli | 3 +++
+ main.ml            | 4 ++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+commit da184cc48a97a069ec28e383b7a5f58e10d24362
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 15 00:57:51 2018 -0400
+
+    Mostly done with hector sprite
+
+ Sprites/PlayerSprites.png | Bin 491942 -> 196478 bytes
+ Sprites/s.png             | Bin 0 -> 196475 bytes
+ gui.ml                    | 264 +++++++++++++++++++++++++++++++++++++++++-----
+ 3 files changed, 237 insertions(+), 27 deletions(-)
+
+commit 6e2665860e7146eb38af7be4329c6bcdf131f2a5
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 00:56:45 2018 -0400
+
+    finished charactermake
+
+ charactermaker.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit b14dd05b5fd2a3fc6b92c064bb20fb6a28a775fb
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 00:55:54 2018 -0400
+
+    finished charactermake
+
+ charactermaker.ml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit a326971e10f04021b8305be957f8d334ebb39ffd
+Merge: edb8c2f a09b756
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 00:47:34 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit edb8c2fedf98d3087c745571e2540acb6310357f
+Author: Ray <rg545@cornell.edu>
+Date:   Tue May 15 00:47:27 2018 -0400
+
+    finished charactermake
+
+ charactermaker.ml | 223 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ types.ml          |   2 +-
+ types.mli         |   2 +-
+ 3 files changed, 223 insertions(+), 4 deletions(-)
+
+commit 91b2380ad780ec8420369830f44561917699c235
+Merge: 340bde1 a09b756
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 00:11:25 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 340bde13fc052ca53a2b986ec769c84d3ff4d37a
+Author: dt356 <dt356@cornell.edu>
+Date:   Tue May 15 00:11:17 2018 -0400
+
+    did i fix it
+
+ ai.ml | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+commit a09b7569b43683951056b3ae6915b4de652b0047
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 15 00:10:44 2018 -0400
+
+    x
+
+ charactermaker.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a968eb52d07111a0b746a907e1ff1d4f443684f8
+Author: DarrenT9 <dt356@cornell.edu>
+Date:   Mon May 14 23:59:10 2018 -0400
+
+    god damnit frank
+
+ Sprites/AllySprites/Ally_Arch_Mogall.png      | Bin 0 -> 587 bytes
+ Sprites/AllySprites/Ally_Archer_F.png         | Bin 0 -> 550 bytes
+ Sprites/AllySprites/Ally_Archer_M.png         | Bin 0 -> 555 bytes
+ Sprites/AllySprites/Ally_Assassin_F.png       | Bin 0 -> 534 bytes
+ Sprites/AllySprites/Ally_Assassin_M.png       | Bin 0 -> 521 bytes
+ Sprites/AllySprites/Ally_Bael.png             | Bin 0 -> 523 bytes
+ Sprites/AllySprites/Ally_Ballista.png         | Bin 0 -> 688 bytes
+ Sprites/AllySprites/Ally_Bard.png             | Bin 0 -> 508 bytes
+ Sprites/AllySprites/Ally_Berserker.png        | Bin 0 -> 737 bytes
+ Sprites/AllySprites/Ally_Bishop_F.png         | Bin 0 -> 574 bytes
+ Sprites/AllySprites/Ally_Bishop_M.png         | Bin 0 -> 579 bytes
+ Sprites/AllySprites/Ally_Bonewalker_Bow.png   | Bin 0 -> 611 bytes
+ Sprites/AllySprites/Ally_Bonewalker_Sword.png | Bin 0 -> 586 bytes
+ Sprites/AllySprites/Ally_Boy.png              | Bin 0 -> 431 bytes
+ Sprites/AllySprites/Ally_Brigand.png          | Bin 0 -> 618 bytes
+ Sprites/AllySprites/Ally_Cavalier.png         | Bin 0 -> 681 bytes
+ Sprites/AllySprites/Ally_Cleric.png           | Bin 0 -> 578 bytes
+ Sprites/AllySprites/Ally_Cyclops.png          | Bin 0 -> 667 bytes
+ Sprites/AllySprites/Ally_Dancer.png           | Bin 0 -> 565 bytes
+ Sprites/AllySprites/Ally_Deathgoyle.png       | Bin 0 -> 711 bytes
+ Sprites/AllySprites/Ally_Demon_King.png       | Bin 0 -> 1214 bytes
+ Sprites/AllySprites/Ally_Draco_Zombie.png     | Bin 0 -> 805 bytes
+ Sprites/AllySprites/Ally_Druid.png            | Bin 0 -> 564 bytes
+ Sprites/AllySprites/Ally_Elder_Bael.png       | Bin 0 -> 610 bytes
+ Sprites/AllySprites/Ally_Entombed.png         | Bin 0 -> 605 bytes
+ Sprites/AllySprites/Ally_Falcon_Knight.png    | Bin 0 -> 725 bytes
+ Sprites/AllySprites/Ally_Fighter.png          | Bin 0 -> 572 bytes
+ Sprites/AllySprites/Ally_Fleet.png            | Bin 0 -> 543 bytes
+ Sprites/AllySprites/Ally_Gargoyle.png         | Bin 0 -> 629 bytes
+ Sprites/AllySprites/Ally_General.png          | Bin 0 -> 717 bytes
+ Sprites/AllySprites/Ally_Girl.png             | Bin 0 -> 435 bytes
+ Sprites/AllySprites/Ally_Gorgon.png           | Bin 0 -> 605 bytes
+ Sprites/AllySprites/Ally_Gorgon_Egg.png       | Bin 0 -> 497 bytes
+ Sprites/AllySprites/Ally_Great_Knight.png     | Bin 0 -> 701 bytes
+ Sprites/AllySprites/Ally_Gwyllgi.png          | Bin 0 -> 644 bytes
+ Sprites/AllySprites/Ally_Hero_M.png           | Bin 0 -> 628 bytes
+ Sprites/AllySprites/Ally_Journeyman.png       | Bin 0 -> 588 bytes
+ Sprites/AllySprites/Ally_Killer_Ballista.png  | Bin 0 -> 680 bytes
+ Sprites/AllySprites/Ally_King.png             | Bin 0 -> 555 bytes
+ Sprites/AllySprites/Ally_Knight.png           | Bin 0 -> 563 bytes
+ Sprites/AllySprites/Ally_Maelduin.png         | Bin 0 -> 661 bytes
+ Sprites/AllySprites/Ally_Mage_F.png           | Bin 0 -> 537 bytes
+ Sprites/AllySprites/Ally_Mage_Knight_F.png    | Bin 0 -> 681 bytes
+ Sprites/AllySprites/Ally_Mage_Knight_M.png    | Bin 0 -> 659 bytes
+ Sprites/AllySprites/Ally_Mage_M.png           | Bin 0 -> 479 bytes
+ Sprites/AllySprites/Ally_Man.png              | Bin 0 -> 499 bytes
+ Sprites/AllySprites/Ally_Manakete_Morva.png   | Bin 0 -> 953 bytes
+ Sprites/AllySprites/Ally_Manakete_Myrrh.png   | Bin 0 -> 576 bytes
+ Sprites/AllySprites/Ally_Mauthedoog.png       | Bin 0 -> 579 bytes
+ Sprites/AllySprites/Ally_Mercenary.png        | Bin 0 -> 615 bytes
+ Sprites/AllySprites/Ally_Mogall.png           | Bin 0 -> 562 bytes
+ Sprites/AllySprites/Ally_Myrmidon_F.png       | Bin 0 -> 542 bytes
+ Sprites/AllySprites/Ally_Myrmidon_M.png       | Bin 0 -> 557 bytes
+ Sprites/AllySprites/Ally_Necromancer.png      | Bin 0 -> 556 bytes
+ Sprites/AllySprites/Ally_Paladin.png          | Bin 0 -> 705 bytes
+ Sprites/AllySprites/Ally_Pegasus_Knight.png   | Bin 0 -> 677 bytes
+ Sprites/AllySprites/Ally_Phantom.png          | Bin 0 -> 524 bytes
+ Sprites/AllySprites/Ally_Pirate.png           | Bin 0 -> 611 bytes
+ Sprites/AllySprites/Ally_Pontifex.png         | Bin 0 -> 538 bytes
+ Sprites/AllySprites/Ally_Priest.png           | Bin 0 -> 587 bytes
+ Sprites/AllySprites/Ally_Prince.png           | Bin 0 -> 524 bytes
+ Sprites/AllySprites/Ally_Princess.png         | Bin 0 -> 430 bytes
+ Sprites/AllySprites/Ally_Pupil.png            | Bin 0 -> 518 bytes
+ Sprites/AllySprites/Ally_Queen.png            | Bin 0 -> 498 bytes
+ Sprites/AllySprites/Ally_Ranger.png           | Bin 0 -> 656 bytes
+ Sprites/AllySprites/Ally_Recruit.png          | Bin 0 -> 514 bytes
+ Sprites/AllySprites/Ally_Revenant.png         | Bin 0 -> 523 bytes
+ Sprites/AllySprites/Ally_Rogue.png            | Bin 0 -> 526 bytes
+ Sprites/AllySprites/Ally_Sage_F.png           | Bin 0 -> 562 bytes
+ Sprites/AllySprites/Ally_Sage_M.png           | Bin 0 -> 542 bytes
+ Sprites/AllySprites/Ally_Shaman.png           | Bin 0 -> 500 bytes
+ Sprites/AllySprites/Ally_Sniper_F.png         | Bin 0 -> 610 bytes
+ Sprites/AllySprites/Ally_Sniper_M.png         | Bin 0 -> 631 bytes
+ Sprites/AllySprites/Ally_Soldier.png          | Bin 0 -> 531 bytes
+ Sprites/AllySprites/Ally_Summoner.png         | Bin 0 -> 518 bytes
+ Sprites/AllySprites/Ally_Swordmaster_F.png    | Bin 0 -> 541 bytes
+ Sprites/AllySprites/Ally_Swordmaster_M.png    | Bin 0 -> 552 bytes
+ Sprites/AllySprites/Ally_Tarvos.png           | Bin 0 -> 653 bytes
+ Sprites/AllySprites/Ally_Thief.png            | Bin 0 -> 530 bytes
+ Sprites/AllySprites/Ally_Troubadour.png       | Bin 0 -> 647 bytes
+ Sprites/AllySprites/Ally_Valykrie.png         | Bin 0 -> 657 bytes
+ Sprites/AllySprites/Ally_Warrior.png          | Bin 0 -> 747 bytes
+ Sprites/AllySprites/Ally_White_Egg.png        | Bin 0 -> 515 bytes
+ Sprites/AllySprites/Ally_Wight_Bow.png        | Bin 0 -> 641 bytes
+ Sprites/AllySprites/Ally_Wight_Sword.png      | Bin 0 -> 589 bytes
+ Sprites/AllySprites/Ally_Woman.png            | Bin 0 -> 468 bytes
+ Sprites/AllySprites/Ally_Wyvern_Knight.png    | Bin 0 -> 680 bytes
+ Sprites/AllySprites/Ally_Wyvern_Lord.png      | Bin 0 -> 739 bytes
+ Sprites/AllySprites/Ally_Wyvern_Rider.png     | Bin 0 -> 702 bytes
+ Sprites/AllySprites/Ally_monk.png             | Bin 0 -> 485 bytes
+ Sprites/AllySprites/Great_Lord_Eirika.png     | Bin 0 -> 743 bytes
+ Sprites/AllySprites/Great_Lord_Ephraim.png    | Bin 0 -> 762 bytes
+ Sprites/AllySprites/Lord_Eirika.png           | Bin 0 -> 566 bytes
+ Sprites/AllySprites/Lord_Ephraim.png          | Bin 0 -> 620 bytes
+ 94 files changed, 0 insertions(+), 0 deletions(-)
+
+commit fbfdcd83d38d5f8a1706ad3f2fc7c2a08cfa0a73
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 23:41:59 2018 -0400
+
+    compile fix
+
+ types.mli | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 2b26cdda649bb4bd7c95fe283726c6f00a418a5f
+Merge: e07d245 43bffe3
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 23:32:51 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 43bffe31c84b7fc0924488f018e50b96c2d17170
+Merge: 3f70f2c 6c97d66
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 23:31:14 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit e07d2451665e94946452d3d4dcddc32aa2683bf4
+Merge: eff5d8a 6c97d66
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 23:31:03 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit eff5d8a0b5dd8338c8869ebebca2491682cd2d62
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 23:30:50 2018 -0400
+
+    balancing
+
+ charactermaker.ml | 196 +++++++++++++++++++++++++++---------------------------
+ types.ml          |   2 +-
+ 2 files changed, 99 insertions(+), 99 deletions(-)
+
+commit 3f70f2ce4616f135a90e3065c3f4b3e543434a47
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 23:30:19 2018 -0400
+
+    just trying to pull man
+
+ ai.ml | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
+
+commit 6c97d6679ed9dcff68e367d5532942d3731d55d3
+Merge: 546a9de c3e82d9
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 23:29:57 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 546a9de0848dec5ee9f6302d8ed0f34978283abe
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 23:29:33 2018 -0400
+
+    TEsting hector
+
+ Sprites/PlayerSprites.png  | Bin 0 -> 491942 bytes
+ Sprites/PlayerSprites2.png | Bin 0 -> 726523 bytes
+ gui.ml                     | 210 ++++++++++++++++++++++++++++++++++++++++++++-
+ main.ml                    |  63 +++++++++++++-
+ 4 files changed, 271 insertions(+), 2 deletions(-)
+
+commit c3e82d95c0ff368c858cbcb89bc6f54a29eac65c
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 23:17:31 2018 -0400
+
+    Fixing trade
+
+ main.ml  | 12 ++++++------
+ state.ml | 49 +++++++++++++++++++++++++------------------------
+ 2 files changed, 31 insertions(+), 30 deletions(-)
+
+commit 31373af62352b6a09b0ff708282f4f6a0c034b61
+Merge: 64f037b 4b0bebd
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 22:53:54 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 64f037bb33f458f4b98230c2d95ff8c0a11b6e11
+Merge: de611c7 61903dc
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 22:53:49 2018 -0400
+
+    what was i doing
+
+commit 4b0bebde03865624829a3cf29dfdc919051e4847
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 22:52:07 2018 -0400
+
+    deleting debugging relics
+
+ ai.ml | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
+
+commit de611c717fe4e479f65a35f2301343372442c5a1
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 22:44:18 2018 -0400
+
+    what was i doing
+
+ interactions.ml | 48 ++++++++++++++++++++++++------------------------
+ 1 file changed, 24 insertions(+), 24 deletions(-)
+
+commit 61903dce625f809c97d968c292bb5b6823e35753
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 22:42:11 2018 -0400
+
+    Plz let me get 10k commits too
+
+ main.ml  | 4 ++--
+ state.ml | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 6ea4e7622c308846e57de4e12f7b3a32e69c67fb
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 22:37:53 2018 -0400
+
+    added a spec
+
+ gui.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit cf34894e5bebf8668c5b5d732e6803a5fef40759
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 22:35:20 2018 -0400
+
+    Started hector and erk
+
+ Sprites/EnemySprites/Enemy_Boss2_Hover1.png  |  Bin 1086 -> 0 bytes
+ Sprites/EnemySprites/Enemy_Boss_2_Hover2.png |  Bin 1211 -> 0 bytes
+ Sprites/EnemySprites/Mage_Boss.png           |  Bin 0 -> 1211 bytes
+ Sprites/EnemySprites/Mage_Boss2.png          |  Bin 0 -> 1086 bytes
+ gui.ml                                       | 2435 +++++++++++++-------------
+ main.ml                                      |  630 +++----
+ room.ml                                      | 1230 ++++++-------
+ state.ml                                     | 1200 ++++++-------
+ 8 files changed, 2756 insertions(+), 2739 deletions(-)
+
+commit 31cf05a8326f541afe6a1a9961511f2a40395833
+Merge: fa497ca 0a9ecb7
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 22:03:04 2018 -0400
+
+    mage
+
+commit fa497ca60e49f2dec28aa169396b807168c77f60
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 21:56:15 2018 -0400
+
+    Finished mage
+
+ Makefile                             |   40 +-
+ Sprites/EnemySprites/Enemy_Mage.png  |  Bin 0 -> 815 bytes
+ Sprites/EnemySprites/Enemy_Mage1.png |  Bin 815 -> 0 bytes
+ Sprites/EnemySprites/Enemy_Mage2.png |  Bin 825 -> 652 bytes
+ ai.ml                                |  710 +++++-----
+ charactermaker.ml                    |  704 +++++-----
+ charactermaker.mli                   |   18 +-
+ characters.ml                        |  522 ++++----
+ characters.mli                       |  116 +-
+ gui.ml                               | 2366 +++++++++++++++++-----------------
+ interactions.ml                      |  770 +++++------
+ interactions.mli                     |   54 +-
+ main.ml                              |  598 ++++-----
+ room.ml                              | 1224 +++++++++---------
+ state.ml                             | 1218 ++++++++---------
+ 15 files changed, 4180 insertions(+), 4160 deletions(-)
+
+commit 0a9ecb7fdab46e87c85ec1b6eee5070355989a76
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 21:50:48 2018 -0400
+
+    Got rid of placeholder
+
+ state.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 81909934cb5f7384470de8bdd1b518271e141d3d
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 18:23:52 2018 -0400
+
+    added lots of comment
+
+ state.ml  | 217 +++++++++++++++++++++++++++++++++++++++++++++++++++-----------
+ state.mli |  60 ++++++++---------
+ 2 files changed, 209 insertions(+), 68 deletions(-)
+
+commit d68c6161f08b8df60c7186cc77c9461f9e6b9ddd
+Merge: 8ce4df1 e54f07e
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 18:13:09 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+    lol
+
+commit 8ce4df1adef5369080dfb5a6173b3b768e88efac
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 18:12:58 2018 -0400
+
+    Moved draw_archer in gui so I could draw it as ally and am doing testing on trading
+
+ gui.ml    | 45 ++++++++++++++++++++++++++-------------
+ main.ml   | 30 ++++++++++++++++++++------
+ room.ml   |  3 +++
+ state.ml  | 73 ++++++++++++++++++++++++++++-----------------------------------
+ types.ml  |  5 +++--
+ types.mli |  5 +++--
+ 6 files changed, 94 insertions(+), 67 deletions(-)
+
+commit e54f07e5024d066b0085a28a5c9f2d03dc601d04
+Merge: ee24e37 37df82c
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 17:55:48 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit ee24e3789d9294d86d259b578f6d9ff6865d9d20
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 17:55:40 2018 -0400
+
+    Should stop crashing
+
+ ai.ml             | 68 ++++++++++++++++++++++++++++++++++---------------------
+ charactermaker.ml |  2 +-
+ 2 files changed, 43 insertions(+), 27 deletions(-)
+
+commit 37df82c06be9af3e8a6662c769c3203292c6d8d1
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 17:15:03 2018 -0400
+
+    Compiles
+
+ interactions.ml | 2 +-
+ room.ml         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 3e8138ff154f0a8029ea178f88552679ba30b6c5
+Merge: 6bf3e23 ef42307
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 16:48:16 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit ef423076cc622697230c1dc3d9c44ef807171df0
+Merge: 9b27494 f6b3b4c
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 16:47:20 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 9b27494304b7983a4aafbb5ffd7071b4aeb36d66
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 16:47:12 2018 -0400
+
+    Getting there
+
+ ai.ml           | 27 +++++++++++-----------
+ interactions.ml | 70 ++++++++++++++++++++++++++++-----------------------------
+ 2 files changed, 49 insertions(+), 48 deletions(-)
+
+commit 6bf3e234e7d3428f63d63afc236587c4d2af571a
+Merge: 3e31321 f6b3b4c
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 16:46:11 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 3e313218770437ea9c1ea594e422e20f12dbab99
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 16:44:17 2018 -0400
+
+    comments and small bugs
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 478eba853b9857ee2abd7c14aedae52e2e702a87
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 16:43:15 2018 -0400
+
+    comments and small bugs
+
+ Makefile         |  2 +-
+ characters.ml    | 13 ++++++++++++-
+ characters.mli   |  4 ++++
+ interactions.mli | 40 ++++++++++++++--------------------------
+ items.ml         | 24 ------------------------
+ items.mli        |  8 --------
+ room.ml          | 19 ++++++++++++++++++-
+ state.ml         | 43 +++++++++++++++++++++++++++++++++++--------
+ 8 files changed, 84 insertions(+), 69 deletions(-)
+
+commit f6b3b4c4ceba5dc50496f7baef110554f24e48b1
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 16:38:52 2018 -0400
+
+    Fixed interactions
+
+ interactions.ml | 70 ++++++++++++++++++++++++++++-----------------------------
+ state.ml        | 17 +++++++++++---
+ 2 files changed, 49 insertions(+), 38 deletions(-)
+
+commit 873b4b92fd858f81b29a784f69befd3dc2197250
+Merge: 0de5ce1 b58c92b
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 16:13:51 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 0de5ce159ddab6859353bee0f22c85fa3adef7cf
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 16:13:40 2018 -0400
+
+    Getting there
+
+ ai.ml              | 81 +++++++++++++++++++++++++++++++++++-------------------
+ charactermaker.ml  | 15 ++++++----
+ charactermaker.mli |  5 ++++
+ main.ml            |  2 +-
+ 4 files changed, 68 insertions(+), 35 deletions(-)
+
+commit b58c92bd8c3394689e6a7965cf78c563c34806df
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 15:55:17 2018 -0400
+
+    comments and small bugs
+
+ characters.ml    | 116 ++++++++++++++---------
+ characters.mli   |  57 ++++++-----
+ interaction.mli  |  44 ---------
+ interactions.ml  | 281 +++++++++++++++++++++++++++++++++++--------------------
+ interactions.mli |  39 ++++++++
+ 5 files changed, 327 insertions(+), 210 deletions(-)
+
+commit de0119673bc9f9fd6026fac9069b21718785b1bb
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 15:23:03 2018 -0400
+
+    bug fix
+
+ gui.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 6c62f778b5ee6dc40e602ed54d46a86b0778cca7
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 15:21:52 2018 -0400
+
+    Transition Screen
+
+ gui.ml | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
+
+commit 568a7e24fd83c49adae4b69d6bd0496039a5d8e3
+Merge: 27faa9f 37c107b
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 14:56:08 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 27faa9fd30d69bdf0e872af0984bae0d71c4d111
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 14:56:01 2018 -0400
+
+    mutable field round
+
+ main.ml   | 1 +
+ state.ml  | 1 +
+ state.mli | 1 +
+ 3 files changed, 3 insertions(+)
+
+commit 37c107bb2fd2ea5e1b8360c92123f274a60f27af
+Merge: 1b4ee4f ab2974e
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 14:54:22 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 1b4ee4f3baea32970c6afa7a3b5469408ea84997
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 14:54:12 2018 -0400
+
+    fixed undead characters
+
+ state.ml | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+commit ab2974e81f5ea53815fd04109fdf508916feec2b
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 14:41:33 2018 -0400
+
+    Fixed main
+
+ main.ml | 4 ----
+ 1 file changed, 4 deletions(-)
+
+commit e70d82b2fb4feab0f411aeb79ed23af02a007346
+Merge: 95458e2 8af7b0f
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 14:40:45 2018 -0400
+
+    Fixed merge conflict
+
+commit 95458e277bfc4b7780d81e79424f1a515b513dcf
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 14:39:39 2018 -0400
+
+    Added 2nd map
+
+ Sprites/Map2/Water11.png | Bin 0 -> 492 bytes
+ Sprites/Map2/Water12.png | Bin 0 -> 454 bytes
+ Sprites/Map2/castle1.png | Bin 0 -> 1928 bytes
+ Sprites/Map2/castle2.png | Bin 0 -> 1912 bytes
+ Sprites/Map2/castle3.png | Bin 0 -> 1868 bytes
+ Sprites/Map2/castle4.png | Bin 0 -> 2031 bytes
+ Sprites/Map2/castle5.png | Bin 0 -> 1958 bytes
+ Sprites/Map2/castle6.png | Bin 0 -> 1977 bytes
+ Sprites/Map2/castle7.png | Bin 0 -> 1926 bytes
+ Sprites/Map2/castle8.png | Bin 0 -> 1993 bytes
+ Sprites/Map2/castle9.png | Bin 0 -> 1865 bytes
+ Sprites/Map2/chest.png   | Bin 0 -> 1726 bytes
+ Sprites/Map2/house1.png  | Bin 0 -> 1694 bytes
+ Sprites/Map2/house2.png  | Bin 0 -> 1884 bytes
+ Sprites/Map2/house3.png  | Bin 0 -> 1776 bytes
+ Sprites/Map2/house4.png  | Bin 0 -> 1732 bytes
+ Sprites/Map2/house5.png  | Bin 0 -> 1783 bytes
+ Sprites/Map2/house6.png  | Bin 0 -> 1743 bytes
+ Sprites/Water3.png       | Bin 336 -> 479 bytes
+ Sprites/Water4.png       | Bin 339 -> 508 bytes
+ Sprites/castle1.png      | Bin 0 -> 289 bytes
+ Sprites/castle2.png      | Bin 0 -> 289 bytes
+ Sprites/castle3.png      | Bin 0 -> 276 bytes
+ Sprites/castle4.png      | Bin 0 -> 296 bytes
+ Sprites/castle5.png      | Bin 0 -> 277 bytes
+ Sprites/castle6.png      | Bin 0 -> 289 bytes
+ Sprites/castle7.png      | Bin 0 -> 303 bytes
+ Sprites/castle8.png      | Bin 0 -> 303 bytes
+ Sprites/castle9.png      | Bin 0 -> 286 bytes
+ Sprites/chest.png        | Bin 0 -> 288 bytes
+ Sprites/house1.png       | Bin 0 -> 216 bytes
+ Sprites/house2.png       | Bin 0 -> 293 bytes
+ Sprites/house3.png       | Bin 0 -> 272 bytes
+ Sprites/house4.png       | Bin 0 -> 274 bytes
+ Sprites/house5.png       | Bin 0 -> 304 bytes
+ Sprites/house6.png       | Bin 0 -> 255 bytes
+ Sprites/tilesheet.png    | Bin 0 -> 166585 bytes
+ gui.ml                   |  20 +-
+ main.ml                  |   6 +-
+ room.ml                  | 487 +++++++++++++++++++++++++++--------------------
+ room.mli                 |   2 +
+ types.ml                 |   4 +-
+ types.mli                |   4 +-
+ 43 files changed, 314 insertions(+), 209 deletions(-)
+
+commit 7b3b1ca135ef43d8120228415e4aa2011c2573cc
+Merge: 2b1345a 8af7b0f
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 14:28:21 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 2b1345a4438e12cd2c4c1d3a538d22a508b2afa8
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 14:28:09 2018 -0400
+
+    merge conflict
+
+ ai.ml   | 2 +-
+ main.ml | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 8af7b0ff76d20b210d648b723f98fccfe019c45c
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 14:26:58 2018 -0400
+
+    Fixed animation issue
+
+ main.ml  |  6 +++---
+ state.ml | 12 +++++++-----
+ 2 files changed, 10 insertions(+), 8 deletions(-)
+
+commit 8a942dec5dba0ba48c4944251343893365128527
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 14:13:58 2018 -0400
+
+    breaking
+
+ ai.ml              | 4 ++--
+ charactermaker.ml  | 6 ++++--
+ charactermaker.mli | 2 ++
+ main.ml            | 5 ++++-
+ 4 files changed, 12 insertions(+), 5 deletions(-)
+
+commit b0c41a343b665e9466447e0ba3396166264c171d
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 13:33:47 2018 -0400
+
+    woops he attack himself
+
+ ai.ml   | 5 +----
+ main.ml | 2 +-
+ 2 files changed, 2 insertions(+), 5 deletions(-)
+
+commit ac9ebf5681c9e2e538e08307994b451787bbc2d8
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 12:57:44 2018 -0400
+
+    lose screen
+
+ gui.ml    | 19 ++++++++++++++++---
+ main.ml   |  1 +
+ state.ml  |  1 +
+ state.mli |  1 +
+ 4 files changed, 19 insertions(+), 3 deletions(-)
+
+commit b2fdef1108123f7bab9e31955183636398426831
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 12:48:47 2018 -0400
+
+    Added win screen
+
+ Sprites/AllySprites/Ally_Arch_Mogall.png      | Bin 587 -> 0 bytes
+ Sprites/AllySprites/Ally_Archer_F.png         | Bin 550 -> 0 bytes
+ Sprites/AllySprites/Ally_Archer_M.png         | Bin 555 -> 0 bytes
+ Sprites/AllySprites/Ally_Assassin_F.png       | Bin 534 -> 0 bytes
+ Sprites/AllySprites/Ally_Assassin_M.png       | Bin 521 -> 0 bytes
+ Sprites/AllySprites/Ally_Bael.png             | Bin 523 -> 0 bytes
+ Sprites/AllySprites/Ally_Ballista.png         | Bin 688 -> 0 bytes
+ Sprites/AllySprites/Ally_Bard.png             | Bin 508 -> 0 bytes
+ Sprites/AllySprites/Ally_Berserker.png        | Bin 737 -> 0 bytes
+ Sprites/AllySprites/Ally_Bishop_F.png         | Bin 574 -> 0 bytes
+ Sprites/AllySprites/Ally_Bishop_M.png         | Bin 579 -> 0 bytes
+ Sprites/AllySprites/Ally_Bonewalker_Bow.png   | Bin 611 -> 0 bytes
+ Sprites/AllySprites/Ally_Bonewalker_Sword.png | Bin 586 -> 0 bytes
+ Sprites/AllySprites/Ally_Boy.png              | Bin 431 -> 0 bytes
+ Sprites/AllySprites/Ally_Brigand.png          | Bin 618 -> 0 bytes
+ Sprites/AllySprites/Ally_Cavalier.png         | Bin 681 -> 0 bytes
+ Sprites/AllySprites/Ally_Cleric.png           | Bin 578 -> 0 bytes
+ Sprites/AllySprites/Ally_Cyclops.png          | Bin 667 -> 0 bytes
+ Sprites/AllySprites/Ally_Dancer.png           | Bin 565 -> 0 bytes
+ Sprites/AllySprites/Ally_Deathgoyle.png       | Bin 711 -> 0 bytes
+ Sprites/AllySprites/Ally_Demon_King.png       | Bin 1214 -> 0 bytes
+ Sprites/AllySprites/Ally_Draco_Zombie.png     | Bin 805 -> 0 bytes
+ Sprites/AllySprites/Ally_Druid.png            | Bin 564 -> 0 bytes
+ Sprites/AllySprites/Ally_Elder_Bael.png       | Bin 610 -> 0 bytes
+ Sprites/AllySprites/Ally_Entombed.png         | Bin 605 -> 0 bytes
+ Sprites/AllySprites/Ally_Falcon_Knight.png    | Bin 725 -> 0 bytes
+ Sprites/AllySprites/Ally_Fighter.png          | Bin 572 -> 0 bytes
+ Sprites/AllySprites/Ally_Fleet.png            | Bin 543 -> 0 bytes
+ Sprites/AllySprites/Ally_Gargoyle.png         | Bin 629 -> 0 bytes
+ Sprites/AllySprites/Ally_General.png          | Bin 717 -> 0 bytes
+ Sprites/AllySprites/Ally_Girl.png             | Bin 435 -> 0 bytes
+ Sprites/AllySprites/Ally_Gorgon.png           | Bin 605 -> 0 bytes
+ Sprites/AllySprites/Ally_Gorgon_Egg.png       | Bin 497 -> 0 bytes
+ Sprites/AllySprites/Ally_Great_Knight.png     | Bin 701 -> 0 bytes
+ Sprites/AllySprites/Ally_Gwyllgi.png          | Bin 644 -> 0 bytes
+ Sprites/AllySprites/Ally_Hero_M.png           | Bin 628 -> 0 bytes
+ Sprites/AllySprites/Ally_Journeyman.png       | Bin 588 -> 0 bytes
+ Sprites/AllySprites/Ally_Killer_Ballista.png  | Bin 680 -> 0 bytes
+ Sprites/AllySprites/Ally_King.png             | Bin 555 -> 0 bytes
+ Sprites/AllySprites/Ally_Knight.png           | Bin 563 -> 0 bytes
+ Sprites/AllySprites/Ally_Maelduin.png         | Bin 661 -> 0 bytes
+ Sprites/AllySprites/Ally_Mage_F.png           | Bin 537 -> 0 bytes
+ Sprites/AllySprites/Ally_Mage_Knight_F.png    | Bin 681 -> 0 bytes
+ Sprites/AllySprites/Ally_Mage_Knight_M.png    | Bin 659 -> 0 bytes
+ Sprites/AllySprites/Ally_Mage_M.png           | Bin 479 -> 0 bytes
+ Sprites/AllySprites/Ally_Man.png              | Bin 499 -> 0 bytes
+ Sprites/AllySprites/Ally_Manakete_Morva.png   | Bin 953 -> 0 bytes
+ Sprites/AllySprites/Ally_Manakete_Myrrh.png   | Bin 576 -> 0 bytes
+ Sprites/AllySprites/Ally_Mauthedoog.png       | Bin 579 -> 0 bytes
+ Sprites/AllySprites/Ally_Mercenary.png        | Bin 615 -> 0 bytes
+ Sprites/AllySprites/Ally_Mogall.png           | Bin 562 -> 0 bytes
+ Sprites/AllySprites/Ally_Myrmidon_F.png       | Bin 542 -> 0 bytes
+ Sprites/AllySprites/Ally_Myrmidon_M.png       | Bin 557 -> 0 bytes
+ Sprites/AllySprites/Ally_Necromancer.png      | Bin 556 -> 0 bytes
+ Sprites/AllySprites/Ally_Paladin.png          | Bin 705 -> 0 bytes
+ Sprites/AllySprites/Ally_Pegasus_Knight.png   | Bin 677 -> 0 bytes
+ Sprites/AllySprites/Ally_Phantom.png          | Bin 524 -> 0 bytes
+ Sprites/AllySprites/Ally_Pirate.png           | Bin 611 -> 0 bytes
+ Sprites/AllySprites/Ally_Pontifex.png         | Bin 538 -> 0 bytes
+ Sprites/AllySprites/Ally_Priest.png           | Bin 587 -> 0 bytes
+ Sprites/AllySprites/Ally_Prince.png           | Bin 524 -> 0 bytes
+ Sprites/AllySprites/Ally_Princess.png         | Bin 430 -> 0 bytes
+ Sprites/AllySprites/Ally_Pupil.png            | Bin 518 -> 0 bytes
+ Sprites/AllySprites/Ally_Queen.png            | Bin 498 -> 0 bytes
+ Sprites/AllySprites/Ally_Ranger.png           | Bin 656 -> 0 bytes
+ Sprites/AllySprites/Ally_Recruit.png          | Bin 514 -> 0 bytes
+ Sprites/AllySprites/Ally_Revenant.png         | Bin 523 -> 0 bytes
+ Sprites/AllySprites/Ally_Rogue.png            | Bin 526 -> 0 bytes
+ Sprites/AllySprites/Ally_Sage_F.png           | Bin 562 -> 0 bytes
+ Sprites/AllySprites/Ally_Sage_M.png           | Bin 542 -> 0 bytes
+ Sprites/AllySprites/Ally_Shaman.png           | Bin 500 -> 0 bytes
+ Sprites/AllySprites/Ally_Sniper_F.png         | Bin 610 -> 0 bytes
+ Sprites/AllySprites/Ally_Sniper_M.png         | Bin 631 -> 0 bytes
+ Sprites/AllySprites/Ally_Soldier.png          | Bin 531 -> 0 bytes
+ Sprites/AllySprites/Ally_Summoner.png         | Bin 518 -> 0 bytes
+ Sprites/AllySprites/Ally_Swordmaster_F.png    | Bin 541 -> 0 bytes
+ Sprites/AllySprites/Ally_Swordmaster_M.png    | Bin 552 -> 0 bytes
+ Sprites/AllySprites/Ally_Tarvos.png           | Bin 653 -> 0 bytes
+ Sprites/AllySprites/Ally_Thief.png            | Bin 530 -> 0 bytes
+ Sprites/AllySprites/Ally_Troubadour.png       | Bin 647 -> 0 bytes
+ Sprites/AllySprites/Ally_Valykrie.png         | Bin 657 -> 0 bytes
+ Sprites/AllySprites/Ally_Warrior.png          | Bin 747 -> 0 bytes
+ Sprites/AllySprites/Ally_White_Egg.png        | Bin 515 -> 0 bytes
+ Sprites/AllySprites/Ally_Wight_Bow.png        | Bin 641 -> 0 bytes
+ Sprites/AllySprites/Ally_Wight_Sword.png      | Bin 589 -> 0 bytes
+ Sprites/AllySprites/Ally_Woman.png            | Bin 468 -> 0 bytes
+ Sprites/AllySprites/Ally_Wyvern_Knight.png    | Bin 680 -> 0 bytes
+ Sprites/AllySprites/Ally_Wyvern_Lord.png      | Bin 739 -> 0 bytes
+ Sprites/AllySprites/Ally_Wyvern_Rider.png     | Bin 702 -> 0 bytes
+ Sprites/AllySprites/Ally_monk.png             | Bin 485 -> 0 bytes
+ Sprites/AllySprites/Great_Lord_Eirika.png     | Bin 743 -> 0 bytes
+ Sprites/AllySprites/Great_Lord_Ephraim.png    | Bin 762 -> 0 bytes
+ Sprites/AllySprites/Lord_Eirika.png           | Bin 566 -> 0 bytes
+ Sprites/AllySprites/Lord_Ephraim.png          | Bin 620 -> 0 bytes
+ gui.ml                                        |  57 ++++++++++++++++++++++----
+ 95 files changed, 49 insertions(+), 8 deletions(-)
+
+commit a324f99ebb6f7cc2efe91aa8c3fea9db930f02e7
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 12:33:07 2018 -0400
+
+    More state
+
+ state.ml | 61 +++++++++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 35 insertions(+), 26 deletions(-)
+
+commit 7a0ea89dbbb440ab370191f4a1de6b6c4bf217b5
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 06:09:42 2018 -0400
+
+    Added LT
+
+ state.ml | 125 +++++++++++++++++++++++++++++----------------------------------
+ 1 file changed, 57 insertions(+), 68 deletions(-)
+
+commit 65590269d00182577f2a896056cfa4ece872e5e7
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 05:40:06 2018 -0400
+
+    Made all done players go gray and also allowed selecting done characters to see their stats
+
+ gui.ml   | 18 +++++++++++++++---
+ state.ml |  5 +++--
+ 2 files changed, 18 insertions(+), 5 deletions(-)
+
+commit 12c287589b89e1f048447c368e041ebed6c1ef6f
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 05:19:08 2018 -0400
+
+    Added deleting of dead characters
+
+ state.ml | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+commit 91dbc0b3293fad0f26e91d2990006477986844f2
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 05:16:39 2018 -0400
+
+    fuck
+
+ ai.ml   | 5 +----
+ main.ml | 8 ++++----
+ 2 files changed, 5 insertions(+), 8 deletions(-)
+
+commit 601ac9ee7290e21885dfd2f35c65c7320003b4c4
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 05:03:09 2018 -0400
+
+    fixed out of bounds bug
+
+ ai.ml | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+commit 2f0c3d30e0431c7dbf6f44cb8677426799b65b48
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 04:42:52 2018 -0400
+
+    Added stuff to state and fixed attacking animation problem
+
+ charactermaker.ml |   6 ++
+ characters.ml     |   5 +-
+ gui.ml            | 294 +++++++++++++++++++++++++++---------------------------
+ interactions.ml   |   3 +-
+ main.ml           |  12 ++-
+ state.ml          |  31 ++++--
+ types.ml          |   3 +-
+ types.mli         |   3 +-
+ 8 files changed, 192 insertions(+), 165 deletions(-)
+
+commit 8fd1e38d021500092347f72f23c2ca9e4a134418
+Merge: b174588 3804b0b
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 03:26:14 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 3804b0bbdf30bb69ef1afa6e41894fa143528031
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 03:25:48 2018 -0400
+
+    almost done with state
+
+ main.ml  | 10 +++++-----
+ state.ml | 19 +++++++++++--------
+ 2 files changed, 16 insertions(+), 13 deletions(-)
+
+commit b17458824ecaefa3dfccb677ebd160e0d078da84
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 03:25:38 2018 -0400
+
+    Basic charactermaker complete
+
+ charactermaker.ml | 174 +++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 165 insertions(+), 9 deletions(-)
+
+commit a49d738a8fcc6ab7ceb2f5a6e87b066305203696
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 03:05:46 2018 -0400
+
+    transition to mutable
+
+ characters.ml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit dee327ec61c034baa747b8a942c753fbf625b36e
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 03:01:17 2018 -0400
+
+    transition to mutable
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 682f1339d6761f10a55e9bc23207101d23b4863a
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 03:00:11 2018 -0400
+
+    transition to mutable
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 23cbce84477a76a32cb20a7ff197e49efdc94872
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 02:58:52 2018 -0400
+
+    transition to mutable
+
+ interactions.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a6d2012457cce13e0d90af5a48e61a8f0a12d446
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 02:58:03 2018 -0400
+
+    transition to mutable
+
+ interactions.ml | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+commit a0088659f6267c35f86b72fd5abb4341ef66fae7
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 02:55:42 2018 -0400
+
+    transition to mutable
+
+ interactions.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d0b87de707165889ed0d50610b3933427fe56128
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 02:53:43 2018 -0400
+
+    transition to mutable
+
+ interactions.ml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 921a4276dbe1b87c1568a67d7906abf3dd70e672
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 02:47:40 2018 -0400
+
+    transition to mutable
+
+ interactions.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit b75b8ff9f604df55a0a110107b782c89f6fc81c1
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 02:45:44 2018 -0400
+
+    transition to mutable
+
+ interactions.ml | 2 --
+ 1 file changed, 2 deletions(-)
+
+commit b08cc727871a8bf17707407101876cd91faa67c0
+Author: Ray <rg545@cornell.edu>
+Date:   Mon May 14 02:39:30 2018 -0400
+
+    transition to mutable
+
+ characters.ml   | 106 +++++++++++++++++++++++--------------------------
+ characters.mli  |  12 +++---
+ interaction.mli |   8 ++--
+ interactions.ml | 120 ++++++++++++++++++++++++++++----------------------------
+ state.ml        |  19 +++++----
+ 5 files changed, 128 insertions(+), 137 deletions(-)
+
+commit b8105f40e79781c91771ada0c2017ea01503d576
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 02:35:42 2018 -0400
+
+    wtf
+
+ main.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 7e55228d7adf23febf80fa74d1355905173a7495
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon May 14 02:24:05 2018 -0400
+
+    Finished state mostly
+
+ ai.mli    |  2 ++
+ main.ml   |  1 -
+ state.ml  | 40 ++++++++++------------------------------
+ state.mli |  1 -
+ types.ml  |  2 +-
+ types.mli |  2 +-
+ 6 files changed, 14 insertions(+), 34 deletions(-)
+
+commit 5da325a946f4eec007c0dfadd65af0ecaa070aec
+Merge: 07f7738 641a7c8
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 02:18:31 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 07f77383b3b132f8a4eafa286bef8701c7866dfc
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 02:18:21 2018 -0400
+
+    Here's charactermaker
+
+ charactermaker.ml | 152 +++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 139 insertions(+), 13 deletions(-)
+
+commit 641a7c83f613936c4bebbde040b60ecd0afad6b2
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 01:51:53 2018 -0400
+
+    Wrote a bunch of specs
+
+ gui.ml | 183 +++++++++++++++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 128 insertions(+), 55 deletions(-)
+
+commit 809013435e13fa0130cfc331ebb61eb41a58f330
+Merge: 671cfb5 6f8439a
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 01:01:14 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 671cfb520f2eab2cde253fd243d45a8aabba11bf
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 01:00:57 2018 -0400
+
+    Added Boss enemy
+
+ gui.ml  | 22 +++++++++++++++++++---
+ main.ml | 41 ++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 59 insertions(+), 4 deletions(-)
+
+commit 6f8439ae9e01b80a8752e488ef6c4ce11f1c9c6d
+Merge: 6897ca0 1d9655a
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 00:52:38 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 6897ca09cf2d0b56359ea311b58ffce4b38ed3c8
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 00:52:28 2018 -0400
+
+    merge conflicts plus beginning character builder
+
+ charactermaker.ml | 56 +++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ types.ml          |  4 ++--
+ types.mli         |  4 ++--
+ 3 files changed, 58 insertions(+), 6 deletions(-)
+
+commit 1d9655a3e32d0e2f1c4428ead941946d320ff704
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 00:46:50 2018 -0400
+
+    Fixed clock
+
+ gui.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 758023ca52d0cb6793736062666c7e8039cb2112
+Merge: 3225297 bd1a180
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 00:31:22 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 3225297d92d48b99a31a0ad1adc25c00f3ab6243
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 00:31:14 2018 -0400
+
+    Health bars for enemies
+
+ gui.ml | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit bd1a180804e25163177454eb6dd4bafb1110dabd
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 00:30:10 2018 -0400
+
+    fuck sorry
+
+ main.ml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 921612a50e1d6f6bf44df79a5fe211ab6f147285
+Merge: 5a603d5 3d09e79
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 00:27:42 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 5a603d5e6d34f2e06b2f8a9e5e6ff3a51f11ff6f
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 00:27:35 2018 -0400
+
+    compile fix
+
+ main.ml | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 3d09e792bf752435666fa67066828236ad6cc896
+Merge: 68a5dff 7401801
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 00:27:16 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 68a5dff7d29924c7bd0e453b1b05d3d86830723c
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 00:26:50 2018 -0400
+
+    Fixed behave bug
+
+ main.ml | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 740180145caded86dc340e7c05f11f551fe3c961
+Merge: 989f8e9 54a5966
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 00:26:16 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 989f8e9f643d49046dbfe006b66e4f4fcf0b0293
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 00:26:04 2018 -0400
+
+    Removing circular dependency
+
+ ai.ml             | 48 +++++++++++++++++++++++++++++++++++++++++++++++-
+ charactermaker.ml |  3 +++
+ 2 files changed, 50 insertions(+), 1 deletion(-)
+
+commit 54a5966fe1cfc3ffc99dbd5a7a4a075a0bee9f39
+Merge: a5f1583 00c208a
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 00:25:43 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit a5f1583550268dd1e9ec74599c2cf5762385f48b
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 14 00:25:28 2018 -0400
+
+    Finished swordsman
+
+ gui.ml  | 18 +++++++++++++++++-
+ main.ml | 40 +++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 56 insertions(+), 2 deletions(-)
+
+commit 00c208a14b38fed8c5fa6341cb8ae8d78626df80
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 00:15:46 2018 -0400
+
+    Bug fix
+
+ main.ml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit ecc2e1bb854aeabb670d89a1208c953caaeff9e6
+Merge: adbe82c 8852a5d
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 00:13:53 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit adbe82cae87477512da7d462aa6e098151134637
+Author: dt356 <dt356@cornell.edu>
+Date:   Mon May 14 00:13:43 2018 -0400
+
+    Adding character maker files
+
+ Makefile           |  2 +-
+ ai.ml              | 16 ++++++++++++----
+ charactermaker.ml  |  2 ++
+ charactermaker.mli |  2 ++
+ 4 files changed, 17 insertions(+), 5 deletions(-)
+
+commit 8852a5d79cb902a9c110802c254f9ac31983d883
+Merge: 0c15ed2 9cf1f3c
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sun May 13 23:57:51 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 0c15ed28d0ac8c8c52adede43faf5cf7b66b2254
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sun May 13 23:57:34 2018 -0400
+
+    Archer enemy
+
+ gui.ml  | 34 ++++++++++++++++++++++++++++++++++
+ main.ml | 38 +++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 71 insertions(+), 1 deletion(-)
+
+commit 9cf1f3c3e763631c22a403e2405504ec9049c33e
+Merge: 43b7035 b4cc4dd
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 23:44:37 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 43b7035f9e94afc7f6ff74b7bc436e2a1368a602
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 23:44:16 2018 -0400
+
+    Consolidating functions
+
+ ai.ml | 76 ++++++++++++++++++++++++++++++-------------------------------------
+ 1 file changed, 34 insertions(+), 42 deletions(-)
+
+commit b4cc4ddd6dfa7dfb1ff0f20f45c40ad28d1af6fc
+Author: awt46 <awt46@cornell.edu>
+Date:   Sun May 13 23:43:19 2018 -0400
+
+    Trade implemented maybe, still need to test
+
+ state.ml | 44 +++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 41 insertions(+), 3 deletions(-)
+
+commit 59f373448561e9e4c974efb9a66be7f7e384e41d
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 23:38:48 2018 -0400
+
+    many many bug fixes
+
+ ai.ml           | 73 +++++++++++++++++++++++++--------------------------------
+ ai.mli          |  1 +
+ characters.ml   |  3 ++-
+ characters.mli  |  2 +-
+ interactions.ml | 22 ++++++++---------
+ main.ml         |  2 +-
+ 6 files changed, 48 insertions(+), 55 deletions(-)
+
+commit d227450fce2dd5922efbc0f92048c3998f64c925
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 22:46:31 2018 -0400
+
+    Setting up new behavior schema
+
+ state.ml  | 1 -
+ state.mli | 1 -
+ types.ml  | 1 +
+ types.mli | 1 +
+ 4 files changed, 2 insertions(+), 2 deletions(-)
+
+commit a4c21cbb1bbc255fd8b95fcdb08452ffc58a17a3
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sun May 13 22:31:44 2018 -0400
+
+    Added inv section
+
+ gui.ml | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
+
+commit faaf73005b8dcf0acdec2322970b2bcd460712d6
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 19:24:50 2018 -0400
+
+    Fixed AI so it compiles
+
+ Makefile | 2 +-
+ ai.ml    | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit cc31893df85d1d29a9804da3a56c3c6854dc2780
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 19:23:30 2018 -0400
+
+    Adding ai to buildpath
+
+ ai.mli | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 97f553aa7ad105980a25f6e7f2b2869340633f26
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 19:21:02 2018 -0400
+
+    seperated state
+
+ ai.ml    | 275 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ state.ml | 277 ---------------------------------------------------------------
+ test.ml  |  17 +---
+ 3 files changed, 276 insertions(+), 293 deletions(-)
+
+commit 0209361723293606354049b66895b6a0103728bb
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sun May 13 18:55:22 2018 -0400
+
+    Working on attack menu
+
+ gui.ml    | 35 ++++++++++++++++++++++++-----------
+ state.mli |  1 +
+ 2 files changed, 25 insertions(+), 11 deletions(-)
+
+commit fc418c6a7b4056d31a9a71f4d0daf7bbdcb08341
+Merge: 386716e 84e8aa5
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 18:38:00 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 386716edbc60f1e1dbd4de772dd087fc2e5de5b7
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 18:37:35 2018 -0400
+
+    Small bug fixes in tester
+
+ test.ml | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+commit 84e8aa5c7444661d07d14860a912252370a89c13
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sun May 13 18:08:59 2018 -0400
+
+    Adding attack menu
+
+ gui.ml | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
+
+commit 5b8c817cd9019de13df78ee0eca64f65f885784a
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 18:01:50 2018 -0400
+
+    Finished basic AI i think
+
+ state.ml | 79 ++++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 42 insertions(+), 37 deletions(-)
+
+commit 38c0b81b6114fd0aebc0260cbe955a3ea0d5e080
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 17:44:21 2018 -0400
+
+    Difficulty adds to searching
+
+ state.ml | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
+
+commit 03ed030d58e57a035e978e5b962d7f9c0604fba0
+Merge: 492fd82 3c837d1
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 17:26:30 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 492fd82db4e882ef828727f5d68a50a239f6d520
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 17:25:52 2018 -0400
+
+    merging conflicts
+
+ state.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit cce65de16f8c116d81e41837c4edb93aa95df853
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 17:21:30 2018 -0400
+
+    Pause for merge conflicts
+
+ state.ml | 54 ++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
+
+commit 3c837d196dc553dd35c5273cfbbf4cffb0fc73f5
+Merge: 272cfb3 cb49088
+Author: awt46 <awt46@cornell.edu>
+Date:   Sun May 13 17:20:09 2018 -0400
+
+    ffs
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 272cfb30c5126971d548f2aa4594760b72384fa0
+Author: awt46 <awt46@cornell.edu>
+Date:   Sun May 13 17:17:14 2018 -0400
+
+    trading in progress
+
+ Makefile |  2 +-
+ ai.ml    |  1 -
+ ai.mli   | 10 ----------
+ state.ml | 15 +++++++--------
+ 4 files changed, 8 insertions(+), 20 deletions(-)
+
+commit 3add0a469ac5c71f0a41d8734b2f7f0346db1fbd
+Author: awt46 <awt46@cornell.edu>
+Date:   Sun May 13 17:12:30 2018 -0400
+
+    Working on trade
+
+ state.ml  | 20 ++++++++++++++++++--
+ types.ml  |  2 +-
+ types.mli |  2 +-
+ 3 files changed, 20 insertions(+), 4 deletions(-)
+
+commit cb490883e46a19b324fb9995e38f14e320c91303
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 16:32:33 2018 -0400
+
+    Removed Ai files from buildpath
+
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 59448f2886c9ca61859f33056fca00c71d9c3330
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 16:28:52 2018 -0400
+
+    Lame AI Completed
+
+ ai.ml    |  1 -
+ ai.mli   | 10 ----------
+ state.ml | 15 +++++++--------
+ 3 files changed, 7 insertions(+), 19 deletions(-)
+
+commit ef1cdae9523be45ae49240781ecb5860b5b0c24c
+Merge: 6d40391 e2f7d67
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sun May 13 16:02:12 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 6d40391f66d9697f98d709d7ea469be04edab844
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sun May 13 16:02:00 2018 -0400
+
+    Added side bar and last selected field to state
+
+ Sprites/LYN.png         | Bin 25150 -> 0 bytes
+ Sprites/lyn.png         | Bin 0 -> 19669 bytes
+ Sprites/sidebarback.png | Bin 0 -> 97 bytes
+ gui.ml                  |  95 +++++++++++++++++++++++++++++++++++++++++++++++-
+ main.ml                 |   3 +-
+ state.ml                |   1 +
+ state.mli               |   1 +
+ 7 files changed, 97 insertions(+), 3 deletions(-)
+
+commit e2f7d673e2687d88e5f1408e652db3eed1514807
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 15:58:20 2018 -0400
+
+    Deleting AI files
+
+ ai.ml | 265 +-----------------------------------------------------------------
+ 1 file changed, 1 insertion(+), 264 deletions(-)
+
+commit 0cdf74a4f3042d5fcb515a70141f44eb8d15c292
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 15:56:07 2018 -0400
+
+    AI moved to state
+
+ state.ml | 265 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 265 insertions(+)
+
+commit 9a8e904211d89a6e0f7cc37aed3efe3cfb1a76a8
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 15:53:15 2018 -0400
+
+    bout to merge ai and state
+
+ ai.ml    | 18 +++++++++++++-----
+ state.ml |  8 ++++----
+ 2 files changed, 17 insertions(+), 9 deletions(-)
+
+commit be0e0601f5900fed687d78545fe854872281a253
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 03:53:06 2018 -0400
+
+    Search almost done
+
+ ai.ml | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
+
+commit 9b8e6a0e0814693db80c21cedc1774b451d7c502
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 03:44:12 2018 -0400
+
+    AI insane movement complete
+
+ ai.ml | 77 ++++++++++++++++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 53 insertions(+), 24 deletions(-)
+
+commit c397205a9a539a55504c401e1f1ee492eb48bf3e
+Merge: 2c54b08 7919bab
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 01:07:53 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 2c54b085a77f0fa76fb2b74f761ef454e131442f
+Author: dt356 <dt356@cornell.edu>
+Date:   Sun May 13 01:07:45 2018 -0400
+
+    AI Progress
+
+ ai.ml  | 72 ++++++++++++++++++++++++++++++++++++++++++++++++++----------------
+ ai.mli |  2 +-
+ 2 files changed, 56 insertions(+), 18 deletions(-)
+
+commit 7919bab454e94fe0a39ba9ec8b3fac40126902cb
+Merge: ce26773 5b5a394
+Author: Ray <rg545@cornell.edu>
+Date:   Sun May 13 01:02:49 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit ce267739a8d64b32bbff541144097aa67a764831
+Author: Ray <rg545@cornell.edu>
+Date:   Sun May 13 01:02:07 2018 -0400
+
+    i hate everything
+
+ state.ml | 89 +++++++++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 49 insertions(+), 40 deletions(-)
+
+commit 5b5a394382720895c64e0477462c17359d2a1736
+Author: dt356 <dt356@cornell.edu>
+Date:   Sat May 12 22:30:30 2018 -0400
+
+    Stop flaming me Ray
+
+ ai.ml | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 7cc6de808f86a53d52417375e918f3889fbe7749
+Merge: d877a0a 29f6bf6
+Author: dt356 <dt356@cornell.edu>
+Date:   Sat May 12 22:24:57 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit d877a0a858fbad065ee237ccfbf660f3857dcf9f
+Author: dt356 <dt356@cornell.edu>
+Date:   Sat May 12 22:21:12 2018 -0400
+
+    more ai changes
+
+ ai.ml | 57 ++++++++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 46 insertions(+), 11 deletions(-)
+
+commit 29f6bf6b59154f0574f462137f986e6c59d2a32d
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 22:20:45 2018 -0400
+
+    fixed red tiles...?
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit fe1d29ba1fc3ad03918cbfa31e4ed71c8f78d887
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 22:10:23 2018 -0400
+
+    fixed red tiles...?
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 0d41c4284f0de916e3ef9cf31fc80bac6c6aa893
+Merge: 871509e 88313d1
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 22:10:05 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 871509e8df0e0511b75378e2e42ddb7a1578487c
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 22:06:08 2018 -0400
+
+    im dumb
+
+ state.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 88313d1a03414cddf7fadbc252bc44f23b1a02be
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 22:05:44 2018 -0400
+
+    Fixed warnings and changed transparency
+
+ gui.ml | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+commit 37cd14800073c8f8f27ff3a9db35af8b00da5a2b
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 22:03:04 2018 -0400
+
+    im dumb
+
+ state.ml | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
+
+commit b56e81fa1ecea0979ffd7ffc444878e896458da7
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 21:54:52 2018 -0400
+
+    Finished attack squares
+
+ gui.ml | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+commit 781745ae30a6ad2ef8fd792037d399b2cbaa2718
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:45:59 2018 -0400
+
+    compile version
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit f89d8192bdc5ac1fbec16930cd62d3ef5a14d7f1
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:45:09 2018 -0400
+
+    compile version
+
+ ai.mli | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit c5c14cb767630c88ac5c35c655b19211cb9eb8ea
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:44:25 2018 -0400
+
+    compile version
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit b2cbc22e50937b8587906b66c61b008b0f599b7f
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:40:44 2018 -0400
+
+    oops
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 3e4f00f84bba6512bcca73f3ec773a318f4cb78b
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:39:44 2018 -0400
+
+    oops
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e43eeb75d0b886ba00264303ddb3135a97a53bf1
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:38:01 2018 -0400
+
+    oops
+
+ state.ml | 5 -----
+ 1 file changed, 5 deletions(-)
+
+commit 5e7f296cdd03e697028d2c326d935f6df90134dc
+Merge: b1dd9a9 90dc43f
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:37:22 2018 -0400
+
+    fixed merge
+
+commit b1dd9a9d4e622bb7365bc5635645f94da8ea8497
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:36:23 2018 -0400
+
+    fixed a silly bug
+
+ ai.mli   |  2 ++
+ state.ml | 10 ++++++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+commit 90dc43fe3e9b78a20cc5bd0ae6ca20d150fcc828
+Merge: 528b19d 4f7edda
+Author: dt356 <dt356@cornell.edu>
+Date:   Sat May 12 21:32:23 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 528b19d8e6fca421c878b7c0a7eaae7abf82a1a1
+Author: dt356 <dt356@cornell.edu>
+Date:   Sat May 12 21:31:52 2018 -0400
+
+    Difficulty
+
+ main.ml   |  1 +
+ state.ml  | 35 ++++++++++++++++++-----------------
+ state.mli |  1 +
+ types.ml  |  4 +++-
+ types.mli |  3 ++-
+ 5 files changed, 25 insertions(+), 19 deletions(-)
+
+commit 4f7edda415a6ada41a81b4e40e2e9214190f06d8
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 21:28:29 2018 -0400
+
+    added attack squares funcs
+
+ gui.ml | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+commit c4dcdf42fb2f4ad9ae7fcf6aa65b67d4b5c70b69
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:10:51 2018 -0400
+
+    ahhhhhhhhhhhhhh
+
+ state.ml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 4ba231e31492dfb8b6343be99c7a3471ef79ba03
+Merge: 885774d d6028e7
+Author: dt356 <dt356@cornell.edu>
+Date:   Sat May 12 21:08:10 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 885774d4afa65b4d713a786e6c8e7cfdb224a588
+Author: dt356 <dt356@cornell.edu>
+Date:   Sat May 12 21:07:40 2018 -0400
+
+    More comments
+
+ ai.ml | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit d6028e7c245033dc4798493319eed2d4ce2c7ce2
+Merge: 5d5765c 44cccc9
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:07:03 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 5d5765c2826eb3bc6aa4acfecbd2f9dd3c744384
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:06:52 2018 -0400
+
+    ahhhhhhhhhh
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 44cccc9993b27534a72d983dd0e970bbaff22ff4
+Merge: 615d2cf d3430dd
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 21:04:43 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 615d2cfa0558e0669a7d9c3430179b80d3f5043b
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 21:04:13 2018 -0400
+
+    Fixed another gui bug
+
+ gui.ml | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+commit d3430ddf9a5a7f140d6045c793c3951db855d246
+Merge: 90f31f0 3001cd8
+Author: dt356 <dt356@cornell.edu>
+Date:   Sat May 12 21:01:56 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 3001cd851c2fc04b124357f815effbf0efc7e976
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 21:01:11 2018 -0400
+
+    fixed bugs :(
+
+ state.ml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit dc587c4b0759a5dd2cece911c61b3d2a39888443
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 21:00:00 2018 -0400
+
+    Fixed bug in gui
+
+ gui.ml | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit 90f31f08d70f5f422cf403406c78ad5edc0af1ed
+Merge: 8d3de66 8ad5e53
+Author: dt356 <dt356@cornell.edu>
+Date:   Sat May 12 20:58:19 2018 -0400
+
+    Merge branch 'master' into ai
+    
+    Moving the partial AI code into the master branch
+
+commit 8d3de66780399e46da90861ea216023b9bc90633
+Author: dt356 <dt356@cornell.edu>
+Date:   Sat May 12 20:57:58 2018 -0400
+
+    beginnign some documentation on AI
+
+ ai.ml | 32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
+
+commit e66fa89b3a770327d8de7447370c42f089fb8832
+Merge: 3f1b553 4fd4b54
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 20:54:49 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 3f1b55384eb552661eafb4e429df4817e5fedd07
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 20:54:38 2018 -0400
+
+    fixed bugs :(
+
+ state.ml | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+commit 4fd4b546c7c17b35d01c2454bb3d4eb6473ffeee
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 20:54:22 2018 -0400
+
+    Fixed gui functions
+
+ gui.ml | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
+
+commit 98e0f8af381320f9a72598eaa8474a92fe858913
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 20:43:03 2018 -0400
+
+    changes to state
+
+ gui.ml | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
+
+commit 6e426f8cdd99336a32e019b37d9434f31677ef8f
+Author: DarrenT9 <dt356@cornell.edu>
+Date:   Sat May 12 20:40:22 2018 -0400
+
+    Enemy sprites
+
+ Sprites/EnemySprites/Enemy_Archer_E.png      | Bin 0 -> 826 bytes
+ Sprites/EnemySprites/Enemy_Archer_NE.png     | Bin 0 -> 854 bytes
+ Sprites/EnemySprites/Enemy_Archer_NW.png     | Bin 0 -> 666 bytes
+ Sprites/EnemySprites/Enemy_Boss1_Alert.png   | Bin 0 -> 943 bytes
+ Sprites/EnemySprites/Enemy_Boss1_Passive.png | Bin 0 -> 1281 bytes
+ Sprites/EnemySprites/Enemy_Boss2_Hover1.png  | Bin 0 -> 1086 bytes
+ Sprites/EnemySprites/Enemy_Boss_2_Hover2.png | Bin 0 -> 1211 bytes
+ Sprites/EnemySprites/Enemy_Mage1.png         | Bin 0 -> 815 bytes
+ Sprites/EnemySprites/Enemy_Mage2.png         | Bin 0 -> 825 bytes
+ Sprites/EnemySprites/Enemy_Swordsman_N.png   | Bin 0 -> 622 bytes
+ Sprites/EnemySprites/Enemy_Swordsman_S.png   | Bin 0 -> 716 bytes
+ 11 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 040980d4c591f0e91121d01ed2401d788f4ba0ba
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 20:36:07 2018 -0400
+
+    fixed when new ranges are calculated
+
+ state.ml | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit a9825f3f4f895de7f07c202fc3abad5f1fb2fcc4
+Merge: ad157c0 8ad5e53
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 20:26:10 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit ad157c024e9e4a679fbf9bc8b9b561159b332eda
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 20:25:34 2018 -0400
+
+    added red tiles
+
+ state.ml  | 5 ++++-
+ state.mli | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+commit 4f39f22cabb3d0c6b7b33c74bade02c4e382c6f4
+Author: dt356 <dt356@cornell.edu>
+Date:   Sat May 12 20:14:53 2018 -0400
+
+    Have I not been credited on these pushes, damn
+
+ ai.ml | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
+
+commit b8bb50d447754baf809a4455d734b8d432a3afcb
+Author: vagrant <vagrant@vm3110-2018sp>
+Date:   Sat May 12 18:29:23 2018 -0400
+
+    almost finished search
+
+ ai.ml | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+commit 0dd73513f87ac74e535f04f2d48105f408b41ccc
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 18:23:47 2018 -0400
+
+    added tile menu
+
+ state.ml | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+commit 8ad5e53ba00ffa8f861655b49f99f01b809c89e0
+Merge: cd3d328 f46e746
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 17:43:57 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit cd3d328d8bca83e6d150890f6e5d3950678f2649
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 17:43:43 2018 -0400
+
+    fixing merge conflicts
+
+ Sprites/Gray.png | Bin 0 -> 96 bytes
+ gui.ml           |  27 ++++++++++++++++++++++-----
+ main.ml          |   1 +
+ 3 files changed, 23 insertions(+), 5 deletions(-)
+
+commit f46e74610fba1bc4d2bd9e8a9b268562354d6a58
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 17:00:10 2018 -0400
+
+    finally fixed
+
+ test.ml | 72 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 70 insertions(+), 2 deletions(-)
+
+commit a8a53bb4b77bb38a64593bc538aca42901213ff4
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 16:55:16 2018 -0400
+
+    finally fixed
+
+ state.mli | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 3eca7953ec2098b612cf51d3a3a06908767ef860
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 16:54:18 2018 -0400
+
+    finally fixed
+
+ interactions.ml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 5b56492235df31d655426af6afdc1223a31a5f83
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 16:53:34 2018 -0400
+
+    finally fixed
+
+ characters.ml | 1 +
+ main.ml       | 7 +++++--
+ types.ml      | 1 +
+ types.mli     | 1 +
+ 4 files changed, 8 insertions(+), 2 deletions(-)
+
+commit 7570e9517413587942e990eeffab9e3ffa4a98ff
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 16:41:30 2018 -0400
+
+    and i hate myself for it
+
+ types.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 7fd0750a506faf2b0257dba7c9c2e680220fad9f
+Author: vagrant <vagrant@vm3110-2018sp>
+Date:   Sat May 12 16:41:17 2018 -0400
+
+    AI in progress
+
+ ai.ml | 88 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
+
+commit ffd9e90413a70489cf61ea56f64024d2f40ba885
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 16:38:20 2018 -0400
+
+    and i hate myself for it
+
+ types.ml | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 763e8aaeb22a5d3538163ca9d27cb0fffae41717
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 16:36:35 2018 -0400
+
+    and i hate myself for it
+
+ types.mli | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 858e25f73b1787557695dac26fc50a99d5f03b38
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 16:32:47 2018 -0400
+
+    and i hate myself for it
+
+ interactions.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 2aedb7f887fee9ab40c11338a73b3318115a2316
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 16:30:14 2018 -0400
+
+    and i hate myself for it
+
+ interactions.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ec73242cc77579d0e761b84ca9bd90def55d07e0
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 16:26:26 2018 -0400
+
+    Ive created a monster
+
+ interactions.ml | 12 ++++++------
+ state.ml        |  3 +--
+ types.ml        |  7 +++++++
+ 3 files changed, 14 insertions(+), 8 deletions(-)
+
+commit d4af9e2dfa8a4983dbc2010ba17becc2df65aca3
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 16:07:51 2018 -0400
+
+    still bug fixin
+
+ state.ml | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+commit 5e2c444490ae1deeaa482203bee6bad89fcd62e8
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 15:40:32 2018 -0400
+
+    fixed bugs
+
+ state.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit a4aeeb9ca20c692bb2fb182a4dd05063743e11cd
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 15:38:48 2018 -0400
+
+    fixed bugs
+
+ state.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit ac6844cff4ed56d492e08866e960c0ee9abc6a80
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 15:35:24 2018 -0400
+
+    fixed bugs
+
+ state.ml | 44 ++++++++++++++++++++++----------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
+
+commit 9b0dd90d88c99cff3c96c40640beeebc41fb86ea
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 15:30:07 2018 -0400
+
+    fixing bugs
+
+ state.ml | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+commit c688538202c04b1d922444dc1034193afd81f0d0
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 15:19:05 2018 -0400
+
+    added more movement stuff
+
+ interaction.mli |  2 +-
+ interactions.ml | 54 ++++++++++++++++++++++++++++++++++++++++++++----------
+ state.ml        | 50 +++++++++++++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 92 insertions(+), 14 deletions(-)
+
+commit b5654422a46cdebe1f878bb53ca952a0dbbb7713
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 09:24:23 2018 -0400
+
+    added combat
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 58e941fb8c7b70c7d9c2befafd80f5d3d50ab3ac
+Author: Ray <rg545@cornell.edu>
+Date:   Sat May 12 09:23:44 2018 -0400
+
+    added combat
+
+ state.ml | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+commit 63f2bd5ff9e1dd888cc9ad8926022b777cdd6379
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 03:17:25 2018 -0400
+
+    Fixed dijsktras bug for gui
+
+ gui.ml | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+commit c5fcfc4ca37bfd3c37ba5372691a75ce7a6f7410
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Sat May 12 03:12:13 2018 -0400
+
+    Dijkstras on gui and menus 1 and 2
+
+ gui.ml | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 77 insertions(+), 5 deletions(-)
+
+commit fdbc5eba0ae6a1f74d55a17a6a7b8facdf130868
+Author: awt46 <awt46@cornell.edu>
+Date:   Fri May 11 20:31:50 2018 -0400
+
+    More state
+
+ main.ml   | 25 +++++++++++++++++---
+ state.ml  | 79 ++++++++++++++++++++++++++++++++++-----------------------------
+ types.ml  |  4 ++--
+ types.mli |  4 ++--
+ 4 files changed, 69 insertions(+), 43 deletions(-)
+
+commit fa66e7f315c1556fc323fb26626fedbb7eb7820b
+Author: Ray <rg545@cornell.edu>
+Date:   Fri May 11 01:08:05 2018 -0400
+
+    fixed inventory ahhhhh
+
+ state.ml | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+commit c0798073a21a936151179b81fe58192777bf3016
+Author: Ray <rg545@cornell.edu>
+Date:   Fri May 11 00:35:49 2018 -0400
+
+    added inventory
+
+ state.ml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 043a651377acba949c4a284ea8b07e1e3760cfcf
+Author: awt46 <awt46@cornell.edu>
+Date:   Fri May 11 00:30:32 2018 -0400
+
+    Fixed errors
+
+ characters.mli |  2 +-
+ main.ml        |  2 +-
+ state.ml       | 22 ++++++++++++----------
+ state.mli      |  2 +-
+ test.ml        |  2 +-
+ 5 files changed, 16 insertions(+), 14 deletions(-)
+
+commit d6150d3d794fd9e3043e0be79726323e4c7d61ab
+Author: Ray <rg545@cornell.edu>
+Date:   Fri May 11 00:04:44 2018 -0400
+
+    fixed items bug
+
+ state.ml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+commit 22eae5b479d254e0ffa9f7a47b64d8856538d25d
+Author: Ray <rg545@cornell.edu>
+Date:   Thu May 10 23:59:10 2018 -0400
+
+    finished items
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 65dea707160e1e2dcec9c90c705ab6da65c34d9f
+Author: Ray <rg545@cornell.edu>
+Date:   Thu May 10 23:53:23 2018 -0400
+
+    finished items
+
+ characters.ml | 15 ++++++++-------
+ state.ml      | 11 +++++++++++
+ 2 files changed, 19 insertions(+), 7 deletions(-)
+
+commit 7e02b03d6efd5cfc5cee096f15d99625d66bb974
+Author: Ray <rg545@cornell.edu>
+Date:   Thu May 10 22:36:02 2018 -0400
+
+    fixed merge
+
+ state.ml | 3 ---
+ 1 file changed, 3 deletions(-)
+
+commit 2865eb87733d25a7bdc01bb8d83eb19314412e52
+Merge: 9285ee2 7578946
+Author: Ray <rg545@cornell.edu>
+Date:   Thu May 10 22:34:22 2018 -0400
+
+    fixed merge
+
+commit 9285ee2aa80fd9a752f23cdeb89086af9a24e62b
+Author: Ray <rg545@cornell.edu>
+Date:   Thu May 10 22:29:24 2018 -0400
+
+    some shortening of shit
+
+ state.ml | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit 75789463d70dc1fba39d022865cb32aaed75cd3e
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu May 10 22:22:36 2018 -0400
+
+    Added active_item field to state record
+
+ main.ml   |  1 +
+ state.ml  | 95 +++++++++++----------------------------------------------------
+ state.mli |  1 +
+ test.ml   |  1 +
+ 4 files changed, 19 insertions(+), 79 deletions(-)
+
+commit c97af1c9222158b09362069fde902d34a66db1c3
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu May 10 21:50:56 2018 -0400
+
+    half of do done
+
+ state.ml | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
+
+commit 981da346033e3b7a8247daec6ee368a72b4b6375
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu May 10 15:14:04 2018 -0400
+
+    finishing state
+
+ state.ml | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
+
+commit d25f5c8e8b7b74c723d0602705179e34468cea88
+Merge: c756132 bcff27c
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu May 10 14:44:24 2018 -0400
+
+    fixed merge
+
+commit c75613291df5ecc4d3df6cfe0127fa48f198fada
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu May 10 14:39:57 2018 -0400
+
+    testing changes
+
+ interactions.ml |   3 +-
+ main.ml         |   4 +-
+ room.ml         |   6 +-
+ state.ml        |  90 +++++++---
+ test.ml         | 525 ++++++++++++++++++++++++++++++++++++++++++++++++++------
+ 5 files changed, 549 insertions(+), 79 deletions(-)
+
+commit bcff27c62e5c0c4bdab7535e719eb6a41c40290e
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu May 10 01:04:37 2018 -0400
+
+    Fixed movement error. Added to state. Currently, after moving a character, you can reselect it to move it again (I'll change this later). Movement of lyn set to 3 for testing.
+
+ interaction.mli |  2 +-
+ main.ml         |  2 +-
+ room.ml         |  6 +++---
+ state.ml        | 22 ++++++----------------
+ state.mli       |  2 +-
+ 5 files changed, 12 insertions(+), 22 deletions(-)
+
+commit b6bbd0824a3e874ba2458dd183863cf5066b3bc5
+Author: awt46 <awt46@cornell.edu>
+Date:   Wed May 9 22:32:15 2018 -0400
+
+    Fixed state
+
+ state.ml  | 38 +++++++++++++++++++-------------------
+ state.mli |  1 -
+ types.ml  |  2 +-
+ types.mli |  2 +-
+ 4 files changed, 21 insertions(+), 22 deletions(-)
+
+commit 9bd576b4e86c3eab4bc7c2640192cd1144c3c0f2
+Merge: 3a09bed 2828fab
+Author: rg545 <rg545@cornell.edu>
+Date:   Wed May 9 22:13:26 2018 -0400
+
+    merge
+
+commit 3a09bed58d55f01c55d64eacdb567efc09070c6a
+Author: rg545 <rg545@cornell.edu>
+Date:   Wed May 9 21:54:25 2018 -0400
+
+    not sure what the changes i made were
+
+ state.ml  |  4 ----
+ types.mli | 11 ++++-------
+ 2 files changed, 4 insertions(+), 11 deletions(-)
+
+commit 2828fab09cdc9405ca3b3f501a46775d4df3a073
+Author: awt46 <awt46@cornell.edu>
+Date:   Wed May 9 03:01:55 2018 -0400
+
+    Working on villages. GOt rid of open state statements in characters.ml and interactions.ml in order to open interactions in state and avoid circular depdendencies
+
+ characters.ml   |  4 +---
+ characters.mli  |  2 +-
+ interactions.ml | 11 ++++++++++-
+ state.ml        |  8 +++++++-
+ 4 files changed, 19 insertions(+), 6 deletions(-)
+
+commit f28023dd378009d5f5bbc95dba3736ec6209deb1
+Author: awt46 <awt46@cornell.edu>
+Date:   Wed May 9 02:33:58 2018 -0400
+
+    More work on state
+
+ state.ml | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+commit 5c1e610e8ed448df53dda08e28759bb97479eaf6
+Author: awt46 <awt46@cornell.edu>
+Date:   Wed May 9 02:27:26 2018 -0400
+
+    Implemented backtracking of menus
+
+ main.ml   |  2 +-
+ state.ml  | 43 +++++++++++++++++++++++++------------------
+ state.mli |  3 +++
+ types.ml  |  6 +++---
+ types.mli |  5 +++--
+ 5 files changed, 35 insertions(+), 24 deletions(-)
+
+commit b8481f1baacefd141453b062230918db7ad55e10
+Author: awt46 <awt46@cornell.edu>
+Date:   Wed May 9 01:42:37 2018 -0400
+
+    Changed name field in item to iname. Also continued working on state. Can access inventory now
+
+ interactions.ml |  3 ++-
+ items.ml        |  2 +-
+ main.ml         |  2 +-
+ state.ml        | 19 ++++++++++++++-----
+ types.ml        |  2 +-
+ types.mli       |  2 +-
+ 6 files changed, 20 insertions(+), 10 deletions(-)
+
+commit 11b591c632447ef56e39606579fef4a715766209
+Author: awt46 <awt46@cornell.edu>
+Date:   Wed May 9 01:17:01 2018 -0400
+
+    Continue working on state
+
+ main.ml  |  4 ++--
+ state.ml | 26 ++++++++++++++++++--------
+ 2 files changed, 20 insertions(+), 10 deletions(-)
+
+commit 70a335c9a444cb129d9df80f7b41a91329a70c84
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue May 8 22:07:20 2018 -0400
+
+    Need to fix movement
+
+ main.ml   | 29 ++++++++++++++++++++++-------
+ room.ml   |  8 ++++----
+ state.ml  | 63 +++++++++++++++++++++++++++++++++++++++++++++------------------
+ state.mli |  4 +---
+ types.ml  |  2 +-
+ types.mli |  4 ++--
+ 6 files changed, 75 insertions(+), 35 deletions(-)
+
+commit 602532a3f66996281d9cc3ed9fa77c1a4337bdb3
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 8 03:17:27 2018 -0400
+
+    Animated arrow
+
+ gui.ml | 48 ++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 40 insertions(+), 8 deletions(-)
+
+commit 94fbe612130c96513a18060eaf7e05a3b8202472
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 8 03:06:34 2018 -0400
+
+    Figured out how to draw transparent tiles
+
+ Sprites/Documents - Shortcut.lnk | Bin 750 -> 0 bytes
+ Sprites/blue.png                 | Bin 0 -> 1387 bytes
+ Sprites/blue_test.png            | Bin 0 -> 107 bytes
+ Sprites/red.png                  | Bin 0 -> 1416 bytes
+ gui.ml                           |  25 ++++++++++++++-----------
+ 5 files changed, 14 insertions(+), 11 deletions(-)
+
+commit 090bfacf388c2a22469b5cd40db7f828aa4bb701
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 8 02:32:14 2018 -0400
+
+    Added func for arrow on menu
+
+ Sprites/arrow.png | Bin 0 -> 1357 bytes
+ gui.ml            |  29 +++++++++++++++++++++++++++--
+ main.ml           |   6 +++---
+ 3 files changed, 30 insertions(+), 5 deletions(-)
+
+commit 74543e65ad8b478aab5ec4cb67c144eb728e2240
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 8 01:55:37 2018 -0400
+
+    Finished Health Bar
+
+ Sprites/GreenHealth.png  | Bin 0 -> 70 bytes
+ Sprites/HealthBar.png    | Bin 0 -> 90 bytes
+ Sprites/RedHealth.png    | Bin 0 -> 70 bytes
+ Sprites/Water10.png      | Bin 0 -> 547 bytes
+ Sprites/YellowHealth.png | Bin 0 -> 70 bytes
+ gui.ml                   |  81 +++++++++++++++++++++++++++++++++++++++++---
+ main.ml                  |   2 +-
+ room.ml                  |  85 +++++++++++++++++++++++++++++++++++++++++++----
+ types.ml                 |   2 +-
+ types.mli                |   2 +-
+ 10 files changed, 158 insertions(+), 14 deletions(-)
+
+commit 2e10046c71d835001f2271acce43be6ae43dd5fc
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 7 23:05:35 2018 -0400
+
+    menu updates
+
+ gui.ml  | 2 +-
+ main.ml | 4 ++--
+ room.ml | 4 ++++
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+commit 00e13b4364a4405c873e66f50955a6a17173edba
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 7 22:39:36 2018 -0400
+
+    Added menu functions for sizes 4-7
+
+ gui.ml   | 156 ++++++++++++++++++++++++++++++++++++---------------------------
+ main.ml  |   4 +-
+ state.ml |   2 +-
+ 3 files changed, 92 insertions(+), 70 deletions(-)
+
+commit 07e71b41fcb17d03136becd16024d6a744243f36
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 7 18:17:23 2018 -0400
+
+    Fixed merge conflicts
+
+ state.ml  |  4 ----
+ types.mli | 15 +++++----------
+ 2 files changed, 5 insertions(+), 14 deletions(-)
+
+commit c0740535d9747125ab5afbb33c4ef76e94066502
+Merge: d87c7b5 d9dcbe7
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 7 18:09:17 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit d87c7b5fcce526d4b30b8a9d9633c3196c2ddb0e
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Mon May 7 18:08:47 2018 -0400
+
+    Changed main
+
+ Sprites/Documents - Shortcut.lnk | Bin 0 -> 750 bytes
+ main.ml                          |   2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+commit d9dcbe7c4fabf038dc436b22dd531891fd876493
+Merge: a322179 d106fde
+Author: rg545 <rg545@cornell.edu>
+Date:   Sat May 5 14:41:58 2018 -0400
+
+    fixed merge
+
+commit a3221791bcd218537e7e2c1d2ceabd7a1a688072
+Author: rg545 <rg545@cornell.edu>
+Date:   Sat May 5 14:39:42 2018 -0400
+
+    formatting
+
+ state.ml  | 3 +--
+ types.mli | 6 +++---
+ 2 files changed, 4 insertions(+), 5 deletions(-)
+
+commit d106fde04c16587760bf23ba11dd891eab8234e8
+Author: awt46 <awt46@cornell.edu>
+Date:   Sat May 5 14:13:41 2018 -0400
+
+    More changes
+
+ Changes.txt | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit fd9e00dc870da8f70b2c38f75b280616e5a193c3
+Author: awt46 <awt46@cornell.edu>
+Date:   Sat May 5 14:11:40 2018 -0400
+
+    Made a few changes. Check the changes.txt file I added
+
+ Changes.txt |  6 ++++++
+ gui.ml      | 57 ++++++++++++++++++++++++++++---------------------
+ main.ml     |  4 ++--
+ state.ml    | 70 +++++++++++++++++++++++++++++++++++++++++++------------------
+ types.ml    |  7 ++++---
+ types.mli   | 14 ++++++-------
+ 6 files changed, 102 insertions(+), 56 deletions(-)
+
+commit df39651d7610b41e94b9d1c86926f6e7e91b4a92
+Author: awt46 <awt46@cornell.edu>
+Date:   Fri May 4 22:19:31 2018 -0400
+
+    commented out/deleted unused code
+
+ command.ml  | 3 ---
+ command.mli | 1 -
+ state.ml    | 1 -
+ types.ml    | 3 +--
+ types.mli   | 2 +-
+ 5 files changed, 2 insertions(+), 8 deletions(-)
+
+commit b13343eee8a0639ff0acb7d1cb7a3919e6f543db
+Author: awt46 <awt46@cornell.edu>
+Date:   Fri May 4 22:17:09 2018 -0400
+
+    Changed behavior for holding key press
+
+ main.ml  |  6 +++---
+ state.ml | 27 +++++++++++++--------------
+ types.ml |  3 ++-
+ 3 files changed, 18 insertions(+), 18 deletions(-)
+
+commit bbf7cc5b23d9962291ff828ab243b1a20ec7f096
+Merge: 66c9ce2 e471b0a
+Author: rg545 <rg545@cornell.edu>
+Date:   Fri May 4 17:09:51 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 66c9ce2419e02e64158ff93266abe5cbf96496c4
+Author: rg545 <rg545@cornell.edu>
+Date:   Fri May 4 17:05:30 2018 -0400
+
+    finished interactions
+
+ .ocamlinit      |  3 ++-
+ characters.ml   |  4 +++-
+ interaction.mli |  8 ++++----
+ interactions.ml | 27 +++++++++++++++++++--------
+ 4 files changed, 28 insertions(+), 14 deletions(-)
+
+commit e471b0a948c191acda346d5ff4c6d564745babde
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Fri May 4 16:59:50 2018 -0400
+
+    Added specs
+
+ gui.ml | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+commit 104be54581d64978bda0f4d27174ba7539d2ca7e
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Fri May 4 16:50:19 2018 -0400
+
+    Fixed window scrolling issue!
+
+ command.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d63da950e7fa3eab7b98cfa6c90ecf06ce09b0e4
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Fri May 4 16:09:44 2018 -0400
+
+    Trying to fix window movement for arrow keys
+
+ command.ml | 1 +
+ main.ml    | 5 ++++-
+ state.ml   | 2 +-
+ 3 files changed, 6 insertions(+), 2 deletions(-)
+
+commit b6c7a82bfa9684dbd3c8fd2d8c68b4c01b98017e
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu May 3 22:23:40 2018 -0400
+
+    fixed small bug
+
+ interactions.ml | 2 --
+ 1 file changed, 2 deletions(-)
+
+commit 2be1726af2b690c9a71059b25db8a41efd2aee20
+Merge: d65412d 4805403
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu May 3 22:15:55 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit d65412ddee14b1ee9ce5a048224001d6ee79b1fd
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu May 3 22:15:51 2018 -0400
+
+    fixed combat
+
+ .ocamlinit      |  7 +++++++
+ characters.ml   |  9 ++++++--
+ characters.mli  |  2 ++
+ interactions.ml | 64 +++++++++++++++++++++++++++++++--------------------------
+ 4 files changed, 51 insertions(+), 31 deletions(-)
+
+commit 480540326bb97f9b9ad43c9ebe2eb07041b36210
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Thu May 3 21:34:32 2018 -0400
+
+    Fixed func for selecting on Z input
+
+ main.ml  | 3 ++-
+ state.ml | 4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+commit 7edfb0f241804bddb7ed54029759b5e4e202acb8
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu May 3 18:48:03 2018 -0400
+
+    Fixed types
+
+ characters.ml  | 2 +-
+ characters.mli | 8 ++++++--
+ main.ml        | 4 ++--
+ 3 files changed, 9 insertions(+), 5 deletions(-)
+
+commit 55fe77279f1d077d83e7e5fb8b9058ee7af2031f
+Merge: f566272 be5d5f0
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Thu May 3 18:30:50 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit f56627206cc989f5d198ee4cb25a4b976e90d633
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Thu May 3 18:30:42 2018 -0400
+
+    Added func for Z input
+
+ state.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit be5d5f0b321dccc26b754ebd95fb44ed11977cfd
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu May 3 18:28:21 2018 -0400
+
+    fixed weird bug
+
+ characters.ml   | 1 +
+ interactions.ml | 1 +
+ types.ml        | 2 +-
+ 3 files changed, 3 insertions(+), 1 deletion(-)
+
+commit 9a4d4958f18d1d5d22ef9c0f6598a863e791926b
+Merge: 9015e6a 24ccf05
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu May 3 18:16:26 2018 -0400
+
+    merge conflicts
+
+commit 9015e6a2fce19750c5fb99c143ddf7f85a1b0125
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu May 3 18:12:49 2018 -0400
+
+    working on characters and items refs
+
+ characters.ml   | 106 +++++++++++++++++++++++++++++++------
+ characters.mli  |  11 ++--
+ interactions.ml | 161 ++++++++++++++++++++++++++++++++------------------------
+ items.ml        |  21 ++++++--
+ items.mli       |   5 +-
+ state.ml        |   5 +-
+ state.mli       |   3 +-
+ types.ml        |   4 +-
+ types.mli       |   6 ++-
+ 9 files changed, 223 insertions(+), 99 deletions(-)
+
+commit 24ccf05e625b19203b760e0a8ec1c20a35c7334e
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Thu May 3 13:26:02 2018 -0400
+
+    Added function for dealing with 'A' input
+
+ command.ml |  4 ++--
+ main.ml    |  2 +-
+ state.ml   | 23 ++++++++++++++++++++++
+ types.ml   | 64 ++++++++++++++++++++++++++++++------------------------------
+ types.mli  | 66 ++++++++++++++++++++++++++++++--------------------------------
+ 5 files changed, 90 insertions(+), 69 deletions(-)
+
+commit e445797100f4942a13b9240ee8a662989acce42b
+Merge: 1ec10e3 0c2b8de
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Thu May 3 10:28:13 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 1ec10e35f0cbbe514e10eaf05a553eb4ef2a41e8
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Thu May 3 10:28:02 2018 -0400
+
+    merge commit
+
+ gui.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 0c2b8de6616880944545d796f51ad743c1104e86
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu May 3 03:48:56 2018 -0400
+
+    Fixed moving two squares in first move bug
+
+ state.ml | 2 +-
+ types.ml | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 5b3087da85f86cc04949b3dab7a88a720dc71d69
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu May 3 03:22:16 2018 -0400
+
+    Arrow keys work now to move cursor
+
+ command.ml  |   3 +
+ command.mli |   1 +
+ gui.ml      |  62 +++----
+ main.ml     |  12 +-
+ room.ml     | 531 ++++++++++++++++++++++++++++++++++++++++++------------------
+ state.ml    |  20 ++-
+ state.mli   |   4 +-
+ types.ml    |   4 +-
+ types.mli   |   4 +
+ 9 files changed, 439 insertions(+), 202 deletions(-)
+
+commit afdd0f73d43dafc06e812d79212378957f372cb9
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Thu May 3 02:31:09 2018 -0400
+
+    Front, East, and South for all actions
+
+ gui.ml  | 202 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------
+ main.ml |   4 +-
+ 2 files changed, 187 insertions(+), 19 deletions(-)
+
+commit 79a26fa2410e7e8acbdf5285117fa85874905e99
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Wed May 2 21:06:28 2018 -0400
+
+    Finished front ready and front moving
+
+ gui.ml  | 49 +++++++++++++++++++++++++++----------------------
+ main.ml |  2 +-
+ 2 files changed, 28 insertions(+), 23 deletions(-)
+
+commit 3131a642a253a41bffbf73bf2e0e815dd9ae2324
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Wed May 2 20:46:25 2018 -0400
+
+    Added a front stand lyn sprite to proj
+
+ Sprites/LYN.png      | Bin 0 -> 25150 bytes
+ Sprites/Lyn.png      | Bin 24012 -> 0 bytes
+ Sprites/lynsheet.png | Bin 0 -> 18475 bytes
+ gui.ml               |  17 ++++++++++++-----
+ 4 files changed, 12 insertions(+), 5 deletions(-)
+
+commit 20ce2575c6106b9f7a5394dd37c091c79a7ff240
+Merge: ce6a78c 4857760
+Author: rg545 <rg545@cornell.edu>
+Date:   Wed May 2 17:26:02 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit ce6a78c0d2c8e1894607027af5923d3af9f94170
+Author: rg545 <rg545@cornell.edu>
+Date:   Wed May 2 17:25:56 2018 -0400
+
+    started working on fixing interactions
+
+ interactions.ml | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+commit 48577601c02c67304393096b3ac06fce20c43eee
+Author: awt46 <awt46@cornell.edu>
+Date:   Wed May 2 16:55:33 2018 -0400
+
+    Changed type definitions
+
+ command.ml      |   2 +-
+ command.mli     |   2 +-
+ gui.ml          |  40 +++----
+ interactions.ml |   7 +-
+ main.ml         |   6 +-
+ room.ml         | 320 ++++++++++++++++++++++++++++----------------------------
+ state.ml        |  39 +++----
+ types.ml        |  17 +--
+ types.mli       |  13 +--
+ 9 files changed, 226 insertions(+), 220 deletions(-)
+
+commit 3155e7a4a78b6ef94d484d434b0d0a317d2105fa
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Wed May 2 16:53:53 2018 -0400
+
+    Added more sprite functions
+
+ gui.ml  | 41 ++++++++++++++++++++++++++++++++++++-----
+ main.ml | 39 ++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 74 insertions(+), 6 deletions(-)
+
+commit 222fcec14bd9f072c673fb6bd7ca1e1eec78003d
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Wed May 2 16:04:04 2018 -0400
+
+    Fixing character to contain direction, adding gui funcs for sprites
+
+ Sprites/Lyn.png | Bin 0 -> 24012 bytes
+ gui.ml          |  23 ++++++++++++++++++++---
+ types.ml        |   4 ++++
+ types.mli       |   2 ++
+ 4 files changed, 26 insertions(+), 3 deletions(-)
+
+commit 36bf2282a665222e0482ea35e07ab18800fdb920
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Wed May 2 14:56:51 2018 -0400
+
+    Added specs
+
+ gui.ml | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
+
+commit 56d42af1ccc57018a1541e1c5a2369fa296ec691
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Wed May 2 14:40:28 2018 -0400
+
+    Finished cursor
+
+ gui.ml  | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ main.ml |  2 +-
+ 2 files changed, 53 insertions(+), 1 deletion(-)
+
+commit 6a6526614e31edb049739ab780d212289fd4bfad
+Author: awt46 <awt46@cornell.edu>
+Date:   Wed May 2 01:36:11 2018 -0400
+
+    Starting fixing errors with command types
+
+ command.ml  | 1 -
+ command.mli | 2 +-
+ state.ml    | 9 ++++++---
+ types.ml    | 4 ++--
+ types.mli   | 8 ++++----
+ 5 files changed, 13 insertions(+), 11 deletions(-)
+
+commit 6697e8a2f69bdbf9896604e7e2cc396679c6442f
+Author: awt46 <awt46@cornell.edu>
+Date:   Wed May 2 01:25:10 2018 -0400
+
+    Commented out equippable function in characters.mli and also changed ai option back to AI in character record to get stuff to compile
+
+ characters.ml  | 7 -------
+ characters.mli | 2 +-
+ types.ml       | 4 ++--
+ types.mli      | 2 +-
+ 4 files changed, 4 insertions(+), 11 deletions(-)
+
+commit 181ac55ead0c79d7d350e6694045521795d00ea0
+Author: DarrenT9 <dt356@cornell.edu>
+Date:   Wed May 2 00:09:34 2018 -0400
+
+    Cursor Images
+
+ Sprites/CursorLarge.png | Bin 0 -> 990 bytes
+ Sprites/CursorSmall.png | Bin 0 -> 1124 bytes
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit d8c842fab79c514aadbc47712feeb3e6e5477e26
+Merge: 930b6fd 9d1611f
+Author: vagrant <vagrant@vm3110-2018sp>
+Date:   Tue May 1 23:42:43 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 930b6fdf51016e825635272a6dae69ba004fbaee
+Author: vagrant <vagrant@vm3110-2018sp>
+Date:   Tue May 1 23:42:25 2018 -0400
+
+    basic dijkstra's testing
+
+ .merlin | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 5a617f337afcfb2535cf9470e24fe544940d1507
+Author: vagrant <vagrant@vm3110-2018sp>
+Date:   Tue May 1 23:40:55 2018 -0400
+
+    basic dijkstra's testing
+
+ test.ml | 47 +++++++++++++++++------------------------------
+ 1 file changed, 17 insertions(+), 30 deletions(-)
+
+commit 9d1611f9aa75f7bd319043c223e48f1ce8814b91
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue May 1 23:23:04 2018 -0400
+
+    i dont know what i changed
+
+ state.mli | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 543f6584633fbed69d024822222c6f06f4011306
+Merge: 621ded5 d8be74d
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue May 1 23:22:14 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 621ded5ec4b9a7993d6b12a267aab6c08e6d9bf4
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue May 1 23:22:08 2018 -0400
+
+    started test cases
+
+ characters.ml  | 59 +++++++---------------------------------------------------
+ characters.mli |  2 ++
+ 2 files changed, 9 insertions(+), 52 deletions(-)
+
+commit d8be74d9b8a291dc9838099cd38308ab1655011e
+Author: vagrant <vagrant@vm3110-2018sp>
+Date:   Tue May 1 23:21:16 2018 -0400
+
+    testing sorta
+
+ state.mli |  2 ++
+ test.ml   | 35 +++++++++++++++++++++++++++--------
+ 2 files changed, 29 insertions(+), 8 deletions(-)
+
+commit 44b94b3f07f38e2645ca3b42937808c61b457a16
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue May 1 23:21:13 2018 -0400
+
+    started test cases
+
+ .merlin   |   1 +
+ Makefile  |   3 +-
+ state.ml  |  19 +----------
+ test2.ml  | 106 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ types.ml  |   2 +-
+ types.mli |   2 +-
+ 6 files changed, 112 insertions(+), 21 deletions(-)
+
+commit 7a3e1b8e52a182e2b3f04af590a473b58365054f
+Author: frodr33 <fsr32@cornell.edu>
+Date:   Tue May 1 23:19:03 2018 -0400
+
+    adding test map and corresponding draw func
+
+ gui.ml   | 23 +++++++++++++++++++++--
+ room.ml  | 25 +++++++++++++++++++++++++
+ room.mli |  2 ++
+ types.ml |  1 +
+ 4 files changed, 49 insertions(+), 2 deletions(-)
+
+commit 459250104b785b1df2d0f93ed6e0f76363171f6a
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue May 1 22:06:55 2018 -0400
+
+    added more interactions
+
+ characters.ml   |  12 +++++
+ characters.mli  |   4 ++
+ interaction.mli |   3 ++
+ interactions.ml |   2 +
+ test.ml         | 143 --------------------------------------------------------
+ 5 files changed, 21 insertions(+), 143 deletions(-)
+
+commit 99f2daf8faac34a8d71aca92c924c1aafd034a28
+Author: Frank <fsr32@cornell.edu>
+Date:   Mon Apr 30 16:17:56 2018 -0400
+
+    Fixed fonts on menu
+
+ Sprites/databackground.png | Bin 0 -> 488 bytes
+ gui.ml                     |   4 +++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+commit 1b53029432f585a3f56261710bdc1b02e7174387
+Author: Frank <fsr32@cornell.edu>
+Date:   Mon Apr 30 15:58:11 2018 -0400
+
+    Added music
+
+ Sprites/Music/MainTheme.mp3 | Bin 0 -> 3956028 bytes
+ main.ml                     |   6 +++---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 54fd3d1bee68a034890169cc542f39bafe84b471
+Author: Frank <fsr32@cornell.edu>
+Date:   Mon Apr 30 15:33:38 2018 -0400
+
+    Can display 10 by 15 maps now
+
+ gui.ml | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
+
+commit a1c70a31dce9912a45c17edcab1854105b4f744a
+Author: Frank <fsr32@cornell.edu>
+Date:   Mon Apr 30 03:50:13 2018 -0400
+
+    Finally managed to get a tile show up
+
+ Sprites/Logo.png      | Bin 30726 -> 18677 bytes
+ Sprites/LogoClean.png | Bin 18677 -> 0 bytes
+ Sprites/LogoOld.png   | Bin 0 -> 30726 bytes
+ command.ml            |   4 ++-
+ gui.ml                |  74 ++++++++++++++++++++++++++++----------------------
+ main.ml               |  58 +++++++++++++++++++++------------------
+ state.ml              |   2 +-
+ 7 files changed, 77 insertions(+), 61 deletions(-)
+
+commit c5bbf9928b5386f5e9b8654f9e43d00209b8bfb4
+Author: Frank <fsr32@cornell.edu>
+Date:   Mon Apr 30 01:29:28 2018 -0400
+
+    Got it to compile
+
+ ai.ml      | 0
+ ai.mli     | 4 +++-
+ gui.ml     | 2 +-
+ index.html | 4 ++--
+ room.ml    | 8 ++++----
+ types.ml   | 2 +-
+ types.mli  | 2 +-
+ 7 files changed, 12 insertions(+), 10 deletions(-)
+
+commit 05468d033a41067cd7e500edb20ea79b64084548
+Author: Frank <fsr32@cornell.edu>
+Date:   Mon Apr 30 01:09:59 2018 -0400
+
+    Fixed liked a million bugs
+
+ gui.ml    |  6 +++---
+ state.ml  | 46 +++++++++++++++++++++++++++-------------------
+ types.ml  | 18 ++++++++++--------
+ types.mli | 41 +++++++++++++++++++++++++++--------------
+ 4 files changed, 67 insertions(+), 44 deletions(-)
+
+commit 31f63d0ee3111645f9ab236f50553ba5113e5b6a
+Author: Frank <fsr32@cornell.edu>
+Date:   Mon Apr 30 00:32:09 2018 -0400
+
+    Converting rooms to 2D array and fixing draw_map
+
+ gui.ml    |  35 ++++++++++----------
+ gui.mli   |   2 +-
+ room.ml   | 112 +++++++++++++++++++++++++++++++++++---------------------------
+ types.mli |   2 +-
+ 4 files changed, 83 insertions(+), 68 deletions(-)
+
+commit b1b5d9530c2030c0e43086e07c8a619601b47a56
+Author: Frank <fsr32@cornell.edu>
+Date:   Sun Apr 29 23:37:51 2018 -0400
+
+    Matched mlis
+
+ command.ml  | 2 ++
+ command.mli | 9 +++++----
+ gui.ml      | 2 +-
+ state.ml    | 2 +-
+ 4 files changed, 9 insertions(+), 6 deletions(-)
+
+commit 22be25e8d27998e0edce140357d2f0868056ff76
+Author: Frank <fsr32@cornell.edu>
+Date:   Sun Apr 29 23:30:46 2018 -0400
+
+    Fixed bugs in gui and main
+
+ gui.ml    | 9 ++++++---
+ main.ml   | 4 ++--
+ state.mli | 4 ++--
+ types.mli | 4 +++-
+ 4 files changed, 13 insertions(+), 8 deletions(-)
+
+commit eef6777a640b2f4980d60ac34677247d9dcce0d1
+Author: Frank <fsr32@cornell.edu>
+Date:   Sun Apr 29 23:20:39 2018 -0400
+
+    Fixed weird js_of_ocaml errors and debugging
+
+ Makefile        | 27 +++++++++++++++++++--------
+ _tags           |  3 +++
+ command.ml      |  3 +++
+ command.mli     |  6 ++++++
+ gui.mli         |  6 ++++++
+ main.ml         | 28 +++++++++++++++++++++++++---
+ myocamlbuild.ml |  1 +
+ state.mli       | 18 +++++++++++++++++-
+ types.mli       | 15 +++++++++++++--
+ 9 files changed, 93 insertions(+), 14 deletions(-)
+
+commit 4cb7a1cea9d5bec04087109a512ecd9714d42f2b
+Author: rg545 <rg545@cornell.edu>
+Date:   Sat Apr 7 23:03:36 2018 -0400
+
+    changed fields in character and tile
+
+ state.ml | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+commit df5aa42fe288ad0ace7eab05bf112817f630596c
+Author: rg545 <rg545@cornell.edu>
+Date:   Sat Apr 7 23:00:37 2018 -0400
+
+    changed fields in character and tile
+
+ types.mli | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 03b3a3787bb339c928ff883657f271778a1f67d0
+Author: rg545 <rg545@cornell.edu>
+Date:   Sat Apr 7 22:55:30 2018 -0400
+
+    changed fields in character and tile
+
+ state.ml  | 18 ++++++++++--------
+ types.ml  |  2 +-
+ types.mli | 13 ++++++++-----
+ 3 files changed, 19 insertions(+), 14 deletions(-)
+
+commit 0b2bf6947ddf36588a8d42332631bb6f02574c83
+Author: rg545 <rg545@cornell.edu>
+Date:   Sat Apr 7 18:38:46 2018 -0400
+
+    added normal dijkstra's function
+
+ state.ml | 3 ++-
+ test.ml  | 3 +++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+commit 6f3ea2ffb7a8f80d95564cf4d4ec251b8cf87ea0
+Author: DarrenT9 <dt356@cornell.edu>
+Date:   Sat Apr 7 17:25:00 2018 -0400
+
+    All Icon PNGs
+
+ Sprites/Items/Blue_Garnet.png   | Bin 0 -> 421 bytes
+ Sprites/Items/Blue_Gem.png      | Bin 0 -> 353 bytes
+ Sprites/Items/Clam.png          | Bin 0 -> 431 bytes
+ Sprites/Items/Claw_1.png        | Bin 0 -> 388 bytes
+ Sprites/Items/Claw_2.png        | Bin 0 -> 410 bytes
+ Sprites/Items/Claw_3.png        | Bin 0 -> 427 bytes
+ Sprites/Items/Claw_4.png        | Bin 0 -> 422 bytes
+ Sprites/Items/Claw_5.png        | Bin 0 -> 449 bytes
+ Sprites/Items/Elysian_Whip.png  | Bin 0 -> 554 bytes
+ Sprites/Items/Eye_1.png         | Bin 0 -> 482 bytes
+ Sprites/Items/Eye_2.png         | Bin 0 -> 459 bytes
+ Sprites/Items/Eye_3.png         | Bin 0 -> 405 bytes
+ Sprites/Items/Eye_4.png         | Bin 0 -> 417 bytes
+ Sprites/Items/Eye_5.png         | Bin 0 -> 419 bytes
+ Sprites/Items/Eye_6.png         | Bin 0 -> 424 bytes
+ Sprites/Items/Eye_7.png         | Bin 0 -> 420 bytes
+ Sprites/Items/Eye_8.png         | Bin 0 -> 437 bytes
+ Sprites/Items/Feather.png       | Bin 0 -> 365 bytes
+ Sprites/Items/Gold_Card.png     | Bin 0 -> 360 bytes
+ Sprites/Items/Gold_Garnet.png   | Bin 0 -> 389 bytes
+ Sprites/Items/Gold_Gem.png      | Bin 0 -> 416 bytes
+ Sprites/Items/Key_1.png         | Bin 0 -> 398 bytes
+ Sprites/Items/Key_2.png         | Bin 0 -> 410 bytes
+ Sprites/Items/Key_3.png         | Bin 0 -> 433 bytes
+ Sprites/Items/Key_4.png         | Bin 0 -> 423 bytes
+ Sprites/Items/Misc_1.png        | Bin 0 -> 526 bytes
+ Sprites/Items/Misc_2.png        | Bin 0 -> 647 bytes
+ Sprites/Items/Misc_3.png        | Bin 0 -> 538 bytes
+ Sprites/Items/Misc_4.png        | Bin 0 -> 534 bytes
+ Sprites/Items/Misc_5.png        | Bin 0 -> 416 bytes
+ Sprites/Items/Misc_6.png        | Bin 0 -> 510 bytes
+ Sprites/Items/Misc_7.png        | Bin 0 -> 439 bytes
+ Sprites/Items/Misc_8.png        | Bin 0 -> 424 bytes
+ Sprites/Items/Orions_Bolt.png   | Bin 0 -> 513 bytes
+ Sprites/Items/Potion_1.png      | Bin 0 -> 416 bytes
+ Sprites/Items/Potion_2.png      | Bin 0 -> 408 bytes
+ Sprites/Items/Potion_3.png      | Bin 0 -> 467 bytes
+ Sprites/Items/Potion_4.png      | Bin 0 -> 402 bytes
+ Sprites/Items/Potion_5.png      | Bin 0 -> 426 bytes
+ Sprites/Items/Potion_6.png      | Bin 0 -> 369 bytes
+ Sprites/Items/Potion_7.png      | Bin 0 -> 427 bytes
+ Sprites/Items/Red_Garnet.png    | Bin 0 -> 419 bytes
+ Sprites/Items/Red_Gem.png       | Bin 0 -> 349 bytes
+ Sprites/Items/Ring_1.png        | Bin 0 -> 473 bytes
+ Sprites/Items/Ring_2.png        | Bin 0 -> 428 bytes
+ Sprites/Items/Ring_3.png        | Bin 0 -> 479 bytes
+ Sprites/Items/Ring_4.png        | Bin 0 -> 417 bytes
+ Sprites/Items/Ring_5.png        | Bin 0 -> 472 bytes
+ Sprites/Items/Ring_6.png        | Bin 0 -> 482 bytes
+ Sprites/Items/Ring_7.png        | Bin 0 -> 499 bytes
+ Sprites/Items/Ring_8.png        | Bin 0 -> 494 bytes
+ Sprites/Items/Ring_9.png        | Bin 0 -> 481 bytes
+ Sprites/Items/Scroll_1.png      | Bin 0 -> 460 bytes
+ Sprites/Items/Scroll_2.png      | Bin 0 -> 510 bytes
+ Sprites/Items/Scroll_3.png      | Bin 0 -> 448 bytes
+ Sprites/Items/Seal_1.png        | Bin 0 -> 474 bytes
+ Sprites/Items/Seal_10.png       | Bin 0 -> 529 bytes
+ Sprites/Items/Seal_11.png       | Bin 0 -> 507 bytes
+ Sprites/Items/Seal_2.png        | Bin 0 -> 444 bytes
+ Sprites/Items/Seal_3.png        | Bin 0 -> 560 bytes
+ Sprites/Items/Seal_4.png        | Bin 0 -> 495 bytes
+ Sprites/Items/Seal_5.png        | Bin 0 -> 482 bytes
+ Sprites/Items/Seal_6.png        | Bin 0 -> 335 bytes
+ Sprites/Items/Seal_7.png        | Bin 0 -> 453 bytes
+ Sprites/Items/Seal_8.png        | Bin 0 -> 500 bytes
+ Sprites/Items/Seal_9.png        | Bin 0 -> 503 bytes
+ Sprites/Items/Silver_Card.png   | Bin 0 -> 370 bytes
+ Sprites/Items/Silver_Garnet.png | Bin 0 -> 434 bytes
+ Sprites/Items/Silver_Gem.png    | Bin 0 -> 375 bytes
+ Sprites/Items/Staff_1.png       | Bin 0 -> 387 bytes
+ Sprites/Items/Staff_10.png      | Bin 0 -> 424 bytes
+ Sprites/Items/Staff_11.png      | Bin 0 -> 428 bytes
+ Sprites/Items/Staff_12.png      | Bin 0 -> 425 bytes
+ Sprites/Items/Staff_13.png      | Bin 0 -> 390 bytes
+ Sprites/Items/Staff_14.png      | Bin 0 -> 392 bytes
+ Sprites/Items/Staff_15.png      | Bin 0 -> 419 bytes
+ Sprites/Items/Staff_16.png      | Bin 0 -> 404 bytes
+ Sprites/Items/Staff_17.png      | Bin 0 -> 376 bytes
+ Sprites/Items/Staff_18.png      | Bin 0 -> 453 bytes
+ Sprites/Items/Staff_19.png      | Bin 0 -> 464 bytes
+ Sprites/Items/Staff_2.png       | Bin 0 -> 396 bytes
+ Sprites/Items/Staff_3.png       | Bin 0 -> 464 bytes
+ Sprites/Items/Staff_4.png       | Bin 0 -> 391 bytes
+ Sprites/Items/Staff_5.png       | Bin 0 -> 410 bytes
+ Sprites/Items/Staff_6.png       | Bin 0 -> 411 bytes
+ Sprites/Items/Staff_7.png       | Bin 0 -> 387 bytes
+ Sprites/Items/Staff_8.png       | Bin 0 -> 421 bytes
+ Sprites/Items/Staff_9.png       | Bin 0 -> 393 bytes
+ Sprites/Items/Torch.png         | Bin 0 -> 405 bytes
+ Sprites/Items/White_Gem.png     | Bin 0 -> 369 bytes
+ 90 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 7989598b43df5ae0045ac8da9d2e178f838ed194
+Author: rg545 <rg545@cornell.edu>
+Date:   Fri Apr 6 22:03:36 2018 -0400
+
+    added update_character and more stuff to character type
+
+ characters.ml | 120 +++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ types.mli     |   4 +-
+ 2 files changed, 113 insertions(+), 11 deletions(-)
+
+commit 3779f30fe2017cdf203c8e3b30920b5d9391574d
+Author: rg545 <rg545@cornell.edu>
+Date:   Fri Apr 6 20:22:36 2018 -0400
+
+    forgot the test file
+
+ test.ml | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+commit f37554cc114fe5d936d1100d30c5819b095f6d79
+Merge: 80b8c0e df26579
+Author: rg545 <rg545@cornell.edu>
+Date:   Fri Apr 6 20:19:33 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 80b8c0e6bc0850daccd3e8d927e503ffd935a1f7
+Author: rg545 <rg545@cornell.edu>
+Date:   Fri Apr 6 20:19:20 2018 -0400
+
+    fixed dijkstas. pending more rigorous testing
+
+ state.ml |  31 +++++----
+ test.ml  | 239 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 255 insertions(+), 15 deletions(-)
+
+commit df26579540a06393eb76118e88ac29b454072ae5
+Author: DarrenT9 <dt356@cornell.edu>
+Date:   Fri Apr 6 19:56:48 2018 -0400
+
+    Halfway through items
+
+ Sprites/Items/Axe_1.png    | Bin 0 -> 370 bytes
+ Sprites/Items/Axe_10.png   | Bin 0 -> 464 bytes
+ Sprites/Items/Axe_11.png   | Bin 0 -> 516 bytes
+ Sprites/Items/Axe_12.png   | Bin 0 -> 485 bytes
+ Sprites/Items/Axe_13.png   | Bin 0 -> 465 bytes
+ Sprites/Items/Axe_14.png   | Bin 0 -> 496 bytes
+ Sprites/Items/Axe_15.png   | Bin 0 -> 448 bytes
+ Sprites/Items/Axe_16.png   | Bin 0 -> 463 bytes
+ Sprites/Items/Axe_17.png   | Bin 0 -> 483 bytes
+ Sprites/Items/Axe_18.png   | Bin 0 -> 486 bytes
+ Sprites/Items/Axe_19.png   | Bin 0 -> 473 bytes
+ Sprites/Items/Axe_2.png    | Bin 0 -> 417 bytes
+ Sprites/Items/Axe_20.png   | Bin 0 -> 432 bytes
+ Sprites/Items/Axe_21.png   | Bin 0 -> 536 bytes
+ Sprites/Items/Axe_3.png    | Bin 0 -> 429 bytes
+ Sprites/Items/Axe_4.png    | Bin 0 -> 484 bytes
+ Sprites/Items/Axe_5.png    | Bin 0 -> 463 bytes
+ Sprites/Items/Axe_6.png    | Bin 0 -> 441 bytes
+ Sprites/Items/Axe_7.png    | Bin 0 -> 510 bytes
+ Sprites/Items/Axe_8.png    | Bin 0 -> 466 bytes
+ Sprites/Items/Axe_9.png    | Bin 0 -> 491 bytes
+ Sprites/Items/Book_1.png   | Bin 0 -> 370 bytes
+ Sprites/Items/Book_10.png  | Bin 0 -> 427 bytes
+ Sprites/Items/Book_11.png  | Bin 0 -> 405 bytes
+ Sprites/Items/Book_12.png  | Bin 0 -> 441 bytes
+ Sprites/Items/Book_13.png  | Bin 0 -> 457 bytes
+ Sprites/Items/Book_14.png  | Bin 0 -> 479 bytes
+ Sprites/Items/Book_15.png  | Bin 0 -> 470 bytes
+ Sprites/Items/Book_16.png  | Bin 0 -> 464 bytes
+ Sprites/Items/Book_17.png  | Bin 0 -> 475 bytes
+ Sprites/Items/Book_18.png  | Bin 0 -> 361 bytes
+ Sprites/Items/Book_19.png  | Bin 0 -> 419 bytes
+ Sprites/Items/Book_2.png   | Bin 0 -> 390 bytes
+ Sprites/Items/Book_20.png  | Bin 0 -> 401 bytes
+ Sprites/Items/Book_21.png  | Bin 0 -> 396 bytes
+ Sprites/Items/Book_22.png  | Bin 0 -> 449 bytes
+ Sprites/Items/Book_23.png  | Bin 0 -> 462 bytes
+ Sprites/Items/Book_24.png  | Bin 0 -> 441 bytes
+ Sprites/Items/Book_25.png  | Bin 0 -> 487 bytes
+ Sprites/Items/Book_26.png  | Bin 0 -> 447 bytes
+ Sprites/Items/Book_27.png  | Bin 0 -> 479 bytes
+ Sprites/Items/Book_28.png  | Bin 0 -> 481 bytes
+ Sprites/Items/Book_29.png  | Bin 0 -> 491 bytes
+ Sprites/Items/Book_3.png   | Bin 0 -> 412 bytes
+ Sprites/Items/Book_30.png  | Bin 0 -> 469 bytes
+ Sprites/Items/Book_4.png   | Bin 0 -> 438 bytes
+ Sprites/Items/Book_5.png   | Bin 0 -> 449 bytes
+ Sprites/Items/Book_6.png   | Bin 0 -> 403 bytes
+ Sprites/Items/Book_7.png   | Bin 0 -> 425 bytes
+ Sprites/Items/Book_8.png   | Bin 0 -> 424 bytes
+ Sprites/Items/Book_9.png   | Bin 0 -> 388 bytes
+ Sprites/Items/Boots.png    | Bin 0 -> 453 bytes
+ Sprites/Items/Bow_1.png    | Bin 0 -> 438 bytes
+ Sprites/Items/Bow_10.png   | Bin 0 -> 448 bytes
+ Sprites/Items/Bow_11.png   | Bin 0 -> 503 bytes
+ Sprites/Items/Bow_2.png    | Bin 0 -> 462 bytes
+ Sprites/Items/Bow_3.png    | Bin 0 -> 449 bytes
+ Sprites/Items/Bow_4.png    | Bin 0 -> 384 bytes
+ Sprites/Items/Bow_5.png    | Bin 0 -> 477 bytes
+ Sprites/Items/Bow_6.png    | Bin 0 -> 419 bytes
+ Sprites/Items/Bow_7.png    | Bin 0 -> 440 bytes
+ Sprites/Items/Bow_8.png    | Bin 0 -> 458 bytes
+ Sprites/Items/Bow_9.png    | Bin 0 -> 478 bytes
+ Sprites/Items/Notes_1.png  | Bin 0 -> 283 bytes
+ Sprites/Items/Notes_2.png  | Bin 0 -> 291 bytes
+ Sprites/Items/Spear_1.png  | Bin 0 -> 319 bytes
+ Sprites/Items/Spear_10.png | Bin 0 -> 425 bytes
+ Sprites/Items/Spear_11.png | Bin 0 -> 410 bytes
+ Sprites/Items/Spear_12.png | Bin 0 -> 375 bytes
+ Sprites/Items/Spear_13.png | Bin 0 -> 337 bytes
+ Sprites/Items/Spear_14.png | Bin 0 -> 375 bytes
+ Sprites/Items/Spear_15.png | Bin 0 -> 373 bytes
+ Sprites/Items/Spear_16.png | Bin 0 -> 407 bytes
+ Sprites/Items/Spear_17.png | Bin 0 -> 363 bytes
+ Sprites/Items/Spear_18.png | Bin 0 -> 359 bytes
+ Sprites/Items/Spear_19.png | Bin 0 -> 368 bytes
+ Sprites/Items/Spear_2.png  | Bin 0 -> 302 bytes
+ Sprites/Items/Spear_20.png | Bin 0 -> 381 bytes
+ Sprites/Items/Spear_21.png | Bin 0 -> 427 bytes
+ Sprites/Items/Spear_22.png | Bin 0 -> 359 bytes
+ Sprites/Items/Spear_23.png | Bin 0 -> 417 bytes
+ Sprites/Items/Spear_24.png | Bin 0 -> 441 bytes
+ Sprites/Items/Spear_3.png  | Bin 0 -> 374 bytes
+ Sprites/Items/Spear_4.png  | Bin 0 -> 334 bytes
+ Sprites/Items/Spear_5.png  | Bin 0 -> 359 bytes
+ Sprites/Items/Spear_6.png  | Bin 0 -> 397 bytes
+ Sprites/Items/Spear_7.png  | Bin 0 -> 367 bytes
+ Sprites/Items/Spear_8.png  | Bin 0 -> 359 bytes
+ Sprites/Items/Spear_9.png  | Bin 0 -> 409 bytes
+ Sprites/Items/Sword_1.png  | Bin 0 -> 322 bytes
+ Sprites/Items/Sword_10.png | Bin 0 -> 382 bytes
+ Sprites/Items/Sword_11.png | Bin 0 -> 437 bytes
+ Sprites/Items/Sword_12.png | Bin 0 -> 354 bytes
+ Sprites/Items/Sword_13.png | Bin 0 -> 419 bytes
+ Sprites/Items/Sword_14.png | Bin 0 -> 408 bytes
+ Sprites/Items/Sword_15.png | Bin 0 -> 518 bytes
+ Sprites/Items/Sword_16.png | Bin 0 -> 437 bytes
+ Sprites/Items/Sword_17.png | Bin 0 -> 411 bytes
+ Sprites/Items/Sword_18.png | Bin 0 -> 423 bytes
+ Sprites/Items/Sword_19.png | Bin 0 -> 432 bytes
+ Sprites/Items/Sword_2.png  | Bin 0 -> 328 bytes
+ Sprites/Items/Sword_20.png | Bin 0 -> 420 bytes
+ Sprites/Items/Sword_21.png | Bin 0 -> 340 bytes
+ Sprites/Items/Sword_22.png | Bin 0 -> 501 bytes
+ Sprites/Items/Sword_23.png | Bin 0 -> 364 bytes
+ Sprites/Items/Sword_24.png | Bin 0 -> 412 bytes
+ Sprites/Items/Sword_25.png | Bin 0 -> 360 bytes
+ Sprites/Items/Sword_26.png | Bin 0 -> 371 bytes
+ Sprites/Items/Sword_27.png | Bin 0 -> 357 bytes
+ Sprites/Items/Sword_28.png | Bin 0 -> 448 bytes
+ Sprites/Items/Sword_29.png | Bin 0 -> 446 bytes
+ Sprites/Items/Sword_3.png  | Bin 0 -> 363 bytes
+ Sprites/Items/Sword_30.png | Bin 0 -> 477 bytes
+ Sprites/Items/Sword_4.png  | Bin 0 -> 414 bytes
+ Sprites/Items/Sword_5.png  | Bin 0 -> 401 bytes
+ Sprites/Items/Sword_6.png  | Bin 0 -> 407 bytes
+ Sprites/Items/Sword_7.png  | Bin 0 -> 406 bytes
+ Sprites/Items/Sword_8.png  | Bin 0 -> 358 bytes
+ Sprites/Items/Sword_9.png  | Bin 0 -> 380 bytes
+ Sprites/Items/Turret_1.png | Bin 0 -> 469 bytes
+ Sprites/Items/Turret_2.png | Bin 0 -> 478 bytes
+ Sprites/Items/Turret_3.png | Bin 0 -> 511 bytes
+ 122 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 37add2ae793fcbb153e60528c49aa1c6a573d9f8
+Author: DarrenT9 <dt356@cornell.edu>
+Date:   Fri Apr 6 19:09:33 2018 -0400
+
+    Logo w no background color
+
+ Sprites/LogoClean.png | Bin 0 -> 18677 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit a9a175f82e5c2af6aaaf4f9c5ceeea7e554a64ee
+Author: DarrenT9 <dt356@cornell.edu>
+Date:   Fri Apr 6 18:29:12 2018 -0400
+
+    TONS of ally sprites
+
+ Sprites/AllySprites/Ally_Arch_Mogall.png         | Bin 0 -> 587 bytes
+ Sprites/AllySprites/Ally_Archer_F.png            | Bin 0 -> 550 bytes
+ Sprites/AllySprites/Ally_Archer_M.png            | Bin 0 -> 555 bytes
+ Sprites/AllySprites/Ally_Assassin_F.png          | Bin 0 -> 534 bytes
+ Sprites/AllySprites/Ally_Assassin_M.png          | Bin 0 -> 521 bytes
+ Sprites/AllySprites/Ally_Bael.png                | Bin 0 -> 523 bytes
+ Sprites/AllySprites/Ally_Ballista.png            | Bin 0 -> 688 bytes
+ Sprites/AllySprites/Ally_Bard.png                | Bin 0 -> 508 bytes
+ Sprites/AllySprites/Ally_Berserker.png           | Bin 0 -> 737 bytes
+ Sprites/AllySprites/Ally_Bishop_F.png            | Bin 0 -> 574 bytes
+ Sprites/AllySprites/Ally_Bishop_M.png            | Bin 0 -> 579 bytes
+ Sprites/AllySprites/Ally_Bonewalker_Bow.png      | Bin 0 -> 611 bytes
+ Sprites/AllySprites/Ally_Bonewalker_Sword.png    | Bin 0 -> 586 bytes
+ Sprites/AllySprites/Ally_Boy.png                 | Bin 0 -> 431 bytes
+ Sprites/AllySprites/Ally_Brigand.png             | Bin 0 -> 618 bytes
+ Sprites/AllySprites/Ally_Cavalier.png            | Bin 0 -> 681 bytes
+ Sprites/AllySprites/Ally_Cleric.png              | Bin 0 -> 578 bytes
+ Sprites/AllySprites/Ally_Cyclops.png             | Bin 0 -> 667 bytes
+ Sprites/AllySprites/Ally_Dancer.png              | Bin 0 -> 565 bytes
+ Sprites/AllySprites/Ally_Deathgoyle.png          | Bin 0 -> 711 bytes
+ Sprites/AllySprites/Ally_Demon_King.png          | Bin 0 -> 1214 bytes
+ Sprites/AllySprites/Ally_Draco_Zombie.png        | Bin 0 -> 805 bytes
+ Sprites/AllySprites/Ally_Druid.png               | Bin 0 -> 564 bytes
+ Sprites/AllySprites/Ally_Elder_Bael.png          | Bin 0 -> 610 bytes
+ Sprites/AllySprites/Ally_Entombed.png            | Bin 0 -> 605 bytes
+ Sprites/AllySprites/Ally_Falcon_Knight.png       | Bin 0 -> 725 bytes
+ Sprites/AllySprites/Ally_Fighter.png             | Bin 0 -> 572 bytes
+ Sprites/AllySprites/Ally_Fleet.png               | Bin 0 -> 543 bytes
+ Sprites/AllySprites/Ally_Gargoyle.png            | Bin 0 -> 629 bytes
+ Sprites/AllySprites/Ally_General.png             | Bin 0 -> 717 bytes
+ Sprites/AllySprites/Ally_Girl.png                | Bin 0 -> 435 bytes
+ Sprites/AllySprites/Ally_Gorgon.png              | Bin 0 -> 605 bytes
+ Sprites/AllySprites/Ally_Gorgon_Egg.png          | Bin 0 -> 497 bytes
+ Sprites/AllySprites/Ally_Great_Knight.png        | Bin 0 -> 701 bytes
+ Sprites/AllySprites/Ally_Gwyllgi.png             | Bin 0 -> 644 bytes
+ Sprites/AllySprites/Ally_Hero_M.png              | Bin 0 -> 628 bytes
+ Sprites/AllySprites/Ally_Journeyman.png          | Bin 0 -> 588 bytes
+ Sprites/AllySprites/Ally_Killer_Ballista.png     | Bin 0 -> 680 bytes
+ Sprites/AllySprites/Ally_King.png                | Bin 0 -> 555 bytes
+ Sprites/AllySprites/Ally_Knight.png              | Bin 0 -> 563 bytes
+ Sprites/AllySprites/Ally_Maelduin.png            | Bin 0 -> 661 bytes
+ Sprites/AllySprites/Ally_Mage_F.png              | Bin 0 -> 537 bytes
+ Sprites/AllySprites/Ally_Mage_Knight_F.png       | Bin 0 -> 681 bytes
+ Sprites/AllySprites/Ally_Mage_Knight_M.png       | Bin 0 -> 659 bytes
+ Sprites/AllySprites/Ally_Mage_M.png              | Bin 0 -> 479 bytes
+ Sprites/AllySprites/Ally_Man.png                 | Bin 0 -> 499 bytes
+ Sprites/AllySprites/Ally_Manakete_Morva.png      | Bin 0 -> 953 bytes
+ Sprites/AllySprites/Ally_Manakete_Myrrh.png      | Bin 0 -> 576 bytes
+ Sprites/AllySprites/Ally_Mauthedoog.png          | Bin 0 -> 579 bytes
+ Sprites/AllySprites/Ally_Mercenary.png           | Bin 0 -> 615 bytes
+ Sprites/AllySprites/Ally_Mogall.png              | Bin 0 -> 562 bytes
+ Sprites/AllySprites/Ally_Myrmidon_F.png          | Bin 0 -> 542 bytes
+ Sprites/AllySprites/Ally_Myrmidon_M.png          | Bin 0 -> 557 bytes
+ Sprites/AllySprites/Ally_Necromancer.png         | Bin 0 -> 556 bytes
+ Sprites/AllySprites/Ally_Paladin.png             | Bin 0 -> 705 bytes
+ Sprites/AllySprites/Ally_Pegasus_Knight.png      | Bin 0 -> 677 bytes
+ Sprites/AllySprites/Ally_Phantom.png             | Bin 0 -> 524 bytes
+ Sprites/AllySprites/Ally_Pirate.png              | Bin 0 -> 611 bytes
+ Sprites/AllySprites/Ally_Pontifex.png            | Bin 0 -> 538 bytes
+ Sprites/AllySprites/Ally_Priest.png              | Bin 0 -> 587 bytes
+ Sprites/AllySprites/Ally_Prince.png              | Bin 0 -> 524 bytes
+ Sprites/AllySprites/Ally_Princess.png            | Bin 0 -> 430 bytes
+ Sprites/AllySprites/Ally_Pupil.png               | Bin 0 -> 518 bytes
+ Sprites/AllySprites/Ally_Queen.png               | Bin 0 -> 498 bytes
+ Sprites/AllySprites/Ally_Ranger.png              | Bin 0 -> 656 bytes
+ Sprites/AllySprites/Ally_Recruit.png             | Bin 0 -> 514 bytes
+ Sprites/AllySprites/Ally_Revenant.png            | Bin 0 -> 523 bytes
+ Sprites/AllySprites/Ally_Rogue.png               | Bin 0 -> 526 bytes
+ Sprites/AllySprites/Ally_Sage_F.png              | Bin 0 -> 562 bytes
+ Sprites/AllySprites/Ally_Sage_M.png              | Bin 0 -> 542 bytes
+ Sprites/AllySprites/Ally_Shaman.png              | Bin 0 -> 500 bytes
+ Sprites/AllySprites/Ally_Sniper_F.png            | Bin 0 -> 610 bytes
+ Sprites/AllySprites/Ally_Sniper_M.png            | Bin 0 -> 631 bytes
+ Sprites/AllySprites/Ally_Soldier.png             | Bin 0 -> 531 bytes
+ Sprites/AllySprites/Ally_Summoner.png            | Bin 0 -> 518 bytes
+ Sprites/AllySprites/Ally_Swordmaster_F.png       | Bin 0 -> 541 bytes
+ Sprites/AllySprites/Ally_Swordmaster_M.png       | Bin 0 -> 552 bytes
+ Sprites/AllySprites/Ally_Tarvos.png              | Bin 0 -> 653 bytes
+ Sprites/AllySprites/Ally_Thief.png               | Bin 0 -> 530 bytes
+ Sprites/AllySprites/Ally_Troubadour.png          | Bin 0 -> 647 bytes
+ Sprites/AllySprites/Ally_Valykrie.png            | Bin 0 -> 657 bytes
+ Sprites/AllySprites/Ally_Warrior.png             | Bin 0 -> 747 bytes
+ Sprites/AllySprites/Ally_White_Egg.png           | Bin 0 -> 515 bytes
+ Sprites/AllySprites/Ally_Wight_Bow.png           | Bin 0 -> 641 bytes
+ Sprites/AllySprites/Ally_Wight_Sword.png         | Bin 0 -> 589 bytes
+ Sprites/AllySprites/Ally_Woman.png               | Bin 0 -> 468 bytes
+ Sprites/AllySprites/Ally_Wyvern_Knight.png       | Bin 0 -> 680 bytes
+ Sprites/AllySprites/Ally_Wyvern_Lord.png         | Bin 0 -> 739 bytes
+ Sprites/AllySprites/Ally_Wyvern_Rider.png        | Bin 0 -> 702 bytes
+ Sprites/AllySprites/Ally_monk.png                | Bin 0 -> 485 bytes
+ Sprites/AllySprites/Great_Lord_Eirika.png        | Bin 0 -> 743 bytes
+ Sprites/AllySprites/Great_Lord_Ephraim.png       | Bin 0 -> 762 bytes
+ Sprites/AllySprites/Lord_Eirika.png              | Bin 0 -> 566 bytes
+ Sprites/AllySprites/Lord_Ephraim.png             | Bin 0 -> 620 bytes
+ Sprites/NeutralSprites/Ballista_Empty.png        | Bin 0 -> 627 bytes
+ Sprites/NeutralSprites/Killer_Ballista_Empty.png | Bin 0 -> 620 bytes
+ 96 files changed, 0 insertions(+), 0 deletions(-)
+
+commit e9d917ac883f6168568098415679c57c68156ff3
+Author: rg545 <rg545@cornell.edu>
+Date:   Fri Apr 6 16:57:42 2018 -0400
+
+    formatting'
+
+ state.ml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 8d60b51836f93de7a58d3a3799aa2360d3bc027c
+Merge: 24ce206 2cd33b9
+Author: rg545 <rg545@cornell.edu>
+Date:   Fri Apr 6 01:34:57 2018 -0400
+
+    finish Dijkstra?
+
+commit 24ce206ebdad572a7b500c8467b6c37f9e6ae160
+Author: rg545 <rg545@cornell.edu>
+Date:   Fri Apr 6 01:24:19 2018 -0400
+
+    finish Dijkstra?
+
+ state.ml | 61 ++++++++++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 46 insertions(+), 15 deletions(-)
+
+commit 2cd33b988cffa04261df33f991beac55c1f6d23e
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu Apr 5 21:16:41 2018 -0400
+
+    new tile helper
+
+ state.ml | 31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
+
+commit 101d44c46305b7e996cf4196c20e367e12443009
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu Apr 5 21:15:35 2018 -0400
+
+    map xd
+
+ state.ml | 46 +++++++++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
+
+commit bd6424d94beedd0a61cd2e5cdfe8469a1a07a860
+Merge: af0a460 d2d0bf4
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Apr 5 20:58:26 2018 -0400
+
+    actually did it this time
+
+commit af0a46043853f66e53abf6e525111d6253317e8f
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Apr 5 20:57:20 2018 -0400
+
+    monkey fill implemented
+
+ state.ml | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 66 insertions(+), 5 deletions(-)
+
+commit d2d0bf4e0d57ee16c4b5cee4e48a58141d95cb2a
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Thu Apr 5 19:31:54 2018 -0400
+
+    small change to character type, added direction
+
+ types.ml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit e5c577e7a0fe4a4e67eab4231608e1b439888ddc
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Thu Apr 5 19:13:54 2018 -0400
+
+    Adding tile menu to gui
+
+ gui.ml | 47 +++++++++++++++++++++++++++++++----------------
+ 1 file changed, 31 insertions(+), 16 deletions(-)
+
+commit 3adf61aac47a80efb3bee7cbbb2c0d08b3cd3d45
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Thu Apr 5 19:03:21 2018 -0400
+
+    Adding draw item menu functions to gui
+
+ gui.ml | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
+
+commit e3f47d2a56d65766efe560806c7e691003788c42
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Thu Apr 5 18:44:04 2018 -0400
+
+    Updated gui and fixed bug in main
+
+ gui.ml  | 46 ++++++++++++++++++++++++++++++++++------------
+ main.ml |  2 +-
+ 2 files changed, 35 insertions(+), 13 deletions(-)
+
+commit afd8c62df3037825a585c8b7db0df04956d4de8a
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu Apr 5 17:19:27 2018 -0400
+
+    Added listener
+
+ main.ml | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+commit f20bd4eb1c36e9daaa0646ecceb8ecb82527de80
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu Apr 5 17:08:07 2018 -0400
+
+    Fixed new_active_tile
+
+ state.ml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit ea476456cabd1ad2c9670b8e3854ec9c7b31ddc4
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu Apr 5 17:05:11 2018 -0400
+
+    Deleted stub
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ac797fc2a225a6edaee40d1b40485c9e32636b13
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu Apr 5 17:04:35 2018 -0400
+
+    Fixed translate
+
+ state.ml | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+commit 015212cd3ba0d6e6bdfdfa8671c63597259c48ce
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Thu Apr 5 16:35:23 2018 -0400
+
+    Fixing specs and mli
+
+ gui.ml  | 16 ++++++++--------
+ gui.mli |  8 ++++++--
+ 2 files changed, 14 insertions(+), 10 deletions(-)
+
+commit a6ffa1b5f05c5f74943b3404d8636487df0ca987
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Thu Apr 5 16:26:12 2018 -0400
+
+    Adding movement menu functions to gui
+
+ gui.ml | 43 ++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 7 deletions(-)
+
+commit e79f345459c68864aa2ad43a398aa40e37ce05fc
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu Apr 5 16:03:53 2018 -0400
+
+    Fixed small error in translate
+
+ state.ml | 8 +++++---
+ types.ml | 2 +-
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+commit d49e334261c2daff08b36195fa5a7b47ca1ddbb0
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Apr 5 15:59:53 2018 -0400
+
+    changed map to array
+
+ state.ml  | 2 +-
+ types.ml  | 4 ++--
+ types.mli | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 9693a6567be792f1a6d33edf5fac737695999c7c
+Merge: 53ba3a5 7190620
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Apr 5 14:47:17 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 53ba3a5b242be0679611fbc84c93b90873c83147
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Apr 5 14:47:02 2018 -0400
+
+    fixed using items
+
+ interactions.ml | 7 +++++--
+ state.ml        | 3 ++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+commit 7190620c3fb6355293867978d10456052b0c8a90
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu Apr 5 14:32:12 2018 -0400
+
+    Translate
+
+ state.ml | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+commit 1539adc25ef8124316028ba0b25ed48ce71b10a0
+Merge: 5d1d2af d231574
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu Apr 5 14:24:46 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 5d1d2af168d937fdec2559530589bba055810e26
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu Apr 5 14:14:45 2018 -0400
+
+    Deleted duplicates
+
+ state.ml | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+commit d231574bb6c94a5f94b1272621b7151f9d01bae0
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Apr 5 14:14:41 2018 -0400
+
+    Classic forgot to save before pushing
+
+ characters.ml   |  3 +++
+ interaction.mli |  2 +-
+ interactions.ml | 13 ++++++++++++-
+ 3 files changed, 16 insertions(+), 2 deletions(-)
+
+commit fb68e109fc7399ce23bb1d34809a3efaa29da030
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Apr 5 13:55:33 2018 -0400
+
+    finished interactions
+
+ Makefile       | 5 +++--
+ characters.mli | 4 +++-
+ state.ml       | 1 +
+ state.mli      | 1 +
+ types.mli      | 4 ++--
+ 5 files changed, 10 insertions(+), 5 deletions(-)
+
+commit 89fc7649d29e3cfb0eea1db1b46b03d00a1a0e2e
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Thu Apr 5 00:50:35 2018 -0400
+
+    Added more unimplemented functions to gui
+
+ gui.ml | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+commit 0963fde661b323432157a940c2628274a81d2c46
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Thu Apr 5 00:28:38 2018 -0400
+
+    Added functions to gui
+
+ gui.ml  | 61 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ main.ml |  7 ++++---
+ 2 files changed, 65 insertions(+), 3 deletions(-)
+
+commit e075055a3620d81a7ebf04b3087fbc2b25d37f24
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Wed Apr 4 23:16:04 2018 -0400
+
+    Made changes to main and added png files for logo and background
+
+ Sprites/Logo.png       | Bin 0 -> 30726 bytes
+ Sprites/background.png | Bin 0 -> 10564948 bytes
+ main.ml                |  45 +++++++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 41 insertions(+), 4 deletions(-)
+
+commit 4bed8c6bd9839734e8b66cc22fe9d65f9b42485e
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Wed Apr 4 22:59:43 2018 -0400
+
+    Adding index.html and Styles.css
+
+ Styles.css |  3 +++
+ index.html | 16 ++++++++++++++++
+ main.ml    |  2 ++
+ 3 files changed, 21 insertions(+)
+
+commit d429ca096f8bd6f6ffc6473d1c21a309f48065b8
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Wed Apr 4 00:56:37 2018 -0400
+
+    updated main
+
+ main.ml | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+commit 84e16acafa13e3dad75471264e096f66abcbc3e2
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Tue Apr 3 23:24:22 2018 -0400
+
+    Adding main, room.mli, and all the png files for map1
+
+ Makefile             |   1 +
+ Sprites/Bridge.png   | Bin 0 -> 349 bytes
+ Sprites/Bush.png     | Bin 0 -> 349 bytes
+ Sprites/Crack.png    | Bin 0 -> 345 bytes
+ Sprites/Darkbush.png | Bin 0 -> 324 bytes
+ Sprites/Wall1.png    | Bin 0 -> 365 bytes
+ Sprites/Wall2.png    | Bin 0 -> 328 bytes
+ Sprites/Wall3.png    | Bin 0 -> 361 bytes
+ Sprites/Wall4.png    | Bin 0 -> 307 bytes
+ Sprites/Wall5.png    | Bin 0 -> 361 bytes
+ Sprites/Wall6.png    | Bin 0 -> 324 bytes
+ Sprites/Water1.png   | Bin 0 -> 394 bytes
+ Sprites/Water2.png   | Bin 0 -> 382 bytes
+ Sprites/Water3.png   | Bin 0 -> 336 bytes
+ Sprites/Water4.png   | Bin 0 -> 339 bytes
+ Sprites/Water5.png   | Bin 0 -> 351 bytes
+ Sprites/Water6.png   | Bin 0 -> 369 bytes
+ Sprites/Water7.png   | Bin 0 -> 265 bytes
+ Sprites/Water8.png   | Bin 0 -> 346 bytes
+ Sprites/Water9.png   | Bin 0 -> 366 bytes
+ Sprites/grass.png    | Bin 0 -> 332 bytes
+ Sprites/start.png    | Bin 0 -> 22117 bytes
+ Sprites/tree.png     | Bin 0 -> 380 bytes
+ gui.ml               |   8 ++++++++
+ main.ml              |   0
+ room.ml              |   4 ----
+ room.mli             |   4 ++++
+ 27 files changed, 13 insertions(+), 4 deletions(-)
+
+commit 3db824b367edee4f5c14aa03c9fe17f373dceeb3
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Tue Apr 3 23:12:41 2018 -0400
+
+    Changes to room.ml, fixed ground fields
+
+ room.ml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 5d9b1e78d454afb1ac94177cf2c5d39ef8384434
+Author: fsr32 <awt46@cornell.edu>
+Date:   Tue Apr 3 22:44:44 2018 -0400
+
+    Added room.ml with map1
+
+ room.ml  | 191 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ types.ml |  12 +++-
+ 2 files changed, 201 insertions(+), 2 deletions(-)
+
+commit d7c57d5ed8c5cf926d30a1658206f051ec455d54
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue Apr 3 22:12:06 2018 -0400
+
+    did heal
+
+ Makefile        |  2 --
+ interaction.mli |  4 ++--
+ interactions.ml | 16 +++++++++++++---
+ items.ml        |  5 ++++-
+ items.mli       |  4 +++-
+ state.ml        |  4 +---
+ types.mli       |  8 ++++----
+ 7 files changed, 27 insertions(+), 16 deletions(-)
+
+commit ff4aeb03d1cb5ff0626f00d15c8bb9c44d8921ca
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue Apr 3 19:27:26 2018 -0400
+
+    also fixed names?
+
+ types.ml  | 2 +-
+ types.mli | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 678aa85e790696ba4ecc2c87115d899fc9a7bd32
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue Apr 3 19:25:14 2018 -0400
+
+    fixed item...?
+
+ types.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 825048637078890c2995d3fd649c92257686d198
+Merge: 718ce85 3268e9e
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue Apr 3 19:21:47 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+    changed location to coordinate and now i have to do this :/
+
+commit 718ce85b274ff10dce97a71ffbe827813117fae4
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue Apr 3 19:19:58 2018 -0400
+
+    fixed combat
+
+ interactions.ml |  4 +--
+ state.ml        | 77 ++++++++++++++++++++++++++++++++++++++++-----------------
+ types.ml        | 10 ++++----
+ 3 files changed, 62 insertions(+), 29 deletions(-)
+
+commit 2675e71510606da4f54884da0b82ee9916f75f13
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue Apr 3 19:18:25 2018 -0400
+
+    fixed combat
+
+ characters.ml   |  10 ++++--
+ characters.mli  |   2 +-
+ interactions.ml | 102 +++++++++++++++++++++++++++++++++++++++++++-------------
+ 3 files changed, 86 insertions(+), 28 deletions(-)
+
+commit 3268e9e61c69b1ab1c45191f58d568415f496282
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue Apr 3 17:13:38 2018 -0400
+
+    Changed locations field in tile record to be coordinates
+
+ interactions.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit a6bc927a0761666a0bdac084ad754ecb729c72ea
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue Apr 3 17:13:11 2018 -0400
+
+    Changed locations field in tile record to be coordinates
+
+ state.ml | 77 +++++++++++++++++++++++++++++++++++++++++++++-------------------
+ types.ml | 10 ++++-----
+ 2 files changed, 60 insertions(+), 27 deletions(-)
+
+commit 77e21949fbc2059f0eeec8b83438205618f1b5af
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue Apr 3 16:56:51 2018 -0400
+
+    fixing combat :( also made a character to tile distance checker
+
+ interactions.ml | 49 ++++++++++++++++++++++++++++++++++---------------
+ items.ml        |  5 ++++-
+ items.mli       |  2 +-
+ state.ml        |  8 ++++++++
+ types.mli       |  4 ++--
+ 5 files changed, 49 insertions(+), 19 deletions(-)
+
+commit 65a50da6aad3a52adb5047c8d480d9dfac2686b6
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue Apr 3 15:44:46 2018 -0400
+
+    finished combat loop
+
+ characters.ml   | 12 +++++-----
+ characters.mli  |  2 +-
+ interaction.mli |  4 ++--
+ interactions.ml | 73 ++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ items.ml        |  2 +-
+ state.ml        |  2 +-
+ types.ml        |  4 ++--
+ types.mli       |  4 ++--
+ 8 files changed, 82 insertions(+), 21 deletions(-)
+
+commit 94861dcd3a5d1ab3c4ba8ca23174974b06b0f225
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue Apr 3 11:41:59 2018 -0400
+
+    formatting
+
+ command.ml      | 20 ++++++++++----------
+ interaction.mli |  2 +-
+ state.ml        |  7 ++++---
+ state.mli       |  6 +++---
+ types.ml        | 12 ++++++------
+ types.mli       | 15 ++++++++-------
+ 6 files changed, 32 insertions(+), 30 deletions(-)
+
+commit 0a39ca80d3fea518114d9739a7fc20577b4599a2
+Merge: ea67119 7f9ea7c
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue Apr 3 11:20:40 2018 -0400
+
+    fixed merges
+
+commit ea671193600cfe3711a8b189e96ffd524a807f5f
+Author: rg545 <rg545@cornell.edu>
+Date:   Tue Apr 3 11:13:18 2018 -0400
+
+    slight changes
+
+ command.mli |  1 -
+ state.ml    | 36 ++++++++++++++++++++++++------------
+ state.mli   |  4 ++--
+ types.ml    | 35 ++++++++++-------------------------
+ types.mli   | 36 ++++++++++++------------------------
+ 5 files changed, 48 insertions(+), 64 deletions(-)
+
+commit 7f9ea7c3272bc9fcbf1dc4b59aefb82e0aed3007
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue Apr 3 03:04:36 2018 -0400
+
+    Working on helpers for do'
+
+ state.ml  | 34 ++++++++++++++++++++++++----------
+ state.mli |  7 ++++---
+ types.ml  | 10 ++++++----
+ types.mli |  2 +-
+ 4 files changed, 35 insertions(+), 18 deletions(-)
+
+commit f8b4e30171514e01974308ed6afe269fd819dd9b
+Author: awt46 <awt46@cornell.edu>
+Date:   Tue Apr 3 00:27:42 2018 -0400
+
+    input
+
+ state.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 28193f27036ff939645e14765554de7eaef18552
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon Apr 2 23:55:48 2018 -0400
+
+    input
+
+ command.ml |  1 -
+ state.ml   | 37 ++++++++++++++++++++++++++++---------
+ state.mli  |  2 +-
+ types.ml   | 14 ++++++++++----
+ types.mli  | 20 +++++++++++++-------
+ 5 files changed, 52 insertions(+), 22 deletions(-)
+
+commit 65ed62a8accd33da50a4ad4c12ae0d5f86d072e4
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon Apr 2 19:12:43 2018 -0400
+
+    fml
+
+ state.ml  | 10 +++++-----
+ state.mli |  2 +-
+ types.ml  |  3 ++-
+ types.mli |  5 +++--
+ 4 files changed, 11 insertions(+), 9 deletions(-)
+
+commit ca9ecb61143a28f0bc42c39b30065055dec91f12
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon Apr 2 18:22:00 2018 -0400
+
+    Input
+
+ command.mli |  3 ++-
+ state.ml    | 11 ++++++++---
+ state.mli   | 19 +++++++++++--------
+ types.ml    |  8 +++++---
+ 4 files changed, 26 insertions(+), 15 deletions(-)
+
+commit cc2f2e32f20835511d61dfe965b60ef8d6c2da4b
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon Apr 2 12:19:58 2018 -0400
+
+    Types
+
+ types.mli | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
+
+commit 92adf63180b8774c61a998674707263306286458
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon Apr 2 12:18:52 2018 -0400
+
+    Input stuff
+
+ ai.mli   |  6 ++++++
+ types.ml | 23 ++++++++++++-----------
+ 2 files changed, 18 insertions(+), 11 deletions(-)
+
+commit a491515f8d12262faf4ecb15b3d72a8e08738a7c
+Merge: 02cad05 99ecdce
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon Apr 2 12:16:52 2018 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/awt46/fire-emblem
+
+commit 02cad05614cf254e5168d9a0ea8dfabfa675d73f
+Author: awt46 <awt46@cornell.edu>
+Date:   Mon Apr 2 12:12:31 2018 -0400
+
+    Trying to figure out input
+
+ command.ml  | 18 ++++++++++++++++++
+ command.mli |  2 +-
+ state.ml    | 16 ++++++++++------
+ state.mli   |  3 +++
+ 4 files changed, 32 insertions(+), 7 deletions(-)
+
+commit 99ecdcec1694ba6107e62ffa2f2bf6377689ee27
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Mon Apr 2 00:24:24 2018 -0400
+
+    added merlin file
+
+ .merlin  | 4 ++++
+ Makefile | 2 ++
+ 2 files changed, 6 insertions(+)
+
+commit 225acc94b1b54e1afd47f7faddbacbdd414fe682
+Author: fsr32 <fsr32@cornell.edu>
+Date:   Mon Apr 2 00:06:10 2018 -0400
+
+    Adding lyn sprite sheet and creating new module for sprite parsing
+
+ Sprites/lynspritesheet.png | Bin 0 -> 51711 bytes
+ sprites.ml                 |   0
+ sprites.mli                |   0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 31c9492366beb08d6fa5cf79d933c484f7c28c48
+Author: rg545 <rg545@cornell.edu>
+Date:   Sun Apr 1 18:04:09 2018 -0400
+
+    added items
+
+ items.ml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit bc53f49c9edd92f50a832b7940999ab89ccbeafa
+Author: rg545 <rg545@cornell.edu>
+Date:   Sun Apr 1 17:21:10 2018 -0400
+
+    actual push
+
+ command.mli | 1 -
+ types.mli   | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
+
+commit 4e1461eea773d1af110940055911b86f1651f5f5
+Author: rg545 <rg545@cornell.edu>
+Date:   Sun Apr 1 16:51:40 2018 -0400
+
+    finished most of character
+
+ Makefile       |  3 ++-
+ characters.ml  |  5 ++++-
+ characters.mli | 10 ----------
+ command.mli    |  5 ++++-
+ state.ml       | 25 ++++++++++++++++++++++---
+ state.mli      | 22 ++++++++--------------
+ types.ml       |  6 +++++-
+ 7 files changed, 45 insertions(+), 31 deletions(-)
+
+commit aa067af38bd98a908fda2b275f8f02aeb7671ca3
+Merge: dbce3a7 1ea8082
+Author: rg545 <rg545@cornell.edu>
+Date:   Sun Apr 1 16:28:01 2018 -0400
+
+    fixed merge
+
+commit dbce3a7098158ae6482295de184d5e888c3e5614
+Author: rg545 <rg545@cornell.edu>
+Date:   Sun Apr 1 15:53:50 2018 -0400
+
+    added Makefile, and started on state, types, characters and items
+
+ .ocamlinit     |  2 ++
+ Makefile       |  5 +++++
+ characters.ml  | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ characters.mli | 10 ++++++---
+ state.ml       | 11 ++++++++++
+ state.mli      |  4 ++--
+ types.ml       | 45 +++++++++++++++++++++++++++-----------
+ types.mli      | 12 +++++------
+ 8 files changed, 132 insertions(+), 25 deletions(-)
+
+commit 1ea8082a288fd6203fd76ad4436f9c559af6c2f1
+Author: awt46 <awt46@cornell.edu>
+Date:   Thu Mar 29 19:59:33 2018 -0400
+
+    Made some small changes more suitable for submission
+
+ characters.mli  |  7 +++----
+ command.mli     | 12 +++++-------
+ gui.mli         |  5 +++--
+ interaction.mli | 18 ++++++++----------
+ items.mli       | 11 ++---------
+ state.mli       | 22 +++++++++++-----------
+ types.mli       |  4 ++++
+ 7 files changed, 36 insertions(+), 43 deletions(-)
+
+commit 69c538281c90a82713a0410fe874c27e364e111b
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Mar 29 19:03:39 2018 -0400
+
+    actually pushed now
+
+ characters.ml  |  7 +++++++
+ characters.mli | 40 ++--------------------------------------
+ command.mli    |  4 +---
+ gui.mli        |  4 +---
+ items.mli      | 27 ---------------------------
+ map.mli        | 17 -----------------
+ state.mli      | 19 +++++++++----------
+ 7 files changed, 20 insertions(+), 98 deletions(-)
+
+commit 9aad1897a4bc1734b0552153b691f2dbcf843a27
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Mar 29 18:08:57 2018 -0400
+
+    added comments to types.mli
+
+ types.mli | 31 +++++++++++++++++++++++++------
+ 1 file changed, 25 insertions(+), 6 deletions(-)
+
+commit 36afd688291c672074807060597d7f8ba7a8a7c2
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Mar 29 18:02:04 2018 -0400
+
+    fixed mlis
+
+ character.mli  | 54 ------------------------------------------
+ characters.ml  |  0
+ characters.mli | 54 ++++++++++++++++++++++++++++++++++++++++++
+ types.ml       | 74 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ types.mli      | 74 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 202 insertions(+), 54 deletions(-)
+
+commit 675ef4b45aa9991960851cd54f016871d01b9169
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Mar 29 00:47:55 2018 -0400
+
+    added village
+
+ character.mli   | 14 ++++++++++++--
+ command.mli     |  9 +++++++++
+ gui.mli         |  8 ++++++++
+ interaction.mli | 39 +++++++++++++++++++++++++++++++++++++++
+ map.mli         | 17 +++++++++++++++++
+ state.mli       | 11 ++++++++++-
+ 6 files changed, 95 insertions(+), 3 deletions(-)
+
+commit 96cbc8dbffd7954d73fed2012a52211ea3a166f8
+Author: rg545 <rg545@cornell.edu>
+Date:   Thu Mar 29 00:42:30 2018 -0400
+
+    finished mli
+
+ character.mli   | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ interaction.mli |  0
+ items.mli       | 39 +++++++++++++++++++++++++++++++++++++++
+ map.mli         |  0
+ 4 files changed, 83 insertions(+)
+
+commit e7d5dcc66f87076d91d6ec889a5df6046c9524f8
+Merge: fb57e80 24817a2
+Author: rg545 <rg545@cornell.edu>
+Date:   Wed Mar 28 18:38:00 2018 -0400
+
+    what is happening btw
+
+commit fb57e80d9a5652b71ea2e42018e19b9f38d38d51
+Author: rg545 <rg545@cornell.edu>
+Date:   Wed Mar 28 18:32:44 2018 -0400
+
+    added mli files
+
+ character.mli | 0
+ command.mli   | 0
+ gui.mli       | 0
+ state.mli     | 6 ++++++
+ 4 files changed, 6 insertions(+)
+
+commit 24817a2003dbf07cd5b64ed9865de7f7ae59e8b0
+Author: awt46 <awt46@cornell.edu>
+Date:   Wed Mar 28 18:28:39 2018 -0400
+
+    Added quote
+
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit c09d942b20f7b132dc5551e1e43ce5d59e876a6f
+Author: awt46 <awt46@cornell.edu>
+Date:   Wed Mar 28 18:18:22 2018 -0400
+
+    Fixed my own name lol
+
+ README.md | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 3b4ca6b26137aad67ceee3d3774c5c1a23e85c63
+Author: vagrant <vagrant@vm3110-2018sp>
+Date:   Wed Mar 28 18:16:19 2018 -0400
+
+    update
+
+ README.md | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 318762a315bb32ebb79d4f2e761fda6ae3c5f437
+Author: vagrant <vagrant@vm3110-2018sp>
+Date:   Wed Mar 28 18:15:27 2018 -0400
+
+    Update
+
+ README.md | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+commit cad8af4e852930373e1f360e0563e0e437157568
+Author: Albert William Tsao <awt46@cornell.edu>
+Date:   Wed Mar 28 18:09:58 2018 -0400
+
+    Initial commit
+
+ .gitignore | 20 ++++++++++++++++++++
+ README.md  |  1 +
+ 2 files changed, 21 insertions(+)

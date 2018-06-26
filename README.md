@@ -17,6 +17,7 @@ If Ocaml and Opam are installed, then do the following steps:
 	5. A window in your default browser should open and fire-emblem should play automatically! (Click on the screen if nothing is happening)
 
 ## How to Play
+For best playing experience, use Google Chrome
 ### Selection
 When in the game, you will see various players, enemies, items, and menus. Using 'Z' you can select players to move by pressing on the currently active character. You can tell who the currently active character is by pressing 'A'. 'A' will automatically transfer the cursor over to the currently active character. You can also use 'Z' on enemies to see their range of movement, on menus when you need to select a choice on the menu, and on the ground when you want to end your turn. You can press 'X' to deselect something that has already been selected.
 
@@ -34,3 +35,6 @@ Oscigen's js_of_ocaml library was used to build the GUI. The library translates 
 - Albert Tsao
 - Darren Tsai
 - Ray Gu
+
+## NOTE
+Albert Tsao is not included in the statistics for some reason
